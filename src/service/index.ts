@@ -1,9 +1,8 @@
 import axios from "axios";
 
-export const client = axios.create({
+export const clientAxios = axios.create({
   // baseURL: "http://localhost:8080", 
-  //baseURL: "http://3.36.37.240:8080",
-  baseURL: "https://api.github.com",
+  baseURL: "http://3.36.37.240:8080",
   timeout: 10000,
   headers: {
     "x-Requested-With": "XMLHttpRequest",
@@ -17,7 +16,7 @@ export const client = axios.create({
   withCredentials: true, // cors
 });
 
-client.interceptors.request.use(
+clientAxios.interceptors.request.use(
   (config) => {
     // localStorage에서 토큰 가져오기
     // const token = localStorage.getItem('token');
@@ -32,3 +31,18 @@ client.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+export const aiAxios = axios.create({
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
+  timeout: 10000,
+  headers: {
+    "x-Requested-With": "XMLHttpRequest",
+    "Access-Control-Allow-Credentials": true,
+    "Access-Control-Allow-Origin": "*",
+  },
+  responseType: "json",
+  responseEncoding: "utf8",
+  decompress: true,
+  withCredentials: true,
+})
+

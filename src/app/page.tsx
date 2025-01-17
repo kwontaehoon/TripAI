@@ -6,9 +6,7 @@ const page = () => {
 
   return (
     <div>
-      <div>page</div>
-      <Link href={`/blog/${43}`}>Link</Link>
-      <div>useRouter - /blog</div>
+      <Link href={`/blog/${43}`}>Blog로 이동</Link>
       <div onClick={()=> {
         setTimeout(() => {
           redirect('/test')

@@ -1,8 +1,12 @@
-import { client } from ".";
+import { clientAxios } from ".";
 
 const ACCOUNT_URL = {
-    info: "/repos/vercel/next.js"
+    info: "/api/banner/list"
+}
+
+const AI_URL = {
+    text: "/"
 }
 
 // 내 정보
-export const getTest = () => client(ACCOUNT_URL.info);
+export const getTest = () => clientAxios(ACCOUNT_URL.info);
