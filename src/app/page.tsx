@@ -1,9 +1,9 @@
 'use client'
 import Link from "next/link"
 import { redirect } from "next/navigation";
-import { MapProvider } from "@/util/map-provider";  
+import { MapProvider } from "@/func/map-provider";  
 import { MapComponent } from "@/app/map";
-import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/Test";
+import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/dev";
 
 const page = () => {
 

@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getTest, getGeminiAi, getGooglePlaceText, getGooglePlaceNearby } from "@/service/test"
+import { getTest, getGeminiAi, getGooglePlaceText, getGooglePlaceNearby } from "@/service/dev"
 
 const TEST_QUERY_KEY = {
     test: ["test"],

@@ -1,5 +1,5 @@
 'use client'
-import { useTestQuery } from '@/hooks/Test'
+import { useTestQuery } from '@/hooks/dev'
 import { NextPage } from 'next'
 
 const Page: NextPage = () => {
