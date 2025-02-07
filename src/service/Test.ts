@@ -1,12 +1,23 @@
-import { clientAxios } from ".";
+import { clientAxios, aiAxios, googlePlaceTextAxios, googlePlaceNearbyAxios } from ".";
 
 const ACCOUNT_URL = {
     info: "/api/banner/list"
 }
 
-const AI_URL = {
-    text: "/"
+const GOOGLE_PLACE_URL = {
+    ai: "",
+    text: "",
+    nearby: ""
 }
 
 // 내 정보
-export const getTest = () => clientAxios(ACCOUNT_URL.info);
+export const getTest = () => clientAxios.get(ACCOUNT_URL.info);
+
+// gemini ai
+export const getGeminiAi = () => aiAxios.post(GOOGLE_PLACE_URL.ai);
+
+// googlePlace text
+export const getGooglePlaceText = (params: object) => googlePlaceTextAxios.post(GOOGLE_PLACE_URL.text, params);
+
+// googlePlace nearby
+export const getGooglePlaceNearby = (params: object) => googlePlaceNearbyAxios.post(GOOGLE_PLACE_URL.nearby, params);

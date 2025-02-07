@@ -46,3 +46,34 @@ export const aiAxios = axios.create({
   withCredentials: true,
 })
 
+export const googlePlaceTextAxios = axios.create({
+  baseURL: "https://places.googleapis.com/v1/places:searchText",
+  timeout: 10000,
+  headers: {
+    // "x-Requested-With": "XMLHttpRequest",
+    // "Access-Control-Allow-Credentials": true,
+    // "Access-Control-Allow-Origin": "*",
+    "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
+    "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel"
+  },
+  responseType: "json",
+  responseEncoding: "utf8",
+  decompress: true,
+  // withCredentials: true,
+})
+
+export const googlePlaceNearbyAxios = axios.create({
+  baseURL: "https://places.googleapis.com/v1/places:searchNearby",
+  timeout: 10000,
+  headers: {
+    // "x-Requested-With": "XMLHttpRequest",
+    // "Access-Control-Allow-Credentials": true,
+    // "Access-Control-Allow-Origin": "*",
+    "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
+    "X-Goog-FieldMask": "places.displayName"
+  },
+  responseType: "json",
+  responseEncoding: "utf8",
+  decompress: true,
+  // withCredentials: true,
+})
