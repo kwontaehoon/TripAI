@@ -1,7 +1,9 @@
 'use client'
 // import type { Metadata } from "next";
-import "./globals.css";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import "./globals.css"
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import Header from '@/app/header/page'
+import Footer from '@/app/footer/page'
 
 const queryClient = new QueryClient()
 
@@ -19,8 +21,9 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
     <html lang="en">
       <body>
-        <div>root page</div>
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
     </QueryClientProvider>

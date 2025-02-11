@@ -1,9 +1,10 @@
 'use client'
 import Link from "next/link"
-import { redirect } from "next/navigation";
-import { MapProvider } from "@/func/map-provider";  
-import { MapComponent } from "@/app/map";
-import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/dev";
+import { redirect } from "next/navigation"
+import { MapProvider } from "@/func/map-provider"
+import { MapComponent } from "@/app/map"
+import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/dev"
+import MainPage from '@/app/main/page'
 
 const page = () => {
 
@@ -14,7 +15,7 @@ const page = () => {
 
   return (
     <div>
-      <div><Link href={`/blog/${43}`}>Blog로 이동</Link></div>
+      {/* <div><Link href={`/blog/${43}`}>Blog로 이동</Link></div>
       <div><Link href="/zod">zod</Link></div>
       <div onClick={()=> {
         setTimeout(() => {
@@ -42,7 +43,8 @@ const page = () => {
       }}>google nearby</div>
       <MapProvider>
           <MapComponent />
-      </MapProvider>
+      </MapProvider> */}
+      <MainPage />
     </div>
   )
 }
