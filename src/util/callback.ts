@@ -1,5 +1,5 @@
 export const timer = (callback: (message: string) => void) => {
     setTimeout(() => {
         callback('success');
-    }, 3000);
+    }, 10_000);
 }

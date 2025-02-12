@@ -91,3 +91,17 @@ beforeAll(() => {
 afterAll(() => {
     console.log('모든 테스트가 끝난 후'); 
 });
+
+// test skip
+test.skip("obj.minus 함수가 1번 호출되었다. (spy 삽입)", () => {
+    spyFn = jest.spyOn(obj, 'minus');
+    const result = obj.minus(1, 2);
+    expect(obj.minus).toHaveBeenCalledTimes(1);
+    expect(result).toBe(-1);
+});
+
+// 나중에 만들 때
+test.todo("obj.minus 함수가 1번 호출되었다. (spy 삽입)");
+
+// describe skip
+describe.skip('', () => {});
