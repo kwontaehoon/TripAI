@@ -21,6 +21,7 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
     <html lang="en">
       <body>
+        <div id="global-modal"></div>
         <Header />
         {children}
         <Footer />
