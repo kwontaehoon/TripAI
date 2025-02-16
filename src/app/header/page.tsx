@@ -31,9 +31,9 @@ const page = () => {
       }`}
     >
         <Link href="/" className='w-32 bg-red-500'></Link>
-        <div className='flex-1 border border-black flex flex-row-reverse'>
+        <div className='flex-1 border flex flex-row-reverse'>
             {Array(6).fill(0).map((_, index) => (
-                <div key={index} className='w-36 border border-black w-h-center'>
+                <div key={index} className='w-36 w-h-center border'>
                     123
                 </div>
             ))}

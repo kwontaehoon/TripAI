@@ -4,6 +4,7 @@ import "./globals.css"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import Header from '@/app/header/page'
 import Footer from '@/app/footer/page'
+import Modal from '@/modal'
 
 const queryClient = new QueryClient()
 
@@ -21,7 +22,8 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
     <html lang="en">
       <body>
-        <div id="global-modal"></div>
+        {/* <div id="global-modal"></div> */}
+        <Modal />
         <Header />
         {children}
         <Footer />

@@ -20,31 +20,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer components {
-  .w-h-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.border {
+  border: 1px solid black;
 }
 
 @layer components {
-  .border {
-    border: 1px solid black;
+  .w-h-center {
+    @apply flex items-center justify-center;
   }
+}
+
+@layer utilities {
+
 }
 
 .modal {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  width: 700px;
   box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
   background-color: white;
   border: 2px solid rgb(240, 240, 240);
   border-radius: 12px;
   position:  fixed;
-  width: 250px;
   top: 70px;
-  left: calc(50% - 125px);
+  left: calc(50% - 350px);
   bottom: 70px;
 }

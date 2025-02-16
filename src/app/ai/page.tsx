@@ -1,11 +1,13 @@
 'use client'
-import ModalContent from '@/modal/test'
+import AiInput from '@/modal/ai-input'
 import React, { useState } from 'react'
-import { createPortal } from 'react-dom'
+import { aiInputAtom } from '@/store/ai'
+import { useAtom } from 'jotai'
+
 
 const page = () => {
 
-  const [showModal, setShowModal] = useState(false);
+  const [aiInput, setAiInput] = useAtom(aiInputAtom);
 
   return (
     <div className='flex justify-center'>
@@ -17,15 +19,15 @@ const page = () => {
           </div>
           <div className="flex justify-between flex-wrap gap-5">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="cursor-pointer border w-[250px] h-[250px] rounded-xl" onClick={()=>setShowModal(true)}></div>
+              <div key={index} className="cursor-pointer border w-[250px] h-[250px] rounded-xl" onClick={()=>setAiInput(true)}></div>
             ))}
           </div>
       </div>
 
-      {showModal && createPortal(
-        <ModalContent onClose={() => setShowModal(false)} />,
+      {/* {showModal && createPortal(
+        <AiInput onClose={() => setShowModal(false)} />,
         document.body
-      )}
+      )} */}
 
     </div>
   )
