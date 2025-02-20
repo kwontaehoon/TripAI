@@ -24,12 +24,19 @@ body {
   border: 1px solid black;
 }
 
+.border-b {
+  border-bottom: 1px solid black;
+}
+
 @layer components {
   .w-h-center {
     @apply flex items-center justify-center;
   }
 }
 
+.test {
+  background-color: red;
+}
 @layer utilities {
 
 }

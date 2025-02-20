@@ -1,5 +1,5 @@
 'use client'
-import AiInput from '@/modal/ai-input'
+import AiInput from '@/app/modal/ai-input'
 import React, { useState } from 'react'
 import { aiInputAtom } from '@/store/ai'
 import { useAtom } from 'jotai'
@@ -10,8 +10,8 @@ const page = () => {
   const [aiInput, setAiInput] = useAtom(aiInputAtom);
 
   return (
-    <div className='flex justify-center'>
-      <div className='py-28 max-w-[900px]'>
+    <div className='flex py-32 justify-center'>
+      <div className='w-[900px]'>
           <div className='mb-2'>AI 추천 코스</div>
           <div className='mb-5'>지역 선택</div>
           <div className='w-full h-20 flex justify-center mb-12'>

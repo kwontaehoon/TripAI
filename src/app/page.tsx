@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { MapProvider } from "@/func/map-provider"
-import { MapComponent } from "@/app/map"
+import { MapComponent } from "@/app/maps/page"
 import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/dev"
 import MainPage from '@/app/main/page'
 

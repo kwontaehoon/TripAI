@@ -15,7 +15,7 @@ const index = () => {
 
   return (
     <div>
-      {aiInput && <AiInput onClose={() => setAiInput(false)} />}
+      {aiInput && <AiInput />}
     </div>
   )
 }

@@ -4,7 +4,7 @@ import "./globals.css"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import Header from '@/app/header/page'
 import Footer from '@/app/footer/page'
-import Modal from '@/modal'
+import Modal from '@/app/modal'
 
 const queryClient = new QueryClient()
 
