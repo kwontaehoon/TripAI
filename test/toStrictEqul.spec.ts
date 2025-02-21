@@ -1,4 +1,3 @@
-import { sum } from "../src/util/toBe"
 import { test, expect } from '@jest/globals'
 import { obj, random } from "../src/util/toStrictEqul"
 
@@ -20,3 +19,7 @@ test("배열끼리도 toStrictEqual 써야한다.", () => {
 test("배열끼리도 toStrictEqual 써야한다.", () => {
     expect(random()).toStrictEqual({ a: expect.any(Number) });
 });
+
+it("random 함수의 not 테스트", () => {
+    expect(random()).not.toStrictEqual({ a: 123 });
+})
