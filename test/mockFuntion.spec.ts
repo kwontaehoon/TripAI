@@ -3,13 +3,16 @@ import { obj } from "../src/util/toHaveBeenCalled"
 let spyFn: jest.SpyInstance;
 let beforeEachCount = 0;
 let afterEachCount = 0;
+
 beforeEach(() => {
     console.log('outside beforeEach: ', ++beforeEachCount);
 });
+
 afterEach(() => {
     console.log('outside afterEach: ', ++afterEachCount);
     jest.restoreAllMocks();
 });
+
 describe('beforeEach/afterEach 적용', () => {
 
     beforeEach(() => {
