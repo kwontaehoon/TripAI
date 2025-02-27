@@ -4,7 +4,7 @@ import Two from './two'
 
 const page = () => {
   return (
-    <div className='px-[300px] py-28'>
+    <div className='py-28'>
         <One />
         <Two />
     </div>
