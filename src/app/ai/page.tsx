@@ -10,7 +10,8 @@ const page = () => {
   const [aiInput, setAiInput] = useAtom(aiInputAtom);
 
   return (
-    <div className='flex py-32 justify-center'>
+    <div className='flex py-32 lg:p-0 p-4'>
+      <div className='flex-1'></div>
       <div className='w-[900px]'>
           <div className='mb-2'>AI 추천 코스</div>
           <div className='mb-5'>지역 선택</div>
@@ -19,7 +20,7 @@ const page = () => {
           </div>
           <div className="flex justify-between flex-wrap gap-5">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="cursor-pointer border w-[250px] h-[250px] rounded-xl" onClick={()=>setAiInput(true)}></div>
+              <div key={index} className="cursor-pointer border lg:w-[250px] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setAiInput(true)}></div>
             ))}
           </div>
       </div>
@@ -28,6 +29,7 @@ const page = () => {
         <AiInput onClose={() => setShowModal(false)} />,
         document.body
       )} */}
+      <div className='flex-1'></div>
 
     </div>
   )

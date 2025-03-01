@@ -2,8 +2,9 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='flex py-32 justify-center'>
-      <div className='max-w-[900px]'>
+    <div className='flex py-32'>
+      <div className='flex-1'></div>
+      <div className='w-[900px]'>
           <div className='mb-2'>AI 추천 코스</div>
           <div className='mb-5'>지역 선택</div>
           <div className='w-[900px] h-16 flex justify-center mb-12 bg-blue-50 rounded-xl'>
@@ -51,6 +52,7 @@ const page = () => {
             </div>
           </div>
       </div>
+      <div className='flex-1'></div>
     </div>
   )
 }

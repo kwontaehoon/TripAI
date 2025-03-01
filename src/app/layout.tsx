@@ -2,8 +2,8 @@
 // import type { Metadata } from "next";
 import "./globals.css"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
-import Header from '@/app/header/page'
-import Footer from '@/app/footer/page'
+import Header from '@/app/common/header/page'
+import Footer from '@/app/common/footer/page'
 import Modal from '@/app/modal'
 
 const queryClient = new QueryClient()

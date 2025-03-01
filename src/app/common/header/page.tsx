@@ -2,8 +2,8 @@
 import React, { useState, useEffect} from 'react'
 import Link from "next/link"
 import Image from 'next/image'
-import HamburgetMenu from '../../../public/svg/HamburgerMenu.svg'
-import Search from '../../../public/svg/Search.svg'
+import HamburgetMenu from '../../../../public/svg/HamburgerMenu.svg'
+import Search from '../../../../public/svg/Search.svg'
 
 const page = () => {
 
@@ -29,6 +29,7 @@ const page = () => {
 
   return (
     <div>
+    {/* PC */}
     <header
       className={`h-16 bg-green-500 z-10 lg:flex hidden fixed top-0 left-0 w-full shadow-md transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
@@ -43,7 +44,9 @@ const page = () => {
             ))}
         </div>
     </header>
+    {/* PC */}
 
+    {/* Mobile */}
     <header>
       <div className={`h-16 bg-white z-10 shadow-md lg:hidden fixed top-0 left-0 w-full flex items-center`}>
         <div>Logo</div>
@@ -53,6 +56,8 @@ const page = () => {
         </div>
       </div>
     </header>
+    {/* Mobile */}
+    
     </div>
   )
 }
