@@ -24,7 +24,7 @@ export default function RootLayout({
       <body>
         {/* <div id="global-modal"></div> */}
         <Modal />
-        <Header />
+        <Header /> 
         {children}
         <Footer />
       </body>

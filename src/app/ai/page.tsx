@@ -10,7 +10,7 @@ const page = () => {
   const [aiInput, setAiInput] = useAtom(aiInputAtom);
 
   return (
-    <div className='flex py-32 lg:p-0 p-4'>
+    <div className='flex lg:px-32 lg:py-32 px-4 py-32'>
       <div className='flex-1'></div>
       <div className='w-[900px]'>
           <div className='mb-2'>AI 추천 코스</div>
@@ -20,7 +20,7 @@ const page = () => {
           </div>
           <div className="flex justify-between flex-wrap gap-5">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="cursor-pointer border lg:w-[250px] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setAiInput(true)}></div>
+              <div key={index} className="cursor border lg:w-[calc(900px/3-20px)] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setAiInput(true)}></div>
             ))}
           </div>
       </div>
