@@ -1,8 +1,10 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} **/
+/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
   testEnvironment: "jsdom",
   transform: {
-    "^.+.(js|jsx|ts|tsx)?$": ["ts-jest",{}],
-    "^.+\\.(js|jsx|ts|tsx)$": "ts-jest" // @/app/main/one 처럼 @ 경로 설정
+    "^.+\\.(js|jsx|ts|tsx)?$": ["ts-jest", {}]
   },
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1" // @ 경로를 src 디렉토리로 매핑
+  }
 };

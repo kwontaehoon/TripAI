@@ -43,6 +43,7 @@ const page = () => {
                 </div>
             ))}
         </div>
+        <Link href="/login" className='w-32 w-h-center'>Login</Link>
     </header>
     {/* PC */}
 
