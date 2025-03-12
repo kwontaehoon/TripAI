@@ -1,13 +1,13 @@
 'use client'
 import AiInput from '@/app/modal/ai-input'
 import React, { useState } from 'react'
-import { aiInputAtom } from '@/store/ai'
+import { modalUiStateAtom } from '@/store/ai'
 import { useAtom } from 'jotai'
 
 
 const page = () => {
 
-  const [aiInput, setAiInput] = useAtom(aiInputAtom);
+  const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom);
 
   return (
     <div className='flex lg:px-32 lg:py-32 px-4 py-32'>
@@ -20,7 +20,7 @@ const page = () => {
           </div>
           <div className="flex justify-between flex-wrap gap-5">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="cursor border lg:w-[calc(900px/3-20px)] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setAiInput(true)}></div>
+              <div key={index} className="cursor border lg:w-[calc(900px/3-20px)] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setModalUiState({...modalUiState, aiInput: true})}></div>
             ))}
           </div>
       </div>

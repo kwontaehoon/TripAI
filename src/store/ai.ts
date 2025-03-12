@@ -1,3 +1,5 @@
 import { atom } from 'jotai'
 
-export const aiInputAtom = atom(false)
+export const modalUiStateAtom = atom({
+    aiInput: false
+})

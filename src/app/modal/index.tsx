@@ -3,7 +3,7 @@ import React from 'react'
 import { useAtom } from 'jotai'
 
 // store
-import { aiInputAtom } from '@/store/ai'
+import { modalUiStateAtom } from '@/store/ai'
 
 // layout
 import AiInput from './ai-input'
@@ -11,11 +11,11 @@ import AiInput from './ai-input'
 
 const index = () => {
 
-  const [aiInput, setAiInput] = useAtom(aiInputAtom);
+  const [aiImodalUiStatenput, _] = useAtom(modalUiStateAtom);
 
   return (
     <div>
-      {aiInput && <AiInput />}
+      {aiImodalUiStatenput.aiInput && <AiInput />}
     </div>
   )
 }
