@@ -1,43 +1,57 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MapProvider } from "@/func/map-provider"
 import { MapComponent } from "@/app/maps/page"
 import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/dev"
-import { aiResponseAtom } from '@/store/ai'
-import { useAtom } from 'jotai'
 
 const page = () => {
 
-  const arr = [
-    { id: 1, title: "1. 강릉 커피 거리", subTitle: "다양한 카페가 모여있는 거리" },
-    { id: 2, title: "2. 강릉 커피 거리", subTitle: "다양한 카페가 모여있는 거리" },
-  ]
+  type aiResponseType = {
+    title: string,
 
-  const [aiResponse, setAiResponse] = useAtom(aiResponseAtom)
+  }
+  const [aiResponse, setAiResponse] = useState<object[]>({})
   console.log("aiResponse: ", aiResponse)
 
+  useEffect(() => {
+    setAiResponse(JSON.parse(localStorage.getItem("aiList") || ""))
+  }, [])
+
+
   return (
-    <div className='py-16'>
-      <div className='h-[500px]'>
+    <div className='py-28 flex lg:flex-row flex-col gap-5 px-5'>
+      <div className='w-[100%] lg:flex-1 h-[500px]'>
         <MapProvider>
             <MapComponent />
         </MapProvider>
       </div>
-      <div className='p-5'>
-        {/* <div className='flex justify-end'>다른 코스 추천</div> */}
-        {arr.map(x => {
+
+      <div className='flex-1 h-[500px] overflow-y-scroll'>
+      <div>{aiResponse.title}</div>
+      <div>{aiResponse.description}</div>
+        {aiResponse?.days?.map((x, index) => {
             return (
-              <div key={x.id}>
-                {x.id === 1 && <div className='flex justify-end text-sm'>다른 코스 추천</div>}
-                <div>{x.title}</div>
-                <div>{x.subTitle}</div>
-                <div className='h-20 bg-gray-600 mb-5'>
-                  
+              <div key={index}>
+                {index === 0 && <div className='flex justify-end text-sm mb-5'>다른 코스 추천</div>}
+                <div>{index+1}일차</div>
+                <div className='bg-gray-200 mb-5'>
+                  {x?.locations?.map((y, index2) => {
+                    return (
+                      <div className='py-5' key={index2}>
+                        <div>{y.name}</div>
+                        <div>{y.description}</div>
+                        <div>좌표: {y.coordinates[0]}, {y.coordinates[1]}</div>
+                        <div>{y?.next[0]?.distance}</div>
+                        <div>{y?.next[0]?.driving_time}</div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )
         })}
       </div>
+      
     </div>
   )
 }

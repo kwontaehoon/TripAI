@@ -32,10 +32,10 @@ const aiInput = () => {
     if(isSuccess){
       setModalUiState({...modalUiState, aiInput: false})
       const cleanedJsonString = cleanJson(data.candidates[0].content.parts[0].text)
-
     try {
       const jsonData = JSON.parse(cleanedJsonString);
       setAiResponse(jsonData)
+      localStorage.setItem("aiList", JSON.stringify(jsonData))
     } catch (error) {
       console.error("JSON 변환 실패:", error);
     }
