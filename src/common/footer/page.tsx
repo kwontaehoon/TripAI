@@ -1,10 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
-import FigmaLogo from '../../../../public/svg/Figma.svg'
-import LinkedInLogo from '../../../../public/svg/LinkedIn.svg'
-import XLogo from '../../../../public/svg/X.svg'
-import YouTubeLogo from '../../../../public/svg/YouTube.svg'
-import Instagram from '../../../../public/svg/Instagram.svg'
+import FigmaLogo from '../../../public/svg/Figma.svg'
+import LinkedInLogo from '../../../public/svg/LinkedIn.svg'
+import XLogo from '../../../public/svg/X.svg'
+import YouTubeLogo from '../../../public/svg/YouTube.svg'
+import Instagram from '../../../public/svg/Instagram.svg'
 
 const page = () => {
   return (

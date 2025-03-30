@@ -2,8 +2,8 @@
 import React, { useState, useEffect} from 'react'
 import Link from "next/link"
 import Image from 'next/image'
-import HamburgetMenu from '../../../../public/svg/HamburgerMenu.svg'
-import Search from '../../../../public/svg/Search.svg'
+import HamburgetMenu from '../../../public/svg/HamburgerMenu.svg'
+import Search from '../../../public/svg/Search.svg'
 
 const page = () => {
 
