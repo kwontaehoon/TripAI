@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const clientAxios = axios.create({
   // baseURL: "http://localhost:8080", 
-  baseURL: "http://3.36.37.240:8080",
+  baseURL: "http://localhost:8080",
   timeout: 10000,
   headers: {
     "x-Requested-With": "XMLHttpRequest",
@@ -33,17 +33,17 @@ clientAxios.interceptors.request.use(
 );
 
 export const aiAxios = axios.create({
-  baseURL: "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent",
-  timeout: 10000,
-  headers: {
-    "x-Requested-With": "XMLHttpRequest",
-    "Access-Control-Allow-Credentials": true,
-    "Access-Control-Allow-Origin": "*",
-  },
+  baseURL: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API}`,
+  timeout: 100000,
+  // headers: {
+  //   "x-Requested-With": "XMLHttpRequest",
+  //   "Access-Control-Allow-Credentials": true,
+  //   "Access-Control-Allow-Origin": "*",
+  // },
   responseType: "json",
   responseEncoding: "utf8",
   decompress: true,
-  withCredentials: true,
+  // withCredentials: true,
 })
 
 export const googlePlaceTextAxios = axios.create({

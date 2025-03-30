@@ -23,12 +23,20 @@ export const useTestQuery = () => {
 };
 
 // gemini ai
+export const useGeminiAiMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const { data } = await getGeminiAi(params);
+            return data;
+        },
+    };
+    return useMutation(mutationOptions);
+};
 
 // googlePlace text
 export const useGooglePlaceTextMutation = () => {
     const mutationOptions = {
         mutationFn: async (params: object) => {
-            console.log("params: ", params);
             const { data } = await getGooglePlaceText(params);
             return data;
         },

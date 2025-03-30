@@ -1,8 +1,10 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import { MapProvider } from "@/func/map-provider"
 import { MapComponent } from "@/app/maps/page"
 import { useGooglePlaceTextMutation, useGooglePlaceNearbyMutation } from "@/hooks/dev"
-import MainPage from '@/app/main/page'
+import { aiResponseAtom } from '@/store/ai'
+import { useAtom } from 'jotai'
 
 const page = () => {
 
@@ -10,6 +12,10 @@ const page = () => {
     { id: 1, title: "1. 강릉 커피 거리", subTitle: "다양한 카페가 모여있는 거리" },
     { id: 2, title: "2. 강릉 커피 거리", subTitle: "다양한 카페가 모여있는 거리" },
   ]
+
+  const [aiResponse, setAiResponse] = useAtom(aiResponseAtom)
+  console.log("aiResponse: ", aiResponse)
+
   return (
     <div className='py-16'>
       <div className='h-[500px]'>
