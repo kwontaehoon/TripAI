@@ -20,7 +20,7 @@ const page = () => {
           </div>
           <div className="flex justify-between flex-wrap gap-5">
             {Array.from({ length: 12 }).map((_, index) => (
-              <div key={index} className="cursor border lg:w-[calc(900px/3-20px)] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setModalUiState({...modalUiState, aiInput: true})}></div>
+              <div key={index} className="cursor border lg:w-[calc(30%)] w-[calc(50%-10px)] lg:h-[250px] h-[150px] rounded-xl" onClick={()=>setModalUiState({...modalUiState, aiInput: true})}></div>
             ))}
           </div>
       </div>
