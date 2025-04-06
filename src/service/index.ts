@@ -32,6 +32,20 @@ clientAxios.interceptors.request.use(
   }
 );
 
+export const nextjsAxios = axios.create({
+  baseURL: "https://api.github.com/repos/vercel/next.js",
+  timeout: 100000,
+  // headers: {
+  //   "x-Requested-With": "XMLHttpRequest",
+  //   "Access-Control-Allow-Credentials": true,
+  //   "Access-Control-Allow-Origin": "*",
+  // },
+  responseType: "json",
+  responseEncoding: "utf8",
+  decompress: true,
+  // withCredentials: true,
+})
+
 export const aiAxios = axios.create({
   baseURL: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API}`,
   timeout: 100000,
@@ -54,7 +68,7 @@ export const googlePlaceTextAxios = axios.create({
     // "Access-Control-Allow-Credentials": true,
     // "Access-Control-Allow-Origin": "*",
     "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
-    "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel"
+    "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.id"
   },
   responseType: "json",
   responseEncoding: "utf8",
@@ -71,6 +85,37 @@ export const googlePlaceNearbyAxios = axios.create({
     // "Access-Control-Allow-Origin": "*",
     "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
     "X-Goog-FieldMask": "places.displayName"
+  },
+  responseType: "json",
+  responseEncoding: "utf8",
+  decompress: true,
+  // withCredentials: true,
+})
+
+export const googlePlaceDetailsAxios = axios.create({
+  baseURL: "https://places.googleapis.com/v1/places",
+  timeout: 10000,
+  headers: {
+    // "x-Requested-With": "XMLHttpRequest",
+    // "Access-Control-Allow-Credentials": true,
+    // "Access-Control-Allow-Origin": "*",
+    "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
+    "X-Goog-FieldMask": "id,displayName,photos",
+    "Content-Type": ""
+  },
+  responseType: "json",
+  responseEncoding: "utf8",
+  decompress: true,
+  // withCredentials: true,
+})
+
+export const googlePlaceImagesAxios = axios.create({
+  baseURL: "https://places.googleapis.com/v1",
+  timeout: 10000,
+  headers: {
+    // "x-Requested-With": "XMLHttpRequest",
+    // "Access-Control-Allow-Credentials": true,
+    // "Access-Control-Allow-Origin": "*",
   },
   responseType: "json",
   responseEncoding: "utf8",
