@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from "next/link"
 
 const page = () => {
   return (
@@ -7,39 +8,15 @@ const page = () => {
       <div className='w-[900px]'>
           <div className='mb-2'>AI 추천 코스</div>
           <div className='mb-5'>지역 선택</div>
-          <div className='w-[900px] h-16 flex justify-center mb-12 bg-blue-50 rounded-xl'>
-              <div className='flex-1 border p-3'>
-                <div className='border h-full bg-slate-100 flex items-center p-2 relative'>
-                <div className='absolute top-10 left-0 w-full'>
-                    <div className='h-40 border bg-blue-200'></div>
-                  </div>
-                  <div className='border w-4 h-4 mr-2'></div>
-                  <div>지역 검색</div>
-                </div>
-              </div>
-              <div className='flex-1 border p-3'>
-                <div className='border h-full bg-slate-100 flex items-center p-2 relative'>
-                  <div className='absolute top-10 left-0 w-full'>
-                    <div className='h-40 border bg-blue-200'></div>
-                  </div>
-                  <div className='border w-4 h-4 mr-2'></div>
-                  <div>지역 검색</div>
-                </div>
-              </div>
-              <div className='flex-1 border p-3'>
-                <div className='border h-full bg-slate-100 flex items-center p-2'>
-                  <div className='border w-4 h-4 mr-2'></div>
-                  <div>지역 검색</div>
-                </div>
-              </div>
-              <div className='flex-1 border p-3'>
-                <div className='border h-full bg-slate-100 flex items-center p-2'>
-                  <div className='border w-4 h-4 mr-2'></div>
-                  <div>지역 검색</div>
-                </div>
-              </div>
+          <div className='w-[900px] p-5 bg-blue-50 rounded-xl'>
+             <div className='flex-1 bg-white mb-5 h-16 rounded-xl'></div>
+             <div className='flex h-16 mb-5'>
+              <div className='flex-1 bg-white mr-5 rounded-xl'></div>
+              <div className='w-[200px] bg-white rounded-xl'></div>
+             </div>
+             <div>예산</div>
           </div>
-          <div className='mt-[200px] flex h-[200px]'>
+          <Link href='/recommend/details/123' className='mt-12 flex h-[150px]'>
             <div className='w-[220px] border w-h-center'>사진</div>
             <div className='flex-1 border flex justify-center p-5 flex-col'>
               <div>제목</div>
@@ -50,7 +27,19 @@ const page = () => {
                 <div className='flex-1 flex justify-end'>조회수 댓글</div>
               </div>
             </div>
-          </div>
+          </Link>
+          <Link href='/recommend/details/222' className='mt-4 flex h-[150px]'>
+            <div className='w-[220px] border w-h-center'>사진</div>
+            <div className='flex-1 border flex justify-center p-5 flex-col'>
+              <div>제목</div>
+              <div>부제목</div>
+              <div className='flex'>
+                <div>닉네임</div>
+                <div>날짜</div>
+                <div className='flex-1 flex justify-end'>조회수 댓글</div>
+              </div>
+            </div>
+          </Link>
       </div>
       <div className='flex-1'></div>
     </div>
