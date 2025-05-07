@@ -1,8 +1,9 @@
-import { useQuery, useMutation, useQueries } from "@tanstack/react-query";
-import { getTest, getGeminiAi, getGooglePlaceText, getGooglePlaceNearby, getGooglePlaceDetails, getGooglePlaceImages, getNextJS, getTest2 } from "@/service/dev"
+import { useQuery, useMutation, useQueries, keepPreviousData } from "@tanstack/react-query";
+import { getTest, getGeminiAi, getGooglePlaceText, getGooglePlaceNearby, getGooglePlaceDetails, getGooglePlaceImages, getNextJS, getTest2, getTestPageNation } from "@/service/dev"
 
 const TEST_QUERY_KEY = {
     test: ["test"],
+    testPagenation: ["testPagenation"],
     nextjs: ["nextjs"],
     geminiAi: ["geminiAi"],
     googlePlaceNearby: ["googlePlaceNearby"],
@@ -25,6 +26,71 @@ export const useTestQuery = () => {
     return useQuery(queryOptions);
 };
 
+// testPagenation
+export const useTestPageNationQuery = (params: number) => {
+    const queryOptions = {
+        queryKey: [TEST_QUERY_KEY.test, params],
+        queryFn: async () => {
+            const { data } = await getTestPageNation(params);
+            return data;
+        },
+        // placeholderData: (previousData: any) => previousData,
+        // keepPreviousData: true,
+        suspense: true
+    };
+    return useQuery(queryOptions);
+};
+
+// initialData test
+export const useInitialDataTestQuery = () => {
+    const queryOptions = {
+        queryKey: TEST_QUERY_KEY.nextjs,
+        queryFn: async () => {
+            const { data } = await getNextJS();
+            return data;
+        },
+        enabled: true,
+        initialData: {
+            id: "taehoon",
+            pwd: 1234
+        },
+    };
+
+    return useQuery(queryOptions);
+};
+
+// enabled test
+export const useEnabledTestDataTestQuery = () => {
+    const queryOptions = {
+        queryKey: TEST_QUERY_KEY.nextjs,
+        queryFn: async () => {
+            const { data } = await getNextJS();
+            return data;
+        },
+        enabled: false, // refetch 해야 가능
+        // 버튼 클릭에만 데이터를 fetch 하고 싶을 때, 모달이 열릴 때만 데이터를 불러오고 싶을 때 유용
+        // refetch로만 호출 가능
+    };
+
+    return useQuery(queryOptions);
+};
+
+// select test
+export const useSelectTestQuery = () => {
+    const queryOptions = {
+        queryKey: TEST_QUERY_KEY.test,
+        queryFn: async () => {
+            const { data } = await getTest();
+            return data;
+        },
+        select: (data: object[]) => {
+            return data[0]
+        }
+    };
+
+    return useQuery(queryOptions);
+};
+
 // nextjs
 export const useNextJSQuery = () => {
     const queryOptions = {
@@ -32,7 +98,7 @@ export const useNextJSQuery = () => {
         queryFn: async () => {
             const { data } = await getNextJS();
             return data;
-        },
+        }
     };
 
     return useQuery(queryOptions);
@@ -55,12 +121,10 @@ export const useGooglePlaceTextMutation = () => {
         mutationFn: async (params: object) => {
             const { data } = await getGooglePlaceText(params);
             return data.places[0];
-        },
+        }
     };
     return useMutation(mutationOptions);
 };
-
-
 
 // googlePlace nearby
 export const useGooglePlaceNearbyMutation = () => {
@@ -92,7 +156,6 @@ export const useGooglePlaceDetailsQueries = (placeIds: string[]) => {
       queries: placeIds.map((id) => ({
         queryKey: ['googlePlaceDetails', id],
         queryFn: () => getGooglePlaceDetails(id),
-        enabled: !!id,
       }))
     })
 }
@@ -104,7 +167,7 @@ export const useGooglePlaceImageQuery = (id: string) => {
         queryFn: async () => {
             const { data } = await getGooglePlaceImages(id);
             return data;
-        },
+        }
     };
 
     return useQuery(queryOptions);

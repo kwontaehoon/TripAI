@@ -3,7 +3,8 @@ import { clientAxios, aiAxios, googlePlaceTextAxios, googlePlaceNearbyAxios, goo
 const ACCOUNT_URL = {
     nextjs: "",
     info: "/api/banner/list",
-    pick: "/api/pick/list"
+    pick: "/api/pick/list",
+    testPageNation: "/api/test2"
 }
 
 const GOOGLE_PLACE_URL = {
@@ -15,10 +16,17 @@ const GOOGLE_PLACE_URL = {
 }
 
 // test
-export const getTest = () => clientAxios.get(ACCOUNT_URL.info);
+export const getTest = () => clientAxios.get(ACCOUNT_URL.pick);
 
 // test2
 export const getTest2 = () => clientAxios.get(ACCOUNT_URL.pick);
+
+// testPageNation
+export const getTestPageNation = (params: number) => clientAxios.get(ACCOUNT_URL.testPageNation, {
+    params: {
+        page: params
+    }
+});
 
 // nextjs test
 export  const getNextJS = () => nextjsAxios.get(ACCOUNT_URL.nextjs);
