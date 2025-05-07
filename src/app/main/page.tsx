@@ -40,7 +40,11 @@ const page = () => {
 
   return (
     <div className='py-28'>
-      <button onClick={() => signIn("kakao", { callbackUrl: "/"})}>로그인</button>
+      <button onClick={() => signIn("kakao", { callbackUrl: "/" })}>카카오 로그인</button>
+      <br />
+      <button onClick={() => signIn("google", { callbackUrl: "/" })}>구글 로그인</button>
+      <br />
+      <button onClick={() => signIn("naver", { callbackUrl: "/" })}>네이버 로그인</button>
     </div>
   );
 
