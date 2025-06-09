@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueries, keepPreviousData } from "@tanstack/react-query";
-import { getTest, getGeminiAi, getGooglePlaceText, getGooglePlaceNearby, getGooglePlaceDetails, getGooglePlaceImages, getNextJS, getTest2, getTestPageNation } from "@/service/dev"
+import { getTest, getGeminiAi, getGooglePlaceText, getGooglePlaceNearby, getGooglePlaceDetails, getGooglePlaceImages, getNextJS, getTest2, getTestPageNation, getUrlList, postUrlRegister, postUrlCheck } from "@/service/dev"
 
 const TEST_QUERY_KEY = {
     test: ["test"],
@@ -10,7 +10,11 @@ const TEST_QUERY_KEY = {
     googlePlaceTextSearch: ["googlePlaceTextSearch"],
     googlePlaceDetails: ["googlePlaceDetails"],
     googlePlaceImage: ["googlePlaceImage"],
-    googlePlaceCombine: ["googlePlaceCombine"]
+    googlePlaceCombine: ["googlePlaceCombine"],
+}
+
+const API_QUERY_KEY = {
+    urlList : ["urlList"]
 }
 
 // test
@@ -200,4 +204,39 @@ export const useGooglePlaceCombineQuery = () => {
     };
 
     return useQueries(queryOptions);
+}
+
+// urlList
+export const useUrlListQuery = () => {
+    const queryOptions = {
+        queryKey: API_QUERY_KEY.urlList,
+        queryFn: async () => {
+            const { data } = await getUrlList();
+            return data;
+        }
+    };
+
+    return useQuery(queryOptions);
+}
+
+// urlCheck
+export const useUrlCheckMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const { data } = await postUrlCheck(params);
+            return data;
+        },
+    };
+    return useMutation(mutationOptions);
+}
+
+// urlRegister
+export const useUrlRegisterMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const { data } = await postUrlRegister(params);
+            return data;
+        },
+    };
+    return useMutation(mutationOptions);
 }

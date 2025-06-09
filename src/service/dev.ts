@@ -15,6 +15,12 @@ const GOOGLE_PLACE_URL = {
     images: ""
 }
 
+const API_URL = {
+    urlList: "/api/url/list",
+    urlRegister: "/api/url/register",
+    urlCheck: "/api/url/check"
+}
+
 // test
 export const getTest = () => clientAxios.get(ACCOUNT_URL.pick);
 
@@ -53,3 +59,13 @@ export const getGooglePlaceImages = (params: string) => googlePlaceImagesAxios.g
         maxHeightPx: 400
     }
 });
+
+
+// urlList
+export const getUrlList = () => clientAxios.get(API_URL.urlList);
+
+// urlCheck
+export const postUrlCheck = (params: object) => clientAxios.post(API_URL.urlCheck, params);
+
+// urlRegister
+export const postUrlRegister = (params: object) => clientAxios.post(API_URL.urlRegister, params);

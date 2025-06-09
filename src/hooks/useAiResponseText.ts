@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useAiResponse } from './useAiResponse'
-import { useGooglePlaceTextMutation } from './dev'
+import { useGooglePlaceTextMutation, useUrlCheckMutation, useUrlRegisterMutation } from './dev'
 
 export const useAiResponseText = () => {
   const [aiResponseText, setAiResponseText] = useState<any[]>([])
   const { aiResponse } = useAiResponse()
   const { mutateAsync: textMutate, isSuccess } = useGooglePlaceTextMutation()
+  const { mutateAsync: urlCheckMutate } = useUrlCheckMutation()
+  const { mutateAsync: urlRegisterMutate } = useUrlRegisterMutation()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,10 +15,24 @@ export const useAiResponseText = () => {
         const allLocations = aiResponse.days.flatMap((day: any) => day.locations)
         const results = []
 
-        for (const loc of allLocations) {
+        for(let i=0; i<allLocations.length; i++){
+          const check = await urlCheckMutate({location: allLocations[i].name});
           try {
-            const res = await textMutate(loc.name)
-            results.push(res)
+            if(!!check){
+              console.log("이미있어", check);
+              results.push({
+                id: check.textId
+              })
+            }else{
+              console.log("새로 요청")
+              const res = await textMutate(allLocations[i].name)
+              results.push(res)
+              await urlRegisterMutate({
+                location: allLocations[i].name,
+                textId: res.id
+              })
+            }
+            
           } catch (e) {
             console.error('textMutate 실패:', e)
           }
