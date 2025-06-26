@@ -1,25 +1,15 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { MapProvider } from "@/func/map-provider"
-import { MapComponent } from "@/app/maps/page"
-import { useGooglePlaceTextMutation, useGooglePlaceDetailsQueries, useGooglePlaceDetailsQuery } from "@/hooks/dev"
-import { useAiResponse } from '@/hooks/useAiResponse'
-import { useAiResponseText } from '@/hooks/useAiResponseText'
-import { useAiResponseDetails } from '@/hooks/useAiResponseDetails'
+import { MapComponent } from "@/func/maps"
 import { useAiResponseImage } from '@/hooks/useAiResponseImage'
 
 const page = () => {
 
-  const { aiResponse } = useAiResponse()
-
-  const { aiResponseText } = useAiResponseText()
-
-  const { aiResponseDetails } = useAiResponseDetails()
+  const aiResponse = JSON.parse(localStorage.getItem('aiList') || '')
 
   const { aiResponseImage } = useAiResponseImage()
-  console.log("aiResponseImage: ", aiResponseImage)
  
-
   return (
     <div className='py-28 flex lg:flex-row flex-col gap-5 px-5'>
       <div className='w-[100%] lg:flex-1 h-[500px]'>
@@ -29,10 +19,6 @@ const page = () => {
       </div>
 
       <div className='flex-1 h-[500px] overflow-y-scroll'>
-      {aiResponseImage.length > 0 && 
-        aiResponseImage.map(x => {
-          return <img key={x} src={`https://places.googleapis.com/v1/${x}/media?maxHeightPx=400&maxWidthPx=400&key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string}`} />
-        })}
       <div>{aiResponse.title}</div>
       <div>{aiResponse.description}</div>
         {aiResponse?.days?.map((x, index) => {
@@ -49,6 +35,11 @@ const page = () => {
                         <div>좌표: {y.coordinates[0]}, {y.coordinates[1]}</div>
                         <div>{y?.next?.distance}</div>
                         <div>{y?.next?.driving_time}</div>
+                        {aiResponseImage[index2]?.map(photoGroup => {
+                            return (
+                              <img key={photoGroup} src={`https://places.googleapis.com/v1/${photoGroup}/media?maxHeightPx=400&maxWidthPx=400&key=${process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string}`} />
+                            )
+                        })}
                       </div>
                     )
                   })}
@@ -57,7 +48,6 @@ const page = () => {
             )
         })}
       </div>
-      
     </div>
   )
 }

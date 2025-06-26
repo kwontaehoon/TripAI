@@ -17,7 +17,7 @@ export const useAiResponseDetails = () => {
       const placeDetails = detailsQueries.map(q => q.data?.data).filter(Boolean)
       setAiResponseDetails(placeDetails)
     }
-  }, [aiResponseText, isAllSuccess])
+  }, [isAllSuccess])
 
   return { aiResponseDetails, isAllSuccess }
 }

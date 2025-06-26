@@ -1,4 +1,3 @@
-// hooks/useAiResponseText.ts
 import { useEffect, useState } from 'react'
 import { useAiResponseDetails } from './useAiResponseDetails'
 
@@ -9,11 +8,12 @@ export const useAiResponseImage = () => {
 
   useEffect(() => {
     if(aiResponseDetails.length > 0){
-        const arr = []
+        let arr = []
 
-       aiResponseDetails.map(x => x.photos.map(y => {
-            arr.push(y.name)
-        }))
+        aiResponseDetails.forEach(x => {
+          const photoNames = x.photos.slice(0, 2).map(y => y.name);
+          arr.push(photoNames);
+        });
         setAiResponseImage(arr)
     }
     
