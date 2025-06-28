@@ -4,6 +4,7 @@ import Header from '@/common/header/page'
 import Footer from '@/common/footer/page'
 import Modal from '@/app/modal'
 import QueryClientProvider from '@/config/provider/queryClientProvider'
+import { ScrollController } from "@/util/scrollController";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,8 @@ export default function RootLayout({
         <QueryClientProvider>
         {/* <div id="global-modal"></div> */}
         <Modal />
-        <Header /> 
+        <ScrollController />
+        <Header />
         {children}
         <Footer />
         </QueryClientProvider>
