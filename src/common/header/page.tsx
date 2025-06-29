@@ -1,30 +1,19 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import Link from "next/link"
 import Image from "next/image"
 import HamburgetMenu from "../../../public/svg/HamburgerMenu.svg"
 import Search from "../../../public/svg/Search.svg"
 import { useAtom } from "jotai"
 import { modalUiStateAtom } from "@/store/ai"
-import {
-  MapPin,
-  Sparkles,
-  ArrowRight,
-  Calendar,
-  Users,
-  Clock,
-  Star,
-  Bot,
-  Send,
-  Mic,
-  Zap,
-} from "lucide-react"
+import { Bot } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 const getScrollbarWidth = () => {
   return window.innerWidth - document.documentElement.clientWidth
 }
 
 const Page = () => {
+  const router = useRouter()
   const [isVisible, setIsVisible] = useState(true)
 
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -82,7 +71,7 @@ const Page = () => {
           ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
       >
         {/* <Link href="/" className="w-32 bg-red-500"></Link> */}
-        <div className="flex items-center space-x-3 ml-40" data-oid="ql01c4f">
+        <div className="flex items-center space-x-3 ml-40 cursor-pointer" onClick={()=>router.push("/")} data-oid="ql01c4f">
           <div
             className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center"
             data-oid="z:8zjcf"
@@ -100,7 +89,10 @@ const Page = () => {
         </div>
         <div className="mr-40 flex-1 flex flex-row-reverse">
           <div className="flex items-center space-x-4" data-oid="82r:.7-">
-            <button className="text-gray-600 hover:text-gray-900 transition-colors">
+            <button
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+              onClick={() => router.push("/login")}
+            >
               로그인
             </button>
             <button
@@ -110,6 +102,7 @@ const Page = () => {
               text-white
               bg-gradient-to-r from-blue-600 to-purple-600
               hover:shadow-lg"
+              onClick={() => router.push("/signup")}
             >
               회원가입
             </button>

@@ -19,9 +19,9 @@ const Recommend = () => {
           <button
             key={index}
             className="
-              p-4
-              rounded-xl
-              text-left
+                    p-4
+                    rounded-xl
+                    text-left
               bg-white border !border-gray-200
               hover:shadow-md hover:border-blue-300"
           >

@@ -1,5 +1,5 @@
 "use client"
-import AiInput from "@/app/modal/ai-input.base"
+import AiInput from "@/modal/ai-input.base"
 import React, { useState } from "react"
 import { modalUiStateAtom } from "@/store/ai"
 import { useAtom } from "jotai"

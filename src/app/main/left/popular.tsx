@@ -1,6 +1,8 @@
 import React from "react"
+import { useRouter } from "next/navigation"
 
 const popular = () => {
+  const router = useRouter()
   const popularDestinations = [
     {
       name: "제주도",
@@ -25,7 +27,7 @@ const popular = () => {
   ]
 
   return (
-    <div>
+    <div className="mb-8">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">인기 여행지</h3>
       <div className="grid md:grid-cols-2 gap-4">
         {popularDestinations.map((destination, index) => (
@@ -38,6 +40,11 @@ const popular = () => {
               bg-gradient-to-r ${destination.gradient}
               hover:shadow-lg hover:-translate-y-1
               cursor-pointer`}
+            onClick={() =>
+              router.push(
+                `/courses?destination=${encodeURIComponent(destination.name)}`,
+              )
+            }
           >
             <h4 className="text-xl font-bold mb-1">{destination.name}</h4>
             <p className="text-white/80 text-sm">{destination.count}</p>
