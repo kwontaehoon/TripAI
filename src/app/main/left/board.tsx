@@ -31,6 +31,7 @@ const board = () => {
         <div className="space-y-3" data-oid="8pkznx8">
           {[
             {
+              id: 1,
               title: "제주도 3박 4일 완벽 가족여행 후기",
               author: "여행러버맘",
               rating: 4.8,
@@ -38,6 +39,7 @@ const board = () => {
               tags: ["가족여행", "제주도"],
             },
             {
+              id: 2,
               title: "부산 2박 3일 맛집 투어 완전 정복",
               author: "부산토박이",
               rating: 4.9,
@@ -45,6 +47,7 @@ const board = () => {
               tags: ["맛집투어", "부산"],
             },
             {
+              id: 5,
               title: "서울 데이트 코스 베스트 (20대 커플 추천)",
               author: "데이트마스터",
               rating: 4.8,
@@ -54,7 +57,7 @@ const board = () => {
           ].map((post, index) => (
             <button
               key={index}
-              onClick={() => router.push("/board")}
+              onClick={() => router.push(`/board/details/${post.id}`)}
               className="w-full text-left p-4 bg-white rounded-xl border !border-gray-200 hover:!border-blue-300 hover:shadow-md transition-all group"
               data-oid="q30-2r:"
             >

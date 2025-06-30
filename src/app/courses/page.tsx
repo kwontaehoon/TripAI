@@ -259,7 +259,6 @@ export default function CoursesPage() {
                       <input
                         type="text"
                         placeholder="다른 여행지를 검색해보세요"
-                        value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="flex-1 outline-none text-gray-700 placeholder-gray-400"
                         data-oid="hrodp9f"

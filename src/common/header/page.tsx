@@ -63,9 +63,9 @@ const Page = () => {
       {/* PC */}
       <header
         className={`
-          w-full h-16 z-10
-          hidden fixed top-0 left-0
-          bg-white shadow-md
+          w-full h-16
+          hidden fixed top-0 left-0 z-50
+          bg-white shadow-md opacity-90
           transition-transform duration-300
           lg:flex
           ${isVisible ? "translate-y-0" : "-translate-y-full"}`}

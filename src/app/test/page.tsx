@@ -1,6 +1,7 @@
 'use client'
 import { useTestQuery } from '@/hooks/dev'
 import { NextPage } from 'next'
+import FileUpload from './fileSave'
 
 const Page: NextPage = () => {
 
@@ -10,6 +11,7 @@ const Page: NextPage = () => {
     <div>
       <div>test page</div>
       <div>Response Data: {JSON.stringify(data)}</div>
+      <FileUpload />
     </div>
   );
 };
