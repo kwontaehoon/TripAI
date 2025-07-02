@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter, useParams } from "next/navigation"
 import {
   ArrowLeft,
   MapPin,
@@ -25,14 +26,184 @@ import {
   Navigation,
   Award,
 } from "lucide-react"
-import { ai_courseText } from "@/common/text/ai"
-import { comma } from "@/util/comma"
 
 export default function BoardDetailsPage() {
+  const router = useRouter()
+  const params = useParams()
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [newComment, setNewComment] = useState("")
   const [selectedDay, setSelectedDay] = useState(1)
+
+  // 사용자 게시글 상세 데이터
+  const postDetails = {
+    id: params.id,
+    title: "제주도 3박 4일 완벽 가족여행 후기 (아이들과 함께)",
+    subtitle: "5살, 8살 아이들과 함께한 제주도 여행 코스 공유합니다",
+    content: `안녕하세요! 5살, 8살 아이들과 함께 제주도 3박 4일 여행을 다녀왔어요. 
+        
+아이들과 함께하는 여행이라 많이 고민했는데, 정말 알찬 여행이었습니다. 특히 아이들이 지루해하지 않도록 체험활동 위주로 코스를 짰어요.
+
+첫째 날은 성산일출봉에서 시작해서 섭지코지까지 둘러봤는데, 아이들이 정말 좋아했어요. 특히 성산일출봉은 생각보다 오르기 쉬워서 아이들도 무리 없이 올라갔습니다.
+
+둘째 날 한라산은 어리목 탐방로로 갔는데, 아이들 체력을 고려해서 1시간 정도만 올라갔어요. 그래도 충분히 만족스러웠습니다.
+
+셋째 날 테디베어뮤지엄은 아이들이 가장 좋아한 곳이에요. 사진도 많이 찍고 기념품도 샀습니다.
+
+전체적으로 아이들과 함께하기에 정말 좋은 코스였어요. 다른 가족분들께도 추천드립니다!`,
+    author: {
+      name: "여행러버맘",
+      avatar: "👩‍👧‍👦",
+      level: "Gold",
+      posts: 23,
+      followers: 156,
+      following: 89,
+      joinDate: "2023년 5월",
+      bio: "두 아이와 함께하는 가족여행 전문가입니다. 아이들이 즐거워하는 여행지를 찾아다녀요!",
+    },
+    duration: "3박 4일",
+    rating: 4.8,
+    likes: 156,
+    comments: 34,
+    views: 1247,
+    bookmarks: 67,
+    participants: "가족 4명",
+    tags: ["가족여행", "제주도", "아이동반", "체험활동"],
+    difficulty: "쉬움",
+    totalCost: "₩1,200,000",
+    highlights: [
+      "성산일출봉",
+      "한라산",
+      "협재해수욕장",
+      "동문시장",
+      "테디베어뮤지엄",
+    ],
+    createdAt: "2024-03-15",
+    lastUpdated: "2024-03-15",
+    featured: true,
+    photos: [
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+    ],
+
+    days: [
+      {
+        day: 1,
+        title: "제주 동부 탐방",
+        subtitle: "성산일출봉과 섭지코지 중심",
+        places: [
+          {
+            id: 1,
+            name: "제주공항",
+            type: "출발지",
+            address: "제주특별자치도 제주시 공항로 2",
+            duration: "30분",
+            description: "여행의 시작점, 렌터카 픽업",
+            icon: (
+              <Navigation
+                className="w-4 h-4 sm:w-5 sm:h-5"
+                data-oid="9pr8y5v"
+              />
+            ),
+            nextDistance: "42km",
+            nextTime: "50분",
+            userReview:
+              "공항에서 렌터카 픽업이 생각보다 빨랐어요. 아이 카시트도 미리 준비해주셔서 좋았습니다.",
+            userRating: 4.5,
+            photos: ["airport1.jpg"],
+          },
+          {
+            id: 2,
+            name: "성산일출봉",
+            type: "관광지",
+            address: "제주특별자치도 서귀포시 성산읍 일출로 284-12",
+            duration: "2시간",
+            description: "제주도 대표 관광지, 일출 명소",
+            icon: (
+              <Mountain className="w-4 h-4 sm:w-5 sm:h-5" data-oid="wppyc4z" />
+            ),
+            nextDistance: "8km",
+            nextTime: "15분",
+            userReview:
+              "아이들과 함께 오르기에 딱 좋은 높이였어요. 정상에서 보는 뷰가 정말 멋있었습니다. 아이들도 완주해서 뿌듯해했어요.",
+            userRating: 5.0,
+            photos: ["seongsan1.jpg", "seongsan2.jpg"],
+          },
+          {
+            id: 3,
+            name: "섭지코지",
+            type: "관광지",
+            address: "제주특별자치도 서귀포시 성산읍 섭지코지로 107",
+            duration: "1시간 30분",
+            description: "아름다운 해안 절벽과 등대",
+            icon: (
+              <Camera className="w-4 h-4 sm:w-5 sm:h-5" data-oid="oh817hd" />
+            ),
+            nextDistance: "15km",
+            nextTime: "25분",
+            userReview:
+              "인생샷 찍기 좋은 곳이에요. 바람이 좀 강했지만 경치가 너무 예뻤습니다. 아이들 사진도 많이 찍었어요.",
+            userRating: 4.8,
+            photos: ["seopjikoji1.jpg"],
+          },
+        ],
+
+        totalDistance: "65km",
+        totalTime: "4시간",
+        estimatedCost: "₩150,000",
+        userNote:
+          "첫날은 비행기 시간 때문에 여유롭게 계획했어요. 아이들이 피곤해하지 않아서 좋았습니다.",
+      },
+      {
+        day: 2,
+        title: "제주 서부 자연 탐방",
+        subtitle: "한라산과 협재해수욕장",
+        places: [
+          {
+            id: 4,
+            name: "한라산 어리목 탐방로",
+            type: "자연관광",
+            address: "제주특별자치도 제주시 1100로 2070-61",
+            duration: "2시간",
+            description: "제주도 최고봉, 가족 트레킹 코스",
+            icon: (
+              <Mountain className="w-4 h-4 sm:w-5 sm:h-5" data-oid=".1729ma" />
+            ),
+            nextDistance: "25km",
+            nextTime: "35분",
+            userReview:
+              "아이들 체력을 고려해서 1시간 정도만 올라갔는데도 충분히 만족스러웠어요. 공기도 맑고 좋았습니다.",
+            userRating: 4.5,
+            photos: ["hallasan1.jpg"],
+          },
+          {
+            id: 5,
+            name: "협재해수욕장",
+            type: "해변",
+            address: "제주특별자치도 제주시 한림읍 협재리",
+            duration: "2시간",
+            description: "에메랄드빛 바다와 하얀 모래사장",
+            icon: (
+              <Camera className="w-4 h-4 sm:w-5 sm:h-5" data-oid="u6ovs.q" />
+            ),
+            nextDistance: "10km",
+            nextTime: "15분",
+            userReview:
+              "물이 정말 깨끗하고 아이들이 안전하게 놀 수 있어서 좋았어요. 모래사장도 부드러워서 아이들이 좋아했습니다.",
+            userRating: 5.0,
+            photos: ["hyeopjae1.jpg", "hyeopjae2.jpg"],
+          },
+        ],
+
+        totalDistance: "35km",
+        totalTime: "4시간",
+        estimatedCost: "₩100,000",
+        userNote:
+          "한라산은 아이들 체력을 고려해서 짧게 다녀왔어요. 협재해수욕장에서 충분히 쉬었습니다.",
+      },
+    ],
+  }
 
   // 댓글 데이터
   const comments = [
@@ -148,7 +319,7 @@ export default function BoardDetailsPage() {
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
               data-oid="p8.zch0"
             >
-              {/* {ai_courseText[0].featured && (
+              {postDetails.featured && (
                 <div
                   className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center mb-4 w-fit"
                   data-oid="p85cdvs"
@@ -156,20 +327,20 @@ export default function BoardDetailsPage() {
                   <Award className="w-4 h-4 mr-1" data-oid="4dc31s4" />
                   추천 게시글
                 </div>
-              )} */}
+              )}
 
               <h1
                 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2"
                 data-oid="kquy6bz"
               >
-                {ai_courseText[0].title}
+                {postDetails.title}
               </h1>
 
               <p
                 className="text-sm sm:text-base text-gray-600 mb-4"
                 data-oid="5uo_9ew"
               >
-                {ai_courseText[0].subtitle}
+                {postDetails.subtitle}
               </p>
 
               {/* Author Info */}
@@ -177,8 +348,8 @@ export default function BoardDetailsPage() {
                 className="flex items-center space-x-3 mb-4 pb-4 border-b !border-gray-200"
                 data-oid="cly6160"
               >
-                <span className="text-2xl border w-8 h-8 rounded-full" data-oid="h37gdgx">
-                  {/* {ai_courseText[0].author.avatar} */}
+                <span className="text-2xl" data-oid="h37gdgx">
+                  {postDetails.author.avatar}
                 </span>
                 <div className="flex-1" data-oid="yqef21d">
                   <div
@@ -189,22 +360,18 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="jc95hi7"
                     >
-                      {ai_courseText[0].author}
+                      {postDetails.author.name}
                     </span>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs
-                        ${getLevelColor("Platinum")}
-                      `}
+                      className={`px-2 py-1 rounded-full text-xs ${getLevelColor(postDetails.author.level)}`}
                       data-oid="axvwyuw"
                     >
-                      {/* {ai_courseText[0].author.level} */}
-                      level
+                      {postDetails.author.level}
                     </span>
                   </div>
                   <div className="text-sm text-gray-500" data-oid="x9c7r00">
-                    게시글 0개 • 팔로워{" 12"}명 • {ai_courseText[0].created_at}
-                    {/* {ai_courseText[0].author.posts} */}
-                    {/* {ai_courseText[0].author.followers} */}
+                    게시글 {postDetails.author.posts}개 • 팔로워{" "}
+                    {postDetails.author.followers}명 • {postDetails.createdAt}
                   </div>
                 </div>
                 <button
@@ -226,7 +393,7 @@ export default function BoardDetailsPage() {
                 >
                   <Eye className="w-4 h-4 mr-1" data-oid="tutpe_9" />
                   <span data-oid="knr.:yc">
-                    {ai_courseText[0].views.toLocaleString()}
+                    {postDetails.views.toLocaleString()}
                   </span>
                 </div>
                 <div
@@ -234,28 +401,28 @@ export default function BoardDetailsPage() {
                   data-oid="-zl0g55"
                 >
                   <ThumbsUp className="w-4 h-4 mr-1" data-oid="m8.6t6a" />
-                  <span data-oid="s5n9rhz">{ai_courseText[0].likes}</span>
+                  <span data-oid="s5n9rhz">{postDetails.likes}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="nrur02n"
                 >
                   <MessageCircle className="w-4 h-4 mr-1" data-oid="3j_2_3j" />
-                  <span data-oid="5nzuinf">{ai_courseText[0].total_comments}</span>
+                  <span data-oid="5nzuinf">{postDetails.comments}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="ces7:5u"
                 >
                   <Bookmark className="w-4 h-4 mr-1" data-oid="p.i-lhw" />
-                  <span data-oid="2nafr0x">{ai_courseText[0].bookmark}</span>
+                  <span data-oid="2nafr0x">{postDetails.bookmarks}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="8x57pfl"
                 >
                   <Star className="w-4 h-4 mr-1" data-oid="h674atl" />
-                  <span data-oid="36470vj">{ai_courseText[0].rating}</span>
+                  <span data-oid="36470vj">{postDetails.rating}</span>
                 </div>
               </div>
 
@@ -325,7 +492,7 @@ export default function BoardDetailsPage() {
                 className="prose prose-sm sm:prose max-w-none"
                 data-oid="o5-:rk6"
               >
-                {ai_courseText[0].content.split("\n").map((paragraph, index) => (
+                {postDetails.content.split("\n").map((paragraph, index) => (
                   <p
                     key={index}
                     className="mb-4 text-gray-700 leading-relaxed"
@@ -338,7 +505,7 @@ export default function BoardDetailsPage() {
             </div>
 
             {/* Photos */}
-            {ai_courseText[0].images && ai_courseText[0].images.length > 0 && (
+            {postDetails.photos && postDetails.photos.length > 0 && (
               <div
                 className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
                 data-oid="wbf9zj1"
@@ -353,7 +520,7 @@ export default function BoardDetailsPage() {
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                   data-oid="n7uke8i"
                 >
-                  {ai_courseText[0].images.map((photo, index) => (
+                  {postDetails.photos.map((photo, index) => (
                     <div
                       key={index}
                       className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
@@ -389,7 +556,7 @@ export default function BoardDetailsPage() {
                 className="flex gap-2 overflow-x-auto mb-6"
                 data-oid="uf.o1n3"
               >
-                {ai_courseText[0].days.map((day) => (
+                {postDetails.days.map((day) => (
                   <button
                     key={day.day}
                     onClick={() => setSelectedDay(day.day)}
@@ -406,7 +573,7 @@ export default function BoardDetailsPage() {
               </div>
 
               {/* Selected Day Details */}
-              {ai_courseText[0].days.map(
+              {postDetails.days.map(
                 (day) =>
                   selectedDay === day.day && (
                     <div key={day.day} data-oid="zg-:5-w">
@@ -425,20 +592,20 @@ export default function BoardDetailsPage() {
                             className="text-sm text-gray-600"
                             data-oid="w62cdp6"
                           >
-                            {day.subTitle}
+                            {day.subtitle}
                           </p>
                         </div>
                         <div
                           className="text-right text-sm text-gray-500"
                           data-oid="1x_lonx"
                         >
-                          <div data-oid="3wng05s">{day.total_distance}</div>
-                          <div data-oid="wr8bb5:">{day.total_time}</div>
+                          <div data-oid="3wng05s">{day.totalDistance}</div>
+                          <div data-oid="wr8bb5:">{day.totalTime}</div>
                         </div>
                       </div>
 
                       {/* User Note */}
-                      {day.author_note && (
+                      {day.userNote && (
                         <div
                           className="bg-green-50 border !border-green-200 rounded-lg p-3 mb-4"
                           data-oid="ys0s0y:"
@@ -463,7 +630,7 @@ export default function BoardDetailsPage() {
                             className="text-sm text-green-600"
                             data-oid="pj:0d:j"
                           >
-                            {day.author_note}
+                            {day.userNote}
                           </p>
                         </div>
                       )}
@@ -490,7 +657,7 @@ export default function BoardDetailsPage() {
                                 className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600"
                                 data-oid="578ymmx"
                               >
-                                <Mountain />
+                                {place.icon}
                               </div>
 
                               {/* Content */}
@@ -512,7 +679,7 @@ export default function BoardDetailsPage() {
                                     className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 flex-shrink-0"
                                     data-oid="jse6qug"
                                   >
-                                    {place.location_type}
+                                    {place.type}
                                   </span>
                                 </div>
 
@@ -541,7 +708,7 @@ export default function BoardDetailsPage() {
                                       className="truncate"
                                       data-oid="ul-prch"
                                     >
-                                      {place.location}
+                                      {place.address}
                                     </span>
                                   </div>
                                   <div
@@ -554,7 +721,7 @@ export default function BoardDetailsPage() {
                                     />
 
                                     <span data-oid="0:uh2vj">
-                                      체류 시간: {place.stay}
+                                      체류 시간: {place.duration}
                                     </span>
                                   </div>
                                 </div>
@@ -576,7 +743,7 @@ export default function BoardDetailsPage() {
                                         className="text-sm font-medium text-blue-700"
                                         data-oid="i5-j4mm"
                                       >
-                                        {ai_courseText[0].author}의 후기
+                                        {postDetails.author.name}의 후기
                                       </span>
                                     </div>
                                     <div
@@ -592,7 +759,7 @@ export default function BoardDetailsPage() {
                                         className="text-sm font-semibold"
                                         data-oid="et045n3"
                                       >
-                                        {place.rating_count}
+                                        {place.userRating}
                                       </span>
                                     </div>
                                   </div>
@@ -600,12 +767,12 @@ export default function BoardDetailsPage() {
                                     className="text-sm text-blue-600"
                                     data-oid="h4gr:l0"
                                   >
-                                    작성자 리뷰
+                                    {place.userReview}
                                   </p>
                                 </div>
 
                                 {/* Next Location Info */}
-                                {place.next_distance && (
+                                {place.nextDistance && (
                                   <div
                                     className="flex items-center space-x-2 text-sm text-green-600 bg-green-50 rounded-lg px-3 py-2"
                                     data-oid="or1m1:b"
@@ -616,8 +783,8 @@ export default function BoardDetailsPage() {
                                     />
 
                                     <span data-oid="8bog8nd">
-                                      다음 장소까지 {place.next_distance} •
-                                      소요시간 {place.next_time}
+                                      다음 장소까지 {place.nextDistance} •
+                                      소요시간 {place.nextTime}
                                     </span>
                                   </div>
                                 )}
@@ -829,24 +996,23 @@ export default function BoardDetailsPage() {
                 작성자 정보
               </h3>
               <div className="text-center" data-oid="2_i4s3k">
-                <span className="text-4xl mb-3 block m-auto border w-8 h-8 rounded-full" data-oid=".wn-buf">
-                  {/* {ai_courseText[0].author.avatar} */}
+                <span className="text-4xl mb-3 block" data-oid=".wn-buf">
+                  {postDetails.author.avatar}
                 </span>
                 <h4
                   className="font-semibold text-gray-900 mb-1"
                   data-oid="rvsr0b4"
                 >
-                  {ai_courseText[0].author}
+                  {postDetails.author.name}
                 </h4>
                 <span
-                  className={`px-3 py-1 rounded-full text-sm ${getLevelColor("Platinum")} mb-3 inline-block`}
+                  className={`px-3 py-1 rounded-full text-sm ${getLevelColor(postDetails.author.level)} mb-3 inline-block`}
                   data-oid="1w-iz_w"
                 >
-                  {/* {ai_courseText[0].author.level} */}level
+                  {postDetails.author.level}
                 </span>
                 <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
-                  {/* {ai_courseText[0].author.bio} */}
-                  두 아이와 함께하는 가족여행 전문가입니다. 아이들이 즐거워하는 여행지를 찾아다녀요!
+                  {postDetails.author.bio}
                 </p>
                 <div
                   className="grid grid-cols-3 gap-4 text-center mb-4"
@@ -857,8 +1023,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="v_pf3hq"
                     >
-                      {/* {ai_courseText[0].author.posts} */}
-                      0
+                      {postDetails.author.posts}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="35kbqh1">
                       게시글
@@ -869,8 +1034,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="hvo7tug"
                     >
-                      {/* {ai_courseText[0].author.followers} */}
-                      0
+                      {postDetails.author.followers}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="j2sbkzo">
                       팔로워
@@ -881,8 +1045,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="4rocb71"
                     >
-                      {/* {ai_courseText[0].author.following} */}
-                      0
+                      {postDetails.author.following}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="_0pgcn0">
                       팔로잉
@@ -918,7 +1081,7 @@ export default function BoardDetailsPage() {
                     기간
                   </span>
                   <span className="font-medium" data-oid="5tl.l4a">
-                    {ai_courseText[0].duration}
+                    {postDetails.duration}
                   </span>
                 </div>
                 <div
@@ -929,7 +1092,7 @@ export default function BoardDetailsPage() {
                     참가자
                   </span>
                   <span className="font-medium" data-oid="30bl._t">
-                    {ai_courseText[0].participants}
+                    {postDetails.participants}
                   </span>
                 </div>
                 <div
@@ -940,7 +1103,7 @@ export default function BoardDetailsPage() {
                     총 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="y0c96w8">
-                    {comma(ai_courseText[0].total_cost)}
+                    {postDetails.totalCost}
                   </span>
                 </div>
                 <div
@@ -951,7 +1114,7 @@ export default function BoardDetailsPage() {
                     난이도
                   </span>
                   <span className="font-medium" data-oid="9ds20rw">
-                    {ai_courseText[0].difficulty}
+                    {postDetails.difficulty}
                   </span>
                 </div>
                 <div
@@ -968,7 +1131,7 @@ export default function BoardDetailsPage() {
                     />
 
                     <span className="font-medium" data-oid="iyfzrh1">
-                      {ai_courseText[0].rating}
+                      {postDetails.rating}
                     </span>
                   </div>
                 </div>
@@ -987,7 +1150,7 @@ export default function BoardDetailsPage() {
                 태그
               </h3>
               <div className="flex flex-wrap gap-2" data-oid="n8yapiw">
-                {ai_courseText[0].tags.map((tag, index) => (
+                {postDetails.tags.map((tag, index) => (
                   <span
                     key={index}
                     className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"

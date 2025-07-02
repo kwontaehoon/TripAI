@@ -23,8 +23,6 @@ import {
   Award,
   ThumbsUp,
 } from "lucide-react"
-import { ai_courseText } from "@/common/text/ai"
-import { comma } from "@/util/comma"
 
 export default function BoardPage() {
   const router = useRouter()
@@ -44,6 +42,156 @@ export default function BoardPage() {
   ]
 
   const sortOptions = ["최신순", "인기순", "평점순", "댓글순"]
+
+  // 사용자 게시글 데이터
+  const userPosts = [
+    {
+      id: 1,
+      title: "제주도 3박 4일 완벽 가족여행 후기 (아이들과 함께)",
+      subtitle: "5살, 8살 아이들과 함께한 제주도 여행 코스 공유합니다",
+      author: {
+        name: "여행러버맘",
+        avatar: "👩‍👧‍👦",
+        level: "Gold",
+        posts: 23,
+      },
+      duration: "3박 4일",
+      rating: 4.8,
+      likes: 156,
+      comments: 34,
+      views: 1247,
+      participants: "가족 4명",
+      tags: ["가족여행", "제주도", "아이동반", "체험활동"],
+      difficulty: "쉬움",
+      totalCost: "₩1,200,000",
+      highlights: [
+        "성산일출봉",
+        "한라산",
+        "협재해수욕장",
+        "동문시장",
+        "테디베어뮤지엄",
+      ],
+      description:
+        "아이들과 함께 제주도를 여행하면서 정말 좋았던 코스들을 정리해봤어요. 특히 아이들이 좋아할만한 체험활동들을 중심으로 구성했습니다.",
+      createdAt: "2024-03-15",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      places: 12,
+      featured: true,
+    },
+    {
+      id: 2,
+      title: "부산 2박 3일 맛집 투어 완전 정복",
+      subtitle: "현지인이 추천하는 진짜 부산 맛집들만 골라서",
+      author: {
+        name: "부산토박이",
+        avatar: "🍜",
+        level: "Platinum",
+        posts: 45,
+      },
+      duration: "2박 3일",
+      rating: 4.9,
+      likes: 203,
+      comments: 67,
+      views: 2156,
+      participants: "커플",
+      tags: ["맛집투어", "부산", "현지맛집", "해산물"],
+      difficulty: "쉬움",
+      totalCost: "₩450,000",
+      highlights: ["자갈치시장", "광안리", "해운대", "남포동", "서면"],
+      description:
+        "부산에서 30년 살면서 정말 맛있다고 생각하는 맛집들만 엄선해서 코스로 만들었어요. 관광지 맛집이 아닌 진짜 맛집들입니다.",
+      createdAt: "2024-03-14",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      places: 8,
+      featured: false,
+    },
+    {
+      id: 3,
+      title: "경주 역사 탐방 1박 2일 (대학생 추천)",
+      subtitle: "역사 전공생이 추천하는 경주 역사 여행 코스",
+      author: {
+        name: "역사덕후",
+        avatar: "🏛️",
+        level: "Silver",
+        posts: 12,
+      },
+      duration: "1박 2일",
+      rating: 4.7,
+      likes: 89,
+      comments: 23,
+      views: 567,
+      participants: "친구 3명",
+      tags: ["역사탐방", "경주", "문화유산", "교육여행"],
+      difficulty: "보통",
+      totalCost: "₩280,000",
+      highlights: ["불국사", "석굴암", "첨성대", "안압지", "국립경주박물관"],
+      description:
+        "역사를 전공하면서 경주를 여러 번 다녀온 경험을 바탕으로 만든 코스입니다. 단순 관광이 아닌 깊이 있는 역사 탐방을 원하시는 분들께 추천해요.",
+      createdAt: "2024-03-13",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      places: 7,
+      featured: false,
+    },
+    {
+      id: 4,
+      title: "강릉 바다 힐링 여행 (혼자 여행 추천)",
+      subtitle: "혼자서도 충분히 즐길 수 있는 강릉 여행 코스",
+      author: {
+        name: "솔로트래블러",
+        avatar: "🌊",
+        level: "Gold",
+        posts: 31,
+      },
+      duration: "2박 3일",
+      rating: 4.6,
+      likes: 124,
+      comments: 18,
+      views: 892,
+      participants: "혼자",
+      tags: ["혼자여행", "강릉", "바다", "힐링", "카페"],
+      difficulty: "쉬움",
+      totalCost: "₩350,000",
+      highlights: ["경포해수욕장", "안목해변", "오죽헌", "강릉커피거리"],
+      description:
+        "혼자 여행하기 좋은 강릉 코스를 소개합니다. 바다를 보며 힐링할 수 있는 장소들과 혼자 가기 좋은 카페들을 중심으로 구성했어요.",
+      createdAt: "2024-03-12",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      places: 6,
+      featured: false,
+    },
+    {
+      id: 5,
+      title: "서울 데이트 코스 베스트 (20대 커플 추천)",
+      subtitle: "20대 커플이 좋아할만한 서울 데이트 코스 모음",
+      author: {
+        name: "데이트마스터",
+        avatar: "💕",
+        level: "Gold",
+        posts: 28,
+      },
+      duration: "당일치기",
+      rating: 4.8,
+      likes: 267,
+      comments: 45,
+      views: 1834,
+      participants: "커플",
+      tags: ["데이트", "서울", "커플여행", "당일치기", "카페"],
+      difficulty: "쉬움",
+      totalCost: "₩150,000",
+      highlights: ["홍대", "명동", "남산타워", "한강공원", "이태원"],
+      description:
+        "20대 커플들이 좋아할만한 서울 데이트 코스를 정리했어요. 인스타 감성 카페부터 야경 명소까지 다양하게 포함되어 있습니다.",
+      createdAt: "2024-03-11",
+      image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+      places: 5,
+      featured: false,
+    },
+  ]
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,7 +228,7 @@ export default function BoardPage() {
     }
   }
 
-  const filteredPosts = ai_courseText.filter((post) => {
+  const filteredPosts = userPosts.filter((post) => {
     if (selectedFilter === "전체") return true
     return post.tags.includes(selectedFilter)
   })
@@ -293,7 +441,7 @@ export default function BoardPage() {
                   transform transition-all"
                   data-oid="fjcc2mf"
                 >
-                  {/* {post.featured && (
+                  {post.featured && (
                     <div
                       className="
                       flex items-center
@@ -309,7 +457,7 @@ export default function BoardPage() {
                       />
                       추천 게시글
                     </div>
-                  )} */}
+                  )}
 
                   <div className="md:flex" data-oid="olwzf4m">
                     {/* Image */}
@@ -326,7 +474,7 @@ export default function BoardPage() {
                             className="bg-white text-blue-600 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold"
                             data-oid="gh.f4xn"
                           >
-                            {/* {post.author.level} */}level
+                            {post.author.level}
                           </span>
                         </div>
                         <div
@@ -390,8 +538,8 @@ export default function BoardPage() {
                         className="flex items-center space-x-2 mb-3"
                         data-oid="1qonzi3"
                       >
-                        <span className="text-lg sm:text-xl border w-8 h-8 rounded-full" data-oid="aqxkzhp">
-                          {/* {post.author.avatar} */}
+                        <span className="text-lg sm:text-xl" data-oid="aqxkzhp">
+                          {post.author.avatar}
                         </span>
                         <div className="min-w-0" data-oid="o7zv6:o">
                           <div
@@ -402,22 +550,20 @@ export default function BoardPage() {
                               className="text-sm font-medium text-gray-900"
                               data-oid="_2vzhp0"
                             >
-                              {post.author}
+                              {post.author.name}
                             </span>
                             <span
-                              className={`px-2 py-0.5 rounded-full text-xs`}
+                              className={`px-2 py-0.5 rounded-full text-xs ${getLevelColor(post.author.level)}`}
                               data-oid="_fofxo."
                             >
-                              {/* {post.author.level} */}
-                              level
+                              {post.author.level}
                             </span>
                           </div>
                           <div
                             className="text-xs text-gray-500"
                             data-oid="2o6.2-t"
                           >
-                            게시글 0개 • {post.created_at}
-                            {/* {post.author.posts} */}
+                            게시글 {post.author.posts}개 • {post.createdAt}
                           </div>
                         </div>
                       </div>
@@ -462,7 +608,7 @@ export default function BoardPage() {
                             className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
                             data-oid="-6zi5aj"
                           />
-                          <span data-oid="-6m4kn6">{post.total_places}개 장소</span>
+                          <span data-oid="-6m4kn6">{post.places}개 장소</span>
                         </div>
                         <div
                           className="flex items-center text-gray-600"
@@ -472,7 +618,7 @@ export default function BoardPage() {
                             className="font-bold text-blue-600"
                             data-oid="k7i5hm5"
                           >
-                            {comma(post.total_cost)}
+                            {post.totalCost}
                           </span>
                         </div>
                       </div>
@@ -493,7 +639,7 @@ export default function BoardPage() {
                         ))}
                         {post.tags.length > 4 && (
                           <span
-                            className="text-xs flex items-center text-gray-500"
+                            className="text-xs text-gray-500"
                             data-oid=".iz11:7"
                           >
                             +{post.tags.length - 4}
@@ -577,7 +723,7 @@ export default function BoardPage() {
                               className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
                               data-oid="du4cvy7"
                             />
-                            <span data-oid="03q0u6.">{post.total_comments}</span>
+                            <span data-oid="03q0u6.">{post.comments}</span>
                           </div>
                           <div
                             className="flex items-center text-xs sm:text-sm text-gray-500"
@@ -634,7 +780,7 @@ export default function BoardPage() {
                 인기 게시글
               </h3>
               <div className="space-y-3" data-oid="6:78ejy">
-                {ai_courseText.slice(0, 5).map((post, index) => (
+                {userPosts.slice(0, 5).map((post, index) => (
                   <button
                     key={post.id}
                     onClick={() => handlePostClick(post.id)}

@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { ai_courseText } from "@/common/text/ai"
 import { comma } from "@/util/comma"
+
 const page = () => {
   const router = useRouter()
 
@@ -238,7 +239,7 @@ const page = () => {
                     className="text-lg font-bold text-blue-600"
                     data-oid="k_2:9hi"
                   >
-                    {comma(String(course.total_cost))}
+                    {comma(course.total_cost)}
                   </span>
                 </div>
                 <button

@@ -20,8 +20,8 @@ import {
   Heart,
   Share2,
 } from "lucide-react"
-import Card from '@/common/card/courses_card'
-import Backup_courses from '@/common/card/backup_courses_card'
+import Card from '@/common/card/course_card'
+import Backup_courses from '@/common/card/backup_course_card'
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()
@@ -172,23 +172,6 @@ export default function CoursesPage() {
     e.preventDefault()
     if (searchQuery.trim()) {
       router.push(`/search?destination=${encodeURIComponent(searchQuery)}`)
-    }
-  }
-
-  const handleCourseClick = (courseId: number) => {
-    router.push(`/courses/details/${courseId}`)
-  }
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case "쉬움":
-        return "bg-green-100 text-green-700"
-      case "보통":
-        return "bg-yellow-100 text-yellow-700"
-      case "어려움":
-        return "bg-red-100 text-red-700"
-      default:
-        return "bg-gray-100 text-gray-700"
     }
   }
 
