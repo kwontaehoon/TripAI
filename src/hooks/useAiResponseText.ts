@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useGooglePlaceTextMutation, useUrlCheckMutation, useUrlRegisterMutation } from './dev'
+import { useGooglePlaceTextMutation, useUrlCheckMutation, useUrlRegisterMutation } from './springboot/dev'
 
 export const useAiResponseText = () => {
   const [aiResponseText, setAiResponseText] = useState<any[]>([])

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAiResponseText } from './useAiResponseText'
-import { useGooglePlaceDetailsQueries } from './dev'
+import { useGooglePlaceDetailsQueries } from './springboot/dev'
 
 export const useAiResponseDetails = () => {
   const [aiResponseDetails, setAiResponseDetails] = useState<any[]>([])
