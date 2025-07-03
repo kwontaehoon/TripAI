@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { use, useState } from "react"
 import {
   ArrowLeft,
   MapPin,
@@ -25,14 +25,19 @@ import {
   Navigation,
   Award,
 } from "lucide-react"
-import { ai_courseText } from "@/common/text/ai"
 import { comma } from "@/util/comma"
+import { useBoardDetailssQuery } from "@/hooks/supabase/dev"
+import Card from '@/common/card/board_details_card'
 
-export default function BoardDetailsPage() {
+export default function BoardDetailsPage({ params }: { params: Promise<{ id: number }>}) {
+  const { id } = use(params);
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [newComment, setNewComment] = useState("")
   const [selectedDay, setSelectedDay] = useState(1)
+
+  const { data: boradDetailsData, isSuccess } = useBoardDetailssQuery(id)
+  console.log("data: ", boradDetailsData)
 
   // 댓글 데이터
   const comments = [
@@ -127,7 +132,7 @@ export default function BoardDetailsPage() {
     }
   }
 
-  return (
+  return isSuccess && (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="7o6rs87"
@@ -148,7 +153,7 @@ export default function BoardDetailsPage() {
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
               data-oid="p8.zch0"
             >
-              {/* {ai_courseText[0].featured && (
+              {/* {boradDetailsData[0].featured && (
                 <div
                   className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center mb-4 w-fit"
                   data-oid="p85cdvs"
@@ -162,14 +167,14 @@ export default function BoardDetailsPage() {
                 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2"
                 data-oid="kquy6bz"
               >
-                {ai_courseText[0].title}
+                {boradDetailsData[0].title}
               </h1>
 
               <p
                 className="text-sm sm:text-base text-gray-600 mb-4"
                 data-oid="5uo_9ew"
               >
-                {ai_courseText[0].subtitle}
+                {boradDetailsData[0].subtitle}
               </p>
 
               {/* Author Info */}
@@ -178,7 +183,7 @@ export default function BoardDetailsPage() {
                 data-oid="cly6160"
               >
                 <span className="text-2xl border w-8 h-8 rounded-full" data-oid="h37gdgx">
-                  {/* {ai_courseText[0].author.avatar} */}
+                  {/* {boradDetailsData[0].author.avatar} */}
                 </span>
                 <div className="flex-1" data-oid="yqef21d">
                   <div
@@ -189,7 +194,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="jc95hi7"
                     >
-                      {ai_courseText[0].author}
+                      {boradDetailsData[0].author}
                     </span>
                     <span
                       className={`px-2 py-1 rounded-full text-xs
@@ -197,14 +202,14 @@ export default function BoardDetailsPage() {
                       `}
                       data-oid="axvwyuw"
                     >
-                      {/* {ai_courseText[0].author.level} */}
+                      {/* {boradDetailsData[0].author.level} */}
                       level
                     </span>
                   </div>
                   <div className="text-sm text-gray-500" data-oid="x9c7r00">
-                    게시글 0개 • 팔로워{" 12"}명 • {ai_courseText[0].created_at}
-                    {/* {ai_courseText[0].author.posts} */}
-                    {/* {ai_courseText[0].author.followers} */}
+                    게시글 0개 • 팔로워{" 12"}명 • {boradDetailsData[0].created_at}
+                    {/* {boradDetailsData[0].author.posts} */}
+                    {/* {boradDetailsData[0].author.followers} */}
                   </div>
                 </div>
                 <button
@@ -226,7 +231,7 @@ export default function BoardDetailsPage() {
                 >
                   <Eye className="w-4 h-4 mr-1" data-oid="tutpe_9" />
                   <span data-oid="knr.:yc">
-                    {ai_courseText[0].views.toLocaleString()}
+                    {boradDetailsData[0].views.toLocaleString()}
                   </span>
                 </div>
                 <div
@@ -234,28 +239,28 @@ export default function BoardDetailsPage() {
                   data-oid="-zl0g55"
                 >
                   <ThumbsUp className="w-4 h-4 mr-1" data-oid="m8.6t6a" />
-                  <span data-oid="s5n9rhz">{ai_courseText[0].likes}</span>
+                  <span data-oid="s5n9rhz">{boradDetailsData[0].likes}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="nrur02n"
                 >
                   <MessageCircle className="w-4 h-4 mr-1" data-oid="3j_2_3j" />
-                  <span data-oid="5nzuinf">{ai_courseText[0].total_comments}</span>
+                  <span data-oid="5nzuinf">{boradDetailsData[0].total_comments}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="ces7:5u"
                 >
                   <Bookmark className="w-4 h-4 mr-1" data-oid="p.i-lhw" />
-                  <span data-oid="2nafr0x">{ai_courseText[0].bookmark}</span>
+                  <span data-oid="2nafr0x">{boradDetailsData[0].bookmark}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="8x57pfl"
                 >
                   <Star className="w-4 h-4 mr-1" data-oid="h674atl" />
-                  <span data-oid="36470vj">{ai_courseText[0].rating}</span>
+                  <span data-oid="36470vj">{boradDetailsData[0].rating}</span>
                 </div>
               </div>
 
@@ -325,7 +330,7 @@ export default function BoardDetailsPage() {
                 className="prose prose-sm sm:prose max-w-none"
                 data-oid="o5-:rk6"
               >
-                {ai_courseText[0].content.split("\n").map((paragraph, index) => (
+                {boradDetailsData[0].content.split("\n").map((paragraph, index) => (
                   <p
                     key={index}
                     className="mb-4 text-gray-700 leading-relaxed"
@@ -338,7 +343,7 @@ export default function BoardDetailsPage() {
             </div>
 
             {/* Photos */}
-            {ai_courseText[0].images && ai_courseText[0].images.length > 0 && (
+            {boradDetailsData[0].images && boradDetailsData[0].images.length > 0 && (
               <div
                 className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
                 data-oid="wbf9zj1"
@@ -353,7 +358,7 @@ export default function BoardDetailsPage() {
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                   data-oid="n7uke8i"
                 >
-                  {ai_courseText[0].images.map((photo, index) => (
+                  {boradDetailsData[0].images.map((photo, index) => (
                     <div
                       key={index}
                       className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
@@ -389,7 +394,7 @@ export default function BoardDetailsPage() {
                 className="flex gap-2 overflow-x-auto mb-6"
                 data-oid="uf.o1n3"
               >
-                {ai_courseText[0].days.map((day) => (
+                {boradDetailsData[0].board_days.map((day) => (
                   <button
                     key={day.day}
                     onClick={() => setSelectedDay(day.day)}
@@ -405,230 +410,7 @@ export default function BoardDetailsPage() {
                 ))}
               </div>
 
-              {/* Selected Day Details */}
-              {ai_courseText[0].days.map(
-                (day) =>
-                  selectedDay === day.day && (
-                    <div key={day.day} data-oid="zg-:5-w">
-                      <div
-                        className="flex items-center justify-between mb-4"
-                        data-oid="-1ub8d9"
-                      >
-                        <div data-oid="mu3q2o8">
-                          <h4
-                            className="text-lg font-bold text-gray-900"
-                            data-oid="i_ofjjf"
-                          >
-                            Day {day.day}: {day.title}
-                          </h4>
-                          <p
-                            className="text-sm text-gray-600"
-                            data-oid="w62cdp6"
-                          >
-                            {day.subTitle}
-                          </p>
-                        </div>
-                        <div
-                          className="text-right text-sm text-gray-500"
-                          data-oid="1x_lonx"
-                        >
-                          <div data-oid="3wng05s">{day.total_distance}</div>
-                          <div data-oid="wr8bb5:">{day.total_time}</div>
-                        </div>
-                      </div>
-
-                      {/* User Note */}
-                      {day.author_note && (
-                        <div
-                          className="bg-green-50 border !border-green-200 rounded-lg p-3 mb-4"
-                          data-oid="ys0s0y:"
-                        >
-                          <div
-                            className="flex items-center space-x-2 mb-1"
-                            data-oid="ftfa2f."
-                          >
-                            <MessageCircle
-                              className="w-4 h-4 text-green-600"
-                              data-oid="_j4zvfl"
-                            />
-
-                            <span
-                              className="text-sm font-medium text-green-700"
-                              data-oid="afonhlh"
-                            >
-                              작성자 노트
-                            </span>
-                          </div>
-                          <p
-                            className="text-sm text-green-600"
-                            data-oid="pj:0d:j"
-                          >
-                            {day.author_note}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Places */}
-                      <div className="space-y-6" data-oid="328h.u7">
-                        {day.places.map((place, index) => (
-                          <div
-                            key={place.id}
-                            className="relative"
-                            data-oid="qe8kqsn"
-                          >
-                            {/* Timeline Line */}
-                            {index < day.places.length - 1 && (
-                              <div
-                                className="absolute left-5 top-12 w-0.5 h-20 bg-gray-200"
-                                data-oid="yuw.sqh"
-                              ></div>
-                            )}
-
-                            <div className="flex space-x-4" data-oid="a:ep1j3">
-                              {/* Icon */}
-                              <div
-                                className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600"
-                                data-oid="578ymmx"
-                              >
-                                <Mountain />
-                              </div>
-
-                              {/* Content */}
-                              <div
-                                className="flex-1 min-w-0"
-                                data-oid="67w-o:-"
-                              >
-                                <div
-                                  className="flex items-start justify-between mb-2 gap-2"
-                                  data-oid="_x_:_fe"
-                                >
-                                  <h5
-                                    className="text-base font-semibold text-gray-900"
-                                    data-oid="f.rls9i"
-                                  >
-                                    {place.name}
-                                  </h5>
-                                  <span
-                                    className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 flex-shrink-0"
-                                    data-oid="jse6qug"
-                                  >
-                                    {place.location_type}
-                                  </span>
-                                </div>
-
-                                <p
-                                  className="text-sm text-gray-600 mb-3"
-                                  data-oid="tn9vaoz"
-                                >
-                                  {place.description}
-                                </p>
-
-                                {/* Place Info */}
-                                <div
-                                  className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-500 mb-3"
-                                  data-oid="x2xebek"
-                                >
-                                  <div
-                                    className="flex items-center"
-                                    data-oid="bgetj9a"
-                                  >
-                                    <MapPin
-                                      className="w-4 h-4 mr-1 flex-shrink-0"
-                                      data-oid="7mfa5ms"
-                                    />
-
-                                    <span
-                                      className="truncate"
-                                      data-oid="ul-prch"
-                                    >
-                                      {place.location}
-                                    </span>
-                                  </div>
-                                  <div
-                                    className="flex items-center"
-                                    data-oid="hawcgwt"
-                                  >
-                                    <Clock
-                                      className="w-4 h-4 mr-1 flex-shrink-0"
-                                      data-oid="xha-bc_"
-                                    />
-
-                                    <span data-oid="0:uh2vj">
-                                      체류 시간: {place.stay}
-                                    </span>
-                                  </div>
-                                </div>
-
-                                {/* User Review */}
-                                <div
-                                  className="bg-blue-50 border !border-blue-200 rounded-lg p-3 mb-3"
-                                  data-oid="er7w_iw"
-                                >
-                                  <div
-                                    className="flex items-center justify-between mb-2"
-                                    data-oid="zd1ila."
-                                  >
-                                    <div
-                                      className="flex items-center space-x-2"
-                                      data-oid="a210fs8"
-                                    >
-                                      <span
-                                        className="text-sm font-medium text-blue-700"
-                                        data-oid="i5-j4mm"
-                                      >
-                                        {ai_courseText[0].author}의 후기
-                                      </span>
-                                    </div>
-                                    <div
-                                      className="flex items-center"
-                                      data-oid="abv.d4-"
-                                    >
-                                      <Star
-                                        className="w-4 h-4 text-yellow-400 mr-1"
-                                        data-oid="cml037d"
-                                      />
-
-                                      <span
-                                        className="text-sm font-semibold"
-                                        data-oid="et045n3"
-                                      >
-                                        {place.rating_count}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <p
-                                    className="text-sm text-blue-600"
-                                    data-oid="h4gr:l0"
-                                  >
-                                    작성자 리뷰
-                                  </p>
-                                </div>
-
-                                {/* Next Location Info */}
-                                {place.next_distance && (
-                                  <div
-                                    className="flex items-center space-x-2 text-sm text-green-600 bg-green-50 rounded-lg px-3 py-2"
-                                    data-oid="or1m1:b"
-                                  >
-                                    <Car
-                                      className="w-4 h-4 flex-shrink-0"
-                                      data-oid="36euwrn"
-                                    />
-
-                                    <span data-oid="8bog8nd">
-                                      다음 장소까지 {place.next_distance} •
-                                      소요시간 {place.next_time}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ),
-              )}
+              <Card data={boradDetailsData} selectedDay={selectedDay} />
             </div>
 
             {/* Comments Section */}
@@ -830,22 +612,22 @@ export default function BoardDetailsPage() {
               </h3>
               <div className="text-center" data-oid="2_i4s3k">
                 <span className="text-4xl mb-3 block m-auto border w-8 h-8 rounded-full" data-oid=".wn-buf">
-                  {/* {ai_courseText[0].author.avatar} */}
+                  {/* {boradDetailsData[0].author.avatar} */}
                 </span>
                 <h4
                   className="font-semibold text-gray-900 mb-1"
                   data-oid="rvsr0b4"
                 >
-                  {ai_courseText[0].author}
+                  {boradDetailsData[0].author}
                 </h4>
                 <span
                   className={`px-3 py-1 rounded-full text-sm ${getLevelColor("Platinum")} mb-3 inline-block`}
                   data-oid="1w-iz_w"
                 >
-                  {/* {ai_courseText[0].author.level} */}level
+                  {/* {boradDetailsData[0].author.level} */}level
                 </span>
                 <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
-                  {/* {ai_courseText[0].author.bio} */}
+                  {/* {boradDetailsData[0].author.bio} */}
                   두 아이와 함께하는 가족여행 전문가입니다. 아이들이 즐거워하는 여행지를 찾아다녀요!
                 </p>
                 <div
@@ -857,7 +639,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="v_pf3hq"
                     >
-                      {/* {ai_courseText[0].author.posts} */}
+                      {/* {boradDetailsData[0].author.posts} */}
                       0
                     </div>
                     <div className="text-xs text-gray-500" data-oid="35kbqh1">
@@ -869,7 +651,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="hvo7tug"
                     >
-                      {/* {ai_courseText[0].author.followers} */}
+                      {/* {boradDetailsData[0].author.followers} */}
                       0
                     </div>
                     <div className="text-xs text-gray-500" data-oid="j2sbkzo">
@@ -881,7 +663,7 @@ export default function BoardDetailsPage() {
                       className="font-semibold text-gray-900"
                       data-oid="4rocb71"
                     >
-                      {/* {ai_courseText[0].author.following} */}
+                      {/* {boradDetailsData[0].author.following} */}
                       0
                     </div>
                     <div className="text-xs text-gray-500" data-oid="_0pgcn0">
@@ -918,7 +700,7 @@ export default function BoardDetailsPage() {
                     기간
                   </span>
                   <span className="font-medium" data-oid="5tl.l4a">
-                    {ai_courseText[0].duration}
+                    {boradDetailsData[0].duration}
                   </span>
                 </div>
                 <div
@@ -929,7 +711,7 @@ export default function BoardDetailsPage() {
                     참가자
                   </span>
                   <span className="font-medium" data-oid="30bl._t">
-                    {ai_courseText[0].participants}
+                    {boradDetailsData[0].participants}
                   </span>
                 </div>
                 <div
@@ -940,7 +722,7 @@ export default function BoardDetailsPage() {
                     총 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="y0c96w8">
-                    {comma(ai_courseText[0].total_cost)}
+                    {comma(boradDetailsData[0].total_cost)}
                   </span>
                 </div>
                 <div
@@ -951,7 +733,7 @@ export default function BoardDetailsPage() {
                     난이도
                   </span>
                   <span className="font-medium" data-oid="9ds20rw">
-                    {ai_courseText[0].difficulty}
+                    {boradDetailsData[0].difficulty}
                   </span>
                 </div>
                 <div
@@ -968,7 +750,7 @@ export default function BoardDetailsPage() {
                     />
 
                     <span className="font-medium" data-oid="iyfzrh1">
-                      {ai_courseText[0].rating}
+                      {boradDetailsData[0].rating}
                     </span>
                   </div>
                 </div>
@@ -987,13 +769,13 @@ export default function BoardDetailsPage() {
                 태그
               </h3>
               <div className="flex flex-wrap gap-2" data-oid="n8yapiw">
-                {ai_courseText[0].tags.map((tag, index) => (
+                {boradDetailsData[0].board_tags.map((tag, index) => (
                   <span
                     key={index}
                     className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"
                     data-oid="snktoue"
                   >
-                    {tag}
+                    {tag.tag}
                   </span>
                 ))}
               </div>

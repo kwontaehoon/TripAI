@@ -21,15 +21,9 @@ import {
 import { ai_courseText } from "@/common/text/ai"
 import { comma } from "@/util/comma"
 
-const page = () => {
+const page = ({ filteredCourses }) => {
+
   const router = useRouter()
-
-  const [selectedFilter, setSelectedFilter] = useState("전체")
-
-  const filteredCourses = ai_courseText.filter((course) => {
-    if (selectedFilter === "전체") return true
-    return course.tags.includes(selectedFilter)
-  })
 
   const handleCourseClick = (courseId: number) => {
     router.push(`/courses/details/${courseId}`)
@@ -180,13 +174,13 @@ const page = () => {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-4" data-oid="64wm59a">
-                {course.tags.map((tag, index) => (
+                {course.course_tags.map((tag, index) => (
                   <span
                     key={index}
                     className="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-xs"
                     data-oid="v-8y:al"
                   >
-                    {tag}
+                    {tag.tag}
                   </span>
                 ))}
               </div>
@@ -200,16 +194,18 @@ const page = () => {
                   주요 명소
                 </h4>
                 <div className="flex flex-wrap gap-1" data-oid="idilg5w">
-                  {course.highlights.map((highlight, index) => (
-                    <span
-                      key={index}
-                      className="text-xs text-gray-600"
-                      data-oid="6ib44xu"
-                    >
-                      {highlight}
-                      {index < course.highlights.length - 1 && " • "}
-                    </span>
-                  ))}
+                  {course.course_highlights.map(
+                    (highlight: any, index: number) => (
+                      <span
+                        key={index}
+                        className="text-xs text-gray-600"
+                        data-oid="6ib44xu"
+                      >
+                        {highlight.highlight}
+                        {index < course.course_highlights.length - 1 && " • "}
+                      </span>
+                    ),
+                  )}
                 </div>
               </div>
 

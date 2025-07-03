@@ -20,8 +20,8 @@ import {
   Heart,
   Share2,
 } from "lucide-react"
-import Card from '@/common/card/course_card'
-import Backup_courses from '@/common/card/backup_course_card'
+import Card from '@/common/card/courses_card'
+import { useCoursesQuery } from "@/hooks/supabase/dev"
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()
@@ -31,6 +31,14 @@ export default function CoursesPage() {
   const [selectedFilter, setSelectedFilter] = useState("전체")
   const [sortBy, setSortBy] = useState("인기순")
   const [destination, setDestination] = useState("")
+  const [avg, setAvg] = useState({
+    rating: 1,
+    period: 1
+  })
+  const [filteredCourses, setFilteredCourses] = useState([])
+
+  const { data: courseData, isSuccess } = useCoursesQuery()
+  console.log("courseData: ", courseData, avg, searchQuery)
 
   useEffect(() => {
     const dest = searchParams.get("destination")
@@ -39,6 +47,24 @@ export default function CoursesPage() {
       setSearchQuery(dest)
     }
   }, [searchParams])
+
+  useEffect(() => {
+    if (!isSuccess || !courseData?.length) return;
+  
+    setAvg({
+      rating: courseData.reduce((sum, course) => sum + course.rating, 0) / courseData.length,
+      period: courseData.reduce((sum, course) => sum + course.course_days.length, 0) / courseData.length,
+    });
+  
+    const filtered = courseData.filter((course) => {
+      const matchTag = selectedFilter === "전체" || course.course_tags.some(tag => tag.tag === selectedFilter);
+      const matchSearch = !searchQuery || course.title.includes(searchQuery);
+      return matchTag && matchSearch;
+    });
+  
+    setFilteredCourses(filtered);
+  }, [isSuccess, selectedFilter, searchQuery]);
+  
 
   const filters = [
     "전체",
@@ -50,124 +76,6 @@ export default function CoursesPage() {
   ]
   const sortOptions = ["인기순", "평점순", "최신순", "가격순"]
 
-  // 제주도 여행 코스 리스트
-  const travelCourses = [
-    {
-      id: 1,
-      title: "제주도 3박 4일 완벽 가족여행 코스",
-      subtitle: "아이들과 함께하는 제주 대표 명소 투어",
-      duration: "3박 4일",
-      rating: 4.9,
-      reviews: 234,
-      participants: "2-6명",
-      tags: ["가족여행", "자연", "맛집", "체험"],
-      difficulty: "쉬움",
-      totalDistance: "245km",
-      highlights: ["성산일출봉", "한라산", "협재해수욕장", "동문시장"],
-      description:
-        "AI가 추천하는 제주도 가족여행 최적 코스입니다. 아이들과 함께 즐길 수 있는 명소들과 체험 활동을 포함했습니다.",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-      places: 11,
-      estimatedCost: "₩320,000",
-    },
-    {
-      id: 2,
-      title: "제주도 로맨틱 커플 2박 3일",
-      subtitle: "연인과 함께하는 감성 제주 여행",
-      duration: "2박 3일",
-      rating: 4.8,
-      reviews: 189,
-      participants: "2명",
-      tags: ["커플여행", "로맨틱", "카페", "야경"],
-      difficulty: "쉬움",
-      totalDistance: "180km",
-      highlights: ["섭지코지", "우도", "카페거리", "한라산 야경"],
-      description:
-        "연인과 함께하는 제주의 낭만적인 명소들을 담은 특별한 코스입니다. 감성 카페와 아름다운 일몰 명소를 포함했습니다.",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-      places: 8,
-      estimatedCost: "₩250,000",
-    },
-    {
-      id: 3,
-      title: "제주도 힐링 혼자 여행 1박 2일",
-      subtitle: "나만의 시간을 위한 제주 힐링 코스",
-      duration: "1박 2일",
-      rating: 4.7,
-      reviews: 156,
-      participants: "1명",
-      tags: ["혼자여행", "힐링", "자연", "명상"],
-      difficulty: "쉬움",
-      totalDistance: "120km",
-      highlights: ["곽지해수욕장", "카멜리아힐", "오설록", "한라산"],
-      description:
-        "혼자만의 시간을 온전히 즐길 수 있는 제주 힐링 코스입니다. 자연 속에서 마음의 평화를 찾아보세요.",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-      places: 6,
-      estimatedCost: "₩180,000",
-    },
-    {
-      id: 4,
-      title: "제주도 친구들과 액티비티 3박 4일",
-      subtitle: "스릴 넘치는 제주 모험 여행",
-      duration: "3박 4일",
-      rating: 4.6,
-      reviews: 98,
-      participants: "3-8명",
-      tags: ["친구여행", "액티비티", "모험", "체험"],
-      difficulty: "보통",
-      totalDistance: "280km",
-      highlights: ["패러글라이딩", "스쿠버다이빙", "ATV", "승마체험"],
-      description:
-        "친구들과 함께 즐기는 스릴 넘치는 제주 액티비티 코스입니다. 다양한 모험과 체험이 가득합니다.",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-      places: 12,
-      estimatedCost: "₩450,000",
-    },
-    {
-      id: 5,
-      title: "제주도 맛집 투어 당일치기",
-      subtitle: "제주 대표 맛집만 골라 담은 미식 여행",
-      duration: "당일치기",
-      rating: 4.8,
-      reviews: 167,
-      participants: "2-4명",
-      tags: ["당일치기", "맛집", "미식", "전통"],
-      difficulty: "쉬움",
-      totalDistance: "80km",
-      highlights: ["흑돼지 맛집", "해산물 시장", "감귤 농장", "전통차 체험"],
-      description:
-        "제주의 대표 맛집들만 엄선한 미식 투어 코스입니다. 현지인이 추천하는 숨은 맛집까지 포함했습니다.",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-      places: 5,
-      estimatedCost: "₩120,000",
-    },
-    {
-      id: 6,
-      title: "제주도 문화유산 탐방 2박 3일",
-      subtitle: "제주의 역사와 문화를 만나는 여행",
-      duration: "2박 3일",
-      rating: 4.5,
-      reviews: 134,
-      participants: "2-6명",
-      tags: ["문화", "역사", "전통", "교육"],
-      difficulty: "쉬움",
-      totalDistance: "200km",
-      highlights: ["성산일출봉", "만장굴", "돌하르방", "해녀박물관"],
-      description:
-        "제주의 독특한 문화유산과 역사를 체험할 수 있는 교육적인 여행 코스입니다.",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-      places: 9,
-      estimatedCost: "₩280,000",
-    },
-  ]
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
@@ -175,12 +83,7 @@ export default function CoursesPage() {
     }
   }
 
-  const filteredCourses = travelCourses.filter((course) => {
-    if (selectedFilter === "전체") return true
-    return course.tags.includes(selectedFilter)
-  })
-
-  return (
+  return isSuccess && (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="bp56e8:"
@@ -329,8 +232,7 @@ export default function CoursesPage() {
               </div>
             </div>
 
-            <Card />
-            <Backup_courses />
+            <Card filteredCourses={filteredCourses}/>
           </div>
 
           {/* Right Column - Sidebar */}
@@ -347,7 +249,7 @@ export default function CoursesPage() {
                 인기 여행지
               </h3>
               <div className="space-y-3" data-oid="aiira4w">
-                {["제주도", "서울", "부산", "강릉", "경주"].map(
+                {["김포", "서울", "부산", "강릉", "경주"].map(
                   (dest, index) => (
                     <button
                       key={dest}
@@ -395,7 +297,7 @@ export default function CoursesPage() {
                     총 코스 수
                   </span>
                   <span className="font-bold text-blue-600" data-oid="1hrabd3">
-                    {filteredCourses.length}개
+                    {courseData.length}개
                   </span>
                 </div>
                 <div
@@ -409,7 +311,7 @@ export default function CoursesPage() {
                     className="font-bold text-yellow-600"
                     data-oid="r35hra."
                   >
-                    4.7
+                    {avg.rating.toFixed(1)}
                   </span>
                 </div>
                 <div
@@ -420,7 +322,7 @@ export default function CoursesPage() {
                     평균 기간
                   </span>
                   <span className="font-bold text-green-600" data-oid="cxthnox">
-                    2.5일
+                    {avg.period.toFixed(1)}일
                   </span>
                 </div>
               </div>
