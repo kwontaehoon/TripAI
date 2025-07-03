@@ -1,7 +1,10 @@
 import React from "react"
 import { ArrowRight } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 const Recommend = () => {
+  const router = useRouter()
+
   const aiSuggestions = [
     "가족과 함께하는 제주도 여행",
     "연인과의 로맨틱한 서울 데이트",
@@ -11,9 +14,19 @@ const Recommend = () => {
 
   return (
     <div className="mb-8">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        AI 추천 여행 코스
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-900 flex-1">
+          AI 추천 여행 코스
+        </h3>
+        <button
+          onClick={() => router.push("/courses")}
+          className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
+          data-oid=".o:lty4"
+        >
+          더보기
+          <ArrowRight className="w-4 h-4 ml-1" data-oid="7:1utcm" />
+        </button>
+      </div>
       <div className="grid md:grid-cols-2 gap-4">
         {aiSuggestions.map((suggestion, index) => (
           <button

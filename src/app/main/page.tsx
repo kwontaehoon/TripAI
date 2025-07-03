@@ -2,7 +2,7 @@ import React from "react"
 import Left from "./left/page"
 import Right from "./right/page"
 import { useSession, signIn, signOut } from "next-auth/react"
-import { Camera, Mountain } from 'lucide-react';
+import { Camera, Mountain } from "lucide-react"
 
 const page = () => {
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
@@ -11,8 +11,18 @@ const page = () => {
   //   console.log("isLoading: ", isLoading, isFetching)
   // }, [pageNationData])
 
-  const { data: session } = useSession()
-  console.log(session)
+  // const { data: session } = useSession()
+  // console.log(session)
+
+  // if (session) {
+  //   return (
+  //     <div className='py-28'>
+  //       <p>{session.user?.name} 님 환영합니다!</p>
+  //       <div>123</div>
+  //       <button onClick={() => signOut()}>로그아웃</button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div
@@ -22,6 +32,20 @@ const page = () => {
         py-28 mb-4 space-x-0
         lg:flex lg:mb-12 lg:space-x-12"
     >
+      {/* <div className="py-28">
+        <button onClick={() => signIn("kakao", { callbackUrl: "/" })}>
+          카카오 로그인
+        </button>
+        <br />
+        <button onClick={() => signIn("google", { callbackUrl: "/" })}>
+          구글 로그인
+        </button>
+        <br />
+        <button onClick={() => signIn("naver", { callbackUrl: "/" })}>
+          네이버 로그인
+        </button>
+      </div> */}
+      
       <Left />
       <Right />
 
@@ -44,15 +68,6 @@ const page = () => {
       </div>
     </div>
   )
-  // if (session) {
-  //   return (
-  //     <div className='py-28'>
-  //       <p>{session.user?.name} 님 환영합니다!</p>
-  //       <div>123</div>
-  //       <button onClick={() => signOut()}>로그아웃</button>
-  //     </div>
-  //   );
-  // }
 
   // return (
   //   <div className='py-28'>

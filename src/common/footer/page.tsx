@@ -56,27 +56,19 @@ export default function Footer() {
         ],
 
         company: [
-            { name: '회사 소개', href: '/about' },
-            { name: '팀', href: '/team' },
-            { name: '채용', href: '/careers' },
-            { name: '투자자 정보', href: '/investors' },
-            { name: '보도자료', href: '/press' },
+            { name: '프로젝트 소개', href: '/about' }
         ],
 
         support: [
             { name: '고객센터', href: '/support' },
             { name: 'FAQ', href: '/faq' },
             { name: '이용가이드', href: '/guide' },
-            { name: '문의하기', href: '/contact' },
-            { name: '버그 신고', href: '/bug-report' },
+            { name: '버그 신고', href: '/bug-report' }
         ],
 
         legal: [
             { name: '이용약관', href: '/terms' },
-            { name: '개인정보처리방침', href: '/privacy' },
-            { name: '쿠키 정책', href: '/cookies' },
-            { name: '저작권 정책', href: '/copyright' },
-            { name: '환불 정책', href: '/refund' },
+            { name: '개인정보처리방침', href: '/privacy' }
         ],
     };
 
@@ -237,7 +229,7 @@ export default function Footer() {
                                     className="text-lg font-semibold mb-4 text-green-400"
                                     data-oid=".c-kqwc"
                                 >
-                                    회사
+                                    프로젝트
                                 </h4>
                                 <ul className="space-y-3" data-oid="1qofhgq">
                                     {footerLinks.company.map((link, index) => (

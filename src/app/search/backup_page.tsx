@@ -26,8 +26,6 @@ import {
     Sparkles,
     X,
 } from 'lucide-react';
-import { ai_courseText } from '@/common/text/ai';
-import { comma } from '@/util/comma';
 
 export default function SearchPage() {
     const router = useRouter();
@@ -52,6 +50,126 @@ export default function SearchPage() {
     const sortOptions = ['관련도순', '최신순', '인기순', '평점순'];
     const searchTypes = ['전체', 'AI 추천 코스', '사용자 코스', '여행지'];
 
+    // 검색 결과 데이터 (AI 추천 코스 + 사용자 게시글)
+    const searchResults = [
+        // AI 추천 코스
+        {
+            id: 1,
+            type: 'ai-course',
+            title: '제주도 3박 4일 완벽 가족여행',
+            subtitle: 'AI가 맞춤 제작한 가족 친화적 제주도 코스',
+            description:
+                '아이들과 함께 즐길 수 있는 체험활동과 안전한 관광지를 중심으로 구성된 AI 추천 코스입니다.',
+            duration: '3박 4일',
+            rating: 4.9,
+            participants: '가족 4명',
+            totalCost: '₩1,200,000',
+            difficulty: '쉬움',
+            tags: ['AI추천', '가족여행', '제주도', '체험활동'],
+            highlights: ['성산일출봉', '한라산', '협재해수욕장', '동문시장', '테디베어뮤지엄'],
+            places: 12,
+            aiGenerated: true,
+            views: 2847,
+            likes: 234,
+            createdAt: '2024-03-15',
+        },
+        {
+            id: 2,
+            type: 'ai-course',
+            title: '부산 2박 3일 맛집 투어',
+            subtitle: 'AI가 분석한 부산 최고의 맛집 코스',
+            description:
+                '현지인들이 인정하는 진짜 맛집들을 AI가 분석하여 최적의 동선으로 구성한 맛집 투어 코스입니다.',
+            duration: '2박 3일',
+            rating: 4.8,
+            participants: '커플',
+            totalCost: '₩450,000',
+            difficulty: '쉬움',
+            tags: ['AI추천', '맛집투어', '부산', '해산물'],
+            highlights: ['자갈치시장', '광안리', '해운대', '남포동', '서면'],
+            places: 8,
+            aiGenerated: true,
+            views: 1923,
+            likes: 189,
+            createdAt: '2024-03-14',
+        },
+        // 사용자 게시글
+        {
+            id: 3,
+            type: 'user-post',
+            title: '제주도 3박 4일 완벽 가족여행 후기 (아이들과 함께)',
+            subtitle: '5살, 8살 아이들과 함께한 제주도 여행 코스 공유합니다',
+            description:
+                '아이들과 함께 제주도를 여행하면서 정말 좋았던 코스들을 정리해봤어요. 특히 아이들이 좋아할만한 체험활동들을 중심으로 구성했습니다.',
+            author: {
+                name: '여행러버맘',
+                avatar: '👩‍👧‍👦',
+                level: 'Gold',
+                posts: 23,
+            },
+            duration: '3박 4일',
+            rating: 4.8,
+            likes: 156,
+            comments: 34,
+            views: 1247,
+            participants: '가족 4명',
+            tags: ['가족여행', '제주도', '아이동반', '체험활동'],
+            difficulty: '쉬움',
+            totalCost: '₩1,200,000',
+            highlights: ['성산일출봉', '한라산', '협재해수욕장', '동문시장', '테디베어뮤지엄'],
+            places: 12,
+            featured: true,
+            createdAt: '2024-03-15',
+        },
+        {
+            id: 4,
+            type: 'user-post',
+            title: '부산 2박 3일 맛집 투어 완전 정복',
+            subtitle: '현지인이 추천하는 진짜 부산 맛집들만 골라서',
+            description:
+                '부산에서 30년 살면서 정말 맛있다고 생각하는 맛집들만 엄선해서 코스로 만들었어요. 관광지 맛집이 아닌 진짜 맛집들입니다.',
+            author: {
+                name: '부산토박이',
+                avatar: '🍜',
+                level: 'Platinum',
+                posts: 45,
+            },
+            duration: '2박 3일',
+            rating: 4.9,
+            likes: 203,
+            comments: 67,
+            views: 2156,
+            participants: '커플',
+            tags: ['맛집투어', '부산', '현지맛집', '해산물'],
+            difficulty: '쉬움',
+            totalCost: '₩450,000',
+            highlights: ['자갈치시장', '광안리', '해운대', '남포동', '서면'],
+            places: 8,
+            featured: false,
+            createdAt: '2024-03-14',
+        },
+        {
+            id: 5,
+            type: 'ai-course',
+            title: '서울 당일치기 데이트 코스',
+            subtitle: 'AI가 추천하는 완벽한 서울 데이트 코스',
+            description:
+                '20대 커플들의 데이트 패턴을 분석하여 AI가 제안하는 서울 최고의 당일치기 데이트 코스입니다.',
+            duration: '당일치기',
+            rating: 4.7,
+            participants: '커플',
+            totalCost: '₩150,000',
+            difficulty: '쉬움',
+            tags: ['AI추천', '데이트', '서울', '당일치기'],
+            highlights: ['홍대', '명동', '남산타워', '한강공원', '이태원'],
+            places: 5,
+            aiGenerated: true,
+            views: 3421,
+            likes: 298,
+            createdAt: '2024-03-13',
+        },
+    ];
+
     useEffect(() => {
         const query = searchParams.get('q');
         if (query) {
@@ -74,27 +192,18 @@ export default function SearchPage() {
         }
     };
 
-    const getDifficultyColor = (difficulty: number) => {
-        if (difficulty < 2) {
-          return "bg-green-100 text-green-700"
-        } else if (difficulty < 4) {
-          return "bg-yellow-100 text-yellow-700"
-        } else if (difficulty < 6) {
-          return "bg-red-100 text-red-700"
-        } else {
-          return "bg-gray-100 text-gray-700"
+    const getDifficultyColor = (difficulty: string) => {
+        switch (difficulty) {
+            case '쉬움':
+                return 'bg-green-100 text-green-700';
+            case '보통':
+                return 'bg-yellow-100 text-yellow-700';
+            case '어려움':
+                return 'bg-red-100 text-red-700';
+            default:
+                return 'bg-gray-100 text-gray-700';
         }
-      }
-    
-      const getDifficultyText = (difficulty: number) => {
-        if (difficulty < 2) {
-          return "쉬움"
-        } else if (difficulty < 4) {
-          return "보통"
-        } else if (difficulty < 6) {
-          return "어려움"
-        }
-      }
+    };
 
     const getLevelColor = (level: string) => {
         switch (level) {
@@ -109,14 +218,12 @@ export default function SearchPage() {
         }
     };
 
-    const filteredResults = ai_courseText.filter((result) => {
+    const filteredResults = searchResults.filter((result) => {
         if (selectedFilter === '전체') return true;
         if (selectedFilter === 'AI 추천' && result.type === 'ai-course') return true;
         if (selectedFilter === '사용자 코스' && result.type === 'user-post') return true;
         return result.tags.includes(selectedFilter);
     });
-
-    console.log("filteredResults: ", filteredResults)
 
     return (
         <div
@@ -319,21 +426,21 @@ export default function SearchPage() {
                                                 className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(result.difficulty)} flex-shrink-0`}
                                                 data-oid="evuv02x"
                                             >
-                                                {getDifficultyText(result.difficulty)}
+                                                {result.difficulty}
                                             </span>
                                         </div>
 
                                         {/* Author Info (for user posts) */}
-                                        {result.type === 'user-post' && (
+                                        {result.type === 'user-post' && result.author && (
                                             <div
                                                 className="flex items-center space-x-2 mb-3"
                                                 data-oid="3rdmb_1"
                                             >
                                                 <span
-                                                    className="text-lg border w-8 h-8 rounded-full sm:text-xl"
+                                                    className="text-lg sm:text-xl"
                                                     data-oid="313ycoo"
                                                 >
-                                                    {/* {result.author.avatar} */}
+                                                    {result.author.avatar}
                                                 </span>
                                                 <div className="min-w-0" data-oid="n8nfu_h">
                                                     <div
@@ -344,22 +451,21 @@ export default function SearchPage() {
                                                             className="text-sm font-medium text-gray-900"
                                                             data-oid="ua88r2t"
                                                         >
-                                                            {result.author}
+                                                            {result.author.name}
                                                         </span>
                                                         <span
                                                             className={`px-2 py-0.5 rounded-full text-xs ${getLevelColor(result.author.level)}`}
                                                             data-oid="l_anzot"
                                                         >
-                                                            {/* {result.author.level} */}
-                                                            level
+                                                            {result.author.level}
                                                         </span>
                                                     </div>
                                                     <div
                                                         className="text-xs text-gray-500"
                                                         data-oid="i.:.ldz"
                                                     >
-                                                        게시글 11개 •{' '}
-                                                        {result.created_at}
+                                                        게시글 {result.author.posts}개 •{' '}
+                                                        {result.createdAt}
                                                     </div>
                                                 </div>
                                             </div>
@@ -411,7 +517,7 @@ export default function SearchPage() {
                                                 />
 
                                                 <span data-oid="itd7fcq">
-                                                    {result.total_places}개 장소
+                                                    {result.places}개 장소
                                                 </span>
                                             </div>
                                             <div
@@ -422,7 +528,7 @@ export default function SearchPage() {
                                                     className="font-bold text-blue-600"
                                                     data-oid="z.mlotg"
                                                 >
-                                                    {comma(result.total_cost)}
+                                                    {result.totalCost}
                                                 </span>
                                             </div>
                                         </div>

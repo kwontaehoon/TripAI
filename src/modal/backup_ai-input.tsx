@@ -1,14 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { X, MapPin, Calendar, Car, Users, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { modalUiStateAtom } from "@/store/ai"
-import { useAtom } from "jotai"
 
-export default function AIRecommendationModal() {
+interface AIRecommendationModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+export default function AIRecommendationModal({ isOpen, onClose }: AIRecommendationModalProps) {
     const router = useRouter();
-    const modalContentRef = useRef<HTMLDivElement>(null);
     const [step, setStep] = useState(1);
     const [isGenerating, setIsGenerating] = useState(false);
     const [formData, setFormData] = useState({
@@ -23,8 +25,6 @@ export default function AIRecommendationModal() {
         budget: '',
     });
     const [isCustomDestination, setIsCustomDestination] = useState(false);
-
-    const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
 
     const destinations = [
         { id: 'jeju', name: '제주도', emoji: '🌴' },
@@ -73,13 +73,6 @@ export default function AIRecommendationModal() {
         { id: 'luxury', name: '50만원 이상', desc: '럭셔리 여행' },
     ];
 
-    // 스텝이 변경될 때마다 스크롤을 맨 위로 이동
-    useEffect(() => {
-      if (modalContentRef.current) {
-          modalContentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-  }, [step]);
-
     const handleNext = () => {
         if (step < 3) {
             setStep(step + 1);
@@ -111,7 +104,7 @@ export default function AIRecommendationModal() {
         });
 
         router.push(`/ai-course?${params.toString()}`);
-        setModalUiState({ ...modalUiState, aiInput: false });
+        onClose();
         setIsGenerating(false);
         setStep(1);
         setFormData({
@@ -144,16 +137,20 @@ export default function AIRecommendationModal() {
         }
     };
 
+    if (!isOpen) return null;
+
     return (
-      <div className="modal flex flex-col">
-      <div
-      ref={modalContentRef}
-        className="bg-white rounded-2xl overflow-y-scroll scrollbar-hide"
-        data-oid="8sgmkor"
-      >
+        <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            data-oid="ub51dvn"
+        >
+            <div
+                className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                data-oid="pk.lah_"
+            >
                 {/* Header */}
                 <div
-                    className="flex items-center justify-between p-6 border-b !border-gray-200"
+                    className="flex items-center justify-between p-6 border-b border-gray-200"
                     data-oid="algappv"
                 >
                     <div className="flex items-center space-x-3" data-oid="xi4c6-f">
@@ -173,7 +170,7 @@ export default function AIRecommendationModal() {
                         </div>
                     </div>
                     <button
-                        onClick={()=>setModalUiState({ ...modalUiState, aiInput: false })}
+                        onClick={onClose}
                         className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                         data-oid=".7hgpi5"
                     >
@@ -246,8 +243,8 @@ export default function AIRecommendationModal() {
                                             className={`p-4 rounded-xl border-2 transition-all text-left ${
                                                 formData.destination === dest.id &&
                                                 !isCustomDestination
-                                                    ? '!border-blue-500 bg-blue-50'
-                                                    : '!border-gray-200 hover:!border-gray-300'
+                                                    ? 'border-blue-500 bg-blue-50'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                             data-oid="jc1jj7s"
                                         >
@@ -265,7 +262,7 @@ export default function AIRecommendationModal() {
                                 </div>
 
                                 {/* 직접 입력 옵션 */}
-                                <div className="border-t !border-gray-200 pt-4" data-oid="yt.vgbv">
+                                <div className="border-t border-gray-200 pt-4" data-oid="yt.vgbv">
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -279,8 +276,8 @@ export default function AIRecommendationModal() {
                                         }}
                                         className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                                             isCustomDestination
-                                                ? '!border-purple-500 bg-purple-50'
-                                                : '!border-gray-200 hover:!border-gray-300'
+                                                ? 'border-purple-500 bg-purple-50'
+                                                : 'border-gray-200 hover:border-gray-300'
                                         }`}
                                         data-oid="b3ro8uj"
                                     >
@@ -328,7 +325,7 @@ export default function AIRecommendationModal() {
                                                         }))
                                                     }
                                                     placeholder="예: 오키나와, 다낭, 프라하, 교토 등"
-                                                    className="w-full px-4 py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                                     data-oid="hxw2hq3"
                                                 />
                                             </div>
@@ -351,14 +348,14 @@ export default function AIRecommendationModal() {
                                                     }
                                                     placeholder="여행지에 대한 간단한 설명이나 특별한 요청사항을 입력해주세요"
                                                     rows={3}
-                                                    className="w-full px-4 py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
                                                     data-oid="g6-pq3m"
                                                 />
                                             </div>
 
                                             {/* AI 추천 힌트 */}
                                             <div
-                                                className="bg-purple-50 border !border-purple-200 rounded-lg p-4"
+                                                className="bg-purple-50 border border-purple-200 rounded-lg p-4"
                                                 data-oid="r6fwh97"
                                             >
                                                 <div
@@ -471,8 +468,8 @@ export default function AIRecommendationModal() {
                                             }
                                             className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                                                 formData.duration === duration.id
-                                                    ? '!border-blue-500 bg-blue-50'
-                                                    : '!border-gray-200 hover:!border-gray-300'
+                                                    ? 'border-blue-500 bg-blue-50'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                             data-oid="w:5n_v0"
                                         >
@@ -518,8 +515,8 @@ export default function AIRecommendationModal() {
                                             }
                                             className={`p-4 rounded-xl border-2 transition-all text-center ${
                                                 formData.transportation === transport.id
-                                                    ? '!border-blue-500 bg-blue-50 text-blue-700'
-                                                    : '!border-gray-200 hover:!border-gray-300'
+                                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                             data-oid="s4lfqye"
                                         >
@@ -560,8 +557,8 @@ export default function AIRecommendationModal() {
                                             }
                                             className={`p-4 rounded-xl border-2 transition-all text-center ${
                                                 formData.travelers === traveler.id
-                                                    ? '!border-blue-500 bg-blue-50 text-blue-700'
-                                                    : '!border-gray-200 hover:!border-gray-300'
+                                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                             data-oid="212vqdn"
                                         >
@@ -610,8 +607,8 @@ export default function AIRecommendationModal() {
                                             }
                                             className={`p-4 rounded-xl border-2 transition-all text-center ${
                                                 formData.purpose === purpose.id
-                                                    ? '!border-blue-500 bg-blue-50 text-blue-700'
-                                                    : '!border-gray-200 hover:!border-gray-300'
+                                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                             data-oid="5v8utcs"
                                         >
@@ -648,8 +645,8 @@ export default function AIRecommendationModal() {
                                             }
                                             className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                                                 formData.budget === budget.id
-                                                    ? '!border-blue-500 bg-blue-50'
-                                                    : '!border-gray-200 hover:!border-gray-300'
+                                                    ? 'border-blue-500 bg-blue-50'
+                                                    : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                             data-oid="8_1if75"
                                         >
@@ -697,11 +694,11 @@ export default function AIRecommendationModal() {
                 {/* Footer */}
                 {!isGenerating && (
                     <div
-                        className="flex items-center justify-between p-6 border-t !border-gray-200"
+                        className="flex items-center justify-between p-6 border-t border-gray-200"
                         data-oid="7a--sga"
                     >
                         <button
-                            onClick={() => (step > 1 ? setStep(step - 1) : setModalUiState({ ...modalUiState, aiInput: false }))}
+                            onClick={() => (step > 1 ? setStep(step - 1) : onClose())}
                             className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                             data-oid="7x_vw4u"
                         >
