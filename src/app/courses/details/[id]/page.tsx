@@ -31,6 +31,7 @@ import { getBadgeColor } from "@/util/styles"
 import { comma } from "@/util/comma"
 import Card from '@/common/card/course_details_card'
 import { useCourseDetailsQuery } from "@/hooks/supabase/dev"
+import Skeleton from './skeleton'
 
 export default function CourseDetailsPage({ params }: { params: Promise<{ id: number }>}) {
   const router = useRouter()
@@ -39,7 +40,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: nu
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [selectedDay, setSelectedDay] = useState(1)
 
-  const { data: courseDetailsData, isSuccess } = useCourseDetailsQuery(id)
+  const { data: courseDetailsData, isSuccess, isLoading } = useCourseDetailsQuery(id)
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -58,9 +59,9 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: nu
     alert("코스 다운로드 기능은 준비 중입니다.")
   }
 
-  return isSuccess && (
+  return isLoading ? <Skeleton /> : (
     <div
-      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-24"
+      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="u-qd:ag"
     >
       {/* Main Content */}

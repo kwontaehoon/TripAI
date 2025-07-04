@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation"
 import { ArrowRight, Star } from "lucide-react"
+import { BoardProps } from "../type"
 
-const board = () => {
+const Board: React.FC<{ boardsData: BoardProps[] }> = ({ boardsData }) => {
   const router = useRouter()
   return (
     <div>
@@ -29,35 +30,10 @@ const board = () => {
           </button>
         </div>
         <div className="space-y-3" data-oid="8pkznx8">
-          {[
-            {
-              id: 1,
-              title: "제주도 3박 4일 완벽 가족여행 후기",
-              author: "여행러버맘",
-              rating: 4.8,
-              likes: 156,
-              tags: ["가족여행", "제주도"],
-            },
-            {
-              id: 2,
-              title: "부산 2박 3일 맛집 투어 완전 정복",
-              author: "부산토박이",
-              rating: 4.9,
-              likes: 203,
-              tags: ["맛집투어", "부산"],
-            },
-            {
-              id: 5,
-              title: "서울 데이트 코스 베스트 (20대 커플 추천)",
-              author: "데이트마스터",
-              rating: 4.8,
-              likes: 267,
-              tags: ["데이트", "서울"],
-            },
-          ].map((post, index) => (
+          {boardsData.map((board, index) => (
             <button
               key={index}
-              onClick={() => router.push(`/board/details/${post.id}`)}
+              onClick={() => router.push(`/board/details/${board.id}`)}
               className="w-full text-left p-4 bg-white rounded-xl border !border-gray-200 hover:!border-blue-300 hover:shadow-md transition-all group"
               data-oid="q30-2r:"
             >
@@ -69,7 +45,7 @@ const board = () => {
                   className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1"
                   data-oid="qh11_de"
                 >
-                  {post.title}
+                  {board.title}
                 </h4>
                 <div
                   className="flex items-center text-xs text-gray-500 ml-2"
@@ -79,7 +55,7 @@ const board = () => {
                     className="w-3 h-3 text-yellow-400 mr-1"
                     data-oid="n45p2em"
                   />
-                  {post.rating}
+                  {board.rating}
                 </div>
               </div>
               <div
@@ -88,16 +64,16 @@ const board = () => {
               >
                 <div className="flex items-center space-x-2" data-oid="pgej4gz">
                   <span className="text-sm text-gray-600" data-oid="h37e4u.">
-                    {post.author}
+                    {board.author}
                   </span>
                   <div className="flex gap-1" data-oid="1yq5uz9">
-                    {post.tags.slice(0, 2).map((tag, tagIndex) => (
+                    {board.board_tags.slice(0, 2).map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
                         className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs"
                         data-oid="bd_mxj6"
                       >
-                        {tag}
+                        {tag.tag}
                       </span>
                     ))}
                   </div>
@@ -106,7 +82,7 @@ const board = () => {
                   className="flex items-center text-xs text-gray-500"
                   data-oid="rnis-j6"
                 >
-                  <span data-oid="1wuf53h">👍 {post.likes}</span>
+                  <span data-oid="1wuf53h">👍 {board.likes}</span>
                 </div>
               </div>
             </button>
@@ -117,4 +93,4 @@ const board = () => {
   )
 }
 
-export default board
+export default Board

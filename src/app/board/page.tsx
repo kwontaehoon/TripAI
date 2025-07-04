@@ -25,6 +25,7 @@ import {
 } from "lucide-react"
 import { useBoardsQuery } from "@/hooks/supabase/dev"
 import Card from "@/common/card/boards_card"
+import Skeleton from './skeletion'
 
 export default function BoardPage() {
   const router = useRouter()
@@ -38,8 +39,8 @@ export default function BoardPage() {
   })
   const [filteredBoards, setFilteredBoards] = useState([])
 
-  const { data: boardsData, isSuccess } = useBoardsQuery()
-  console.log("datA: ", boardsData)
+  const { data: boardsData, isSuccess, isLoading } = useBoardsQuery()
+  console.log("boardsData: ", boardsData)
 
   const filters = [
     "전체",
@@ -55,29 +56,18 @@ export default function BoardPage() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    // 검색 로직 구현
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+    }
   }
 
   const handlePostClick = (postId: number) => {
     router.push(`/board/details/${postId}`)
   }
 
-  const getDifficultyColor = (difficulty: number) => {
-    if (difficulty < 2) {
-      return "bg-green-100 text-green-700"
-    } else if (difficulty < 4) {
-      return "bg-yellow-100 text-yellow-700"
-    } else if (difficulty < 6) {
-      return "bg-red-100 text-red-700"
-    } else {
-      return "bg-gray-100 text-gray-700"
-    }
-  }
-
   useEffect(() => {
     if (!isSuccess) return
 
-    // boardsData의 길이를 먼저 저장해 재사용
     const length = boardsData.length
 
     if (length === 0) {
@@ -86,7 +76,6 @@ export default function BoardPage() {
       return
     }
 
-    // reduce 두 번 돌리는 대신 한 번에 처리
     let ratingSum = 0
     let periodSum = 0
 
@@ -100,19 +89,21 @@ export default function BoardPage() {
       period: periodSum / length,
     })
 
-    // filter 로직도 가독성 있게
-    const filtered =
-      selectedFilter === "전체"
-        ? boardsData
-        : boardsData.filter((board) =>
-            board.board_tags.some((tagObj) => tagObj.tag === selectedFilter),
-          )
+    const filtered = boardsData.filter((board) => {
+      const matchTag = selectedFilter === "전체" || board.board_tags.some(tag => tag.tag === selectedFilter);
+      const matchesSearch =
+        !searchQuery ||
+        board.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        board.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        board.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchTag && matchesSearch;
+    });
 
     setFilteredBoards(filtered)
-  }, [isSuccess, selectedFilter, boardsData])
+  }, [isSuccess, selectedFilter, searchQuery])
 
   return (
-    isSuccess && (
+    isLoading ? <Skeleton /> : (
       <div
         className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
         data-oid="sp5n.ik"

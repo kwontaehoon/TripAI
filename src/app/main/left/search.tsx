@@ -1,12 +1,22 @@
+"use client"
 import React, { useState } from "react"
 import { Search, Sparkles, ArrowRight, Send, Mic, Zap } from "lucide-react"
 import { useAtom } from "jotai"
 import { modalUiStateAtom } from "@/store/ai"
+import { useRouter } from "next/navigation"
 
 const search = () => {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+    }
+  }
 
   return (
     <div
@@ -31,6 +41,7 @@ const search = () => {
       </h2>
 
       {/* search bar */}
+      <form onSubmit={handleSearch}>
       <div className="relative mb-6">
         <div
           className="
@@ -41,7 +52,6 @@ const search = () => {
         >
           <div className="flex-1 flex items-center space-x-3 px-4">
             <Search className="w-5 h-5 text-gray-400" />
-
             <input
               type="text"
               placeholder="어떤 여행을 계획하고 계신가요?"
@@ -72,11 +82,13 @@ const search = () => {
               bg-gradient-to-r from-blue-600 to-purple-600
               hover:shadow-lg"
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-5 h-5" 
+                onClick={()=> ""} />
             </button>
           </div>
         </div>
       </div>
+      </form>
 
       <div className="flex">
         <button

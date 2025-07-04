@@ -28,6 +28,7 @@ import {
 import { comma } from "@/util/comma"
 import { useBoardDetailssQuery } from "@/hooks/supabase/dev"
 import Card from '@/common/card/board_details_card'
+import Skeleton from './skeleton'
 
 export default function BoardDetailsPage({ params }: { params: Promise<{ id: number }>}) {
   const { id } = use(params);
@@ -36,7 +37,7 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
   const [newComment, setNewComment] = useState("")
   const [selectedDay, setSelectedDay] = useState(1)
 
-  const { data: boradDetailsData, isSuccess } = useBoardDetailssQuery(id)
+  const { data: boradDetailsData, isSuccess, isLoading } = useBoardDetailssQuery(id)
   console.log("data: ", boradDetailsData)
 
   // 댓글 데이터
@@ -132,7 +133,7 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
     }
   }
 
-  return isSuccess && (
+  return isLoading ? <Skeleton /> : (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="7o6rs87"

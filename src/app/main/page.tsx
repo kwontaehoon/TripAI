@@ -3,8 +3,14 @@ import Left from "./left/page"
 import Right from "./right/page"
 import { useSession, signIn, signOut } from "next-auth/react"
 import { Camera, Mountain } from "lucide-react"
+import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
+import Skeleton from "./skeleton"
 
 const page = () => {
+  const { data: boardsData, isLoading: boardsDataIsLoading } = useBoardsQuery()
+  const { data: coursesData, isLoading: coursesDataIsLoading } =
+    useCoursesQuery()
+
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
   // useEffect(() => {
@@ -24,7 +30,9 @@ const page = () => {
   //   );
   // }
 
-  return (
+  return boardsDataIsLoading || coursesDataIsLoading ? (
+    <Skeleton />
+  ) : (
     <div
       className="
         bg-#f8fafc
@@ -45,9 +53,9 @@ const page = () => {
           네이버 로그인
         </button>
       </div> */}
-      
-      <Left />
-      <Right />
+
+      <Left boardsData={boardsData ?? []} coursesData={coursesData ?? []} />
+      <Right boardsData={boardsData ?? []} coursesData={coursesData ?? []} />
 
       {/* Floating Elements */}
       <div

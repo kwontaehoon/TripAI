@@ -22,6 +22,7 @@ import {
 } from "lucide-react"
 import Card from '@/common/card/courses_card'
 import { useCoursesQuery } from "@/hooks/supabase/dev"
+import Skeleton from './skeleton'
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()
@@ -37,8 +38,8 @@ export default function CoursesPage() {
   })
   const [filteredCourses, setFilteredCourses] = useState([])
 
-  const { data: courseData, isSuccess } = useCoursesQuery()
-  console.log("courseData: ", courseData, avg, searchQuery)
+  const { data: coursesData, isSuccess, isLoading } = useCoursesQuery()
+  console.log("coursesData: ", coursesData)
 
   useEffect(() => {
     const dest = searchParams.get("destination")
@@ -49,17 +50,21 @@ export default function CoursesPage() {
   }, [searchParams])
 
   useEffect(() => {
-    if (!isSuccess || !courseData?.length) return;
+    if (!isSuccess || !coursesData?.length) return;
   
     setAvg({
-      rating: courseData.reduce((sum, course) => sum + course.rating, 0) / courseData.length,
-      period: courseData.reduce((sum, course) => sum + course.course_days.length, 0) / courseData.length,
+      rating: coursesData.reduce((sum, course) => sum + course.rating, 0) / coursesData.length,
+      period: coursesData.reduce((sum, course) => sum + course.course_days.length, 0) / coursesData.length,
     });
   
-    const filtered = courseData.filter((course) => {
+    const filtered = coursesData.filter((course) => {
       const matchTag = selectedFilter === "전체" || course.course_tags.some(tag => tag.tag === selectedFilter);
-      const matchSearch = !searchQuery || course.title.includes(searchQuery);
-      return matchTag && matchSearch;
+      const matchesSearch =
+        !searchQuery ||
+        course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.description?.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchTag && matchesSearch;
     });
   
     setFilteredCourses(filtered);
@@ -79,11 +84,11 @@ export default function CoursesPage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      router.push(`/search?destination=${encodeURIComponent(searchQuery)}`)
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
     }
   }
 
-  return isSuccess && (
+  return isLoading ? <Skeleton /> : (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="bp56e8:"
@@ -297,7 +302,7 @@ export default function CoursesPage() {
                     총 코스 수
                   </span>
                   <span className="font-bold text-blue-600" data-oid="1hrabd3">
-                    {courseData.length}개
+                    {coursesData.length}개
                   </span>
                 </div>
                 <div

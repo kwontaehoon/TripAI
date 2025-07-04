@@ -1,16 +1,11 @@
+"use client"
 import React from "react"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { CourseProps } from "../type"
 
-const Recommend = () => {
+const Recommend: React.FC<{ coursesData: CourseProps[] }> = ({ coursesData }) => {
   const router = useRouter()
-
-  const aiSuggestions = [
-    "가족과 함께하는 제주도 여행",
-    "연인과의 로맨틱한 서울 데이트",
-    "친구들과 떠나는 부산 여행",
-    "혼자 즐기는 경주 힐링 여행",
-  ]
 
   return (
     <div className="mb-8">
@@ -28,9 +23,10 @@ const Recommend = () => {
         </button>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        {aiSuggestions.map((suggestion, index) => (
+        {coursesData.slice(0, 4).map((course) => (
           <button
-            key={index}
+            onClick={() => router.push(`/courses/details/${course.id}`)}
+            key={course.id}
             className="
                     p-4
                     rounded-xl
@@ -40,7 +36,7 @@ const Recommend = () => {
           >
             <div className="flex items-center justify-between">
               <span className="text-gray-700 group-hover:text-blue-600 transition-colors">
-                {suggestion}
+                {course.title}
               </span>
               <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
             </div>
