@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCourses, getCourseDetails, getBoards, getBoardDetails } from "@/service/supabase";
+import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards } from "@/service/supabase";
 
 const TEST_QUERY_KEY = {
     courses: ["courses"],
     courseDetails: ["courseDetails"],
     boards: ["boards"],
-    boardDetails: ["boardDetails"]
+    boardDetails: ["boardDetails"],
+    coursesAndBoards: ["coursesAndBoards"]
 }
 
 // courses
@@ -54,6 +55,19 @@ export const useBoardDetailssQuery = (params: number) => {
         queryFn: async () => {
             const { data } = await getBoardDetails(params);
             return data;
+        },
+    };
+
+    return useQuery(queryOptions);
+};
+
+// courses and boards
+export const useCoursesAndBoardsQuery = () => {
+    const queryOptions = {
+        queryKey: TEST_QUERY_KEY.coursesAndBoards,
+        queryFn: async () => {
+            const { courses, boards } = await getCoursesAndBoards();
+            return [...courses, ...boards];
         },
     };
 
