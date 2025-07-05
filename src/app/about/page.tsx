@@ -9,7 +9,6 @@ import {
     Zap,
     Users,
     Globe,
-    Star,
     ChevronDown,
     ArrowRight,
     Sparkles,
@@ -17,7 +16,6 @@ import {
     Heart,
     Lightbulb,
     Rocket,
-    Shield,
 } from 'lucide-react';
 import Footer from '@/common/footer/page';
 import { useRouter } from 'next/navigation';

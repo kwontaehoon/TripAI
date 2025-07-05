@@ -1,32 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import {
-  Search,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  ArrowRight,
-  Bot,
-  Calendar,
-  Car,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Share2,
-  MessageCircle,
-  Eye,
-  Mic,
-  Send,
-  TrendingUp,
-  Award,
-  ThumbsUp,
-  Sparkles,
-  X,
-} from "lucide-react"
 import Card from '@/common/card/search_card'
+import {
+  Filter,
+  Mic,
+  Search,
+  Send,
+  SlidersHorizontal,
+  TrendingUp
+} from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 import { useCoursesAndBoardsQuery } from "@/hooks/supabase/dev"
 import Skeletion from './skeleton'
@@ -56,12 +40,12 @@ export default function SearchPage() {
   ]
 
   const sortOptions = ["관련도순", "최신순", "인기순", "평점순"]
-  const searchTypes = ["전체", "AI 추천 코스", "사용자 코스", "여행지"]
+  // const searchTypes = ["전체", "AI 추천 코스", "사용자 코스", "여행지"]
 
   useEffect(() => {
     const query = searchParams.get("q") || ""
     setSearchQuery((prev) => (prev !== query ? query : prev))
-  }, [searchParams.get("q")])
+  }, [searchParams])
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -79,7 +63,7 @@ export default function SearchPage() {
         selectedFilter === "전체" ||
         (selectedFilter === "AI 추천" && result.type === "ai-course") ||
         (selectedFilter === "사용자 코스" && result.type === "user-post") ||
-        result.tags?.some((tag) => tag.tag === selectedFilter);
+        (result.course_tags || result.board_tags).some((tag) => tag.tag === selectedFilter);
   
       const matchesSearch =
         !searchQuery ||
@@ -91,7 +75,7 @@ export default function SearchPage() {
     });
   
     setFilteredData(filtered);
-  }, [isSuccess, selectedFilter, searchQuery]);
+  }, [isSuccess, selectedFilter, searchQuery, coursesAndBoardsData]);
 
   return (
     isLoading ? <Skeletion /> : (
@@ -357,7 +341,7 @@ export default function SearchPage() {
                 </h3>
                 <div className="space-y-2" data-oid="stvzkd2">
                   {[
-                    "제주도",
+                    "제주",
                     "부산",
                     "서울",
                     "강릉",

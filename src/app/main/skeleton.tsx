@@ -1,11 +1,9 @@
 'use client';
 
+import { ArrowRight, Mic, Search, Send, Sparkles, Star, Zap } from 'lucide-react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Search, Sparkles, ArrowRight, Bot, Send, Mic, Zap, Star } from 'lucide-react';
 
 export default function HomeSkeleton() {
-    const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
     const [isListening, setIsListening] = useState(false);
 
@@ -47,7 +45,7 @@ export default function HomeSkeleton() {
                                 data-oid="x9yf:of"
                             >
                                 <span className="text-blue-600" data-oid="sdl1x.h">
-                                    "TripAI"
+                                    &ldquo;TripAI&rdquo;
                                 </span>
                                 가 함께할게요.
                             </h2>

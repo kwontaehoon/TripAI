@@ -1,32 +1,15 @@
 "use client"
 
-import { useState } from "react"
 import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  Calendar,
   Car,
-  Bot,
-  Heart,
-  Share2,
+  Clock,
+  MapPin  ,
   MessageCircle,
-  Eye,
-  ThumbsUp,
-  Bookmark,
-  Flag,
-  MoreHorizontal,
-  Send,
-  Camera,
-  Utensils,
   Mountain,
-  Navigation,
-  Award,
+  Star
 } from "lucide-react"
 
-const board_details_card = ({data, selectedDay}) => {
+const Board_details_card = ({data, selectedDay}) => {
   return (
     <div>{/* Selected Day Details */}
     {data[0].board_days.map(
@@ -255,4 +238,4 @@ const board_details_card = ({data, selectedDay}) => {
   )
 }
 
-export default board_details_card
+export default Board_details_card

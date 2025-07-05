@@ -1,27 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
-import {
-  Search,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  ArrowRight,
-  Bot,
-  Sparkles,
-  Send,
-  Mic,
-  Calendar,
-  Car,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Share2,
-} from "lucide-react"
 import Card from '@/common/card/courses_card'
 import { useCoursesQuery } from "@/hooks/supabase/dev"
+import {
+  Filter,
+  Mic,
+  Search,
+  Send,
+  SlidersHorizontal,
+  Sparkles
+} from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 import Skeleton from './skeleton'
 
 export default function CoursesPage() {
@@ -68,7 +58,7 @@ export default function CoursesPage() {
     });
   
     setFilteredCourses(filtered);
-  }, [isSuccess, selectedFilter, searchQuery]);
+  }, [isSuccess, selectedFilter, searchQuery, coursesData]);
   
 
   const filters = [
@@ -255,7 +245,7 @@ export default function CoursesPage() {
               </h3>
               <div className="space-y-3" data-oid="aiira4w">
                 {["김포", "서울", "부산", "강릉", "경주"].map(
-                  (dest, index) => (
+                  (dest) => (
                     <button
                       key={dest}
                       onClick={() =>

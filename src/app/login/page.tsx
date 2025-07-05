@@ -1,19 +1,17 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 import {
-  ArrowLeft,
-  Bot,
+  Apple,
+  Chrome,
   Eye,
   EyeOff,
-  Mail,
-  Lock,
-  User,
-  Chrome,
   Github,
-  Apple,
+  Lock,
+  Mail,
+  User
 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function LoginPage() {
   const router = useRouter()

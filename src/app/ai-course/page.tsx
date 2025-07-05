@@ -1,26 +1,18 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import {
-  ArrowLeft,
   MapPin,
   Clock,
   Star,
-  Users,
   Car,
-  Calendar,
-  Bot,
   Sparkles,
-  Navigation,
-  Camera,
-  Utensils,
   Mountain,
   Download,
   Share2,
   Heart,
   RefreshCw,
-  Menu,
 } from "lucide-react"
 import { ai_courseText } from "@/common/text/ai"
 import { comma } from "@/util/comma"
@@ -28,9 +20,7 @@ import { comma } from "@/util/comma"
 export default function AICourse() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [selectedDay, setSelectedDay] = useState(1)
   const [isRegenerating, setIsRegenerating] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // URL 파라미터에서 사용자 선택 정보 가져오기
   const destination = searchParams.get("destination") || ""
@@ -506,10 +496,10 @@ export default function AICourse() {
                 AI 인사이트
               </h3>
               <div className="space-y-3 text-sm" data-oid="yvkv1.7">
-                {ai_courseText[0].ai_insight.map((insight, idx) => {
+                {/* {ai_courseText[0].ai_insight.map((insight, idx) => {
                   return (
                     <div
-                    key={idx}
+                      key={idx}
                       className="bg-white/70 rounded-lg p-3"
                       data-oid="3gql7yd"
                     >
@@ -524,7 +514,7 @@ export default function AICourse() {
                       </div>
                     </div>
                   )
-                })}
+                })} */}
               </div>
             </div>
 

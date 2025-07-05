@@ -1,26 +1,25 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import {
-    Bot,
-    MapPin,
-    Mail,
-    Phone,
-    Facebook,
-    Twitter,
-    Instagram,
-    Youtube,
-    Github,
     ArrowUp,
-    Heart,
-    Globe,
-    Shield,
-    HelpCircle,
+    Bot,
+    Facebook,
     FileText,
-    Users,
-    Zap,
+    Github,
+    Globe,
+    Heart,
+    Instagram,
+    Mail,
+    MapPin,
+    Phone,
+    Shield,
     Star,
+    Twitter,
+    Users,
+    Youtube,
+    Zap
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function Footer() {
     const router = useRouter();

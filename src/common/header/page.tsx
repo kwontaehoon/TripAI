@@ -1,12 +1,9 @@
 "use client"
-import React, { useState, useEffect } from "react"
-import Image from "next/image"
-import HamburgetMenu from "../../../public/svg/HamburgerMenu.svg"
-import Search from "../../../public/svg/Search.svg"
-import { useAtom } from "jotai"
 import { modalUiStateAtom } from "@/store/ai"
+import { useAtom } from "jotai"
 import { Bot } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 const getScrollbarWidth = () => {
   return window.innerWidth - document.documentElement.clientWidth
@@ -18,7 +15,7 @@ const Page = () => {
 
   const [lastScrollY, setLastScrollY] = useState(0)
 
-  const [aiImodalUiStatenput, _] = useAtom(modalUiStateAtom)
+  const [aiImodalUiStatenput] = useAtom(modalUiStateAtom)
 
   const shouldDisableScroll = Object.values(aiImodalUiStatenput).some(
     (state) => state,

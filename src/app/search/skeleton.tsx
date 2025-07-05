@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import { Search, Filter, SlidersHorizontal, Bot, Mic, Send } from "lucide-react"
+import { Mic, Search, Send } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function SearchSkeletonPage() {
   const router = useRouter()

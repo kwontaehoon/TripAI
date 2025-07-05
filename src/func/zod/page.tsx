@@ -4,7 +4,7 @@ import { z } from 'zod'
 const page = () => {
 
     // creating a schema for strings
-    const mySchema = z.string();
+    // const mySchema = z.string();
     const emailSchema = z.string().email();
     console.log(emailSchema.safeParse("tunagmail.com"));
 

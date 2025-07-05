@@ -5,7 +5,7 @@ import { useAtom } from "jotai"
 import { modalUiStateAtom } from "@/store/ai"
 import { useRouter } from "next/navigation"
 
-const search = () => {
+const SearchPage = () => {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [isListening, setIsListening] = useState(false)
@@ -37,7 +37,7 @@ const search = () => {
         완벽한 여행 코스가 필요할 때,
       </h2>
       <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-        <span className="text-blue-600">"TripAI"</span>가 함께할게요.
+        <span className="text-blue-600">&ldquo;TripAI&rdquo;</span>가 함께할게요.
       </h2>
 
       {/* search bar */}
@@ -118,4 +118,4 @@ const search = () => {
   )
 }
 
-export default search
+export default SearchPage

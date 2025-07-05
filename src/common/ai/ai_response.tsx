@@ -1,5 +1,3 @@
-import React from 'react'
-import { useGeminiAiMutation } from '@/hooks/dev'
 
 type infoType = {
   date: string,

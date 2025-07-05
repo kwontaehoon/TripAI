@@ -1,18 +1,16 @@
 "use client"
-import React from "react"
-import Search from "./search"
 import Recommend from "./Recommend"
-import Popular from "./popular"
 import Board from "./board"
-import { PageProps } from "../type"
+import Popular from "./popular"
+import Search from "./search"
 
-const Page: React.FC<PageProps> = ({ boardsData, coursesData }) => {
+const Page = () => {
   return (
     <div className="mb-12 w-full lg:w-[700px]">
       <Search />
-      <Recommend coursesData={coursesData} />
+      <Recommend />
       <Popular />
-      <Board boardsData={boardsData} />
+      <Board />
     </div>
   )
 }

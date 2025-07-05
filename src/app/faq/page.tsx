@@ -1,22 +1,20 @@
 'use client';
-import { useState } from 'react';
+import Footer from '@/common/footer/page';
 import {
-    Search,
+    ArrowRight,
+    BookOpen,
+    CreditCard,
+    Globe,
     HelpCircle,
     MessageCircle,
-    ArrowRight,
-    Plus,
     Minus,
-    BookOpen,
-    Users,
+    Plus,
+    Search,
     Settings,
-    CreditCard,
     Shield,
-    Globe,
-    Bot,
+    Users
 } from 'lucide-react';
-import Footer from '@/common/footer/page';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 interface FAQItem {
     id: number;
     category: string;
@@ -26,7 +24,6 @@ interface FAQItem {
 }
 
 export default function FAQPage() {
-    const router = useRouter();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('전체');
     const [openItems, setOpenItems] = useState<number[]>([]);

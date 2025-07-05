@@ -8,7 +8,7 @@ export const useAiResponseImage = () => {
 
   useEffect(() => {
     if(aiResponseDetails.length > 0){
-        let arr = []
+        const arr = []
 
         aiResponseDetails.forEach(x => {
           const photoNames = x.photos.slice(0, 2).map(y => y.name);

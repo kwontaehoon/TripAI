@@ -1,34 +1,17 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter, useParams } from "next/navigation"
 import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Star,
-  Users,
   Calendar,
   Car,
-  Bot,
-  Sparkles,
-  Navigation,
-  Camera,
-  Utensils,
+  Clock,
+  MapPin,
   Mountain,
-  Download,
-  Share2,
-  Heart,
-  RefreshCw,
-  Eye,
-  ThumbsUp,
-  Bookmark,
-  ExternalLink,
-  Route,
-  Zap,
+  Sparkles,
+  Star,
+  Zap
 } from "lucide-react"
 
-const course_details_card = ({ data, selectedDay }) => {
+const Course_details_card = ({ data, selectedDay }) => {
 
     console.log("data: ", data)
 
@@ -311,4 +294,4 @@ const course_details_card = ({ data, selectedDay }) => {
   )
 }
 
-export default course_details_card
+export default Course_details_card

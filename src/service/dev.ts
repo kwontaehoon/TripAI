@@ -1,4 +1,4 @@
-import { clientAxios, aiAxios, googlePlaceTextAxios, googlePlaceNearbyAxios, googlePlaceDetailsAxios, googlePlaceImagesAxios, nextjsAxios } from ".";
+import { clientAxios, nextjsAxios } from ".";
 
 const ACCOUNT_URL = {
     nextjs: "",

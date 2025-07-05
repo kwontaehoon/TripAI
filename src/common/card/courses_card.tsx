@@ -1,27 +1,17 @@
-import React, { useState } from "react"
-import { useRouter } from "next/navigation"
+import { comma } from "@/util/comma"
 import {
-  Search,
-  MapPin,
-  Clock,
-  Star,
-  Users,
   ArrowRight,
-  Bot,
-  Sparkles,
-  Send,
-  Mic,
   Calendar,
   Car,
-  Filter,
-  SlidersHorizontal,
   Heart,
+  MapPin,
   Share2,
+  Star,
+  Users
 } from "lucide-react"
-import { ai_courseText } from "@/common/text/ai"
-import { comma } from "@/util/comma"
+import { useRouter } from "next/navigation"
 
-const page = ({ filteredCourses }) => {
+const Page = ({ filteredCourses }) => {
 
   const router = useRouter()
 
@@ -195,7 +185,7 @@ const page = ({ filteredCourses }) => {
                 </h4>
                 <div className="flex flex-wrap gap-1" data-oid="idilg5w">
                   {course.course_highlights.map(
-                    (highlight: any, index: number) => (
+                    (highlight, index: number) => (
                       <span
                         key={index}
                         className="text-xs text-gray-600"
@@ -254,4 +244,4 @@ const page = ({ filteredCourses }) => {
   )
 }
 
-export default page
+export default Page

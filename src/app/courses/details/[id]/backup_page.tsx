@@ -1,38 +1,27 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
 import {
-    ArrowLeft,
-    MapPin,
-    Clock,
-    Star,
-    Users,
     Calendar,
-    Car,
-    Bot,
-    Sparkles,
-    Navigation,
     Camera,
-    Utensils,
-    Mountain,
+    Car,
+    Clock,
     Download,
-    Share2,
     Heart,
-    RefreshCw,
-    Eye,
-    ThumbsUp,
-    Bookmark,
-    ExternalLink,
-    Route,
-    Zap,
+    MapPin,
+    Mountain,
+    Navigation,
+    Sparkles,
+    Star,
+    Utensils,
+    Zap
 } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function CourseDetailsPage() {
     const router = useRouter();
     const params = useParams();
     const [isLiked, setIsLiked] = useState(false);
-    const [isBookmarked, setIsBookmarked] = useState(false);
     const [selectedDay, setSelectedDay] = useState(1);
 
     // AI 추천 코스 상세 데이터
@@ -228,15 +217,6 @@ export default function CourseDetailsPage() {
 
     const handleLike = () => {
         setIsLiked(!isLiked);
-    };
-
-    const handleBookmark = () => {
-        setIsBookmarked(!isBookmarked);
-    };
-
-    const handleShare = () => {
-        navigator.clipboard.writeText(window.location.href);
-        alert('링크가 복사되었습니다!');
     };
 
     const handleDownload = () => {

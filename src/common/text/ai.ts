@@ -131,62 +131,62 @@ export const ai_courseText = [
     }
 ]
 
-const postman = [
-    {
-        id: 1,
-        title: "",
-        subtitle: "",
-        description: "", 
-        author: "",
-        author_type: "",
-        duration: "",
-        estimated_time: "약 12시간",
-        rating: 1,
-        views: 1,
-        likes: 1,
-        content: "",
-        participants: "1-6명",
-        difficulty: 1,
-        total_cost: 1,
-        total_locations: 1,
-        total_comments: 1,
-        total_distance: "30km",
-        total_places: 1,
-        created_at: "2025-07-01",
-        tags: [],
-        highlights: [],
-        images: [],
-        reliability: "80%",
-        bookmark: 1,
-        badges: [],
-        days: [{
-            day: 1,
-            title: '',
-            subTitle: '',
-            total_distance: '70km',
-            total_time: '5시간 30분',
-            author_note: '',
-            estimatedCost: 1,
-            places: [{
-                id: 1,
-                name: "",
-                description: "",
-                location_type: '출발지',
-                stay: '30분',
-                openTime: "05:00 ~ 20:00",
-                entryFee: "성인 5,000원",
-                location: "경기도 김포시 유현로 200",
-                distance: "",
-                recommend_reason: "",
-                tips: [],
-                rating_count: 3.5,
-                review_count: 1,
-                next_distance: "10km",
-                next_time: "20분"
-            }],
-        }]
-    }
-]
+// const postman = [
+//     {
+//         id: 1,
+//         title: "",
+//         subtitle: "",
+//         description: "", 
+//         author: "",
+//         author_type: "",
+//         duration: "",
+//         estimated_time: "약 12시간",
+//         rating: 1,
+//         views: 1,
+//         likes: 1,
+//         content: "",
+//         participants: "1-6명",
+//         difficulty: 1,
+//         total_cost: 1,
+//         total_locations: 1,
+//         total_comments: 1,
+//         total_distance: "30km",
+//         total_places: 1,
+//         created_at: "2025-07-01",
+//         tags: [],
+//         highlights: [],
+//         images: [],
+//         reliability: "80%",
+//         bookmark: 1,
+//         badges: [],
+//         days: [{
+//             day: 1,
+//             title: '',
+//             subTitle: '',
+//             total_distance: '70km',
+//             total_time: '5시간 30분',
+//             author_note: '',
+//             estimatedCost: 1,
+//             places: [{
+//                 id: 1,
+//                 name: "",
+//                 description: "",
+//                 location_type: '출발지',
+//                 stay: '30분',
+//                 openTime: "05:00 ~ 20:00",
+//                 entryFee: "성인 5,000원",
+//                 location: "경기도 김포시 유현로 200",
+//                 distance: "",
+//                 recommend_reason: "",
+//                 tips: [],
+//                 rating_count: 3.5,
+//                 review_count: 1,
+//                 next_distance: "10km",
+//                 next_time: "20분"
+//             }],
+//         }]
+//     }
+// ]
 
 // id
 // title - 여행 제목

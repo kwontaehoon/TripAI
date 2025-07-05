@@ -1,11 +1,11 @@
 'use client'
-import { useTestQuery } from '@/hooks/dev'
+import { useTestQuery } from '@/hooks/springboot/dev'
 import { NextPage } from 'next'
 import FileUpload from './fileSave'
 
 const Page: NextPage = () => {
 
-  const { data, error, isLoading } = useTestQuery();
+  const { data } = useTestQuery();
 
   return (
     <div>

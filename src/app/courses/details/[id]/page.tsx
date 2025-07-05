@@ -1,58 +1,29 @@
 "use client"
 
-import { use, useState } from "react"
-import { useRouter, useParams } from "next/navigation"
-import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  Calendar,
-  Car,
-  Bot,
-  Sparkles,
-  Navigation,
-  Camera,
-  Utensils,
-  Mountain,
-  Download,
-  Share2,
-  Heart,
-  RefreshCw,
-  Eye,
-  ThumbsUp,
-  Bookmark,
-  ExternalLink,
-  Route,
-  Zap,
-} from "lucide-react"
-import { getBadgeColor } from "@/util/styles"
-import { comma } from "@/util/comma"
 import Card from '@/common/card/course_details_card'
 import { useCourseDetailsQuery } from "@/hooks/supabase/dev"
+import { comma } from "@/util/comma"
+import { getBadgeColor } from "@/util/styles"
+import {
+  Download,
+  Heart,
+  MapPin,
+  Sparkles
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import { use, useState } from "react"
 import Skeleton from './skeleton'
 
 export default function CourseDetailsPage({ params }: { params: Promise<{ id: number }>}) {
   const router = useRouter()
   const { id } = use(params);
   const [isLiked, setIsLiked] = useState(false)
-  const [isBookmarked, setIsBookmarked] = useState(false)
   const [selectedDay, setSelectedDay] = useState(1)
 
   const { data: courseDetailsData, isSuccess, isLoading } = useCourseDetailsQuery(id)
 
   const handleLike = () => {
     setIsLiked(!isLiked)
-  }
-
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked)
-  }
-
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href)
-    alert("링크가 복사되었습니다!")
   }
 
   const handleDownload = () => {

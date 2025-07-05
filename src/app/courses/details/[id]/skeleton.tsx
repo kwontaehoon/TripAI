@@ -1,25 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import {
-  ArrowLeft,
-  Bot,
-  Bookmark,
-  Share2,
-  MapPin,
-  Download,
-} from "lucide-react"
-
 export default function CoursesDetailsSkeletonPage() {
-  const router = useRouter()
-
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="nzvfcg-"
     >
-
       {/* Main Content */}
       <main
         className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8"

@@ -1,4 +1,4 @@
-import { clientAxios, aiAxios, googlePlaceTextAxios, googlePlaceNearbyAxios, googlePlaceDetailsAxios, googlePlaceImagesAxios, nextjsAxios } from ".";
+import { googlePlaceDetailsAxios, googlePlaceImagesAxios, googlePlaceNearbyAxios, googlePlaceTextAxios } from ".";
 
 const GOOGLE_PLACE_URL = {
     text: "",

@@ -1,28 +1,25 @@
 'use client';
 
-import { useState } from 'react';
 import {
-    Phone,
-    Mail,
-    MessageCircle,
-    Clock,
-    MapPin,
-    Send,
     AlertCircle,
-    CheckCircle,
-    Headphones,
-    Globe,
-    Shield,
-    Zap,
-    Heart,
-    Star,
     ArrowRight,
-    Bot,
+    CheckCircle,
+    Clock,
+    Globe,
+    Headphones,
+    Heart,
+    Mail,
+    MapPin,
+    MessageCircle,
+    Phone,
+    Send,
+    Shield,
+    Star,
+    Zap
 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function SupportPage() {
-    const router = useRouter();
     const [formData, setFormData] = useState({
         name: '',
         email: '',

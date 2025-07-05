@@ -1,33 +1,18 @@
-import React, { useState } from "react"
 import {
-    ArrowLeft,
-    MapPin,
-    Clock,
-    Star,
-    Users,
-    Calendar,
-    Car,
-    Bot,
-    Sparkles,
-    Navigation,
-    Camera,
-    Utensils,
-    Mountain,
-    Download,
-    Share2,
-    Heart,
-    RefreshCw,
-    Eye,
-    ThumbsUp,
-    Bookmark,
-    ExternalLink,
-    Route,
-    Zap,
-  } from "lucide-react"
+  Calendar,
+  Car,
+  Clock,
+  MapPin,
+  Mountain,
+  Sparkles,
+  Star,
+  Zap
+} from "lucide-react"
+import { useState } from "react"
 import { ai_courseText } from "../text/ai"
 
-const backup_course_details_card = () => {
-  const [selectedDay, setSelectedDay] = useState(1)
+const Backup_course_details_card = () => {
+  const [selectedDay] = useState(1)
 
   return (
     <div>
@@ -292,4 +277,4 @@ const backup_course_details_card = () => {
   )
 }
 
-export default backup_course_details_card
+export default Backup_course_details_card

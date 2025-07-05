@@ -1,29 +1,12 @@
 "use client"
 
-import { useState } from "react"
 import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  Calendar,
   Car,
-  Bot,
-  Heart,
-  Share2,
+  Clock,
+  MapPin,
   MessageCircle,
-  Eye,
-  ThumbsUp,
-  Bookmark,
-  Flag,
-  MoreHorizontal,
-  Send,
-  Camera,
-  Utensils,
   Mountain,
-  Navigation,
-  Award,
+  Star
 } from "lucide-react"
 
 const backup_board_details_card = ({data, selectedDay}) => {

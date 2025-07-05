@@ -1,26 +1,11 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import {
-  ArrowLeft,
-  Bot,
-  MessageCircle,
-  Bookmark,
-  Share2,
-  MoreHorizontal,
-  Send,
-} from "lucide-react"
-
 export default function BoardDetailsSkeletonPage() {
-  const router = useRouter()
-
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="9t61ech"
     >
-
       {/* Main Content */}
       <main
         className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8"

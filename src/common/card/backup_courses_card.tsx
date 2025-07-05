@@ -1,25 +1,17 @@
-import React, { useState } from "react"
-import { useRouter } from "next/navigation"
 import {
-    Search,
-    MapPin,
-    Clock,
-    Star,
-    Users,
-    ArrowRight,
-    Bot,
-    Sparkles,
-    Send,
-    Mic,
-    Calendar,
-    Car,
-    Filter,
-    SlidersHorizontal,
-    Heart,
-    Share2,
-  } from "lucide-react"
+  ArrowRight,
+  Calendar,
+  Car,
+  Heart,
+  MapPin,
+  Share2,
+  Star,
+  Users
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
-const dummy = () => {
+const Dummy = () => {
   const router = useRouter()
   const travelCourses = [
     {
@@ -42,7 +34,7 @@ const dummy = () => {
       estimatedCost: "₩320,000",
     },
   ]
-  const [selectedFilter, setSelectedFilter] = useState("전체")
+  const [selectedFilter] = useState("전체")
 
   const filteredCourses = travelCourses.filter((course) => {
     if (selectedFilter === "전체") return true
@@ -264,4 +256,4 @@ const dummy = () => {
   )
 }
 
-export default dummy
+export default Dummy

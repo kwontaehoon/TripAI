@@ -1,8 +1,7 @@
 "use client"
-import React from "react"
 import { useRouter } from "next/navigation"
 
-const popular = () => {
+const Popular = () => {
   const router = useRouter()
   const popularDestinations = [
     {
@@ -56,4 +55,4 @@ const popular = () => {
   )
 }
 
-export default popular
+export default Popular

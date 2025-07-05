@@ -1,24 +1,16 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Users,
-  Calendar,
-  Car,
-  Bot,
-  Plus,
-  X,
-  Upload,
-  Star,
-  Save,
-  Eye,
   Camera,
-  DollarSign,
+  Clock,
+  Eye,
+  MapPin,
+  Plus,
+  Save,
+  X
 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 interface Place {
   id: number
@@ -618,7 +610,7 @@ export default function BoardWritePage() {
                   <div key={idx} className="shadow-md relative">
                     <X className="absolute right-2 top-2 w-4 h-4 cursor-pointer"
                         onClick={()=>imgDelete(idx)} />
-                    <img src={src} alt="Uploaded" className="w-full h-auto" />
+                    <image src={src} alt="Uploaded" className="w-full h-auto" />
                   </div>
                 ))}
               </div>

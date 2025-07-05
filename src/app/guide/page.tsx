@@ -1,30 +1,20 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import {
-    Bot,
-    Search,
-    MapPin,
-    Sparkles,
-    ArrowRight,
-    Calendar,
-    Users,
-    Clock,
-    Star,
-    Send,
-    Mic,
-    Zap,
-    Menu,
-    ChevronRight,
-    Play,
-    BookOpen,
-    HelpCircle,
-    CheckCircle,
-    AlertCircle,
-    Info,
-} from 'lucide-react';
 import Footer from '@/common/footer/page';
+import {
+    ArrowRight,
+    BookOpen,
+    Bot,
+    CheckCircle,
+    HelpCircle,
+    Info,
+    Play,
+    Search,
+    Sparkles,
+    Users
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function GuidePage() {
     const router = useRouter();

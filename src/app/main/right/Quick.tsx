@@ -1,7 +1,8 @@
-import React from "react"
-import { PageProps } from "../type"
+import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 
-const Quick: React.FC<PageProps> = ({ boardsData, coursesData }) => {
+const Quick = () => {
+  const { data: boardsData } = useBoardsQuery()
+  const { data: coursesData } = useCoursesQuery()
   let ratingSum = 0
   let reliabilitySum = 0
 

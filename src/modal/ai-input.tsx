@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { X, MapPin, Calendar, Car, Users, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
+import { modalUiStateAtom } from "@/store/ai";
+import { useAtom } from "jotai";
+import { ArrowRight, Calendar, Car, Loader2, Sparkles, Users, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { modalUiStateAtom } from "@/store/ai"
-import { useAtom } from "jotai"
+import { useEffect, useRef, useState } from 'react';
 
 export default function AIRecommendationModal() {
     const router = useRouter();
@@ -387,8 +387,8 @@ export default function AIRecommendationModal() {
                                                         >
                                                             구체적인 여행지명을 입력하면 더 정확한
                                                             맞춤 코스를 추천받을 수 있어요. 예:
-                                                            "부산 해운대", "제주도 서귀포", "일본
-                                                            오사카" 등
+                                                            &ldquo;부산 해운대&rdquo;, &ldquo;제주도 서귀포&rdquo;, &ldquo;일본
+                                                            오사카&rdquo; 등
                                                         </p>
                                                     </div>
                                                 </div>

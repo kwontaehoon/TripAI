@@ -1,9 +1,5 @@
 import { createClient } from "./client";
 
-const TEST_URL = {
-    test: ""
-}
-
 // courses
 export const getCourses = async() => {
     const supabase = await createClient();

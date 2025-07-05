@@ -1,28 +1,27 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 import {
-  Search,
-  MapPin,
-  Star,
-  Users,
   ArrowRight,
-  Bot,
-  Calendar,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Share2,
-  MessageCircle,
-  Eye,
-  Plus,
-  Mic,
-  Send,
-  TrendingUp,
   Award,
+  Calendar,
+  Eye,
+  Filter,
+  Heart,
+  MapPin,
+  MessageCircle,
+  Mic,
+  Plus,
+  Search,
+  Send,
+  Share2,
+  SlidersHorizontal,
+  Star,
   ThumbsUp,
+  TrendingUp,
+  Users
 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function BoardPage() {
   const router = useRouter()

@@ -1,11 +1,12 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { useBoardsQuery } from "@/hooks/supabase/dev"
 import { ArrowRight, Star } from "lucide-react"
-import { BoardProps } from "../type"
+import { useRouter } from "next/navigation"
 
-const Board: React.FC<{ boardsData: BoardProps[] }> = ({ boardsData }) => {
+const Board = () => {
   const router = useRouter()
+  const { data: boardsData } = useBoardsQuery()
   return (
     <div>
       {/* Community Board Preview */}
@@ -30,7 +31,7 @@ const Board: React.FC<{ boardsData: BoardProps[] }> = ({ boardsData }) => {
           </button>
         </div>
         <div className="space-y-3" data-oid="8pkznx8">
-          {boardsData.map((board, index) => (
+          {boardsData?.map((board, index) => (
             <button
               key={index}
               onClick={() => router.push(`/board/details/${board.id}`)}

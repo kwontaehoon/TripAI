@@ -1,33 +1,19 @@
 "use client"
 
-import { use, useState } from "react"
-import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  Calendar,
-  Car,
-  Bot,
-  Heart,
-  Share2,
-  MessageCircle,
-  Eye,
-  ThumbsUp,
-  Bookmark,
-  Flag,
-  MoreHorizontal,
-  Send,
-  Camera,
-  Utensils,
-  Mountain,
-  Navigation,
-  Award,
-} from "lucide-react"
-import { comma } from "@/util/comma"
-import { useBoardDetailssQuery } from "@/hooks/supabase/dev"
 import Card from '@/common/card/board_details_card'
+import { useBoardDetailssQuery } from "@/hooks/supabase/dev"
+import { comma } from "@/util/comma"
+import {
+  Bookmark,
+  Camera,
+  Eye,
+  MessageCircle,
+  Send,
+  Share2,
+  Star,
+  ThumbsUp
+} from "lucide-react"
+import { use, useState } from "react"
 import Skeleton from './skeleton'
 
 export default function BoardDetailsPage({ params }: { params: Promise<{ id: number }>}) {
@@ -37,7 +23,7 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
   const [newComment, setNewComment] = useState("")
   const [selectedDay, setSelectedDay] = useState(1)
 
-  const { data: boradDetailsData, isSuccess, isLoading } = useBoardDetailssQuery(id)
+  const { data: boradDetailsData, isLoading } = useBoardDetailssQuery(id)
   console.log("data: ", boradDetailsData)
 
   // 댓글 데이터

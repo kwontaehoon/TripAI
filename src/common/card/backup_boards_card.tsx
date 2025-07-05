@@ -1,39 +1,25 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import {
-  Search,
-  MapPin,
-  Star,
-  Users,
-  ArrowRight,
-  Bot,
-  Calendar,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Share2,
-  MessageCircle,
-  Eye,
-  Plus,
-  Mic,
-  Send,
-  TrendingUp,
-  Award,
-  ThumbsUp,
-} from "lucide-react"
-import { ai_courseText } from "../text/ai"
 import { comma } from "@/util/comma"
+import {
+  ArrowRight,
+  Calendar,
+  Eye,
+  Heart,
+  MapPin,
+  MessageCircle,
+  Share2,
+  Star,
+  ThumbsUp,
+  Users
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { ai_courseText } from "../text/ai"
 
-const backup_board_card = () => {
+const Backup_board_card = () => {
   const router = useRouter()
-  const [selectedFilter, setSelectedFilter] = useState("전체")
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    // 검색 로직 구현
-  }
+  const [selectedFilter] = useState("전체")
 
   const handlePostClick = (postId: number) => {
     router.push(`/board/details/${postId}`)
@@ -407,4 +393,4 @@ const backup_board_card = () => {
   )
 }
 
-export default backup_board_card
+export default Backup_board_card

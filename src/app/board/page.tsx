@@ -1,30 +1,20 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import {
-  Search,
-  MapPin,
-  Star,
-  Users,
-  ArrowRight,
-  Bot,
-  Calendar,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Share2,
-  MessageCircle,
-  Eye,
-  Plus,
-  Mic,
-  Send,
-  TrendingUp,
-  Award,
-  ThumbsUp,
-} from "lucide-react"
-import { useBoardsQuery } from "@/hooks/supabase/dev"
 import Card from "@/common/card/boards_card"
+import { useBoardsQuery } from "@/hooks/supabase/dev"
+import {
+  Filter,
+  MessageCircle,
+  Mic,
+  Plus,
+  Search,
+  Send,
+  SlidersHorizontal,
+  ThumbsUp,
+  TrendingUp
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 import Skeleton from './skeletion'
 
 export default function BoardPage() {
@@ -100,7 +90,7 @@ export default function BoardPage() {
     });
 
     setFilteredBoards(filtered)
-  }, [isSuccess, selectedFilter, searchQuery])
+  }, [isSuccess, selectedFilter, searchQuery, boardsData])
 
   return (
     isLoading ? <Skeleton /> : (

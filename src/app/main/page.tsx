@@ -1,15 +1,12 @@
-import React from "react"
+import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
+import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"
 import Right from "./right/page"
-import { useSession, signIn, signOut } from "next-auth/react"
-import { Camera, Mountain } from "lucide-react"
-import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 import Skeleton from "./skeleton"
 
-const page = () => {
-  const { data: boardsData, isLoading: boardsDataIsLoading } = useBoardsQuery()
-  const { data: coursesData, isLoading: coursesDataIsLoading } =
-    useCoursesQuery()
+const Page = () => {
+  const { isLoading: boardsDataIsLoading } = useBoardsQuery()
+  const { isLoading: coursesDataIsLoading } = useCoursesQuery()
 
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
@@ -54,8 +51,8 @@ const page = () => {
         </button>
       </div> */}
 
-      <Left boardsData={boardsData ?? []} coursesData={coursesData ?? []} />
-      <Right boardsData={boardsData ?? []} coursesData={coursesData ?? []} />
+      <Left />
+      <Right />
 
       {/* Floating Elements */}
       <div
@@ -88,4 +85,4 @@ const page = () => {
   // );
 }
 
-export default page
+export default Page

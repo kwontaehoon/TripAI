@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { addMonths, subMonths } from 'date-fns'
+import { addMonths, subMonths } from 'date-fns';
+import { useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 
 const Calendar = () => {
@@ -31,13 +31,13 @@ const Calendar = () => {
 //     setCalendarList(list.data.filter(x => new Date(x.date).getFullYear() == current.getFullYear() && new Date(x.date).getMonth() == current.getMonth()));
 //   }, [list, current]);
 
-  const [calendarMutiSelect, setCalendarMultiSelect] = useState<{state:boolean, clickDate:number}>({
+  const [_, setCalendarMultiSelect] = useState<{state:boolean, clickDate:number}>({
     state: false,
     clickDate: 0
   }) // 캘린더를 누른 상태에서 한번더 누르면 마지막 누른 날짜까지 배경색 칠해짐
 
-  const [selectedYear, setSelectedYear] = useState(today.year); // 현재 선택된 연도
-  const [selectedMonth, setSelectedMonth] = useState(today.month); // 현재 선택된 달
+  const [selectedYear] = useState(today.year); // 현재 선택된 연도
+  const [selectedMonth] = useState(today.month); // 현재 선택된 달
   const dateTotalCount = new Date(selectedYear, selectedMonth, 0).getDate(); // 선택된 연도, 달의 마지막 날짜
   const curMonthStartDate = new Date(
     current.getFullYear(),
@@ -95,9 +95,9 @@ const Calendar = () => {
       </div>
       <div className='flex flex-wrap'>
         {Array.from({ length: 42 }).map((_, index) => {
-          let curr = index - curMonthStartDate + 1;
-          let prev = prevMonthEndDate - curMonthStartDate + index + 1;
-          let next = curr - dateTotalCount;
+          const curr = index - curMonthStartDate + 1;
+          const prev = prevMonthEndDate - curMonthStartDate + index + 1;
+          const next = curr - dateTotalCount;
 
           return (
             <div key={index} style={{ width: '14.28%' }}>

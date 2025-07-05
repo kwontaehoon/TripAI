@@ -2,10 +2,11 @@
 import React from "react"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { CourseProps } from "../type"
+import { useCoursesQuery } from "@/hooks/supabase/dev"
 
-const Recommend: React.FC<{ coursesData: CourseProps[] }> = ({ coursesData }) => {
+const Recommend = () => {
   const router = useRouter()
+  const { data: coursesData } = useCoursesQuery()
 
   return (
     <div className="mb-8">

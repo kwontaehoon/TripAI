@@ -1,34 +1,25 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter, useParams } from "next/navigation"
 import {
-  ArrowLeft,
-  MapPin,
-  Clock,
-  Star,
-  Users,
-  Calendar,
-  Car,
-  Bot,
-  Heart,
-  Share2,
-  MessageCircle,
-  Eye,
-  ThumbsUp,
+  Award,
   Bookmark,
-  Flag,
-  MoreHorizontal,
-  Send,
   Camera,
-  Utensils,
+  Car,
+  Clock,
+  Eye,
+  MapPin,
+  MessageCircle,
   Mountain,
   Navigation,
-  Award,
+  Send,
+  Share2,
+  Star,
+  ThumbsUp
 } from "lucide-react"
+import { useParams } from "next/navigation"
+import { useState } from "react"
 
 export default function BoardDetailsPage() {
-  const router = useRouter()
   const params = useParams()
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)

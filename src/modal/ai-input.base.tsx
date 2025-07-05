@@ -1,23 +1,24 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { aiResponseAtom, modalUiStateAtom } from '@/store/ai'
-import { useAtom } from 'jotai'
-import { useRouter } from 'next/navigation'
-import CloseSVG from '../../../public/svg/close.svg'
-import Calendar from '@/func/Calendar'
-import { transportationText } from '@/text'
-import { useGeminiAiMutation } from '@/hooks/dev'
 import { ai_response_func } from '@/common/ai/ai_response'
+import Calendar from '@/func/Calendar'
+import { useGeminiAiMutation } from '@/hooks/springboot/dev'
+import { aiResponseAtom, modalUiStateAtom } from '@/store/ai'
+import { transportationText } from '@/text'
 import { cleanJson } from '@/util/cleanJson'
+import { useAtom } from 'jotai'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import CloseSVG from '../../../public/svg/close.svg'
 
-const aiInput = () => {
+const AiInput = () => {
 
   const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
 
-  const [aiResponse, setAiResponse] = useAtom(aiResponseAtom)
+  const [_, setAiResponse] = useAtom(aiResponseAtom)
 
-  const [info, setInfo] = useState({
+
+  const [info] = useState({
       date: "2025년 4월 1일 ~ 2025년 4월 4일",
       transportation: "도보",
       budget: 5000
@@ -103,4 +104,4 @@ const aiInput = () => {
   )
 }
 
-export default aiInput
+export default AiInput

@@ -1,42 +1,29 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
 import {
-  Search,
-  MapPin,
-  Clock,
-  Star,
-  Users,
   ArrowRight,
-  Bot,
   Calendar,
-  Car,
-  Filter,
-  SlidersHorizontal,
-  Heart,
-  Share2,
-  MessageCircle,
   Eye,
-  Mic,
-  Send,
-  TrendingUp,
-  Award,
-  ThumbsUp,
+  MapPin,
+  MessageCircle,
+  Search,
   Sparkles,
-  X,
+  Star,
+  ThumbsUp,
+  Users
 } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useState } from "react"
 
 import { comma } from "@/util/comma"
-import { useCoursesAndBoardsQuery } from "@/hooks/supabase/dev"
 
-const search_card = ({filteredData}) => {
+const Search_card = ({filteredData}) => {
     const router = useRouter()
 
     const searchParams = useSearchParams()
-    const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
+    const [searchQuery] = useState(searchParams.get("q") || "")
     
-    const handleResultClick = (result: any) => {
+    const handleResultClick = (result) => {
         if (result.type === "ai-course") {
           router.push(`/courses/details/${result.id}`)
         } else {
@@ -409,4 +396,4 @@ const search_card = ({filteredData}) => {
   )
 }
 
-export default search_card
+export default Search_card

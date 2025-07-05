@@ -1,7 +1,8 @@
-import React from "react"
-import { PageProps } from "../type"
+import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 
-const StatsCard: React.FC<PageProps> = ({ boardsData, coursesData }) => {
+const StatsCard = () => {
+  const { data: boardsData } = useBoardsQuery()
+  const { data: coursesData } = useCoursesQuery()
   return (
     <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-6 text-white">
       <div className="text-center">
