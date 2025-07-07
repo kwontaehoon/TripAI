@@ -57,7 +57,9 @@ export const ai_courseText = [
                 rating_count: 4.5,
                 review_count: 10,
                 next_distance: "10km",
-                next_time: "30분"
+                next_time: "30분",
+                latitude: 37.61,
+                longitude: 126,
             },
             {
                 id: 2,
@@ -74,7 +76,9 @@ export const ai_courseText = [
                 rating_count: 3.8,
                 review_count: 40,
                 next_distance: "15km",
-                next_time: "45분"
+                next_time: "45분",
+                latitude: 37.61,
+                longitude: 126,
             },
             {
                 id: 3,
@@ -91,7 +95,9 @@ export const ai_courseText = [
                 rating_count: 5,
                 review_count: 35,
                 next_distance: "10km",
-                next_time: "30분"
+                next_time: "30분",
+                latitude: 37.61,
+                longitude: 126,
             },
             {
                 id: 4,
@@ -108,7 +114,9 @@ export const ai_courseText = [
                 rating_count: 4,
                 review_count: 8,
                 next_distance: "5km",
-                next_time: "15분"
+                next_time: "15분",
+                latitude: 37.61,
+                longitude: 126,
             },
             {
                 id: 5,
@@ -125,7 +133,9 @@ export const ai_courseText = [
                 rating_count: 3.9,
                 review_count: 7,
                 next_distance: "0km",
-                next_time: "0분"
+                next_time: "0분",
+                latitude: 37.61,
+                longitude: 126,
             }],
         }],
     }
@@ -182,7 +192,9 @@ export const ai_courseText = [
 //                 rating_count: 3.5,
 //                 review_count: 1,
 //                 next_distance: "10km",
-//                 next_time: "20분"
+//                 next_time: "20분",
+//                 latitude: 1,
+//                 longitude: 1,
 //             }],
 //         }]
 //     }
@@ -217,6 +229,6 @@ export const ai_courseText = [
 // badges - ai 분석 뱃지
 
 
-// [{'id':1,'title':'','subtitle':'','description':'','author':'','author_type':'','duration':'', 'content':'', 'estimated_time':'약 12시간','rating':1,'views':1,'likes':1,'participants':'1-6명','difficulty':1,'total_cost':1,'total_locations':1,'total_comments':1,'total_distance':'30km', 'total_places':1, 'created_at':'2025-07-01','tags':[],'highlights':[],'images':[],'reliability':'80%','bookmark':1,'badges':[],'days':[{'day':1,'title':'','subTitle':'','total_distance':'70km','total_time':'5시간 30분', 'author_note': '', 'estimatedCost':1,'places':[{'id':1,'name':'','description':'','location_type':'출발지','stay':'30분','openTime':'05:00 ~ 20:00','entryFee':'성인 5,000원','location':'경기도 김포시 유현로 200','distance':'','recommend_reason':'','tips':[],'rating_count':3.5,'review_count':1,'next_distance':'10km','next_time':'20분'}]}]}]
+// [{'id':1,'title':'','subtitle':'','description':'','author':'','author_type':'','duration':'', 'content':'', 'estimated_time':'약 12시간','rating':1,'views':1,'likes':1,'participants':'1-6명','difficulty':1,'total_cost':1,'total_locations':1,'total_comments':1,'total_distance':'30km', 'total_places':1, 'created_at':'2025-07-01','tags':[],'highlights':[],'images':[],'reliability':'80%','bookmark':1,'badges':[],'days':[{'day':1,'title':'','subTitle':'','total_distance':'70km','total_time':'5시간 30분', 'author_note': '', 'estimatedCost':1,'places':[{'id':1,'name':'','description':'','location_type':'출발지','stay':'30분','openTime':'05:00 ~ 20:00','entryFee':'성인 5,000원','location':'경기도 김포시 유현로 200','distance':'','recommend_reason':'','tips':[], 'latitude': 1.1111, 'longitude': 1.1111, 'rating_count':3.5,'review_count':1,'next_distance':'10km','next_time':'20분'}]}]}]
 
 

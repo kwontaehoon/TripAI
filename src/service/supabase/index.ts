@@ -31,7 +31,7 @@ export const getCourses = async() => {
         total_time,
         author_note,
         estimated_cost,
-        course_day_places (
+        course_places (
           id,
           name,
           description,
@@ -48,7 +48,9 @@ export const getCourses = async() => {
           next_time,
           place_tips (
             tip
-          )
+          ),
+          latitude,
+          longitude
         )
       )
     `);
@@ -85,7 +87,7 @@ export const getCourseDetails = async(params: number) => {
       total_time,
       author_note,
       estimated_cost,
-      course_day_places (
+      course_places (
         id,
         name,
         description,
@@ -102,7 +104,9 @@ export const getCourseDetails = async(params: number) => {
         next_time,
         place_tips (
           tip
-        )
+        ),
+        latitude,
+        longitude
       )
     )
   `)
@@ -159,7 +163,9 @@ export const getBoards = async() => {
         next_time,
         board_place_tips (
           tip
-        )
+        ),
+        latitude,
+        longitude
       )
     )
   `);
@@ -214,7 +220,9 @@ export const getBoardDetails = async(params: number) => {
         next_time,
         board_place_tips (
           tip
-        )
+        ),
+        latitude,
+        longitude
       )
     )
   `)
@@ -241,7 +249,7 @@ export const getCoursesAndBoards = async() => {
           total_time,
           author_note,
           estimated_cost,
-          course_day_places (
+          course_places (
             id,
             name,
             description,
@@ -256,7 +264,9 @@ export const getCoursesAndBoards = async() => {
             review_count,
             next_distance,
             next_time,
-            place_tips ( tip )
+            place_tips ( tip ),
+            latitude,
+            longitude
           )
         )
       `),
@@ -294,7 +304,9 @@ export const getCoursesAndBoards = async() => {
             review_count,
             next_distance,
             next_time,
-            board_place_tips ( tip )
+            board_place_tips ( tip ),
+            latitude,
+            longitude
           )
         )
       `),

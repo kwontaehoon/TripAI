@@ -5,6 +5,7 @@ import Footer from "@/common/footer/page"
 import Modal from "@/modal"
 import QueryClientProvider from "@/config/provider/queryClientProvider"
 import { ScrollController } from "@/util/scrollController"
+import { Suspense } from "react"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Suspense fallback={<></>}>
         <QueryClientProvider>
           {/* <div id="global-modal"></div> */}
           <Modal />
@@ -27,6 +29,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </QueryClientProvider>
+        </Suspense>
       </body>
     </html>
   )

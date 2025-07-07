@@ -55,14 +55,14 @@ const Course_details_card = ({ data, selectedDay }) => {
 
                     {/* Places Timeline */}
                     <div className="space-y-6" data-oid="ixfy:al">
-                      {day.course_day_places.map((place, index) => (
+                      {day.course_places.map((place, index) => (
                         <div
                           key={place.id}
                           className="relative"
                           data-oid="_lo9t8o"
                         >
                           {/* Timeline Line */}
-                          {index < day.course_day_places.length - 1 && (
+                          {index < day.course_places.length - 1 && (
                             <div
                               className="absolute left-5 top-12 w-0.5 h-20 bg-gray-200"
                               data-oid="tbielp2"
