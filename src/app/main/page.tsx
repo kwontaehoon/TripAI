@@ -1,3 +1,4 @@
+"use client"
 import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"

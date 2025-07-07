@@ -160,7 +160,7 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: nu
                   </button>
                   <button
                     onClick={() =>
-                      router.push(`/map?courseId=${courseDetailsData}`)
+                      router.push(`/map?courseId=${courseDetailsData[0].id}`)
                     }
                     className="
                                         flex items-center 

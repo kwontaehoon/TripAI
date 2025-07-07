@@ -29,7 +29,6 @@ export default function CoursesPage() {
   const [filteredCourses, setFilteredCourses] = useState([])
 
   const { data: coursesData, isSuccess, isLoading } = useCoursesQuery()
-  console.log("coursesData: ", coursesData)
 
   useEffect(() => {
     const dest = searchParams.get("destination")

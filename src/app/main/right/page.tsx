@@ -1,3 +1,4 @@
+"use client"
 import React from "react"
 import StatsCard from "./StatsCard"
 import CurrentSearch from "./currentSearch"
