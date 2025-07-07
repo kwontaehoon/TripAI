@@ -13,7 +13,7 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
-    es: {
+    rules: {
       
       "no-unused-vars": "warn", // 사용하지 않는 변수들 경로(warn)로 설정
       "@typescript-eslint/no-unused-vars": "warn",
