@@ -1,5 +1,5 @@
 "use client"
-import { modalUiStateAtom } from "@/store/ai"
+import { introModalAtom, modalUiStateAtom } from "@/store/ai"
 import { useAtom } from "jotai"
 import { Bot } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -20,6 +20,8 @@ const Page = () => {
   const shouldDisableScroll = Object.values(aiImodalUiStatenput).some(
     (state) => state,
   )
+
+  const [introModal] = useAtom(introModalAtom)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,6 +56,8 @@ const Page = () => {
       })
     }
   }, [shouldDisableScroll])
+
+  if(introModal) return
 
   return (
       <header

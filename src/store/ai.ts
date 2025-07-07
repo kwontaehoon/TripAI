@@ -6,3 +6,6 @@ export const modalUiStateAtom = atom({
 })
 
 export const aiResponseAtom = atom([])
+
+// intro modal
+export const introModalAtom = atom(false)
