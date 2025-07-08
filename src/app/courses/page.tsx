@@ -1,6 +1,6 @@
 "use client"
 
-import Card from '@/common/card/courses_card'
+import Card from "@/common/card/courses_card"
 import { useCoursesQuery } from "@/hooks/supabase/dev"
 import {
   Filter,
@@ -8,11 +8,11 @@ import {
   Search,
   Send,
   SlidersHorizontal,
-  Sparkles
+  Sparkles,
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import Skeleton from './skeleton'
+import Skeleton from "./skeleton"
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()
@@ -20,13 +20,15 @@ export default function CoursesPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("전체")
+  const [quickedFilter, setQuickedFilter] = useState("")
   const [sortBy, setSortBy] = useState("인기순")
   const [destination, setDestination] = useState("")
   const [avg, setAvg] = useState({
     rating: 1,
-    period: 1
+    period: 1,
   })
   const [filteredCourses, setFilteredCourses] = useState([])
+  console.log("filteredCourses: ", filteredCourses)
 
   const { data: coursesData, isSuccess, isLoading } = useCoursesQuery()
 
@@ -39,26 +41,45 @@ export default function CoursesPage() {
   }, [searchParams])
 
   useEffect(() => {
-    if (!isSuccess || !coursesData?.length) return;
-  
+    if (!isSuccess || !coursesData?.length) return
+
     setAvg({
-      rating: coursesData.reduce((sum, course) => sum + course.rating, 0) / coursesData.length,
-      period: coursesData.reduce((sum, course) => sum + course.course_days.length, 0) / coursesData.length,
-    });
-  
+      rating:
+        coursesData.reduce((sum, course) => sum + course.rating, 0) /
+        coursesData.length,
+      period:
+        coursesData.reduce(
+          (sum, course) => sum + course.course_days.length,
+          0,
+        ) / coursesData.length,
+    })
+
     const filtered = coursesData.filter((course) => {
-      const matchTag = selectedFilter === "전체" || course.course_tags.some(tag => tag.tag === selectedFilter);
+      const matchTag =
+        selectedFilter === "전체" ||
+        course.course_tags.some((tag) => tag.tag === selectedFilter)
       const matchesSearch =
         !searchQuery ||
         course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         course.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        course.description?.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchTag && matchesSearch;
-    });
-  
-    setFilteredCourses(filtered);
-  }, [isSuccess, selectedFilter, searchQuery, coursesData]);
-  
+        course.description?.toLowerCase().includes(searchQuery.toLowerCase())
+
+      const matchQuick =
+        quickedFilter.trim() === quickFilter[0]
+          ? course.rating >= 4.5
+          : quickedFilter.trim() === quickFilter[1]
+            ? course.total_cost <= 200000
+            : quickedFilter.trim() === quickedFilter[2]
+              ? course.title?.toLowerCase().includes("김포".toLowerCase()) ||
+                course.subtitle?.toLowerCase().includes("김포".toLowerCase()) ||
+                course.description?.toLowerCase().includes("김포".toLowerCase())
+              : true
+
+      return matchTag && matchesSearch && matchQuick
+    })
+
+    setFilteredCourses(filtered)
+  }, [isSuccess, selectedFilter, searchQuery, coursesData, quickedFilter])
 
   const filters = [
     "전체",
@@ -68,6 +89,7 @@ export default function CoursesPage() {
     "혼자여행",
     "당일치기",
   ]
+  const quickFilter = ["⭐ 평점 4.5 이상", "💰 20만원 이하", "🔥 이번 주 인기"]
   const sortOptions = ["인기순", "평점순", "최신순", "가격순"]
 
   const handleSearch = (e: React.FormEvent) => {
@@ -77,7 +99,9 @@ export default function CoursesPage() {
     }
   }
 
-  return isLoading ? <Skeleton /> : (
+  return isLoading ? (
+    <Skeleton />
+  ) : (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="bp56e8:"
@@ -226,7 +250,11 @@ export default function CoursesPage() {
               </div>
             </div>
 
-            <Card filteredCourses={filteredCourses}/>
+            <Card
+              filteredCourses={filteredCourses}
+              setSelectedFilter={setSelectedFilter}
+              setQuickedFilter={setQuickedFilter}
+            />
           </div>
 
           {/* Right Column - Sidebar */}
@@ -243,31 +271,36 @@ export default function CoursesPage() {
                 인기 여행지
               </h3>
               <div className="space-y-3" data-oid="aiira4w">
-                {["김포", "서울", "부산", "강릉", "경주"].map(
-                  (dest) => (
-                    <button
-                      key={dest}
-                      onClick={() =>
+                {["김포", "서울", "부산", "강릉", "경주"].map((dest) => (
+                  <button
+                    key={dest}
+                    onClick={() => {
+                      if (searchQuery === dest) {
+                        setSearchQuery("")
+                        setSelectedFilter("전체")
+                        setDestination("")
+                        router.push("/courses")
+                      } else {
                         router.push(
                           `/courses?destination=${encodeURIComponent(dest)}`,
                         )
                       }
-                      className={`w-full text-left p-3 rounded-lg transition-colors ${
-                        destination === dest
-                          ? "bg-blue-50 border !border-blue-200 text-blue-700"
-                          : "bg-gray-50 hover:bg-gray-100 text-gray-700"
-                      }`}
-                      data-oid="cu7r335"
-                    >
-                      <div className="font-medium" data-oid="evmnw78">
-                        {dest}
-                      </div>
-                      <div className="text-sm opacity-75" data-oid="wlo-e42">
-                        {/* {Math.floor(Math.random() * 50) + 20}개 코스 */}
-                      </div>
-                    </button>
-                  ),
-                )}
+                    }}
+                    className={`w-full text-left p-3 rounded-lg transition-colors ${
+                      destination === dest
+                        ? "bg-blue-50 border !border-blue-200 text-blue-700"
+                        : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                    }`}
+                    data-oid="cu7r335"
+                  >
+                    <div className="font-medium" data-oid="evmnw78">
+                      {dest}
+                    </div>
+                    <div className="text-sm opacity-75" data-oid="wlo-e42">
+                      {/* {Math.floor(Math.random() * 50) + 20}개 코스 */}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -334,30 +367,27 @@ export default function CoursesPage() {
                 빠른 필터
               </h3>
               <div className="space-y-2" data-oid="jhzur2g">
-                <button
-                  className="w-full text-left p-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  data-oid="agx7odp"
-                >
-                  ⭐ 평점 4.5 이상
-                </button>
-                <button
-                  className="w-full text-left p-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  data-oid="s84h5ae"
-                >
-                  💰 20만원 이하
-                </button>
-                <button
-                  className="w-full text-left p-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  data-oid="c.p8nb9"
-                >
-                  📅 당일치기
-                </button>
-                <button
-                  className="w-full text-left p-2 text-sm text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                  data-oid="84inbe1"
-                >
-                  👨‍👩‍👧‍👦 가족 추천
-                </button>
+                {quickFilter.map((filter) => {
+                  return (
+                    <button
+                      key={filter}
+                      onClick={() => {
+                        if (quickedFilter === filter) {
+                          setQuickedFilter("")
+                        } else setQuickedFilter(filter)
+                      }}
+                      className={`w-full text-left p-3 text-sm text-gray-600 rounded-lg transition-colors
+                      ${
+                        quickedFilter === filter
+                          ? "bg-blue-50 border !border-blue-200 text-blue-700"
+                          : "bg-gray-50 hover:bg-gray-100 text-gray-700"
+                      }`}
+                      data-oid="agx7odp"
+                    >
+                      {filter}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>

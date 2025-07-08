@@ -7,11 +7,12 @@ import {
   MapPin,
   Share2,
   Star,
+  Search,
   Users
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-const Page = ({ filteredCourses }) => {
+const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
 
   const router = useRouter()
 
@@ -240,6 +241,38 @@ const Page = ({ filteredCourses }) => {
           </div>
         </div>
       ))}
+      {/* No Results */}
+      {filteredCourses.length === 0 && (
+        <div
+          className="bg-white rounded-2xl p-8 text-center border !border-gray-200"
+          data-oid="l8l2px-"
+        >
+          <Search
+            className="w-12 h-12 text-gray-400 mx-auto mb-4"
+            data-oid="b69idox"
+          />
+
+          <h3
+            className="text-lg font-semibold text-gray-900 mb-2"
+            data-oid="6exf0:t"
+          >
+            검색 결과가 없습니다
+          </h3>
+          <p className="text-gray-600 mb-4" data-oid="v..-ugo">
+            다른 키워드로 검색해보시거나 필터를 조정해보세요.
+          </p>
+          <button
+            onClick={() => {
+              setSelectedFilter("전체")
+              setQuickedFilter("")
+            }}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            data-oid="r5cfql4"
+          >
+            필터 초기화
+          </button>
+        </div>
+      )}
     </div>
   )
 }
