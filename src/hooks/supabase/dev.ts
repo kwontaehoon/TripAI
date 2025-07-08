@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards } from "@/service/supabase";
+import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch } from "@/service/supabase";
 
 const TEST_QUERY_KEY = {
     courses: ["courses"],
     courseDetails: ["courseDetails"],
     boards: ["boards"],
     boardDetails: ["boardDetails"],
-    coursesAndBoards: ["coursesAndBoards"]
+    coursesAndBoards: ["coursesAndBoards"],
+    popularSearch: ["popularSearch"]
 }
 
 // courses
@@ -68,6 +69,19 @@ export const useCoursesAndBoardsQuery = () => {
         queryFn: async () => {
             const { courses, boards } = await getCoursesAndBoards();
             return [...courses, ...boards];
+        },
+    };
+
+    return useQuery(queryOptions);
+};
+
+// 인기검색어
+export const usePopularSearchQuery = () => {
+    const queryOptions = {
+        queryKey: TEST_QUERY_KEY.popularSearch,
+        queryFn: async () => {
+            const data = await getPopularSearch();
+            return data;
         },
     };
 

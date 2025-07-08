@@ -1,5 +1,11 @@
 import { createClient } from "./client";
 
+const keywordQueries = [
+  { keyword: "김포", key: "gimpo" },
+  { keyword: "제주", key: "jeju" },
+  { keyword: "강원도", key: "gangwon" },
+];
+
 // courses
 export const getCourses = async() => {
     const supabase = await createClient();
@@ -315,4 +321,42 @@ export const getCoursesAndBoards = async() => {
     courses: coursesRes.data ?? [],
     boards: boardsRes.data ?? []
   };
+}
+
+export const getPopularSearch = async() => {
+  const results: Record<string, number> = {};
+  const supabase = await createClient();
+  for (const { keyword, key } of keywordQueries) {
+    const [coursesRes, boardsRes] = await Promise.all([
+      supabase
+        .from("courses")
+        .select(`
+          id, title, subtitle, description
+        `)
+        .or(`title.ilike.%${keyword}%,subtitle.ilike.%${keyword}%,description.ilike.%${keyword}%`),
+
+      supabase
+        .from("boards")
+        .select(`
+          id, title, subtitle, description
+        `)
+        .or(`title.ilike.%${keyword}%,subtitle.ilike.%${keyword}%,description.ilike.%${keyword}%`),
+    ]);
+
+    if (coursesRes.error) {
+      console.error(`Error fetching courses for ${keyword}:`, coursesRes.error);
+      results[`${key}_courses_count`] = 0;
+    } else {
+      results[`${key}_courses_count`] = coursesRes.data ? coursesRes.data.length : 0;
+    }
+
+    if (boardsRes.error) {
+      console.error(`Error fetching boards for ${keyword}:`, boardsRes.error);
+      results[`${key}_boards_count`] = 0;
+    } else {
+      results[`${key}_boards_count`] = boardsRes.data ? boardsRes.data.length : 0;
+    }
+  }
+
+  return results;
 }
