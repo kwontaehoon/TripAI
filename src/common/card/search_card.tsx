@@ -10,61 +10,61 @@ import {
   Sparkles,
   Star,
   ThumbsUp,
-  Users
+  Users,
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 import { comma } from "@/util/comma"
 
-const Search_card = ({filteredData}) => {
-    const router = useRouter()
+const Search_card = ({ filteredData, setSelectedFilter }) => {
+  const router = useRouter()
 
-    const searchParams = useSearchParams()
-    const [searchQuery] = useState(searchParams.get("q") || "")
-    
-    const handleResultClick = (result) => {
-        if (result.type === "ai-course") {
-          router.push(`/courses/details/${result.id}`)
-        } else {
-          router.push(`/board/details/${result.id}`)
-        }
-      }
-    
-      const getDifficultyColor = (difficulty: number) => {
-        if (difficulty < 2) {
-          return "bg-green-100 text-green-700"
-        } else if (difficulty < 4) {
-          return "bg-yellow-100 text-yellow-700"
-        } else if (difficulty < 6) {
-          return "bg-red-100 text-red-700"
-        } else {
-          return "bg-gray-100 text-gray-700"
-        }
-      }
-    
-      const getDifficultyText = (difficulty: number) => {
-        if (difficulty < 2) {
-          return "쉬움"
-        } else if (difficulty < 4) {
-          return "보통"
-        } else if (difficulty < 6) {
-          return "어려움"
-        }
-      }
-    
-      const getLevelColor = (level: string) => {
-        switch (level) {
-          case "Platinum":
-            return "bg-purple-100 text-purple-700"
-          case "Gold":
-            return "bg-yellow-100 text-yellow-700"
-          case "Silver":
-            return "bg-gray-100 text-gray-700"
-          default:
-            return "bg-blue-100 text-blue-700"
-        }
-      }
+  const searchParams = useSearchParams()
+  const [searchQuery] = useState(searchParams.get("q") || "")
+
+  const handleResultClick = (result) => {
+    if (result.type === "ai-course") {
+      router.push(`/courses/details/${result.id}`)
+    } else {
+      router.push(`/board/details/${result.id}`)
+    }
+  }
+
+  const getDifficultyColor = (difficulty: number) => {
+    if (difficulty < 2) {
+      return "bg-green-100 text-green-700"
+    } else if (difficulty < 4) {
+      return "bg-yellow-100 text-yellow-700"
+    } else if (difficulty < 6) {
+      return "bg-red-100 text-red-700"
+    } else {
+      return "bg-gray-100 text-gray-700"
+    }
+  }
+
+  const getDifficultyText = (difficulty: number) => {
+    if (difficulty < 2) {
+      return "쉬움"
+    } else if (difficulty < 4) {
+      return "보통"
+    } else if (difficulty < 6) {
+      return "어려움"
+    }
+  }
+
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case "Platinum":
+        return "bg-purple-100 text-purple-700"
+      case "Gold":
+        return "bg-yellow-100 text-yellow-700"
+      case "Silver":
+        return "bg-gray-100 text-gray-700"
+      default:
+        return "bg-blue-100 text-blue-700"
+    }
+  }
   return (
     <div>
       {/* Search Results */}
