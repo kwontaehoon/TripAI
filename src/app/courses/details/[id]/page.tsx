@@ -456,7 +456,7 @@ export default function CourseDetailsPage({
             <div className="space-y-3" data-oid="57_rw86">
               <button
                 onClick={() =>
-                  router.push(`/map?courseId=${courseDetailsData}`)
+                  router.push(`/map?courseId=${courseDetailsData[0].id}`)
                 }
                 className="
                                 w-full
