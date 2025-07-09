@@ -31,6 +31,10 @@ export const ai_courseText = [
         tags: ["자전거", "아라뱃길", "김포", "가족여행", "데이트"],
         highlights: ["아라뱃길의 아름다운 풍경", "시원한 강바람", "편안한 자전거 도로"],
         images: [1],
+        insights: [{
+            title: '',
+            insight: ''
+        }],
         reliability: "80%",
         bookmark: 200,
         badges: ["인기 코스", "추천 코스"],
@@ -227,8 +231,9 @@ export const ai_courseText = [
 // reliability - ai 신뢰도
 // bookmark - 북마크
 // badges - ai 분석 뱃지
+// insights
 
 
-// [{'id':1,'title':'','subtitle':'','description':'','author':'','author_type':'','duration':'', 'content':'', 'estimated_time':'약 12시간','rating':1,'views':1,'likes':1,'participants':'1-6명','difficulty':1,'total_cost':1,'total_locations':1,'total_comments':1,'total_distance':'30km', 'total_places':1, 'created_at':'2025-07-01','tags':[],'highlights':[],'images':[],'reliability':'80%','bookmark':1,'badges':[],'days':[{'day':1,'title':'','subTitle':'','total_distance':'70km','total_time':'5시간 30분', 'author_note': '', 'estimatedCost':1,'places':[{'id':1,'name':'','description':'','location_type':'출발지','stay':'30분','openTime':'05:00 ~ 20:00','entryFee':'성인 5,000원','location':'경기도 김포시 유현로 200','distance':'','recommend_reason':'','tips':[], 'latitude': 1.1111, 'longitude': 1.1111, 'rating_count':3.5,'review_count':1,'next_distance':'10km','next_time':'20분'}]}]}]
+// [{'id':1,'title':'','subtitle':'','description':'','author':'','author_type':'','duration':'', 'content':'', 'estimated_time':'약 12시간','rating':1,'views':1,'likes':1,'participants':'1-6명','difficulty':1,'total_cost':1,'total_locations':1,'total_comments':1,'total_distance':'30km', 'total_places':1, 'created_at':'2025-07-01','tags':[],'highlights':[], 'insights':[{ 'title': '', 'insight': ''}], 'images':[],'reliability':'80%','bookmark':1,'badges':[],'days':[{'day':1,'title':'','subTitle':'','total_distance':'70km','total_time':'5시간 30분', 'author_note': '', 'estimatedCost':1,'places':[{'id':1,'name':'','description':'','location_type':'출발지','stay':'30분','openTime':'05:00 ~ 20:00','entryFee':'성인 5,000원','location':'경기도 김포시 유현로 200','distance':'','recommend_reason':'','tips':[], 'latitude': 1.1111, 'longitude': 1.1111, 'rating_count':3.5,'review_count':1,'next_distance':'10km','next_time':'20분'}]}]}]
 
 

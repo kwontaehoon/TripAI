@@ -1,6 +1,6 @@
 "use client"
 
-import Card from '@/common/card/board_details_card'
+import Card from "@/common/card/board_details_card"
 import { useBoardDetailssQuery } from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
 import {
@@ -11,13 +11,18 @@ import {
   Send,
   Share2,
   Star,
-  ThumbsUp
+  ThumbsUp,
 } from "lucide-react"
 import { use, useState } from "react"
-import Skeleton from './skeleton'
+import Skeleton from "./skeleton"
+import Image from "next/image"
 
-export default function BoardDetailsPage({ params }: { params: Promise<{ id: number }>}) {
-  const { id } = use(params);
+export default function BoardDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: number }>
+}) {
+  const { id } = use(params)
   const [isLiked, setIsLiked] = useState(false)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [newComment, setNewComment] = useState("")
@@ -119,7 +124,9 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
     }
   }
 
-  return isLoading ? <Skeleton /> : (
+  return isLoading ? (
+    <Skeleton />
+  ) : (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="7o6rs87"
@@ -169,7 +176,10 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                 className="flex items-center space-x-3 mb-4 pb-4 border-b !border-gray-200"
                 data-oid="cly6160"
               >
-                <span className="text-2xl border w-8 h-8 rounded-full" data-oid="h37gdgx">
+                <span
+                  className="text-2xl border w-8 h-8 rounded-full"
+                  data-oid="h37gdgx"
+                >
                   {/* {boradDetailsData[0].author.avatar} */}
                 </span>
                 <div className="flex-1" data-oid="yqef21d">
@@ -194,7 +204,8 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                     </span>
                   </div>
                   <div className="text-sm text-gray-500" data-oid="x9c7r00">
-                    게시글 0개 • 팔로워{" 12"}명 • {boradDetailsData[0].created_at}
+                    게시글 0개 • 팔로워{" 12"}명 •{" "}
+                    {boradDetailsData[0].created_at}
                     {/* {boradDetailsData[0].author.posts} */}
                     {/* {boradDetailsData[0].author.followers} */}
                   </div>
@@ -233,7 +244,9 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                   data-oid="nrur02n"
                 >
                   <MessageCircle className="w-4 h-4 mr-1" data-oid="3j_2_3j" />
-                  <span data-oid="5nzuinf">{boradDetailsData[0].total_comments}</span>
+                  <span data-oid="5nzuinf">
+                    {boradDetailsData[0].total_comments}
+                  </span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
@@ -317,54 +330,62 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                 className="prose prose-sm sm:prose max-w-none"
                 data-oid="o5-:rk6"
               >
-                {boradDetailsData[0].content.split("\n").map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className="mb-4 text-gray-700 leading-relaxed"
-                    data-oid="uey53sz"
-                  >
-                    {paragraph}
-                  </p>
-                ))}
+                {boradDetailsData[0].content
+                  .split("\n")
+                  .map((paragraph, index) => (
+                    <p
+                      key={index}
+                      className="mb-4 text-gray-700 leading-relaxed"
+                      data-oid="uey53sz"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
               </div>
             </div>
 
             {/* Photos */}
-            {boradDetailsData[0].images && boradDetailsData[0].images.length > 0 && (
-              <div
-                className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
-                data-oid="wbf9zj1"
-              >
-                <h3
-                  className="text-lg font-semibold text-gray-900 mb-4"
-                  data-oid="mg7t2t4"
-                >
-                  여행 사진
-                </h3>
+            {boradDetailsData[0].board_images &&
+              boradDetailsData[0].board_images.length > 0 && (
                 <div
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                  data-oid="n7uke8i"
+                  className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
+                  data-oid="wbf9zj1"
                 >
-                  {boradDetailsData[0].images.map((photo, index) => (
-                    <div
-                      key={index}
-                      className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
-                      data-oid="lev5pmk"
-                    >
+                  <h3
+                    className="text-lg font-semibold text-gray-900 mb-4"
+                    data-oid="mg7t2t4"
+                  >
+                    여행 사진
+                  </h3>
+                  <div
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                    data-oid="n7uke8i"
+                  >
+                    {boradDetailsData[0].board_images.map((photo, index) => (
                       <div
-                        className="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center"
-                        data-oid="an0srn-"
+                        key={index}
+                        className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
+                        data-oid="lev5pmk"
                       >
-                        <Camera
+                        <div
+                          className="w-full h-full flex items-center justify-center relative"
+                          data-oid="an0srn-"
+                        >
+                          <Image
+                            src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${photo.image_url}`}
+                            alt=""
+                            fill
+                          />
+                          {/* <Camera
                           className="w-8 h-8 text-white"
                           data-oid="h9:jrwq"
-                        />
+                        /> */}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Day Selector */}
             <div
@@ -598,7 +619,10 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                 작성자 정보
               </h3>
               <div className="text-center" data-oid="2_i4s3k">
-                <span className="text-4xl mb-3 block m-auto border w-8 h-8 rounded-full" data-oid=".wn-buf">
+                <span
+                  className="text-4xl mb-3 block m-auto border w-8 h-8 rounded-full"
+                  data-oid=".wn-buf"
+                >
                   {/* {boradDetailsData[0].author.avatar} */}
                 </span>
                 <h4
@@ -614,8 +638,9 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                   {/* {boradDetailsData[0].author.level} */}level
                 </span>
                 <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
-                  {/* {boradDetailsData[0].author.bio} */}
-                  두 아이와 함께하는 가족여행 전문가입니다. 아이들이 즐거워하는 여행지를 찾아다녀요!
+                  {/* {boradDetailsData[0].author.bio} */}두 아이와 함께하는
+                  가족여행 전문가입니다. 아이들이 즐거워하는 여행지를
+                  찾아다녀요!
                 </p>
                 <div
                   className="grid grid-cols-3 gap-4 text-center mb-4"
@@ -626,8 +651,7 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                       className="font-semibold text-gray-900"
                       data-oid="v_pf3hq"
                     >
-                      {/* {boradDetailsData[0].author.posts} */}
-                      0
+                      {/* {boradDetailsData[0].author.posts} */}0
                     </div>
                     <div className="text-xs text-gray-500" data-oid="35kbqh1">
                       게시글
@@ -638,8 +662,7 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                       className="font-semibold text-gray-900"
                       data-oid="hvo7tug"
                     >
-                      {/* {boradDetailsData[0].author.followers} */}
-                      0
+                      {/* {boradDetailsData[0].author.followers} */}0
                     </div>
                     <div className="text-xs text-gray-500" data-oid="j2sbkzo">
                       팔로워
@@ -650,8 +673,7 @@ export default function BoardDetailsPage({ params }: { params: Promise<{ id: num
                       className="font-semibold text-gray-900"
                       data-oid="4rocb71"
                     >
-                      {/* {boradDetailsData[0].author.following} */}
-                      0
+                      {/* {boradDetailsData[0].author.following} */}0
                     </div>
                     <div className="text-xs text-gray-500" data-oid="_0pgcn0">
                       팔로잉

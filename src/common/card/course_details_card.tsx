@@ -41,7 +41,7 @@ const Course_details_card = ({ data, selectedDay }) => {
                           className="text-sm sm:text-base text-gray-600"
                           data-oid="07y.6g."
                         >
-                          {day.subTitle}
+                          {day.subtitle}
                         </p>
                       </div>
                       <div

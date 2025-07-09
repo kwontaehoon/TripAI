@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate } from "@/service/supabase";
 import { uploadMultipleImages } from "@/service/supabase/storage";
+import { getGeminiAi } from "@/service/gemini";
 
 const TEST_QUERY_KEY = {
     courses: ["courses"],
@@ -27,7 +28,7 @@ export const useCoursesQuery = () => {
 // course_details
 export const useCourseDetailsQuery = (params: number) => {
     const queryOptions = {
-        queryKey: TEST_QUERY_KEY.courseDetails,
+        queryKey: [TEST_QUERY_KEY.courseDetails, params],
         queryFn: async () => {
             const { data } = await getCourseDetails(params);
             return data;
@@ -53,7 +54,7 @@ export const useBoardsQuery = () => {
 // board_details
 export const useBoardDetailssQuery = (params: number) => {
     const queryOptions = {
-        queryKey: TEST_QUERY_KEY.boardDetails,
+        queryKey: [TEST_QUERY_KEY.boardDetails, params],
         queryFn: async () => {
             const { data } = await getBoardDetails(params);
             return data;
@@ -106,6 +107,18 @@ export const useUploadImagesToBucketMutation = (files: FileList | File[]) => {
         mutationFn: async () => {
             const results = await uploadMultipleImages(files);
             return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// ai-recommend 생성
+export const useAiRecommendMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const { data } = await getGeminiAi(params);
+            console.log("data: ", data)
+            return data;
         },
     };
     return useMutation(mutationOptions);

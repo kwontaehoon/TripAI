@@ -31,7 +31,7 @@ const Board_details_card = ({data, selectedDay}) => {
                   className="text-sm text-gray-600"
                   data-oid="w62cdp6"
                 >
-                  {day.subTitle}
+                  {day.subtitle}
                 </p>
               </div>
               <div
@@ -160,7 +160,7 @@ const Board_details_card = ({data, selectedDay}) => {
                           />
 
                           <span data-oid="0:uh2vj">
-                            체류 시간: {place.stay}
+                            체류 시간: {place.stay ? place.stay : '-'}
                           </span>
                         </div>
                       </div>
@@ -182,7 +182,7 @@ const Board_details_card = ({data, selectedDay}) => {
                               className="text-sm font-medium text-blue-700"
                               data-oid="i5-j4mm"
                             >
-                              {data[0].author}의 후기
+                              {data[0].author}님의 후기
                             </span>
                           </div>
                           <div
@@ -206,12 +206,12 @@ const Board_details_card = ({data, selectedDay}) => {
                           className="text-sm text-blue-600"
                           data-oid="h4gr:l0"
                         >
-                          작성자 리뷰
+                          -
                         </p>
                       </div>
 
                       {/* Next Location Info */}
-                      {place.next_distance && (
+                      {place.next_distance !== "km" && place.next_distance !== "" && (
                         <div
                           className="flex items-center space-x-2 text-sm text-green-600 bg-green-50 rounded-lg px-3 py-2"
                           data-oid="or1m1:b"

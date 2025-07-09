@@ -1,5 +1,3 @@
-'use client'
-
 import MainPage from '@/app/main/page'
 // import { SessionProvider } from 'next-auth/react'
 

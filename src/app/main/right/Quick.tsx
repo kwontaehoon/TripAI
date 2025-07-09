@@ -13,10 +13,16 @@ const Quick = () => {
 
   for (const board of boards) {
     ratingSum += board.rating
+    if(!board.reliability){
+      continue
+    }
     reliabilitySum += Number(board.reliability.replace("%", ""))
   }
   for (const course of courses) {
     ratingSum += course.rating
+    if(!course.reliability){
+      continue
+    }
     reliabilitySum += Number(course.reliability.replace("%", ""))
   }
 

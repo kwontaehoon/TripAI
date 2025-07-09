@@ -1,26 +1,30 @@
 "use client"
 
-import Card from '@/common/card/course_details_card'
+import Card from "@/common/card/course_details_card"
 import { useCourseDetailsQuery } from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
 import { getBadgeColor } from "@/util/styles"
-import {
-  Download,
-  Heart,
-  MapPin,
-  Sparkles
-} from "lucide-react"
+import { Download, Heart, MapPin, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { use, useState } from "react"
-import Skeleton from './skeleton'
+import Skeleton from "./skeleton"
+import Image from "next/image"
 
-export default function CourseDetailsPage({ params }: { params: Promise<{ id: number }>}) {
+export default function CourseDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: number }>
+}) {
   const router = useRouter()
-  const { id } = use(params);
+  const { id } = use(params)
   const [isLiked, setIsLiked] = useState(false)
   const [selectedDay, setSelectedDay] = useState(1)
 
-  const { data: courseDetailsData, isSuccess, isLoading } = useCourseDetailsQuery(id)
+  const {
+    data: courseDetailsData,
+    isSuccess,
+    isLoading,
+  } = useCourseDetailsQuery(id)
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -30,7 +34,9 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: nu
     alert("코스 다운로드 기능은 준비 중입니다.")
   }
 
-  return isLoading ? <Skeleton /> : (
+  return isLoading ? (
+    <Skeleton />
+  ) : (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="u-qd:ag"
@@ -190,6 +196,49 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: nu
               ></div>
             </div>
 
+            {/* Photos */}
+            {courseDetailsData[0].course_images &&
+              courseDetailsData[0].course_images.length > 0 && (
+                <div
+                  className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
+                  data-oid="wbf9zj1"
+                >
+                  <h3
+                    className="text-lg font-semibold text-gray-900 mb-4"
+                    data-oid="mg7t2t4"
+                  >
+                    여행 사진
+                  </h3>
+                  <div
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                    data-oid="n7uke8i"
+                  >
+                    {courseDetailsData[0].course_images.map((photo, index) => (
+                      <div
+                        key={index}
+                        className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
+                        data-oid="lev5pmk"
+                      >
+                        <div
+                          className="w-full h-full flex items-center justify-center relative"
+                          data-oid="an0srn-"
+                        >
+                          <Image
+                            src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${photo.image_url}`}
+                            alt=""
+                            fill
+                          />
+                          {/* <Camera
+                          className="w-8 h-8 text-white"
+                          data-oid="h9:jrwq"
+                        /> */}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
             {/* Day Selector */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
@@ -219,7 +268,9 @@ export default function CourseDetailsPage({ params }: { params: Promise<{ id: nu
               </div>
             </div>
 
-            {isSuccess && <Card data={courseDetailsData} selectedDay={selectedDay}/>}
+            {isSuccess && (
+              <Card data={courseDetailsData} selectedDay={selectedDay} />
+            )}
           </div>
 
           {/* Right Column - Summary & Info */}

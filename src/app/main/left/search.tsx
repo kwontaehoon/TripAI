@@ -37,32 +37,33 @@ const SearchPage = () => {
         완벽한 여행 코스가 필요할 때,
       </h2>
       <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
-        <span className="text-blue-600">&ldquo;TripAI&rdquo;</span>가 함께할게요.
+        <span className="text-blue-600">&ldquo;TripAI&rdquo;</span>가
+        함께할게요.
       </h2>
 
       {/* search bar */}
       <form onSubmit={handleSearch}>
-      <div className="relative mb-6">
-        <div
-          className="
+        <div className="relative mb-6">
+          <div
+            className="
           flex items-center
           p-2
           rounded-2xl border !border-gray-200
           bg-white shadow-lg"
-        >
-          <div className="flex-1 flex items-center space-x-3 px-4">
-            <Search className="w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="어떤 여행을 계획하고 계신가요?"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 outline-none text-gray-700 placeholder-gray-400"
-            />
-          </div>
-          <div className="flex items-center space-x-2">
-            <button
-              className={`
+          >
+            <div className="flex-1 flex items-center space-x-3 px-4">
+              <Search className="w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="어떤 여행을 계획하고 계신가요?"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 outline-none text-gray-700 placeholder-gray-400"
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                className={`
                 p-2
                 rounded-xl
                 ${
@@ -70,30 +71,29 @@ const SearchPage = () => {
                     ? "bg-red-100 text-red-600"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
-              onClick={() => setIsListening(!isListening)}
-            >
-              <Mic className="w-5 h-5" />
-            </button>
-            <button
-              className="
+                onClick={() => setIsListening(!isListening)}
+              >
+                <Mic className="w-5 h-5" />
+              </button>
+              <button
+                className="
               p-2
               rounded-xl
               text-white
               bg-gradient-to-r from-blue-600 to-purple-600
               hover:shadow-lg"
-            >
-              <Send className="w-5 h-5" 
-                onClick={()=> ""} />
-            </button>
+              >
+                <Send className="w-5 h-5" onClick={() => ""} />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       </form>
 
-      <div className="flex">
+      <div className="flex relative items-center">
         <button
           className="
-        flex flex-1 items-center
+        flex items-center
         space-x-2 
         text-blue-600 font-medium
         hover:text-blue-700"
@@ -103,7 +103,7 @@ const SearchPage = () => {
         </button>
         <button
           onClick={() => setModalUiState({ ...modalUiState, aiInput: true })}
-          className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all"
+          className="flex items-center absolute right-0 space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all"
           data-oid="p3hzuw8"
         >
           <Zap className="w-4 h-4" data-oid="r8wgtbh" />
