@@ -93,6 +93,10 @@ export default function AIRecommendationModal() {
     { id: "luxury", name: "50만원 이상", desc: "럭셔리 여행" },
   ]
 
+  useEffect(() => {
+    localStorage.removeItem("aiList")
+  }, [])
+
   // 스텝이 변경될 때마다 스크롤을 맨 위로 이동
   useEffect(() => {
     if (modalContentRef.current) {
