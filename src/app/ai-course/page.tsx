@@ -18,11 +18,11 @@ import {
 import { comma } from "@/util/comma"
 
 export default function AICourse() {
-  const aiCourseData = JSON.parse(localStorage.getItem("aiList"))
+  const [aiCourseData, setAiCourseData] = useState([]);
   const searchParams = useSearchParams()
   const router = useRouter()
   const [isRegenerating, setIsRegenerating] = useState(false)
-  const [selectedDay, setSelectedDay] = useState(1);
+  const [selectedDay, setSelectedDay] = useState(1)
   console.log("aiCourseData: ", aiCourseData)
 
   // URL 파라미터에서 사용자 선택 정보 가져오기
@@ -32,6 +32,13 @@ export default function AICourse() {
   const travelers = searchParams.get("travelers") || ""
   const purpose = searchParams.get("purpose") || ""
   const budget = searchParams.get("budget") || ""
+
+  useEffect(() => {
+    const stored = localStorage.getItem("aiList");
+    if (stored) {
+      setAiCourseData(JSON.parse(stored));
+    }
+  }, []);
 
   // 선택 정보를 한국어로 변환
   const getDisplayText = (type: string, value: string) => {
@@ -100,10 +107,12 @@ export default function AICourse() {
     alert("링크가 복사되었습니다!")
   }
 
-  const selectedDayData = aiCourseData[0]?.course_days?.find((day) => day.day === selectedDay);
+  const selectedDayData = aiCourseData[0]?.course_days?.find(
+    (day) => day.day === selectedDay,
+  )
   console.log("selectedDayData: ", selectedDayData)
 
-  return (
+  return aiCourseData.length !== 0 &&(
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="lch9c6i"
@@ -446,35 +455,35 @@ export default function AICourse() {
                               </span>
                             </div>
                             {place.openTime && (
-                                  <div
-                                    className="flex items-center"
-                                    data-oid="l6u2qv5"
-                                  >
-                                    <Calendar
-                                      className="w-4 h-4 mr-1 flex-shrink-0"
-                                      data-oid="py6bken"
-                                    />
-                                    <span data-oid="b-z0gm-">
-                                      운영시간: {place.openTime}
-                                    </span>
-                                  </div>
-                                )}
-                                {place.entryFee && (
-                                  <div
-                                    className="flex items-center"
-                                    data-oid=".-_jpe6"
-                                  >
-                                    <span
-                                      className="w-4 h-4 mr-1 flex-shrink-0"
-                                      data-oid="hggkyvn"
-                                    >
-                                      💰
-                                    </span>
-                                    <span data-oid="530p4ly">
-                                      입장료: {place.entryFee}
-                                    </span>
-                                  </div>
-                                )}
+                              <div
+                                className="flex items-center"
+                                data-oid="l6u2qv5"
+                              >
+                                <Calendar
+                                  className="w-4 h-4 mr-1 flex-shrink-0"
+                                  data-oid="py6bken"
+                                />
+                                <span data-oid="b-z0gm-">
+                                  운영시간: {place.openTime}
+                                </span>
+                              </div>
+                            )}
+                            {place.entryFee && (
+                              <div
+                                className="flex items-center"
+                                data-oid=".-_jpe6"
+                              >
+                                <span
+                                  className="w-4 h-4 mr-1 flex-shrink-0"
+                                  data-oid="hggkyvn"
+                                >
+                                  💰
+                                </span>
+                                <span data-oid="530p4ly">
+                                  입장료: {place.entryFee}
+                                </span>
+                              </div>
+                            )}
                           </div>
 
                           {/* Next Location Info */}
@@ -611,9 +620,7 @@ export default function AICourse() {
             {/* Action Buttons */}
             <div className="space-y-3" data-oid="2q7pyfu">
               <button
-                onClick={() =>
-                  router.push(`/map?courseId=ai-course`)
-                }
+                onClick={() => router.push(`/map?courseId=ai-course`)}
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                 data-oid="zh-gahp"
               >
