@@ -47,7 +47,7 @@ export const nextjsAxios = axios.create({
 })
 
 export const aiAxios = axios.create({
-  baseURL: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API}`,
+  baseURL: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.NEXT_PUBLIC_GEMINI_API}`,
   timeout: 100000,
   // headers: {
   //   "x-Requested-With": "XMLHttpRequest",

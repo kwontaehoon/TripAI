@@ -1,20 +1,17 @@
 "use client"
 
-import { useBoardCreateMutation, useUploadImagesToBucketMutation } from "@/hooks/supabase/dev"
-import { loadingModalAtom } from "@/store/ai"
-import { useAtom } from "jotai"
 import { Camera, Clock, Eye, MapPin, Plus, Save, X } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 interface Place {
   id: number
   name: string
-  location: string
-  stay: string
+  address: string
+  duration: string
   description: string
-  location_type: string
+  type: string
 }
 
 interface FormData {
@@ -23,11 +20,11 @@ interface FormData {
   description: string
   duration: string
   participants: string
-  total_cost: string
+  totalCost: string
   difficulty: string
-  board_tags: string[]
-  board_highlights: string[]
-  board_places: Place[]
+  tags: string[]
+  highlights: string[]
+  places: Place[]
 }
 
 export default function BoardWritePage() {
@@ -38,11 +35,11 @@ export default function BoardWritePage() {
     description: "",
     duration: "",
     participants: "",
-    total_cost: "",
+    totalCost: "",
     difficulty: "쉬움",
-    board_tags: [],
-    board_highlights: [],
-    board_places: [],
+    tags: [],
+    highlights: [],
+    places: [],
   })
   console.log("formData: ", formData)
 
@@ -50,39 +47,15 @@ export default function BoardWritePage() {
   const [newHighlight, setNewHighlight] = useState("")
   const [newPlace, setNewPlace] = useState({
     name: "",
-    location: "",
-    stay: "",
+    address: "",
+    duration: "",
     description: "",
-    location_type: "관광지",
+    type: "관광지",
     day: 1,
   })
   const [file, setFile] = useState<File[]>([])
   const [images, setImages] = useState<string[]>([])
-  const [_, setLoadingAtom] = useAtom(loadingModalAtom)
-
-  const { mutateAsync: uploadImagesToBucket, data: uploadImages, isSuccess: uploadImagesIsSuccess } = useUploadImagesToBucketMutation(file)
-
-  const { mutateAsync: boardCreate, isSuccess: boardCreateIsSuccess, data: boardCreateData } = useBoardCreateMutation(Object.assign(formData, { board_images: uploadImages}))
-
-  useEffect(() => {
-    if(uploadImagesIsSuccess){
-      boardCreate()
-    }
-  }, [uploadImages])
-
-  useEffect(() => {
-    if(boardCreateData && !boardCreateData?.success){
-      alert("오류가 발생했습니다. 다시 시도해주세요.")
-      setLoadingAtom({ isOpen: false, message: "" })
-      return;
-    }
-    if(boardCreateIsSuccess && boardCreateData?.success){
-      console.log("boardCreateData: ", boardCreateData)
-      setLoadingAtom({ isOpen: false, message: "" })
-      alert("게시글이 저장되었습니다!")
-      router.push("/board")
-    }
-  }, [boardCreateIsSuccess])
+  console.log("images: ", images)
 
   const difficultyOptions = ["쉬움", "보통", "어려움"]
   const participantOptions = ["혼자", "커플", "가족", "친구들", "단체"]
@@ -116,10 +89,10 @@ export default function BoardWritePage() {
   }
 
   const addTag = () => {
-    if (newTag.trim() && !formData.board_tags.includes(newTag.trim())) {
+    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
       setFormData((prev) => ({
         ...prev,
-        board_tags: [...prev.board_tags, newTag.trim()],
+        tags: [...prev.tags, newTag.trim()],
       }))
       setNewTag("")
     }
@@ -128,18 +101,18 @@ export default function BoardWritePage() {
   const removeTag = (tagToRemove: string) => {
     setFormData((prev) => ({
       ...prev,
-      board_tags: prev.board_tags.filter((tag) => tag !== tagToRemove),
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
     }))
   }
 
   const addHighlight = () => {
     if (
       newHighlight.trim() &&
-      !formData.board_highlights.includes(newHighlight.trim())
+      !formData.highlights.includes(newHighlight.trim())
     ) {
       setFormData((prev) => ({
         ...prev,
-        board_highlights: [...prev.board_highlights, newHighlight.trim()],
+        highlights: [...prev.highlights, newHighlight.trim()],
       }))
       setNewHighlight("")
     }
@@ -148,24 +121,24 @@ export default function BoardWritePage() {
   const removeHighlight = (highlightToRemove: string) => {
     setFormData((prev) => ({
       ...prev,
-      board_highlights: prev.board_highlights.filter(
+      highlights: prev.highlights.filter(
         (highlight) => highlight !== highlightToRemove,
       ),
     }))
   }
 
   const addPlace = () => {
-    if (newPlace.name.trim() && newPlace.location.trim()) {
+    if (newPlace.name.trim() && newPlace.address.trim()) {
       setFormData((prev) => ({
         ...prev,
-        board_places: [...prev.board_places, { ...newPlace, id: Date.now() }],
+        places: [...prev.places, { ...newPlace, id: Date.now() }],
       }))
       setNewPlace({
         name: "",
-        location: "",
-        stay: "",
+        address: "",
+        duration: "",
         description: "",
-        location_type: "관광지",
+        type: "관광지",
         day: 1,
       })
     }
@@ -174,20 +147,16 @@ export default function BoardWritePage() {
   const removePlace = (placeId: number) => {
     setFormData((prev) => ({
       ...prev,
-      places: prev.board_places.filter((place) => place.id !== placeId),
+      places: prev.places.filter((place) => place.id !== placeId),
     }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // 게시글 저장 로직
-    if(formData.board_places.length === 0){
-      alert("여행 장소를 추가해주세요.")
-    }else {
-      console.log("Form data:", formData)
-      setLoadingAtom({isOpen: true, message: "게시글을 저장하고 있습니다..."})
-      uploadImagesToBucket(file)
-    }
+    console.log("Form data:", formData)
+    alert("게시글이 저장되었습니다!")
+    // router.push("/board")
   }
 
   const handlePreview = () => {
@@ -341,9 +310,9 @@ export default function BoardWritePage() {
                   </label>
                   <input
                     type="text"
-                    value={formData.total_cost}
+                    value={formData.totalCost}
                     onChange={(e) =>
-                      handleInputChange("total_cost", e.target.value)
+                      handleInputChange("totalCost", e.target.value)
                     }
                     placeholder="₩500,000"
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
@@ -402,9 +371,9 @@ export default function BoardWritePage() {
                 </button>
               </div>
 
-              {formData.board_tags.length > 0 && (
+              {formData.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {formData.board_tags.map((tag, index) => (
+                  {formData.tags.map((tag, index) => (
                     <span
                       key={index}
                       className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm flex items-center space-x-2"
@@ -452,9 +421,9 @@ export default function BoardWritePage() {
                 </button>
               </div>
 
-              {formData.board_highlights.length > 0 && (
+              {formData.highlights.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {formData.board_highlights.map((highlight, index) => (
+                  {formData.highlights.map((highlight, index) => (
                     <span
                       key={index}
                       className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm flex items-center space-x-2"
@@ -524,11 +493,11 @@ export default function BoardWritePage() {
                     유형 *
                   </label>
                   <select
-                    value={newPlace.location_type}
+                    value={newPlace.type}
                     onChange={(e) =>
                       setNewPlace((prev) => ({
                         ...prev,
-                        location_type: e.target.value,
+                        type: e.target.value,
                       }))
                     }
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
@@ -588,11 +557,11 @@ export default function BoardWritePage() {
                   </label>
                   <input
                     type="text"
-                    value={newPlace.location}
+                    value={newPlace.address}
                     onChange={(e) =>
                       setNewPlace((prev) => ({
                         ...prev,
-                        location: e.target.value,
+                        address: e.target.value,
                       }))
                     }
                     placeholder="주소를 입력하세요"
@@ -609,11 +578,11 @@ export default function BoardWritePage() {
                   </label>
                   <input
                     type="text"
-                    value={newPlace.stay}
+                    value={newPlace.duration}
                     onChange={(e) =>
                       setNewPlace((prev) => ({
                         ...prev,
-                        stay: e.target.value,
+                        duration: e.target.value,
                       }))
                     }
                     placeholder="예: 2시간"
@@ -655,14 +624,14 @@ export default function BoardWritePage() {
             </div>
 
             {/* Places List - Grouped by Day */}
-            {formData?.board_places?.length > 0 && (
+            {formData.places.length > 0 && (
               <div className="space-y-6" data-oid="_8_gbt8">
                 <h3 className="font-medium text-gray-900" data-oid="y2ri0f8">
-                  추가된 장소 ({formData?.board_places?.length}개)
+                  추가된 장소 ({formData.places.length}개)
                 </h3>
                 {getDayOptions().map((day) => {
-                  const dayPlaces = formData?.board_places?.filter(
-                    (place) => place?.day === day,
+                  const dayPlaces = formData.places.filter(
+                    (place) => place.day === day,
                   )
                   if (dayPlaces.length === 0) return null
 
@@ -686,14 +655,14 @@ export default function BoardWritePage() {
                           className="text-sm text-gray-500"
                           data-oid={`day-count-${day}`}
                         >
-                          {dayPlaces?.length}개 장소
+                          {dayPlaces.length}개 장소
                         </span>
                       </div>
                       <div
                         className="space-y-3 ml-4"
                         data-oid={`day-places-${day}`}
                       >
-                        {dayPlaces?.map((place, index) => (
+                        {dayPlaces.map((place, index) => (
                           <div
                             key={place.id}
                             className="border !border-gray-200 rounded-lg p-4"
@@ -717,18 +686,18 @@ export default function BoardWritePage() {
                                   className="font-medium text-gray-900"
                                   data-oid="pr8xy7p"
                                 >
-                                  {place?.name}
+                                  {place.name}
                                 </h4>
                                 <span
                                   className="bg-gray-100 text-gray-600 px-2 py-1 rounded-md text-xs"
                                   data-oid="ey6ce:-"
                                 >
-                                  {place?.type}
+                                  {place.type}
                                 </span>
                               </div>
                               <button
                                 type="button"
-                                onClick={() => removePlace(place?.id)}
+                                onClick={() => removePlace(place.id)}
                                 className="text-red-500 hover:text-red-700"
                                 data-oid="dv4cah7"
                               >
@@ -748,9 +717,9 @@ export default function BoardWritePage() {
                                   data-oid="o8nku_7"
                                 />
 
-                                <span data-oid="4bsuz73">{place?.location}</span>
+                                <span data-oid="4bsuz73">{place.address}</span>
                               </div>
-                              {place?.stay && (
+                              {place.duration && (
                                 <div
                                   className="flex items-center"
                                   data-oid="7a-f_-c"
@@ -761,13 +730,13 @@ export default function BoardWritePage() {
                                   />
 
                                   <span data-oid="rn4qe31">
-                                    체류 시간: {place?.stay}
+                                    체류 시간: {place.duration}
                                   </span>
                                 </div>
                               )}
-                              {place?.description && (
+                              {place.description && (
                                 <p className="mt-2" data-oid="qjk:.jy">
-                                  {place?.description}
+                                  {place.description}
                                 </p>
                               )}
                             </div>

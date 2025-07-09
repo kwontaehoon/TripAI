@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch } from "@/service/supabase";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate } from "@/service/supabase";
+import { uploadMultipleImages } from "@/service/supabase/storage";
 
 const TEST_QUERY_KEY = {
     courses: ["courses"],
@@ -75,7 +76,7 @@ export const useCoursesAndBoardsQuery = () => {
     return useQuery(queryOptions);
 };
 
-// 인기검색어
+// 인기 검색어
 export const usePopularSearchQuery = () => {
     const queryOptions = {
         queryKey: TEST_QUERY_KEY.popularSearch,
@@ -86,4 +87,26 @@ export const usePopularSearchQuery = () => {
     };
 
     return useQuery(queryOptions);
+};
+
+// board 생성
+export const useBoardCreateMutation = (params: object) => {
+    const mutationOptions = {
+        mutationFn: async () => {
+            const { success, error, newBoardId } = await postBoardCreate(params);
+            return { success, error, newBoardId };
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// uploadImages to bucket
+export const useUploadImagesToBucketMutation = (files: FileList | File[]) => {
+    const mutationOptions = {
+        mutationFn: async () => {
+            const results = await uploadMultipleImages(files);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
 };
