@@ -1,10 +1,13 @@
-# TripAI - AI 여행 코스 추천 서비스
-
+# 🤖 TripAI README
 
 <p><strong>AI가 제안하는 완벽한 여행 코스</strong></p>
 <p>
-  👉 <a href="https://www.tongtongball.com">www.tongtongball.com</a> 에서 지금 체험해보세요!
+  👉 <a href="https://www.tongtongball.com" target="_blank">www.tongtongball.com</a> 에서 지금 체험해보세요!
 </p>
+
+---
+
+![README img](./public/img/trip-ai.png)
 
 ---
 
@@ -18,36 +21,38 @@
 
 ## ✨ 주요 기능
 
-- 🧠 **Gemini AI 기반 여행 코스 생성 기능**  
+- **Gemini AI 기반 여행 코스 생성 기능**  
 
-- 🗺️ **Google Map API 연동**
+- **Google Maps API 연동**
 
-- 🧭 **Google Map 기반 여행 경로 시각화**  
+- **Google Maps 기반 여행 경로 시각화**
 
-- 🎞️ **GSAP 애니메이션**  
+- **Supabase 기반 서버리스 환경**
 
-- 💻📱 **PC / Mobile 반응형 UI**  
+- **PC / Mobile 반응형 UI**  
 
-- ☁️ **Supabase 기반 서버리스 환경**  
+- **GSAP 애니메이션**
 
 ---
 
 ## 🛠 기술 스택
 
 ### 🧩 Frontend
-- **Next.js**
-- **TypeScript**
-- **TailwindCSS**
+- **Next.js** - 15.3.4
+- **TypeScript** - 5.x
+- **TailwindCSS** - 3.4.1
+- **Jotai** - 2.12.0
+- **TanStack Query** - 5.62.10
 - **GSAP**
 - **Lucide Icons**
-- **Jotai**
-- **TanStack Query**
 
 ### 🔧 Backend
-- **Supabase**
+- **Supabase** (PostgreSQL + Storage)
 - **Vercel**
-- **AWS Route 53**
+- **AWS Route 53** (도메인 관리)
 
 ### 🎨 Design Tools
 - **Onlook**
 - **Figma**
+
+---
