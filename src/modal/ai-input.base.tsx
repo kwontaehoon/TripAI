@@ -1,5 +1,5 @@
 'use client'
-import { ai_response_func } from '@/common/ai/ai_response'
+import { ai_boardResponse_func } from '@/common/ai/ai_response'
 import Calendar from '@/func/Calendar'
 import { useGeminiAiMutation } from '@/hooks/springboot/dev'
 import { aiResponseAtom, modalUiStateAtom } from '@/store/ai'
@@ -86,7 +86,7 @@ const AiInput = () => {
             </div>
             <div className='w-full h-12 w-h-center rounded-xl border ml-2 cursor' 
               onClick={async() => {
-                await geminiAimutation(ai_response_func(info))
+                await geminiAimutation(ai_boardResponse_func(info))
               }}
             >등록</div>
           </div>

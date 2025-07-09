@@ -186,10 +186,14 @@ export default function MapPage() {
 
     useEffect(() => {
         const courseId = searchParams.get('courseId');
+        console.log("courseId: ", courseId)
         if (courseId) {
             const selectedCourse = mapData;
             if (selectedCourse) {
                 setCourse(selectedCourse);
+            }
+            if(courseId === "ai-course"){
+                setCourse(JSON.parse(localStorage.getItem("aiList")))
             }
         }
     }, [mapData]);

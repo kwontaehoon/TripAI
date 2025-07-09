@@ -3,7 +3,7 @@ import { getGeminiAi } from "../gemini";
 import { createClient } from "./client";
 import moment from 'moment';
 import { GeminiBoardResponse } from "./type";
-import { ai_response_func } from "@/common/ai/ai_response";
+import { ai_boardResponse_func } from "@/common/ai/ai_response";
 
 const supabase = await createClient();
 
@@ -508,7 +508,7 @@ export const postBoardCreate = async(
 
   try {
     // 1. Gemini AI로부터 데이터 가져오기
-    const aiResponse = await getGeminiAi(ai_response_func(assignBoard));
+    const aiResponse = await getGeminiAi(ai_boardResponse_func(assignBoard));
 
     // AI 응답 텍스트를 클리닝하고 JSON 파싱
     const cleanedJsonString = cleanJson(aiResponse.data.candidates[0].content.parts[0].text);

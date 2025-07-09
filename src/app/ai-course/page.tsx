@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import {
   MapPin,
@@ -8,19 +8,22 @@ import {
   Star,
   Car,
   Sparkles,
-  Mountain,
+  Calendar,
   Download,
+  Mountain,
   Share2,
   Heart,
   RefreshCw,
 } from "lucide-react"
-import { ai_courseText } from "@/common/text/ai"
 import { comma } from "@/util/comma"
 
 export default function AICourse() {
+  const aiCourseData = JSON.parse(localStorage.getItem("aiList"))
   const searchParams = useSearchParams()
   const router = useRouter()
   const [isRegenerating, setIsRegenerating] = useState(false)
+  const [selectedDay, setSelectedDay] = useState(1);
+  console.log("aiCourseData: ", aiCourseData)
 
   // URL 파라미터에서 사용자 선택 정보 가져오기
   const destination = searchParams.get("destination") || ""
@@ -97,6 +100,9 @@ export default function AICourse() {
     alert("링크가 복사되었습니다!")
   }
 
+  const selectedDayData = aiCourseData[0]?.course_days?.find((day) => day.day === selectedDay);
+  console.log("selectedDayData: ", selectedDayData)
+
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
@@ -133,10 +139,10 @@ export default function AICourse() {
                   className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 leading-tight"
                   data-oid="mlgqfl_"
                 >
-                  {ai_courseText[0].title}
+                  {aiCourseData[0].title}
                 </h2>
                 <p className="text-lg text-gray-600 mb-6" data-oid="2mx33p4">
-                  {ai_courseText[0].subtitle}
+                  {aiCourseData[0].subtitle}
                 </p>
 
                 {/* User Selections */}
@@ -277,136 +283,220 @@ export default function AICourse() {
               ></div>
             </div>
 
-            {/* Course Timeline */}
+            {/* Day Selector */}
             <div
-              className="bg-white rounded-2xl p-6 border !border-gray-200"
-              data-oid="lud-9ut"
+              className="bg-white rounded-2xl p-6 border !border-gray-200 mb-6"
+              data-oid="4717ro6"
             >
               <h3
-                className="text-lg font-semibold text-gray-900 mb-6"
-                data-oid="ygn--28"
+                className="text-lg font-semibold text-gray-900 mb-4"
+                data-oid="hx.4ac5"
               >
-                AI 추천 상세 일정
+                일정 선택
               </h3>
-              <div className="space-y-6" data-oid="y60va29">
-                {ai_courseText[0].days[0].places.map((place, index) => (
-                  <div key={place.id} className="relative" data-oid="_er4ys1">
-                    {/* Timeline Line */}
-                    {index < ai_courseText[0].days[0].places.length - 1 && (
-                      <div
-                        className="absolute left-6 top-16 w-0.5 h-20 bg-gray-200"
-                        data-oid="bgd0kbk"
-                      ></div>
-                    )}
-
-                    <div className="flex space-x-4" data-oid="bx4_vk5">
-                      {/* Icon */}
-                      <div
-                        className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600"
-                        data-oid="b-el4t3"
-                      >
-                        <Mountain />
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0" data-oid="xpb:i7f">
-                        <div
-                          className="flex items-start justify-between mb-2"
-                          data-oid="0zckzjs"
-                        >
-                          <h4
-                            className="text-lg font-semibold text-gray-900"
-                            data-oid=".cowdhu"
-                          >
-                            {place.name}
-                          </h4>
-                          <span
-                            className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700"
-                            data-oid="y25oe6n"
-                          >
-                            {place.location_type}
-                          </span>
-                        </div>
-
-                        <p className="text-gray-600 mb-3" data-oid="gh6sj7m">
-                          {place.description}
-                        </p>
-
-                        {/* AI Reasoning */}
-                        <div
-                          className="bg-blue-50 border !border-blue-200 rounded-lg p-3 mb-3"
-                          data-oid="hsu_lge"
-                        >
-                          <div
-                            className="flex items-center space-x-2 mb-1"
-                            data-oid="pj5-ir8"
-                          >
-                            <Sparkles
-                              className="w-4 h-4 text-blue-600"
-                              data-oid="9c.rc9o"
-                            />
-
-                            <span
-                              className="text-sm font-medium text-blue-700"
-                              data-oid="k5ka7c."
-                            >
-                              AI 추천 이유
-                            </span>
-                          </div>
-                          <p
-                            className="text-sm text-blue-600"
-                            data-oid="n8.g4cg"
-                          >
-                            {place.recommend_reason}
-                          </p>
-                        </div>
-
-                        <div
-                          className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-500 mb-3"
-                          data-oid="bd9erfz"
-                        >
-                          <div className="flex items-center" data-oid="-4nrjif">
-                            <MapPin
-                              className="w-4 h-4 mr-1"
-                              data-oid="6gjk.xq"
-                            />
-
-                            <span className="truncate" data-oid="7hf_dg5">
-                              {place.location}
-                            </span>
-                          </div>
-                          <div className="flex items-center" data-oid="500i3-q">
-                            <Clock
-                              className="w-4 h-4 mr-1"
-                              data-oid="8c3q.iq"
-                            />
-
-                            <span data-oid="v4wjooe">
-                              체류 시간: {place.stay}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Next Location Info */}
-                        {place.next_distance && (
-                          <div
-                            className="flex items-center space-x-2 text-sm text-purple-600 bg-purple-50 rounded-lg px-3 py-2"
-                            data-oid="2bpmz-k"
-                          >
-                            <Car className="w-4 h-4" data-oid="jybpc9d" />
-
-                            <span data-oid="lzqzou6">
-                              다음 장소까지 {place.next_distance} • 소요시간{" "}
-                              {place.next_time}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+              <div className="flex gap-2 overflow-x-auto" data-oid="1lb45jp">
+                {aiCourseData[0].course_days.map((day) => (
+                  <button
+                    key={day.day}
+                    onClick={() => setSelectedDay(day.day)}
+                    className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedDay === day.day
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                    data-oid="gon_ic2"
+                  >
+                    Day {day.day}
+                  </button>
                 ))}
               </div>
             </div>
+
+            {/* Selected Day Details */}
+            {selectedDayData && (
+              <div
+                className="bg-white rounded-2xl p-6 border !border-gray-200"
+                data-oid="7sjr6c8"
+              >
+                <div
+                  className="flex items-center justify-between mb-6"
+                  data-oid="1gll:24"
+                >
+                  <div data-oid="dtxa6ch">
+                    <h3
+                      className="text-xl font-bold text-gray-900"
+                      data-oid="daz-_0x"
+                    >
+                      Day {selectedDayData.day}: {selectedDayData.title}
+                    </h3>
+                    <p className="text-base text-gray-600" data-oid="rraf9.o">
+                      {selectedDayData.subtitle}
+                    </p>
+                  </div>
+                  <div
+                    className="text-right text-sm text-gray-500"
+                    data-oid="vohun:g"
+                  >
+                    <div data-oid="avc5tbe">
+                      {selectedDayData.total_distance}
+                    </div>
+                    <div data-oid=":c4vc33">{selectedDayData.total_time}</div>
+                  </div>
+                </div>
+
+                {/* Places Timeline */}
+                <div className="space-y-6" data-oid=".-y2c2p">
+                  {selectedDayData.course_places.map((place, index) => (
+                    <div key={place.id} className="relative" data-oid=".gkjly2">
+                      {/* Timeline Line */}
+                      {index < selectedDayData.course_places.length - 1 && (
+                        <div
+                          className="absolute left-6 top-16 w-0.5 h-20 bg-gray-200"
+                          data-oid="43fut44"
+                        ></div>
+                      )}
+
+                      <div className="flex space-x-4" data-oid="t.0hxmc">
+                        {/* Icon */}
+                        <div
+                          className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600"
+                          data-oid="-2dll_:"
+                        >
+                          <Mountain />
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 min-w-0" data-oid="b1i2rrj">
+                          <div
+                            className="flex items-start justify-between mb-2"
+                            data-oid="aequ147"
+                          >
+                            <h4
+                              className="text-lg font-semibold text-gray-900"
+                              data-oid="qws976o"
+                            >
+                              {place.name}
+                            </h4>
+                            <span
+                              className="px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700"
+                              data-oid="6jk4zl1"
+                            >
+                              {place.location_type}
+                            </span>
+                          </div>
+
+                          <p className="text-gray-600 mb-3" data-oid="9p7mi-o">
+                            {place.description}
+                          </p>
+
+                          {/* AI Reasoning */}
+                          <div
+                            className="bg-blue-50 border !border-blue-200 rounded-lg p-3 mb-3"
+                            data-oid="oqxw0nz"
+                          >
+                            <div
+                              className="flex items-center space-x-2 mb-1"
+                              data-oid="go4mk_:"
+                            >
+                              <Sparkles
+                                className="w-4 h-4 text-blue-600"
+                                data-oid="6wsxi.:"
+                              />
+                              <span
+                                className="text-sm font-medium text-blue-700"
+                                data-oid="ux__nb_"
+                              >
+                                AI 추천 이유
+                              </span>
+                            </div>
+                            <p
+                              className="text-sm text-blue-600"
+                              data-oid="67guazn"
+                            >
+                              {place.recommend_reason}
+                            </p>
+                          </div>
+
+                          <div
+                            className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-500 mb-3"
+                            data-oid="pjst3gt"
+                          >
+                            <div
+                              className="flex items-center"
+                              data-oid="zed0.b."
+                            >
+                              <MapPin
+                                className="w-4 h-4 mr-1"
+                                data-oid="1c08t.:"
+                              />
+                              <span className="truncate" data-oid=".9098t_">
+                                {place.location}
+                              </span>
+                            </div>
+                            <div
+                              className="flex items-center"
+                              data-oid="_k7w0hk"
+                            >
+                              <Clock
+                                className="w-4 h-4 mr-1"
+                                data-oid="09or2o9"
+                              />
+                              <span data-oid="9a63rjl">
+                                체류 시간: {place.stay}
+                              </span>
+                            </div>
+                            {place.openTime && (
+                                  <div
+                                    className="flex items-center"
+                                    data-oid="l6u2qv5"
+                                  >
+                                    <Calendar
+                                      className="w-4 h-4 mr-1 flex-shrink-0"
+                                      data-oid="py6bken"
+                                    />
+                                    <span data-oid="b-z0gm-">
+                                      운영시간: {place.openTime}
+                                    </span>
+                                  </div>
+                                )}
+                                {place.entryFee && (
+                                  <div
+                                    className="flex items-center"
+                                    data-oid=".-_jpe6"
+                                  >
+                                    <span
+                                      className="w-4 h-4 mr-1 flex-shrink-0"
+                                      data-oid="hggkyvn"
+                                    >
+                                      💰
+                                    </span>
+                                    <span data-oid="530p4ly">
+                                      입장료: {place.entryFee}
+                                    </span>
+                                  </div>
+                                )}
+                          </div>
+
+                          {/* Next Location Info */}
+                          {place.next_distance && (
+                            <div
+                              className="flex items-center space-x-2 text-sm text-purple-600 bg-purple-50 rounded-lg px-3 py-2"
+                              data-oid="577umnd"
+                            >
+                              <Car className="w-4 h-4" data-oid="78zt5z8" />
+                              <span data-oid="5iq5_qm">
+                                다음 장소까지 {place.next_distance} • 소요시간{" "}
+                                {place.next_time}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Column - Summary & Actions */}
@@ -431,7 +521,7 @@ export default function AICourse() {
                     총 장소
                   </span>
                   <span className="font-medium" data-oid="csy:ayx">
-                    {ai_courseText[0].total_places}개
+                    {aiCourseData[0].total_places}개
                   </span>
                 </div>
                 <div
@@ -442,7 +532,7 @@ export default function AICourse() {
                     예상 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="bebxtu:">
-                    {comma(ai_courseText[0].total_cost)}
+                    {comma(aiCourseData[0].total_cost)}
                   </span>
                 </div>
                 <div
@@ -459,7 +549,7 @@ export default function AICourse() {
                     />
 
                     <span className="font-medium" data-oid=".-58epd">
-                      {ai_courseText[0].rating}
+                      {aiCourseData[0].rating}
                     </span>
                   </div>
                 </div>
@@ -474,7 +564,7 @@ export default function AICourse() {
                     className="font-medium text-green-600"
                     data-oid="6cthx_a"
                   >
-                    {ai_courseText[0].reliability}
+                    {aiCourseData[0].reliability}
                   </span>
                 </div>
               </div>
@@ -496,7 +586,7 @@ export default function AICourse() {
                 AI 인사이트
               </h3>
               <div className="space-y-3 text-sm" data-oid="yvkv1.7">
-                {/* {ai_courseText[0].ai_insight.map((insight, idx) => {
+                {aiCourseData[0].course_ai_insights.map((insight, idx) => {
                   return (
                     <div
                       key={idx}
@@ -514,14 +604,16 @@ export default function AICourse() {
                       </div>
                     </div>
                   )
-                })} */}
+                })}
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="space-y-3" data-oid="2q7pyfu">
               <button
-                onClick={() => router.push(`/map?courseId=ai-generated`)}
+                onClick={() =>
+                  router.push(`/map?courseId=ai-course`)
+                }
                 className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                 data-oid="zh-gahp"
               >
