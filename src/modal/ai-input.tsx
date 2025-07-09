@@ -33,18 +33,13 @@ export default function AIRecommendationModal() {
     purpose: "",
     budget: "",
   })
-  console.log("formData: ", formData)
   const [isCustomDestination, setIsCustomDestination] = useState(false)
 
   const [_, setAiResponse] = useAtom(aiResponseAtom)
 
   const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
 
-  const {
-    mutateAsync: aiRecommend,
-    data,
-    isSuccess,
-  } = useAiRecommendMutation()
+  const { mutateAsync: aiRecommend, data, isSuccess } = useAiRecommendMutation()
 
   const destinations = [
     { id: "jeju", name: "제주도", emoji: "🌴" },
@@ -110,13 +105,18 @@ export default function AIRecommendationModal() {
       const cleanedJsonString = cleanJson(
         data.candidates[0].content.parts[0].text,
       )
+
       try {
         const jsonData = JSON.parse(cleanedJsonString)
         setAiResponse(jsonData)
         localStorage.setItem("aiList", JSON.stringify(jsonData))
       } catch (error) {
-        console.error("JSON 변환 실패:", error)
+        console.log(error)
+        alert("오류가 발생했습니다. 다시 시도해주세요.")
+        router.push("/")
+        return
       }
+
       // 생성된 코스 페이지로 이동
       const destinationValue = isCustomDestination
         ? formData.customDestination
@@ -145,9 +145,9 @@ export default function AIRecommendationModal() {
         purpose: "",
         budget: "",
       })
-      
-    //   setModalUiState({ ...modalUiState, aiInput: false })
-    //   setIsCustomDestination(false)
+
+      //   setModalUiState({ ...modalUiState, aiInput: false })
+      //   setIsCustomDestination(false)
       router.push(`/ai-course?${params.toString()}`)
     }
   }, [data])
@@ -641,8 +641,12 @@ export default function AIRecommendationModal() {
                   {purposes.map((purpose) => (
                     <button
                       key={purpose.id}
-                      onClick={() =>
-                        setFormData({ ...formData, purpose: purpose.name })
+                      onClick={() => {
+                        if(!isGenerating){
+                          setFormData({ ...formData, purpose: purpose.name })
+                        } 
+                      }
+                        
                       }
                       className={`p-4 rounded-xl border-2 transition-all text-center ${
                         formData.purpose === purpose.name
@@ -676,8 +680,12 @@ export default function AIRecommendationModal() {
                   {budgets.map((budget) => (
                     <button
                       key={budget.id}
-                      onClick={() =>
-                        setFormData({ ...formData, budget: budget.name })
+                      onClick={() => {
+                        if(!isGenerating){
+                          setFormData({ ...formData, budget: budget.name })
+                        }
+                        
+                      }
                       }
                       className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                         formData.budget === budget.name
