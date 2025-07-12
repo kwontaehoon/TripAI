@@ -22,7 +22,7 @@ const SearchPage = () => {
     <div
       className="
     relative overflow-hidden
-    p-8 mb-8
+    p-4 md:p-8 mb-8
     rounded-3xl
     bg-yellow-100 bg-gradient-to-br from-gray-100 to-gray-200 "
     >

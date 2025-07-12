@@ -62,7 +62,7 @@ const Page = () => {
       className="
         bg-#f8fafc
         justify-center
-        py-28 mb-4 space-x-0
+        px-4 lg:px-0 py-28 mb-4 space-x-0
         lg:flex lg:mb-12 lg:space-x-12"
     >
       {/* <div className="py-28">

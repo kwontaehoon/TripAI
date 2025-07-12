@@ -12,11 +12,16 @@ import {
   Star,
   ThumbsUp,
   Users,
-  Search
+  Search,
 } from "lucide-react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
-const Board_card = ({ filteredBoards, setSelectedFilter, setQuickedFilter }) => {
+const Board_card = ({
+  filteredBoards,
+  setSelectedFilter,
+  setQuickedFilter,
+}) => {
   const router = useRouter()
 
   const getDifficultyText = (difficulty: number) => {
@@ -87,6 +92,15 @@ const Board_card = ({ filteredBoards, setSelectedFilter, setQuickedFilter }) => 
                   className="h-48 md:h-full bg-gradient-to-r from-blue-400 to-purple-500 relative"
                   data-oid="8fr2jpa"
                 >
+                  {post.board_images.length === 0 ? (
+                    ""
+                  ) : (
+                    <Image
+                      src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${post.board_images[0].image_url}`}
+                      alt=""
+                      fill
+                    />
+                  )}
                   <div
                     className="absolute top-3 sm:top-4 left-3 sm:left-4"
                     data-oid="w-tp_l1"
@@ -160,9 +174,10 @@ const Board_card = ({ filteredBoards, setSelectedFilter, setQuickedFilter }) => 
                   data-oid="1qonzi3"
                 >
                   <span
-                    className="text-lg sm:text-xl border w-8 h-8 rounded-full"
+                    className="text-lg sm:text-xl w-8 h-8 rounded-full"
                     data-oid="aqxkzhp"
                   >
+                    🍜
                     {/* {post.author.avatar} */}
                   </span>
                   <div className="min-w-0" data-oid="o7zv6:o">

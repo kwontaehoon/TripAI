@@ -1,3 +1,4 @@
+"use client"
 import { comma } from "@/util/comma"
 import {
   ArrowRight,
@@ -8,12 +9,12 @@ import {
   Share2,
   Star,
   Search,
-  Users
+  Users,
 } from "lucide-react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
-
   const router = useRouter()
 
   const handleCourseClick = (courseId: number) => {
@@ -57,6 +58,11 @@ const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
                 className="h-48 md:h-full bg-gradient-to-r from-blue-400 to-purple-500 relative"
                 data-oid="-8470dr"
               >
+                {course.course_images.length === 0 ? '' : <Image
+                  src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${course.course_images[0].image_url}`}
+                  alt=""
+                  fill
+                />}
                 <div className="absolute top-4 left-4" data-oid="h6-0_oq">
                   <span
                     className="bg-white text-blue-600 px-3 py-1 rounded-full text-sm font-semibold"
@@ -185,18 +191,16 @@ const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
                   주요 명소
                 </h4>
                 <div className="flex flex-wrap gap-1" data-oid="idilg5w">
-                  {course.course_highlights.map(
-                    (highlight, index: number) => (
-                      <span
-                        key={index}
-                        className="text-xs text-gray-600"
-                        data-oid="6ib44xu"
-                      >
-                        {highlight.highlight}
-                        {index < course.course_highlights.length - 1 && " • "}
-                      </span>
-                    ),
-                  )}
+                  {course.course_highlights.map((highlight, index: number) => (
+                    <span
+                      key={index}
+                      className="text-xs text-gray-600"
+                      data-oid="6ib44xu"
+                    >
+                      {highlight.highlight}
+                      {index < course.course_highlights.length - 1 && " • "}
+                    </span>
+                  ))}
                 </div>
               </div>
 
