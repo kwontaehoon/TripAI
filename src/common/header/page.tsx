@@ -15,13 +15,13 @@ const Page = () => {
 
   const [lastScrollY, setLastScrollY] = useState(0)
 
-  const [aiImodalUiStatenput] = useAtom(modalUiStateAtom)
-
-  const shouldDisableScroll = Object.values(aiImodalUiStatenput).some(
-    (state) => state,
-  )
+  const [aiImodalUiStateModal] = useAtom(modalUiStateAtom)
 
   const [introModal] = useAtom(introModalAtom)
+
+  const shouldDisableScroll = Object.values(aiImodalUiStateModal).some(
+    (state) => state,
+  )
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +57,7 @@ const Page = () => {
     }
   }, [shouldDisableScroll])
 
-  if(introModal) return
+  if(introModal || aiImodalUiStateModal.aiInput) return
 
   return (
       <header
