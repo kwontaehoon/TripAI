@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import { useCourseDetailsQuery } from '@/hooks/supabase/dev';
 import { comma } from '@/util/comma';
+import { useAtom } from 'jotai';
+import { loadingModalAtom } from '@/store/ai';
 
 interface Place {
     id: number;
@@ -75,8 +77,10 @@ export default function MapPage() {
     const [course, setCourse] = useState<Course | null>(null);
     const [selectedDay, setSelectedDay] = useState<number>(1);
     const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+    const [loadingAtom, setLoadingAtom] = useAtom(loadingModalAtom)
 
     const { data: mapData, isLoading } = useCourseDetailsQuery(id)
+    console.log("mapData: ", mapData)
 
     // 커스텀 마커 생성 함수
     const createCustomMarker = (number: number, color: string) => {
@@ -185,12 +189,13 @@ export default function MapPage() {
     };
 
     useEffect(() => {
+        setLoadingAtom({isOpen: true, message: "코스를 불러오고 있습니다..."})
         const courseId = searchParams.get('courseId');
-        console.log("courseId: ", courseId)
         if (courseId) {
             const selectedCourse = mapData;
             if (selectedCourse) {
                 setCourse(selectedCourse);
+                setLoadingAtom({isOpen: false, message: ""})
             }
             if(courseId === "ai-course"){
                 setCourse(JSON.parse(localStorage.getItem("aiList")))
@@ -274,7 +279,7 @@ export default function MapPage() {
 
             const marker = new AdvancedMarkerElement({
                 map: mapInstance,
-                position: { lat: place?.latitude, lng: place?.longitude },
+                position: { lat: place.latitude, lng: place.longitude },
                 title: place.name,
                 content: createCustomMarker(index + 1, markerColor),
             });
@@ -357,10 +362,10 @@ export default function MapPage() {
         );
     }
 
-    if (!course) {
+    if (!course || loadingAtom.isOpen) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
+                {/* <div className="text-center">
                     <div className="text-gray-400 text-xl mb-4">📍</div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-2">
                         코스를 찾을 수 없습니다
@@ -372,7 +377,7 @@ export default function MapPage() {
                     >
                         코스 목록으로 돌아가기
                     </button>
-                </div>
+                </div> */}
             </div>
         );
     }
@@ -381,9 +386,9 @@ export default function MapPage() {
 
     return isLoading ? <></> : (
         <div className="min-h-screen bg-gray-50 py-28">
-            <div className="flex h-[calc(100vh-81px)]">
+            <div className="block lg:flex h-full lg:h-[calc(100vh-81px)]">
                 {/* Map Section */}
-                <div className="flex-1 relative">
+                <div className="flex-1 w-full h-[500px] lg:h-full relative">
                     {mapLoading && (
                         <div className="absolute inset-0 bg-gray-100 flex items-center justify-center z-10">
                             <div className="text-center bg-white rounded-2xl p-8 shadow-xl">
@@ -396,7 +401,7 @@ export default function MapPage() {
                     <div ref={mapRef} className="w-full h-full" />
 
                     {/* Map Controls */}
-                    <div className="absolute top-4 left-4 bg-white rounded-xl shadow-lg p-4 z-20">
+                    {/* <div className="absolute top-4 left-4 bg-white rounded-xl shadow-lg p-4 z-20">
                         <h3 className="font-bold text-gray-800 mb-3 text-sm flex items-center">
                             <Navigation className="w-4 h-4 mr-2 text-blue-600" />
                             지도 컨트롤
@@ -439,7 +444,7 @@ export default function MapPage() {
                                 현재 위치로
                             </button>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Legend */}
                     <div className="absolute bottom-4 right-4 bg-white rounded-xl shadow-lg p-4 z-20">
@@ -475,7 +480,7 @@ export default function MapPage() {
                 </div>
 
                 {/* Schedule Section */}
-                <div className="w-96 bg-white border-l !border-gray-200 overflow-y-auto">
+                <div className="w-full lg:w-96 bg-white border-l !border-gray-200 overflow-y-auto">
                     <div className="p-6">
                         {/* Course Info */}
                         <div className="mb-6">

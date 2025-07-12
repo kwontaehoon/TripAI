@@ -22,6 +22,7 @@ import { PopularSearchDataType } from "./type"
 export default function SearchPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const query = searchParams.get("q") || ""
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "")
   const [isListening, setIsListening] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("전체")
@@ -54,9 +55,8 @@ export default function SearchPage() {
   // const searchTypes = ["전체", "AI 추천 코스", "사용자 코스", "여행지"]
 
   useEffect(() => {
-    const query = searchParams.get("q") || ""
     setSearchQuery((prev) => (prev !== query ? query : prev))
-  }, [searchParams])
+  }, [query])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -64,6 +64,18 @@ export default function SearchPage() {
       router.push("/search")
     } else router.push(`/search?q=${encodeURIComponent(searchValue.trim())}`)
   }
+
+  useEffect(() => {
+    const currentSearch = JSON.parse(
+      localStorage.getItem("currentSearch") || "[]",
+    )
+    const updatedSearch = currentSearch.filter((item: string) => item !== query)
+    updatedSearch.push(query)
+    if (updatedSearch.length > 5) {
+      updatedSearch.shift()
+    }
+    localStorage.setItem("currentSearch", JSON.stringify(updatedSearch))
+  }, [query])
 
   useEffect(() => {
     if (!isSuccess) return
@@ -89,9 +101,7 @@ export default function SearchPage() {
     setFilteredData(filtered)
   }, [isSuccess, selectedFilter, searchQuery, coursesAndBoardsData])
 
-  const handleCount = (
-    keyword: string
-  ) => {
+  const handleCount = (keyword: string) => {
     if (!popularSearch) {
       return 0
     }

@@ -1,18 +1,25 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
-const currentSearch = () => {
-  const recentSearches = [
-    "제주도 3박 4일 가족여행",
-    "서울 데이트 코스",
-    "부산 맛집 투어",
-    "경주 역사 탐방",
-  ]
-  return (
+const CurrentSearch = () => {
+  const router = useRouter()
+  const [currentSearchData, setCurrentSearchData] = useState([])
+  console.log("currentSearchData: ", currentSearchData)
+
+  useEffect(() => {
+    const currentSearch = JSON.parse(
+      localStorage.getItem("currentSearch") || "[]",
+    )
+    setCurrentSearchData(currentSearch)
+  }, [])
+
+  return currentSearchData.length === 0 ? '' : (
     <div className="bg-white rounded-2xl p-6 border !border-gray-200">
       <h3 className="font-semibold text-gray-900 mb-4">최근 검색어</h3>
       <div className="space-y-2">
-        {recentSearches.map((search, index) => (
+        {currentSearchData.reverse().map((search, index) => (
           <button
+            onClick={() => router.push(`/search?q=${search}`)}
             key={index}
             className="
             w-full 
@@ -28,4 +35,4 @@ const currentSearch = () => {
   )
 }
 
-export default currentSearch
+export default CurrentSearch
