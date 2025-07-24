@@ -13,7 +13,9 @@ export const getGooglePlaceText = (params: object) => googlePlaceTextAxios.post(
 });
 
 // googlePlace nearby
-export const getGooglePlaceNearby = (params: object) => googlePlaceNearbyAxios.post(GOOGLE_PLACE_URL.nearby, params);
+export const getGooglePlaceNearby = (params: object) => {
+    return googlePlaceNearbyAxios.post(GOOGLE_PLACE_URL.nearby, params);
+}
 
 // googlePlace details
 export const getGooglePlaceDetails = (params: string) => googlePlaceDetailsAxios.get(`${GOOGLE_PLACE_URL.details}${params}`);
