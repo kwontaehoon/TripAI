@@ -1,0 +1,816 @@
+'use client';
+
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Loader } from '@googlemaps/js-api-loader';
+import {
+    Search,
+    Star,
+    X,
+    Navigation,
+    List,
+    Map,
+    LayoutDashboard,
+    Route,
+    Sparkles,
+    ArrowRight,
+    Calendar,
+} from 'lucide-react';
+import { useGooglePlaceNearbyMutation } from '@/hooks/springboot/dev';
+import { google_place_nearby } from '@/common/google/nearby';
+import Skeleton from './skeleton'
+
+interface TouristSpot {
+    id: string;
+    name: string;
+    lat: number;
+    lng: number;
+    categories: string[];
+    rating: number;
+    reviewCount: number;
+    description: string;
+}
+
+interface PlaylistItem {
+    id: string;
+    spot: TouristSpot;
+    order: number;
+}
+
+const CLUSTER_ZOOM_THRESHOLD = 12;
+
+// 작은 드래그 가능한 관광지 카드
+const DraggableSpotCard = ({ spot }: { spot: TouristSpot }) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'spot',
+        item: { spot },
+        collect: (monitor) => ({
+            isDragging: monitor.canDrag(),
+        }),
+    }));
+
+    return (
+        <div
+            ref={drag}
+            className={`group h-[100px] bg-white rounded-lg border !border-gray-200 cursor-move transition-all hover:shadow-md hover:!border-blue-300 flex-shrink-0 ${
+                isDragging ? 'opacity-50 shadow-lg scale-105' : ''
+            }`}
+            data-oid="4:8ei:q"
+        >
+            <div className="p-3 h-full flex flex-col justify-between" data-oid="-xi-8yw">
+                <div className="flex-1 min-h-0" data-oid="soxxfq7">
+                    <h4
+                        className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors text-sm truncate"
+                        data-oid="wmy2.9r"
+                    >
+                        {spot.displayName.text}
+                    </h4>
+                    {/* <p
+                        className="text-xs text-gray-600 mt-1 line-clamp-2 leading-tight"
+                        data-oid="ahvli31"
+                    >
+                        {spot.description}
+                    </p> */}
+                </div>
+
+                <div className="flex items-center justify-between mt-2" data-oid="kjgp-yp">
+                    <div className="flex items-center" data-oid="x:qk50e">
+                        <Star className="w-3 h-3 text-yellow-400 mr-1" data-oid="4r52dx4" />
+                        <span className="text-xs font-medium text-gray-700" data-oid="x4r1z9a">
+                            {spot.rating}
+                        </span>
+                    </div>
+                    <div className="flex gap-1" data-oid="8y7.oht">
+                        {spot.types.slice(0, 1).map((category, idx) => (
+                            <span
+                                key={idx}
+                                className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full"
+                                data-oid="pb-zs_3"
+                            >
+                                {category}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
+                <div
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                    data-oid="-rlm7n2"
+                >
+                    <div
+                        className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center"
+                        data-oid="ewegd76"
+                    >
+                        <Navigation className="w-3 h-3 text-blue-600" data-oid="yn7lq.m" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// 플레이리스트 아이템
+const PlaylistItem = ({
+    item,
+    index,
+    onRemove,
+}: {
+    item: PlaylistItem;
+    index: number;
+    onRemove: (id: string) => void;
+}) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+        type: 'playlist-item',
+        item: { id: item.id, index },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    }));
+
+    const [, drop] = useDrop(() => ({
+        accept: 'playlist-item',
+        hover: () => {},
+    }));
+
+    console.log("item: ", item)
+    return (
+        <div
+            ref={(node) => drag(drop(node))}
+            className={`group p-4 bg-gradient-to-r from-white to-blue-50 rounded-xl border-2 border-dashed !border-blue-200 transition-all ${
+                isDragging ? 'opacity-50 scale-105' : 'hover:shadow-md hover:!border-blue-400'
+            }`}
+            data-oid="5c9j63x"
+        >
+            <div className="flex items-center justify-between" data-oid="s2u-ojh">
+                <div className="flex items-center space-x-4 flex-1 min-w-0" data-oid="moa1w.h">
+                    <div
+                        className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg"
+                        data-oid="r3y81f."
+                    >
+                        {index + 1}
+                    </div>
+                    <div className="flex-1 min-w-0" data-oid="-kdw4jn">
+                        <h4 className="font-semibold text-gray-900 truncate" data-oid="8ubi.lq">
+                            {item.spot.displayName.text}
+                        </h4>
+                        <div className="flex items-center mt-1 space-x-2" data-oid="lwpxw2r">
+                            <Star className="w-3 h-3 text-yellow-400" data-oid=":g04.zh" />
+                            <span className="text-sm text-gray-600" data-oid="l40jbnv">
+                                {item.spot.rating}
+                            </span>
+                            <div className="flex gap-1" data-oid="bibunmk">
+                                {item.spot.types.slice(0, 1).map((category, idx) => (
+                                    <span
+                                        key={idx}
+                                        className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full"
+                                        data-oid="blwir_f"
+                                    >
+                                        {category}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    onClick={() => onRemove(item.id)}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50"
+                    data-oid="6tabvbi"
+                >
+                    <X className="w-4 h-4" data-oid=":81o3y2" />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+// 드롭 존
+const PlaylistDropZone = ({
+    children,
+    onDrop,
+}: {
+    children: React.ReactNode;
+    onDrop: (spot: TouristSpot) => void;
+}) => {
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: 'spot',
+        drop: (item: { spot: TouristSpot }) => {
+            onDrop(item.spot);
+        },
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+        }),
+    }));
+
+    return (
+        <div
+            ref={drop}
+            className={`transition-all duration-300 ${
+                isOver
+                    ? 'bg-gradient-to-br from-blue-50 to-purple-50 border-2 !border-blue-300 border-dashed rounded-lg p-2'
+                    : ''
+            }`}
+            data-oid="6ya-mr7"
+        >
+            {children}
+        </div>
+    );
+};
+
+function WWPageContent() {
+    const mapRef = useRef<HTMLDivElement>(null);
+    const skipIdleRef =useRef(false)
+    const [map, setMap] = useState<google.maps.Map | null>(null);
+    const [markerClusterer, setMarkerClusterer] = useState<any>(null)
+    const [currentZoom, setCurrentZoom] = useState(8);
+    const [isLoading, setIsLoading] = useState(true);
+    const { mutateAsync: nearbyMutation, data: nearBydata } =
+    useGooglePlaceNearbyMutation()
+  const [touristSpots, setTouristSpots] = useState([])
+  console.log("touristSpots: ", touristSpots, touristSpots? '123' : '456')
+
+    // 플레이리스트
+    const [myPlaylists, setMyPlaylists] = useState<PlaylistItem[]>([]);
+
+
+    useEffect(() => {
+        if (nearBydata) {
+          setTouristSpots(nearBydata.places)
+        }
+      }, [nearBydata])
+    
+      // 지도 초기화
+      useEffect(() => {
+        let isMounted = true
+        let skipNextIdle = false // 줌 변경 후 idle 이벤트는 무시할 플래그
+    
+        const initMap = async () => {
+          const loader = new Loader({
+            apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API || "",
+            version: "weekly",
+          })
+    
+          try {
+            await loader.load()
+    
+            if (!isMounted || !mapRef.current) return
+    
+            const mapInstance = new google.maps.Map(mapRef.current, {
+              center: { lat: 37.5665, lng: 126.978 },
+              zoom: 12,
+              styles: [
+                {
+                  featureType: "poi",
+                  elementType: "labels",
+                  stylers: [{ visibility: "off" }],
+                },
+              ],
+            })
+            nearbyMutation(google_place_nearby(37.5665, 126.978))
+    
+            setMap(mapInstance)
+            setCurrentZoom(8)
+    
+            // 줌 변경 시 다음 idle 이벤트를 건너뜀
+            mapInstance.addListener("zoom_changed", () => {
+              const zoom = mapInstance.getZoom()
+              if (zoom !== undefined) {
+                setCurrentZoom(zoom)
+                skipNextIdle = true
+              }
+            })
+    
+            // 지도 움직임 종료(idle) 시 API 호출
+            mapInstance.addListener("idle", () => {
+              if (skipNextIdle) {
+                skipNextIdle = false
+                return // 줌 변경 후 발생한 idle은 무시
+              }
+              if(skipIdleRef.current){
+                return
+              }
+    
+              const center = mapInstance.getCenter()
+              if (center) {
+                const lat = center.lat()
+                const lng = center.lng()
+                console.log("지도 중심 좌표:", lat, lng)
+                nearbyMutation(google_place_nearby(lat, lng))
+              }
+            })
+    
+            setIsLoading(false)
+          } catch (error) {
+            console.error("Google Maps 로드 실패:", error)
+            if (isMounted) {
+              setIsLoading(false)
+            }
+          }
+        }
+    
+        initMap()
+    
+        return () => {
+          isMounted = false
+        }
+      }, [])
+    
+      // 마커 및 클러스터 업데이트
+      useEffect(() => {
+        if (!map) return
+    
+        let isMounted = true
+        let currentMarkers: google.maps.Marker[] = []
+    
+        const updateMarkers = async () => {
+          try {
+            // 기존 클러스터러 제거
+            if (markerClusterer) {
+              markerClusterer.clearMarkers()
+              setMarkerClusterer(null)
+            }
+    
+            // 기존 개별 마커들 제거
+            currentMarkers.forEach((marker) => {
+              marker.setMap(null)
+            })
+            currentMarkers = []
+    
+            if (currentZoom >= CLUSTER_ZOOM_THRESHOLD) {
+              // 높은 줌 레벨: 개별 마커 표시
+              currentMarkers = touristSpots.map((spot) => {
+                const marker = new google.maps.Marker({
+                  position: {
+                    lat: spot.location.latitude,
+                    lng: spot.location.longitude,
+                  },
+                  map: map,
+                  title: spot.displayName.text,
+                  //   icon: {
+                  //     path: google.maps.SymbolPath.CIRCLE,
+                  //     scale: 10,
+                  //     // fillColor: getCategoryColor(spot.category),
+                  //     fillOpacity: 0.8,
+                  //     strokeColor: "#ffffff",
+                  //     strokeWeight: 2,
+                  //   },
+                })
+    
+                // 정보창 생성
+                const infoWindow = new google.maps.InfoWindow({
+                  content: `
+                    <div class="p-4 max-w-[250px]">
+                      <h3 class="font-bold text-lg text-gray-900 mb-3">${spot.displayName.text}</h3>
+                      
+                      <div class="flex flex-wrap gap-1 mb-3">
+                        ${spot.types
+                          ?.slice(0, 3)
+                          .map(
+                            (category) =>
+                              `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${category}</span>`,
+                          )
+                          .join("")}
+                      </div>
+                      
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                          <div class="flex items-center mr-3">
+                            <span class="text-yellow-500 mr-1">★</span>
+                            <span class="font-semibold text-gray-900">${spot.rating}</span>
+                          </div>
+                          <div class="text-sm text-gray-600">
+                            리뷰 ${spot.userRatingCount}개
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                })
+    
+                marker.addListener("click", () => {
+                  skipIdleRef.current = true
+                  if (isMounted) {
+                    infoWindow.open(map, marker)
+                    setTimeout(() => {
+                        skipIdleRef.current = false
+                    }, 3000);
+                  }
+                })
+    
+                return marker
+              })
+            } else {
+              // 낮은 줌 레벨: 클러스터 표시
+              const { MarkerClusterer } = await import(
+                "@googlemaps/markerclusterer"
+              )
+    
+              // 클러스터용 마커들 생성 (map에 직접 추가하지 않음)
+              currentMarkers = touristSpots.map((spot) => {
+                const marker = new google.maps.Marker({
+                  position: {
+                    lat: spot.location.latitude,
+                    lng: spot.location.longitude,
+                  },
+                  title: spot.displayName.text,
+                  // map 속성을 제거하여 직접 지도에 추가되지 않도록 함
+                })
+    
+                // 클러스터에서도 개별 마커 클릭 이벤트
+                marker.addListener("click", () => {
+      
+    
+                  if (isMounted) {
+                    map.setCenter({
+                      lat: spot.location.latitude,
+                      lng: spot.location.longitude,
+                    })
+                    map.setZoom(15)
+                  }
+                })
+    
+                return marker
+              })
+    
+              if (isMounted && map) {
+                const clusterer = new MarkerClusterer({
+                  map,
+                  markers: currentMarkers,
+                  gridSize: 60,
+                  maxZoom: CLUSTER_ZOOM_THRESHOLD - 1,
+                  renderer: {
+                    render({ count, position }) {
+                      return new google.maps.Marker({
+                        position,
+                        // icon: {
+                        //   url: "/svg/close.svg", // ✅ 커스텀 클러스터 아이콘
+                        //   scaledSize: new google.maps.Size(40, 40), // 아이콘 크기 조절
+                        //   labelOrigin: new google.maps.Point(20, 20), // 숫자 위치
+                        // },
+                        label: {
+                          text: String(count),
+                          color: "#fff",
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                        },
+                      })
+                    },
+                  },
+                })
+    
+                setMarkerClusterer(clusterer)
+              }
+            }
+          } catch (error) {
+            console.error("마커 업데이트 실패:", error)
+          }
+        }
+        if (touristSpots) {
+          updateMarkers()
+        }
+        return () => {
+          isMounted = false
+          // 컴포넌트 언마운트 시 마커들 정리
+          currentMarkers.forEach((marker) => {
+            marker.setMap(null)
+          })
+        }
+      }, [map, currentZoom, touristSpots])
+
+    // 플레이리스트 관리
+    const addToPlaylist = useCallback(
+        (spot: TouristSpot) => {
+            if (myPlaylists.some((item) => item.spot.id === spot.id)) {
+                return;
+            }
+
+            const newPlaylistItem: PlaylistItem = {
+                id: `playlist-${Date.now()}`,
+                spot: spot,
+                order: myPlaylists.length,
+            };
+
+            setMyPlaylists((prev) => [...prev, newPlaylistItem]);
+        },
+        [myPlaylists],
+    );
+
+    const removeFromPlaylist = useCallback((itemId: string) => {
+        setMyPlaylists((prev) => prev.filter((item) => item.id !== itemId));
+    }, []);
+
+    const clearPlaylist = () => {
+        setMyPlaylists([]);
+    };
+
+    const generateCourse = () => {
+        if (myPlaylists.length < 2) {
+            alert('코스 생성을 위해 최소 2개 이상의 관광지를 추가해주세요.');
+            return;
+        }
+
+        // 코스 생성 로직 (실제로는 API 호출 등)
+        alert(`${myPlaylists.length}개 관광지로 구성된 여행 코스가 생성되었습니다!`);
+    };
+
+    return (
+        <div
+            className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
+            data-oid="._m99n4"
+        >
+
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12" data-oid="kwxi8x2">
+                {/* Main Layout */}
+                <div className="md:grid grid-cols-12 gap-8 min-h-[600px]" data-oid="hdm0s7o">
+                    {/* Left Side - Map */}
+                    <div className="col-span-7" data-oid="wx8jpvy">
+                        <div
+                            className="bg-white rounded-3xl shadow-2xl border !border-gray-200 md:h-full h-[400px] overflow-hidden"
+                            data-oid="jzabbp."
+                        >
+                            <div
+                                className="p-6 border-b !border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50"
+                                data-oid="ag.4m5l"
+                            >
+                                <div
+                                    className="flex items-center justify-between"
+                                    data-oid="vf2d3:t"
+                                >
+                                    <div className="flex items-center space-x-3" data-oid="w3d7p2y">
+                                        <div
+                                            className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                                            data-oid="pproyvn"
+                                        >
+                                            <Map
+                                                className="w-5 h-5 text-white"
+                                                data-oid="grtf..m"
+                                            />
+                                        </div>
+                                        <div data-oid="byl7gu6">
+                                            <h2
+                                                className="text-xl font-bold text-gray-900"
+                                                data-oid="-5ae8dw"
+                                            >
+                                                인터랙티브 지도
+                                            </h2>
+                                            <p className="text-sm text-gray-600" data-oid="c0r2_:l">
+                                                관광지를 클릭해서 상세 정보를 확인하세요
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right" data-oid="n6yl.n:">
+                                        <div
+                                            className="text-sm font-medium text-gray-900"
+                                            data-oid="c40mon1"
+                                        >
+                                            줌 레벨: {currentZoom}
+                                        </div>
+                                        <div className="text-xs text-gray-600" data-oid="6:t4h7r">
+                                            {currentZoom >= CLUSTER_ZOOM_THRESHOLD
+                                                ? '개별 마커'
+                                                : '클러스터 모드'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="relative h-full" data-oid="m801ch-">
+                                {isLoading && (
+                                    <div
+                                        className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center z-10"
+                                        data-oid="422-791"
+                                    >
+                                        <div className="text-center" data-oid="y-77qh6">
+                                            <div
+                                                className="animate-spin rounded-full h-12 w-12 border-4 !border-blue-600 border-t-transparent mx-auto"
+                                                data-oid="mtl2jtc"
+                                            ></div>
+                                            <p
+                                                className="mt-4 text-gray-600 font-medium"
+                                                data-oid="nf14nkj"
+                                            >
+                                                지도를 불러오는 중...
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+                                <div ref={mapRef} className="w-full h-full" data-oid="e9f-mi7" />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Side - List & Dashboard */}
+                    <div
+                        className="col-span-5 flex md:flex-col flex-row md:space-y-6 md:mt-0 mt-8 md:space-x-0 space-x-5"
+                        data-oid="vgcpg5j"
+                    >
+                        {/* Tourist Spots List - 작은 카드들 */}
+                        <div
+                            className="bg-white rounded-2xl shadow-lg border !border-gray-200 md:h-[300px] h-[500px] flex flex-col w-1/2 md:w-full"
+                            data-oid="69-muth"
+                        >
+                            <div className="p-4 border-b !border-gray-200" data-oid="v0-vkxw">
+                                <div
+                                    className="flex items-center justify-between"
+                                    data-oid="6-0ag5z"
+                                >
+                                    <div className="flex items-center space-x-2" data-oid="sa782or">
+                                        <List
+                                            className="w-4 h-4 text-blue-600"
+                                            data-oid=".v.pxus"
+                                        />
+
+                                        <h3
+                                            className="text-base font-semibold text-gray-900"
+                                            data-oid="1r6etm_"
+                                        >
+                                            관광지 목록
+                                        </h3>
+                                    </div>
+                                    <span className="text-xs text-gray-600" data-oid="m_94de4">
+                                        {touristSpots.length}개
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-4" data-oid="dzv8er1">
+                                <div
+                                    className="grid md:grid-cols-2 grid-cols-1 gap-3"
+                                    data-oid="_aq0fa:"
+                                >
+                                    {touristSpots.map((spot, index) => (
+                                        <DraggableSpotCard
+                                            key={index}
+                                            spot={spot}
+                                            data-oid="u5mj0ip"
+                                        />
+                                    ))}
+                                    {touristSpots.length === 0 && (
+                                        <div
+                                            className="col-span-2 text-center py-8 text-gray-500"
+                                            data-oid="_i024lw"
+                                        >
+                                            <Search
+                                                className="w-8 h-8 mx-auto text-gray-300 mb-2"
+                                                data-oid="xe64nz5"
+                                            />
+
+                                            <p className="text-sm font-medium" data-oid="p5bvl58">
+                                                검색 결과가 없습니다
+                                            </p>
+                                            <p className="text-xs mt-1" data-oid="z:f9pkr">
+                                                다른 키워드로 검색해보세요
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Playlist Dashboard - 더 긴 높이 */}
+                        <div
+                            className="bg-white rounded-2xl shadow-lg border !border-gray-200 h-[500px] md:h-[300px] flex flex-col w-1/2 md:w-full"
+                            data-oid="hb11rk0"
+                        >
+                            <div className="p-4 border-b !border-gray-200" data-oid=".--x9i:">
+                                <div
+                                    className="flex items-center justify-between mb-3"
+                                    data-oid=".0s7kuw"
+                                >
+                                    <div className="flex items-center space-x-2" data-oid="8ukvod6">
+                                        <LayoutDashboard
+                                            className="w-4 h-4 text-purple-600"
+                                            data-oid="sr7kn13"
+                                        />
+
+                                        <h3
+                                            className="text-base font-semibold text-gray-900"
+                                            data-oid="p2pmahu"
+                                        >
+                                            나의 여행 코스
+                                        </h3>
+                                    </div>
+                                    {myPlaylists.length > 0 && (
+                                        <button
+                                            onClick={clearPlaylist}
+                                            className="text-xs text-red-600 hover:text-red-700 font-medium"
+                                            data-oid="3qgxwrl"
+                                        >
+                                            전체 삭제
+                                        </button>
+                                    )}
+                                </div>
+
+                                <div
+                                    className="flex items-center justify-between text-xs"
+                                    data-oid="1246ify"
+                                >
+                                    <span className="text-gray-600" data-oid="x5r.k6j">
+                                        {myPlaylists.length}개 관광지 선택됨
+                                    </span>
+                                    <span
+                                        className="text-purple-600 font-medium"
+                                        data-oid="9i9n3vo"
+                                    >
+                                        예상 {myPlaylists.length * 2}시간
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto" data-oid="707.8yv">
+                                <PlaylistDropZone onDrop={addToPlaylist} data-oid="2228b74">
+                                    {myPlaylists.length === 0 ? (
+                                        <div
+                                            className="p-5 text-center text-gray-500"
+                                            data-oid="kxldt6j"
+                                        >
+                                            <div
+                                                className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                                                data-oid="dcm5uvp"
+                                            >
+                                                <Route
+                                                    className="w-8 h-8 text-blue-500"
+                                                    data-oid="2rg8vh2"
+                                                />
+                                            </div>
+                                            <p
+                                                className="text-sm font-semibold text-gray-700 mb-2"
+                                                data-oid="-4xhrgn"
+                                            >
+                                                여행 코스를 만들어보세요
+                                            </p>
+                                            <p
+                                                className="text-xs text-gray-500 mb-1"
+                                                data-oid="fxo_mz:"
+                                            >
+                                                관광지 카드를 드래그해서 여기에 놓거나
+                                            </p>
+                                            <p className="text-xs text-gray-500" data-oid="7c8m-bp">
+                                                지도에서 선택해서 추가하세요
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="p-4 space-y-3" data-oid="kx66c5x">
+                                            {myPlaylists.map((item, index) => (
+                                                <PlaylistItem
+                                                    key={item.id}
+                                                    item={item}
+                                                    index={index}
+                                                    onRemove={removeFromPlaylist}
+                                                    data-oid="_lu90qu"
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </PlaylistDropZone>
+                            </div>
+
+                            {/* Action Buttons */}
+                            {myPlaylists.length > 0 && (
+                                <div
+                                    className="p-4 border-t !border-gray-200 space-y-2"
+                                    data-oid="ghke3qh"
+                                >
+                                    <button
+                                        onClick={generateCourse}
+                                        className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white rounded-lg hover:shadow-xl transition-all font-semibold text-sm flex items-center justify-center space-x-2"
+                                        data-oid="biq.uqr"
+                                    >
+                                        <Sparkles className="w-4 h-4" data-oid="syqudbb" />
+                                        <span data-oid="hiwj:g1">AI 코스 생성하기</span>
+                                        <ArrowRight className="w-4 h-4" data-oid="de0xjrc" />
+                                    </button>
+                                    <div className="grid grid-cols-2 gap-2" data-oid="vj4k9qg">
+                                        <button
+                                            className="px-3 py-2 bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-md hover:shadow-lg transition-all text-xs flex items-center justify-center space-x-1"
+                                            data-oid="6:ym7:_"
+                                        >
+                                            <Navigation className="w-3 h-3" data-oid="oh9wo7d" />
+                                            <span data-oid="3wcjk4e">경로 최적화</span>
+                                        </button>
+                                        <button
+                                            className="px-3 py-2 bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-md hover:shadow-lg transition-all text-xs flex items-center justify-center space-x-1"
+                                            data-oid="5j3t3bd"
+                                        >
+                                            <Calendar className="w-3 h-3" data-oid="pp26tl8" />
+                                            <span data-oid="u7bbaq3">일정 저장</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default function WWPage() {
+    return (
+        <DndProvider backend={HTML5Backend} data-oid="6rhq16u">
+            <WWPageContent data-oid="1et0ddb" />
+        </DndProvider>
+    );
+}
