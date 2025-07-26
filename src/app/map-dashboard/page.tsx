@@ -646,25 +646,63 @@ function WWPageContent() {
                                             data-oid="u5mj0ip"
                                         />
                                     ))}
-                                    {touristSpots.length === 0 && (
-                                        <div
-                                            className="col-span-2 text-center py-8 text-gray-500"
-                                            data-oid="_i024lw"
-                                        >
-                                            <Search
-                                                className="w-8 h-8 mx-auto text-gray-300 mb-2"
-                                                data-oid="xe64nz5"
-                                            />
-
-                                            <p className="text-sm font-medium" data-oid="p5bvl58">
-                                                검색 결과가 없습니다
-                                            </p>
-                                            <p className="text-xs mt-1" data-oid="z:f9pkr">
-                                                다른 키워드로 검색해보세요
-                                            </p>
-                                        </div>
-                                    )}
                                 </div>
+                                {touristSpots.length === 0 && (
+                                        <div
+                                        className="grid md:grid-cols-2 grid-cols-1 gap-3"
+                                        data-oid="3itlqek"
+                                    >
+                                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                                            <div
+                                                key={i}
+                                                className="h-[100px] bg-gray-100 rounded-lg border !border-gray-200 animate-pulse"
+                                                data-oid="genajtk"
+                                            >
+                                                <div
+                                                    className="p-3 h-full flex flex-col justify-between"
+                                                    data-oid="5ohyaj2"
+                                                >
+                                                    <div className="flex-1 min-h-0" data-oid="dfa8twz">
+                                                        <div
+                                                            className="h-4 bg-gray-200 rounded w-3/4 mb-2"
+                                                            data-oid="sjj8y24"
+                                                        ></div>
+                                                        <div
+                                                            className="h-3 bg-gray-200 rounded w-full mb-1"
+                                                            data-oid="3bqgsi6"
+                                                        ></div>
+                                                        <div
+                                                            className="h-3 bg-gray-200 rounded w-2/3"
+                                                            data-oid="dbi0y4i"
+                                                        ></div>
+                                                    </div>
+                                                    <div
+                                                        className="flex items-center justify-between mt-2"
+                                                        data-oid="-80-os_"
+                                                    >
+                                                        <div
+                                                            className="flex items-center"
+                                                            data-oid="cc19-pn"
+                                                        >
+                                                            <div
+                                                                className="w-3 h-3 bg-gray-200 rounded mr-1"
+                                                                data-oid="waxc_1u"
+                                                            ></div>
+                                                            <div
+                                                                className="h-3 bg-gray-200 rounded w-8"
+                                                                data-oid="au7um7r"
+                                                            ></div>
+                                                        </div>
+                                                        <div
+                                                            className="h-5 bg-gray-200 rounded w-12"
+                                                            data-oid="yjg-dx3"
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    )}
                             </div>
                         </div>
 
