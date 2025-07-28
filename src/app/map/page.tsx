@@ -65,7 +65,8 @@ interface Course {
 
 export default function MapPage() {
     const searchParams = useSearchParams();
-    const id = searchParams.get('courseId');
+    const courseId = searchParams.get('courseId');
+    const id = courseId === "ai-course" ? 0 : courseId;
     const router = useRouter();
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -79,8 +80,7 @@ export default function MapPage() {
     const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
     const [loadingAtom, setLoadingAtom] = useAtom(loadingModalAtom)
 
-    const { data: mapData, isLoading } = useCourseDetailsQuery(id)
-    console.log("mapData: ", mapData)
+    const { data: mapData, isLoading } = useCourseDetailsQuery(Number(id))
 
     // 커스텀 마커 생성 함수
     const createCustomMarker = (number: number, color: string) => {
