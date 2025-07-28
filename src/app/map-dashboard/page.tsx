@@ -19,7 +19,7 @@ import {
 } from "lucide-react"
 import { useGooglePlaceNearbyMutation } from "@/hooks/springboot/dev"
 import { google_place_nearby } from "@/common/google/nearby"
-import { location_types } from "@/func/google_nearby_api/location_types"
+import { location_types } from "@/util/google_nearby_api/location_types"
 import { comma } from "@/util/comma"
 import { aiResponseAtom, loadingModalAtom } from "@/store/ai"
 import { useAtom } from "jotai"
@@ -438,34 +438,34 @@ function WWPageContent() {
             // 정보창 생성
             const contentDiv = document.createElement("div")
             contentDiv.innerHTML = `
-  <div class="p-4 max-w-[250px]">
-    <h3 class="font-bold text-lg text-gray-900 mb-3">${spot.displayName.text}</h3>
-    <p class="text-sm text-gray-600 mb-3">${spot.formattedAddress}</p>
-    <div class="flex flex-wrap gap-1 mb-3">
+  <div className="p-4 max-w-[250px]">
+    <h3 className="font-bold text-lg text-gray-900 mb-3">${spot.displayName.text}</h3>
+    <p className="text-sm text-gray-600 mb-3">${spot.formattedAddress}</p>
+    <div className="flex flex-wrap gap-1 mb-3">
       ${spot.types
         ?.slice(0, 3)
         .map(
           (category) =>
-            `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${location_types(
+            `<span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${location_types(
               category,
             )}</span>`,
         )
         .join("")}
     </div>
     
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <div class="flex items-center mr-3">
-          <span class="text-yellow-500 mr-1">★</span>
-          <span class="font-semibold text-gray-900">${spot.rating}</span>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center">
+        <div className="flex items-center mr-3">
+          <span className="text-yellow-500 mr-1">★</span>
+          <span className="font-semibold text-gray-900">${spot.rating}</span>
         </div>
-        <div class="text-sm text-gray-600">
+        <div className="text-sm text-gray-600">
           리뷰 ${comma(spot.userRatingCount, false)}개
         </div>
       </div>
     </div>
     <button id="add-to-plan-${spot.id}"
-      class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg hover:shadow-lg transition-all flex items-center justify-center space-x-1 text-sm font-medium"
+      className="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg hover:shadow-lg transition-all flex items-center justify-center space-x-1 text-sm font-medium"
     >
       <span>여행 코스에 추가</span>
     </button>

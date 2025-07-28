@@ -107,7 +107,7 @@ export const ai_RecommendResponse_func = (recommend: GeminiRecommendResponse) =>
 }
 
 export const ai_mapDashboardResponse_func = (locations) => {
-  const locationsString = locations.map(x => x.spot.displayName.text).join(",")
+  const locationsString = locations.map(x => x.spot.displayName.text + "(" +x.spot.formattedAddress + ")").join(",")
 
   return {
     "contents": [
