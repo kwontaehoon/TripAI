@@ -317,7 +317,7 @@ export default function CourseDetailsPage({
                     총 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="bklu7ia">
-                    {comma(courseDetailsData[0].total_cost)}
+                    {comma(courseDetailsData[0].total_cost, true)}
                   </span>
                 </div>
                 <div

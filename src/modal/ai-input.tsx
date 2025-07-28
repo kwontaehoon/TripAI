@@ -132,6 +132,7 @@ export default function AIRecommendationModal() {
         purpose: formData.purpose,
         budget: formData.budget,
         generated: "true",
+        mapDashboard: "false"  // ai-input에서 생성한 ai 코스를 구분하기 위한 값
       })
 
       setFormData({

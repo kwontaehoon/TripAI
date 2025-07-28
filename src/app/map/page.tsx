@@ -513,7 +513,7 @@ export default function MapPage() {
 
                             <div className="flex items-center justify-between">
                                 <span className="text-lg font-bold text-blue-600">
-                                    {comma(course[0].total_cost)}
+                                    {comma(course[0].total_cost, true)}
                                 </span>
                                 <button
                                     onClick={() => router.push(`/courses/details/${course[0].id}`)}

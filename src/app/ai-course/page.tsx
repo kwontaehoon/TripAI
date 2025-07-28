@@ -16,6 +16,7 @@ import {
   RefreshCw,
 } from "lucide-react"
 import { comma } from "@/util/comma"
+import { If } from 'react-haiku'
 
 export default function AICourse() {
   const [aiCourseData, setAiCourseData] = useState([]);
@@ -23,7 +24,6 @@ export default function AICourse() {
   const router = useRouter()
   const [isRegenerating, setIsRegenerating] = useState(false)
   const [selectedDay, setSelectedDay] = useState(1)
-  console.log("aiCourseData: ", aiCourseData)
 
   // URL 파라미터에서 사용자 선택 정보 가져오기
   const destination = searchParams.get("destination") || ""
@@ -32,6 +32,7 @@ export default function AICourse() {
   const travelers = searchParams.get("travelers") || ""
   const purpose = searchParams.get("purpose") || ""
   const budget = searchParams.get("budget") || ""
+  const mapDashboard = searchParams.get("mapDashboard") || ""
 
   useEffect(() => {
     const stored = localStorage.getItem("aiList");
@@ -110,7 +111,6 @@ export default function AICourse() {
   const selectedDayData = aiCourseData[0]?.course_days?.find(
     (day) => day.day === selectedDay,
   )
-  console.log("selectedDayData: ", selectedDayData)
 
   return aiCourseData.length !== 0 &&(
     <div
@@ -170,7 +170,15 @@ export default function AICourse() {
                       여행지
                     </div>
                     <div className="font-medium" data-oid="yla9hop">
-                      {getDisplayText("destination", destination)}
+                      {/* 여행지가 한 개일 때 */}
+                      <If isTrue={destination.split(",").length === 1}>
+                        {destination}
+                      </If>
+                      {/* 여행지가 여러 개일 때 */}
+                      <If isTrue={destination.split(",").length !== 1}>
+                        {destination.split(",")[0]} 외 {destination.split(",").length - 1}개
+                      </If>
+
                     </div>
                   </div>
                   <div
@@ -541,7 +549,7 @@ export default function AICourse() {
                     예상 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="bebxtu:">
-                    {comma(aiCourseData[0].total_cost)}
+                    {comma(aiCourseData[0].total_cost, true)}
                   </span>
                 </div>
                 <div

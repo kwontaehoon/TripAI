@@ -219,7 +219,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                   data-oid="ot8z_z4"
                 >
                   <span className="font-bold text-blue-600" data-oid="z.mlotg">
-                    {comma(result.total_cost)}
+                    {comma(result.total_cost, true)}
                   </span>
                 </div>
               </div>

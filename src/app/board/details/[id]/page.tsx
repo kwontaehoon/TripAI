@@ -731,7 +731,7 @@ export default function BoardDetailsPage({
                     총 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="y0c96w8">
-                    {comma(boradDetailsData[0].total_cost)}
+                    {comma(boradDetailsData[0].total_cost, true)}
                   </span>
                 </div>
                 <div

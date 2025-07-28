@@ -1,6 +1,6 @@
 'use client'
 import { ai_boardResponse_func } from '@/common/ai/ai_response'
-import Calendar from '@/func/Calendar'
+import Calendar from '@/components/calendar/Calendar'
 import { useGeminiAiMutation } from '@/hooks/springboot/dev'
 import { aiResponseAtom, modalUiStateAtom } from '@/store/ai'
 import { transportationText } from '@/text'

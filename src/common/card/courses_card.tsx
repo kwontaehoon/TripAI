@@ -230,7 +230,7 @@ const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
                     className="text-lg font-bold text-blue-600"
                     data-oid="k_2:9hi"
                   >
-                    {comma(course.total_cost)}
+                    {comma(course.total_cost, true)}
                   </span>
                 </div>
                 <button

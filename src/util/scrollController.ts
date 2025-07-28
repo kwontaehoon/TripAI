@@ -1,11 +1,12 @@
 'use client'
 import { useEffect } from "react"
 import { useAtomValue } from "jotai"
-import { modalUiStateAtom } from "@/store/ai"
+import { loadingModalAtom, modalUiStateAtom } from "@/store/ai"
 
 export function ScrollController() {
   const modalUiState = useAtomValue(modalUiStateAtom)
-  const shouldDisableScroll = Object.values(modalUiState).some((v) => v)
+  const loadingState = useAtomValue(loadingModalAtom)
+  const shouldDisableScroll = Object.values(modalUiState).some((v) => v) || loadingState.isOpen
 
   useEffect(() => {
     if (shouldDisableScroll) {

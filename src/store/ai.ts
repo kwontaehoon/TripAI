@@ -5,7 +5,7 @@ export const modalUiStateAtom = atom({
     aiInput: false
 })
 
-// localstorage
+// localstorage 전역 상태 관리
 export const aiResponseAtom = atom([])
 
 // intro modal

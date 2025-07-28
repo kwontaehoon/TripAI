@@ -84,7 +84,7 @@ export const googlePlaceNearbyAxios = axios.create({
     // "Access-Control-Allow-Credentials": true,
     // "Access-Control-Allow-Origin": "*",
     "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
-    "X-Goog-FieldMask": "places.displayName,places.rating,places.location,places.userRatingCount,places.types"
+    "X-Goog-FieldMask": "places.displayName,places.rating,places.location,places.userRatingCount,places.types,places.restroom,places.formattedAddress"
   },
   responseType: "json",
   responseEncoding: "utf8",

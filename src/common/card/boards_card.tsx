@@ -256,7 +256,7 @@ const Board_card = ({
                       className="font-bold text-blue-600"
                       data-oid="k7i5hm5"
                     >
-                      {comma(post.total_cost)}
+                      {comma(post.total_cost, true)}
                     </span>
                   </div>
                 </div>

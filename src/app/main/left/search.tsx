@@ -90,24 +90,32 @@ const SearchPage = () => {
         </div>
       </form>
 
-      <div className="flex relative items-center">
+      <div className="flex items-center">
         <button
           className="
-        flex items-center
+        flex flex-1 items-center
         space-x-2 
         text-blue-600 font-medium
         hover:text-blue-700"
         >
           <span>로그인 후 이용하기</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4 md:block hidden" />
         </button>
         <button
           onClick={() => setModalUiState({ ...modalUiState, aiInput: true })}
-          className="flex items-center absolute right-0 space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all"
+          className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all mr-1"
           data-oid="p3hzuw8"
         >
           <Zap className="w-4 h-4" data-oid="r8wgtbh" />
           <span data-oid="pfnw9z8">AI 맞춤 코스</span>
+        </button>
+        <button
+          onClick={() => router.push("/map-dashboard")}
+          className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all ml-1"
+          data-oid="7h70-m_"
+        >
+          <Zap className="w-4 h-4" data-oid="v6q0v7d" />
+          <span data-oid="nj5kroq">AI 선택 코스</span>
         </button>
       </div>
 
