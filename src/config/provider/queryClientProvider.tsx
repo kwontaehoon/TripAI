@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClientProvider = ({children}: Readonly<{children: React.ReactNode}>) => {
 
@@ -15,6 +16,7 @@ const queryClientProvider = ({children}: Readonly<{children: React.ReactNode}>) 
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools />
       {children}
     </QueryClientProvider>
   )
