@@ -355,7 +355,7 @@ export default function MapPage() {
                     <h2 className="text-xl font-semibold text-gray-800 mb-2">지도 로드 실패</h2>
                     <p className="text-gray-600">{error}</p>
                     <p className="text-sm text-gray-500 mt-2">
-                        Google Maps API 키가 설정되어 있는지 확인해주세요.
+                        새로고침 또는 Google Maps API 키가 설정되어 있는지 확인해주세요.
                     </p>
                 </div>
             </div>
