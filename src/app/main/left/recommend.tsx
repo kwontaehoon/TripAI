@@ -23,7 +23,8 @@ const Recommend = () => {
         </button>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        {coursesData.slice(0, 4).map((course) => (
+        {Array.isArray(coursesData) &&
+        coursesData.slice(0, 4).map((course) => (
           <button
             onClick={() => router.push(`/courses/details/${course.id}`)}
             key={course.id}

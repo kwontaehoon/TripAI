@@ -31,63 +31,67 @@ const Board = () => {
           </button>
         </div>
         <div className="space-y-3" data-oid="8pkznx8">
-          {boardsData.slice(0, 3).map((board, index) => (
-            <button
-              key={index}
-              onClick={() => router.push(`/board/details/${board.id}`)}
-              className="w-full text-left p-4 bg-white rounded-xl border !border-gray-200 hover:!border-blue-300 hover:shadow-md transition-all group"
-              data-oid="q30-2r:"
-            >
-              <div
-                className="flex items-start justify-between mb-2"
-                data-oid="rf1p52c"
+          {Array.isArray(boardsData) &&
+            boardsData.slice(0, 3).map((board, index) => (
+              <button
+                key={index}
+                onClick={() => router.push(`/board/details/${board.id}`)}
+                className="w-full text-left p-4 bg-white rounded-xl border !border-gray-200 hover:!border-blue-300 hover:shadow-md transition-all group"
+                data-oid="q30-2r:"
               >
-                <h4
-                  className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1"
-                  data-oid="qh11_de"
-                >
-                  {board.title}
-                </h4>
                 <div
-                  className="flex items-center text-xs text-gray-500 ml-2"
-                  data-oid="8_b3_sc"
+                  className="flex items-start justify-between mb-2"
+                  data-oid="rf1p52c"
                 >
-                  <Star
-                    className="w-3 h-3 text-yellow-400 mr-1"
-                    data-oid="n45p2em"
-                  />
-                  {board.rating}
-                </div>
-              </div>
-              <div
-                className="flex items-center justify-between"
-                data-oid="uij_t9-"
-              >
-                <div className="flex items-center space-x-2" data-oid="pgej4gz">
-                  <span className="text-sm text-gray-600" data-oid="h37e4u.">
-                    {board.author}
-                  </span>
-                  <div className="flex gap-1" data-oid="1yq5uz9">
-                    {board.board_tags.slice(0, 2).map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs"
-                        data-oid="bd_mxj6"
-                      >
-                        {tag.tag}
-                      </span>
-                    ))}
+                  <h4
+                    className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1"
+                    data-oid="qh11_de"
+                  >
+                    {board.title}
+                  </h4>
+                  <div
+                    className="flex items-center text-xs text-gray-500 ml-2"
+                    data-oid="8_b3_sc"
+                  >
+                    <Star
+                      className="w-3 h-3 text-yellow-400 mr-1"
+                      data-oid="n45p2em"
+                    />
+                    {board.rating}
                   </div>
                 </div>
                 <div
-                  className="flex items-center text-xs text-gray-500"
-                  data-oid="rnis-j6"
+                  className="flex items-center justify-between"
+                  data-oid="uij_t9-"
                 >
-                  <span data-oid="1wuf53h">👍 {board.likes}</span>
+                  <div
+                    className="flex items-center space-x-2"
+                    data-oid="pgej4gz"
+                  >
+                    <span className="text-sm text-gray-600" data-oid="h37e4u.">
+                      {board.author}
+                    </span>
+                    <div className="flex gap-1" data-oid="1yq5uz9">
+                      {board.board_tags.slice(0, 2).map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-xs"
+                          data-oid="bd_mxj6"
+                        >
+                          {tag.tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div
+                    className="flex items-center text-xs text-gray-500"
+                    data-oid="rnis-j6"
+                  >
+                    <span data-oid="1wuf53h">👍 {board.likes}</span>
+                  </div>
                 </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            ))}
         </div>
       </div>
     </div>
