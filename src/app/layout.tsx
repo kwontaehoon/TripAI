@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <Suspense fallback={<></>}> */}
+        <Suspense fallback={<></>}>
           <QueryClientProvider>
             {/* <div id="global-modal"></div> */}
             <Modal />
@@ -39,7 +39,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </QueryClientProvider>
-        {/* </Suspense> */}
+        </Suspense>
       </body>
     </html>
   )
