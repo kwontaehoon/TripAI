@@ -28,8 +28,7 @@ export default function BoardDetailsPage({
   const [newComment, setNewComment] = useState("")
   const [selectedDay, setSelectedDay] = useState(1)
 
-  const { data: boradDetailsData, isLoading } = useBoardDetailssQuery(id)
-  console.log("data: ", boradDetailsData)
+  const { data: boradDetailsData, isLoading } = useBoardDetailssQuery(Number(id))
 
   // 댓글 데이터
   const comments = [

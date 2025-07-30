@@ -1,10 +1,12 @@
 "use client"
-import Recommend from "./Recommend"
+
+import Recommend from "./recommend"
 import Board from "./board"
 import Popular from "./popular"
 import Search from "./search"
 
 const Page = () => {
+
   return (
     <div className="mb-12 w-full lg:w-[700px]">
       <Search />

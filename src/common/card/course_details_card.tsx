@@ -13,8 +13,6 @@ import {
 
 const Course_details_card = ({ data, selectedDay }) => {
 
-    console.log("data: ", data)
-
   return (
     <div>
         {/* Selected Day Details */}

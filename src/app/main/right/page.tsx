@@ -1,9 +1,9 @@
 "use client"
 import React from "react"
-import StatsCard from "./StatsCard"
+import StatsCard from "./statsCard"
 import CurrentSearch from "./currentSearch"
 import Live from "./live"
-import Quick from "./Quick"
+import Quick from "./quick"
 
 const Page = () => {
   return (

@@ -17,7 +17,6 @@ import {
   usePopularSearchQuery,
 } from "@/hooks/supabase/dev"
 import Skeletion from "./skeleton"
-import { PopularSearchDataType } from "./type"
 
 export default function SearchPage() {
   const router = useRouter()
@@ -35,7 +34,6 @@ export default function SearchPage() {
     isSuccess,
     isLoading: listLoading,
   } = useCoursesAndBoardsQuery()
-  console.log("filteredData: ", filteredData)
 
   const { data: popularSearch, isLoading: popularSearchLoading } =
     usePopularSearchQuery()

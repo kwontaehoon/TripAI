@@ -3,8 +3,8 @@ import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 
 const Quick = () => {
   
-  const { data: boardsData, isLoading: boardLoading } = useBoardsQuery([])
-  const { data: coursesData, isLoading: courseLoading } = useCoursesQuery([])
+  const { data: boardsData } = useBoardsQuery()
+  const { data: coursesData } = useCoursesQuery()
   let ratingSum = 0
   let reliabilitySum = 0
 
@@ -26,9 +26,7 @@ const Quick = () => {
     reliabilitySum += Number(course.reliability.replace("%", ""))
   }
 
-  return boardLoading || courseLoading ? (
-    ""
-  ) : (
+  return (
     <div className="grid grid-cols-2 gap-4">
       <div className="bg-white rounded-xl p-4 border !border-gray-200 text-center">
         <div className="text-2xl font-bold text-blue-600 mb-1">

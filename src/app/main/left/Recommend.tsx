@@ -6,9 +6,8 @@ import { useCoursesQuery } from "@/hooks/supabase/dev"
 
 const Recommend = () => {
   const router = useRouter()
-  const { data: coursesData, isLoading } = useCoursesQuery()
-
-  return isLoading ? <></> : (
+  const { data: coursesData } = useCoursesQuery()
+  return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900 flex-1">

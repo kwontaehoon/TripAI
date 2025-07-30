@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 const CurrentSearch = () => {
   const router = useRouter()
   const [currentSearchData, setCurrentSearchData] = useState([])
-  console.log("currentSearchData: ", currentSearchData)
 
   useEffect(() => {
     const currentSearch = JSON.parse(

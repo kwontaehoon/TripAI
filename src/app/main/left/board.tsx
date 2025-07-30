@@ -31,7 +31,7 @@ const Board = () => {
           </button>
         </div>
         <div className="space-y-3" data-oid="8pkznx8">
-          {boardsData?.slice(0, 3).map((board, index) => (
+          {boardsData.slice(0, 3).map((board, index) => (
             <button
               key={index}
               onClick={() => router.push(`/board/details/${board.id}`)}

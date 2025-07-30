@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate } from "@/service/supabase";
 import { uploadMultipleImages } from "@/service/supabase/storage";
 import { getGeminiAi } from "@/service/gemini";
@@ -69,8 +69,7 @@ export const useCoursesAndBoardsQuery = () => {
     const queryOptions = {
         queryKey: TEST_QUERY_KEY.coursesAndBoards,
         queryFn: async () => {
-            const { courses, boards } = await getCoursesAndBoards();
-            return [...courses, ...boards];
+            return await getCoursesAndBoards();
         },
     };
 

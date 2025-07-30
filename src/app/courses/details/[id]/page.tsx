@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/course_details_card"
-import { useCourseDetailsQuery } from "@/hooks/supabase/dev"
+import { useCourseDetailsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
 import { getBadgeColor } from "@/util/styles"
 import { Download, Heart, MapPin, Sparkles } from "lucide-react"
@@ -24,7 +24,7 @@ export default function CourseDetailsPage({
     data: courseDetailsData,
     isSuccess,
     isLoading,
-  } = useCourseDetailsQuery(id)
+  } = useCourseDetailsQuery(Number(id))
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -75,7 +75,7 @@ export default function CourseDetailsPage({
                     className="text-xs sm:text-sm font-medium text-purple-600"
                     data-oid="d.hx6we"
                   >
-                    AI 신뢰도 {courseDetailsData[0].reliability}%
+                    AI 신뢰도 {courseDetailsData[0].reliability}
                   </span>
                 </div>
 
@@ -303,7 +303,7 @@ export default function CourseDetailsPage({
                   data-oid="oxu16ck"
                 >
                   <span className="text-sm text-gray-600" data-oid="mjoff3j">
-                    참가자
+                    인원 수
                   </span>
                   <span className="font-medium" data-oid="e2kx:v0">
                     {courseDetailsData[0].participants}
@@ -314,7 +314,7 @@ export default function CourseDetailsPage({
                   data-oid=".-1lift"
                 >
                   <span className="text-sm text-gray-600" data-oid="uo.yb0u">
-                    총 비용
+                    예상 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="bklu7ia">
                     {comma(courseDetailsData[0].total_cost, true)}
@@ -352,19 +352,6 @@ export default function CourseDetailsPage({
                   <span className="font-medium" data-oid="3.ak_.u">
                     {courseDetailsData[0].estimated_time}
                   </span>
-                </div>
-                <div
-                  className="flex justify-between items-center"
-                  data-oid="qilu6y."
-                >
-                  <span className="text-sm text-gray-600" data-oid="eyr615d">
-                    AI 신뢰도
-                  </span>
-                  <div className="flex items-center" data-oid="_.uz4_1">
-                    <span className="font-medium" data-oid="47w8v3e">
-                      {courseDetailsData[0].reliability}
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>

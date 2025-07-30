@@ -1,41 +1,30 @@
-"use client"
-import { useEffect } from "react"
-import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
+
 import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"
 import Right from "./right/page"
-import Skeleton from "./skeleton"
-import { useAtom } from "jotai"
-import { introModalAtom } from "@/store/ai"
-import Image from "next/image"
+import Intro from './Intro'
+import { dehydrate, QueryClient } from "@tanstack/react-query"
+import { prefetchBoardDetails, prefetchBoards, prefetchCourseDetails, prefetchCourses, prefetchCoursesAndBoards } from "@/service/prefetch"
+import { Hydration } from "../../lib/Hydration"
+// import { Metadata, ResolvingMetadata } from "next"
 
-const Page = () => {
-  const { isLoading: boardsDataIsLoading } = useBoardsQuery()
-  const { isLoading: coursesDataIsLoading } = useCoursesQuery()
+const Page = async() => {
 
-  const [_, setIntroModal] = useAtom(introModalAtom)
+  // prefech
+  const queryClient = new QueryClient()
+  await prefetchCourses(queryClient)
+  await prefetchBoards(queryClient)
 
-  // 페이지 로딩 시뮬레이션 및 Trip AI 소개 모달 표시 로직
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // 로딩 완료 후 Trip AI 소개 모달 표시 여부 확인
-      const lastShown = localStorage.getItem("tripai-intro-last-shown")
-      const now = new Date().getTime()
-      const oneDay = 24 * 60 * 60 * 1000 // 24시간을 밀리초로 변환
+  await prefetchCoursesAndBoards(queryClient)
 
-      if (!lastShown || now - parseInt(lastShown) > oneDay) {
-        // 처음 방문이거나 하루가 지났으면 모달 표시
-        setTimeout(() => {
-          setIntroModal(true)
-        }, 500) // 페이지 로딩 후 0.5초 뒤에 모달 표시
-      }
-    }, 0)
-
-    return () => clearTimeout(timer)
-  }, [])
-
+  await Promise.all(
+    [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id))
+  );
+  await Promise.all(
+    [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id))
+  );
   
-
+  
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
   // useEffect(() => {
@@ -55,9 +44,8 @@ const Page = () => {
   //   );
   // }
 
-  return boardsDataIsLoading || coursesDataIsLoading ? (
-    <Skeleton />
-  ) : (
+  return (  
+    <Hydration state={dehydrate(queryClient)}>
     <div
       className="
         bg-#f8fafc
@@ -79,15 +67,7 @@ const Page = () => {
         </button>
       </div> */}
 
-      {/* <div className="w-40 border">
-        <Image 
-        src={"https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai//aaa.PNG"} 
-        width={100}
-        height={0}
-        alt="Landscape picture"
-        />
-      </div> */}
-
+      <Intro />
       <Left />
       <Right />
 
@@ -108,7 +88,8 @@ const Page = () => {
           <Mountain className="h-6 w-6 text-green-600" data-oid="-kbcjph" />
         </div>
       </div>
-    </div>
+      </div>
+    </Hydration>
   )
 
   // return (
