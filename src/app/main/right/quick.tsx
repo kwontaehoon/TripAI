@@ -30,13 +30,13 @@ const Quick = () => {
     <div className="grid grid-cols-2 gap-4">
       <div className="bg-white rounded-xl p-4 border !border-gray-200 text-center">
         <div className="text-2xl font-bold text-blue-600 mb-1">
-          {(ratingSum / (coursesData?.length ?? 0 + (boardsData?.length ?? 0))).toFixed(1)}
+          {(ratingSum / ((coursesData?.length ?? 0) + (boardsData?.length ?? 0))).toFixed(1)}
         </div>
         <div className="text-xs text-gray-500">평균 평점</div>
       </div>
       <div className="bg-white rounded-xl p-4 border !border-gray-200 text-center">
         <div className="text-2xl font-bold text-green-600 mb-1">
-          {(reliabilitySum / (coursesData?.length ?? 0 + (boardsData?.length ?? 0))).toFixed(
+          {(reliabilitySum / ((coursesData?.length ?? 0) + (boardsData?.length ?? 0))).toFixed(
             1,
           )}
         </div>
