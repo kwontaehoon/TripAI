@@ -17,7 +17,7 @@ export const useCoursesQuery = () => {
     const queryOptions = {
         queryKey: TEST_QUERY_KEY.courses,
         queryFn: async () => {
-            const { data } = await getCourses();
+            const data = await getCourses();
             return data;
         },
     };
@@ -42,7 +42,7 @@ export const useBoardsQuery = () => {
     const queryOptions = {
         queryKey: TEST_QUERY_KEY.boards,
         queryFn: async () => {
-            const { data } = await getBoards();
+            const data = await getBoards();
             return data;
         },
     };
