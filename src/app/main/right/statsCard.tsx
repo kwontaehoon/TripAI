@@ -11,7 +11,7 @@ const StatsCard = () => {
       <div className="text-center">
         <div className="text-sm opacity-80 mb-2">전체 생성된 코스 수</div>
         <div className="text-3xl font-bold mb-4">
-          {(boardsData.length) + (coursesData.length)}
+          {(boardsData?.length ?? 0) + (coursesData?.length ?? 0)}
         </div>
         <div className="text-xs opacity-60">개</div>
       </div>

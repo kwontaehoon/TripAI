@@ -12,7 +12,7 @@ const CurrentSearch = () => {
     setCurrentSearchData(currentSearch)
   }, [])
 
-  return currentSearchData.length === 0 ? '' : (
+  return (currentSearchData?.length ?? 0) === 0 ? '' : (
     <div className="bg-white rounded-2xl p-6 border !border-gray-200">
       <h3 className="font-semibold text-gray-900 mb-4">최근 검색어</h3>
       <div className="space-y-2">
