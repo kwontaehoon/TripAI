@@ -30,7 +30,7 @@ export const useCourseDetailsQuery = (params: number) => {
     const queryOptions = {
         queryKey: [TEST_QUERY_KEY.courseDetails, params],
         queryFn: async () => {
-            const { data } = await getCourseDetails(params);
+            const data = await getCourseDetails(params);
             return data;
         }
     }
@@ -56,7 +56,7 @@ export const useBoardDetailssQuery = (params: number) => {
     const queryOptions = {
         queryKey: [TEST_QUERY_KEY.boardDetails, params],
         queryFn: async () => {
-            const { data } = await getBoardDetails(params);
+            const data = await getBoardDetails(params);
             return data;
         },
     };
