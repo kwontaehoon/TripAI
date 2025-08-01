@@ -5,7 +5,8 @@ import Right from "./right/page"
 import Intro from './Intro'
 import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { prefetchBoardDetails, prefetchBoards, prefetchCourseDetails, prefetchCourses, prefetchCoursesAndBoards } from "@/service/prefetch"
-import { Hydration } from "../../lib/Hydration"
+import { Hydration } from "./Hydration"
+// import { queryClient } from "@/config/provider/queryClientProvider"
 // import { Metadata, ResolvingMetadata } from "next"
 
 const Page = async() => {
