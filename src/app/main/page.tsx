@@ -3,28 +3,10 @@ import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"
 import Right from "./right/page"
 import Intro from './Intro'
-import { dehydrate, QueryClient } from "@tanstack/react-query"
-import { prefetchBoardDetails, prefetchBoards, prefetchCourseDetails, prefetchCourses, prefetchCoursesAndBoards } from "@/service/prefetch"
-import { Hydration } from "./Hydration"
 // import { queryClient } from "@/config/provider/queryClientProvider"
 // import { Metadata, ResolvingMetadata } from "next"
 
 const Page = async() => {
-
-  // prefech
-  const queryClient = new QueryClient()
-  await prefetchCourses(queryClient)
-  await prefetchBoards(queryClient)
-
-  await prefetchCoursesAndBoards(queryClient)
-
-  await Promise.all(
-    [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id))
-  );
-  await Promise.all(
-    [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id))
-  );
-  
   
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
@@ -46,7 +28,6 @@ const Page = async() => {
   // }
 
   return (  
-    <Hydration state={dehydrate(queryClient)}>
     <div
       className="
         bg-#f8fafc
@@ -90,7 +71,6 @@ const Page = async() => {
         </div>
       </div>
       </div>
-    </Hydration>
   )
 
   // return (

@@ -6,6 +6,9 @@ import Modal from "@/modal"
 import QueryClientProvider from "@/config/provider/queryClientProvider"
 import { ScrollController } from "@/util/scrollController"
 import { Suspense } from "react"
+import { dehydrate, QueryClient } from "@tanstack/react-query"
+import { prefetchBoardDetails, prefetchBoards, prefetchCourseDetails, prefetchCourses, prefetchCoursesAndBoards } from "@/service/prefetch"
+import { Hydration } from "./Hydration"
 
 export const metadata: Metadata = {
   title: "TripAI",
@@ -22,6 +25,20 @@ export const metadata: Metadata = {
   },
 }
 
+  // prefech
+  const queryClient = new QueryClient()
+  await prefetchCourses(queryClient)
+  await prefetchBoards(queryClient)
+
+  await prefetchCoursesAndBoards(queryClient)
+
+  await Promise.all(
+    [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id))
+  );
+  await Promise.all(
+    [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id))
+  );
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,11 +50,13 @@ export default function RootLayout({
         <Suspense fallback={<></>}>
           <QueryClientProvider>
             {/* <div id="global-modal"></div> */}
+            <Hydration state={dehydrate(queryClient)}>
             <Modal />
             <ScrollController />
             <Header />
             {children}
             <Footer />
+            </Hydration>
           </QueryClientProvider>
         </Suspense>
       </body>
