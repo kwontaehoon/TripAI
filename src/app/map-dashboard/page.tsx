@@ -274,6 +274,7 @@ function WWPageContent() {
   })
   const [_, setAiResponse] = useAtom(aiResponseAtom)
   const { mutateAsync: aiRecommend, data, isSuccess } = useAiRecommendMutation()
+  const prevNearbyDataRef = useRef<any>(null)
 
   // 플레이리스트
   const [myPlaylists, setMyPlaylists] = useState<PlaylistItem[]>([])
@@ -290,7 +291,6 @@ function WWPageContent() {
         console.log("jsonData: ", jsonData)
         setAiResponse(jsonData)
         localStorage.setItem("aiList", JSON.stringify(jsonData))
-
       } catch (error) {
         console.log(error)
         alert("오류가 발생했습니다. 다시 시도해주세요.")
@@ -299,9 +299,9 @@ function WWPageContent() {
       }
 
       const params = new URLSearchParams({
-        destination: myPlaylists.map(x => x.spot.displayName.text).join(","),
+        destination: myPlaylists.map((x) => x.spot.displayName.text).join(","),
         generated: "true",
-        mapDashboard: "true" // ai-input에서 생성한 ai 코스를 구분하기 위한 값
+        mapDashboard: "true", // ai-input에서 생성한 ai 코스를 구분하기 위한 값
       })
 
       setFormData({
@@ -483,7 +483,7 @@ function WWPageContent() {
               const button = contentDiv.querySelector(`#add-to-plan-${spot.id}`)
               if (button) {
                 button.addEventListener("click", () => {
-                    addToPlaylist(spot)
+                  addToPlaylist(spot)
                 })
               }
             }, 0)
@@ -565,14 +565,27 @@ function WWPageContent() {
       }
     }
     if (nearBydata) {
-      updateMarkers()
-    }
-    return () => {
-      isMounted = false
-      // 컴포넌트 언마운트 시 마커들 정리
-      currentMarkers.forEach((marker) => {
-        marker.setMap(null)
-      })
+
+      // 이전 데이터와 현재 데이터의 places id를 비교해서 변경되었으면 마커 다시 표시
+      // 변경되지 않았으면 현재 마커 유지
+      const nearByDataId = nearBydata.places.map(x => x.id)
+      let prevNearByDataId
+      if(prevNearbyDataRef.current){
+        prevNearByDataId = prevNearbyDataRef.current.map(x => x.id)
+      }
+      const isEqual = JSON.stringify(nearByDataId) === JSON.stringify(prevNearByDataId);
+      prevNearbyDataRef.current = nearBydata.places
+      if (!isEqual) {
+        updateMarkers()
+      } else {
+        return () => {
+          isMounted = false
+          // 컴포넌트 언마운트 시 마커들 정리
+          currentMarkers.forEach((marker) => {
+            marker.setMap(null)
+          })
+        }
+      }
     }
   }, [map, currentZoom, nearBydata])
 
