@@ -566,6 +566,7 @@ function WWPageContent() {
     }
     if (nearBydata) {
 
+      console.log("aaa nearbyData: ", nearBydata.places)
       // 이전 데이터와 현재 데이터의 places id를 비교해서 변경되었으면 마커 다시 표시
       // 변경되지 않았으면 현재 마커 유지
       const nearByDataId = nearBydata.places.map(x => x.id)
