@@ -573,7 +573,10 @@ function WWPageContent() {
       if(prevNearbyDataRef.current){
         prevNearByDataId = prevNearbyDataRef.current.map(x => x.id)
       }
+      console.log("aaa nearByDataId: ", JSON.stringify(nearByDataId))
+      console.log("aaa prevNearByDataId: ", JSON.stringify(prevNearByDataId))
       const isEqual = JSON.stringify(nearByDataId) === JSON.stringify(prevNearByDataId);
+      console.log("aaa isEqual: ", isEqual)
       prevNearbyDataRef.current = nearBydata.places
       if (!isEqual) {
         updateMarkers()
