@@ -4,6 +4,8 @@ import Recommend from "./recommend"
 import Board from "./board"
 import Popular from "./popular"
 import Search from "./search"
+import { createClient } from "@/service/supabase/client"
+import { useEffect } from "react"
 
 const Page = () => {
 

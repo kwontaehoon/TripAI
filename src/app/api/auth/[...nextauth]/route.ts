@@ -1,6 +1,8 @@
-import NextAuth from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+{/* next-auth social login */}
 
-const handler = NextAuth(authOptions);
+// import NextAuth from "next-auth";
+// import { authOptions } from "@/lib/authOptions";
 
-export { handler as GET, handler as POST };
+// const handler = NextAuth(authOptions);
+
+// export { handler as GET, handler as POST };
