@@ -13,6 +13,34 @@ const keywordQueries = [
   { keyword: "강원도", key: "gangwon" },
 ]
 
+// users 이메일 확인
+export const postEmailCheck = async (params) => {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", params)
+    .single()
+
+  return data
+}
+
+export const postSignup = async (params) => {
+  const { data, error } = await supabase.from("users").insert([
+    {
+      email: params.email,
+      name: params.name,
+      profile_image_url: params.profile_image_url,
+    },
+  ])
+
+  if (error) {
+    console.error("회원 등록 실패:", error)
+  } else {
+    console.log("회원 등록 성공:", data)
+  }
+  return data
+}
+
 // courses
 export const getCourses = async () => {
   const { data } = await supabase.from("courses").select(`
@@ -64,6 +92,7 @@ export const getCourses = async () => {
         )
       )
     `)
+    .order('created_at', { ascending: true })
   return data
 }
 
@@ -178,6 +207,7 @@ export const getBoards = async () => {
       )
     )
   `)
+  .order('created_at', { ascending: true })
   return data
 }
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { createClient } from "@/service/supabase/client"
 import {
   Apple,
   Chrome,
@@ -15,12 +16,30 @@ import { useState } from "react"
 
 export default function LoginPage() {
   const router = useRouter()
+  const supabase = createClient()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   })
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  // 로그인 실패시 경고문
+  const [validationLogin, setValidationLogin] = useState(false)
+
+  const signInWithKakao = async() => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+    })
+  }
+  const signInWithGoogle = async() => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    })
+  }
+  async function signOut() {
+    const { error } = await supabase.auth.signOut()
+  }
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -35,10 +54,16 @@ export default function LoginPage() {
 
     // 로그인 로직 시뮬레이션
     await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    alert("로그인 성공!")
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    })
+    if(error){
+      setValidationLogin(true)
+    }else {
+      router.push("/")
+    }
     setIsLoading(false)
-    router.push("/home2")
   }
 
   const handleSocialLogin = (provider: string) => {
@@ -46,6 +71,7 @@ export default function LoginPage() {
   }
 
   return (
+    
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="mhostj3"
@@ -161,8 +187,9 @@ export default function LoginPage() {
                     )}
                   </button>
                 </div>
+                {validationLogin && <div className="mt-2 text-sm text-red-500">이메일 또는 비밀번호를 다시 확인해주세요.</div>}
               </div>
-
+              
               {/* Remember & Forgot */}
               <div
                 className="flex items-center justify-between"
@@ -184,6 +211,7 @@ export default function LoginPage() {
                 </label>
                 <button
                   type="button"
+                  onClick={()=>router.push("/forgot-password")}
                   className="text-sm text-blue-600 hover:text-blue-700 font-medium"
                   data-oid="d8jnawz"
                 >
@@ -244,7 +272,7 @@ export default function LoginPage() {
             {/* Social Login */}
             <div className="space-y-3" data-oid="lszbd-j">
               <button
-                onClick={() => handleSocialLogin("Google")}
+                onClick={signInWithGoogle}
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="xew9kql"
               >
@@ -258,7 +286,7 @@ export default function LoginPage() {
               </button>
 
               <button
-                onClick={() => handleSocialLogin("GitHub")}
+                onClick={signInWithKakao}
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="c7pplo-"
               >
@@ -267,7 +295,7 @@ export default function LoginPage() {
                   data-oid="6h:wpmm"
                 />
                 <span className="text-gray-700 font-medium" data-oid="uwsfaxt">
-                  GitHub로 로그인
+                  Kakao로 로그인
                 </span>
               </button>
 

@@ -16,6 +16,8 @@ import {
 } from "@/service/prefetch"
 import { Hydration } from "./Hydration"
 import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
+import { AuthProvider } from "@/config/provider/authProvider"
+import { createClient } from "@/service/supabase/server"
 
 export const metadata: Metadata = {
   title: "TripAI",
@@ -46,26 +48,34 @@ await Promise.all(
   [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id)),
 )
 
-export default function RootLayout({
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const supabase = await createClient()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
   return (
     <html lang="en">
       <body>
         <Suspense fallback={<></>}>
-          {/* <NextAuthSessionProvider> */}
-          <QueryClientProvider>
-            {/* <div id="global-modal"></div> */}
-            <Hydration state={dehydrate(queryClient)}>
-              <Modal />
-              <ScrollController />
-              <Header />
-              {children}
-              <Footer />
-            </Hydration>
-          </QueryClientProvider>
+          <AuthProvider>
+            {/* <NextAuthSessionProvider> */}
+            <QueryClientProvider>
+              {/* <div id="global-modal"></div> */}
+              <Hydration state={dehydrate(queryClient)}>
+                <Modal />
+                <ScrollController />
+                <Header initialSession={session} />
+                {children}
+                <Footer />
+              </Hydration>
+            </QueryClientProvider>
+          </AuthProvider>
           {/* </NextAuthSessionProvider> */}
         </Suspense>
       </body>

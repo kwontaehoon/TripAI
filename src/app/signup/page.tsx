@@ -1,6 +1,12 @@
 "use client"
 
 import {
+  useEmailCheckMutation,
+  useEmailCheckQuery,
+  useSignupMutation,
+} from "@/hooks/supabase/dev"
+import { createClient } from "@/service/supabase/client"
+import {
   Apple,
   Chrome,
   Eye,
@@ -8,20 +14,19 @@ import {
   Github,
   Lock,
   Mail,
-  Phone,
-  User
+  User,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function SignupPage() {
   const router = useRouter()
+  const supabase = createClient()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    phone: "",
+    confirmPassword: ""
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -31,11 +36,18 @@ export default function SignupPage() {
     privacy: false,
     marketing: false,
   })
+  // 이메일 중복시 경고문
+  const [validationEmail, setValidationEmail] = useState(false)
+
+  const { mutateAsync: emailCheck } = useEmailCheckMutation(
+    formData.email,
+  )
+  const { mutate: signup } = useSignupMutation(formData)
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
-      [field]: value,
+      [field]: value.trim(),
     }))
   }
 
@@ -59,14 +71,36 @@ export default function SignupPage() {
       return
     }
 
+    if(formData.password.length < 6) {
+      alert("비밀번호를 확인해주세요.")
+      return
+    }
+
     setIsLoading(true)
 
     // 회원가입 로직 시뮬레이션
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    alert("회원가입이 완료되었습니다!")
+    const { data, error } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        // emailRedirectTo: 'https://example.com/welcome',
+        data: {
+          display_name: formData.name,
+        },
+      },
+    })
+    const emailCheckFlag = await emailCheck()
+    if (emailCheckFlag) {
+      setValidationEmail(true)
+    } else {
+      signup()
+      alert("회원가입이 완료되었습니다!")
+      router.push("/login")
+    }
     setIsLoading(false)
-    router.push("/login")
+    // router.push("/login")
   }
 
   const handleSocialSignup = (provider: string) => {
@@ -169,42 +203,14 @@ export default function SignupPage() {
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
+                    onChange={(e) => { handleInputChange("email", e.target.value); setValidationEmail(false)}}
                     placeholder="이메일을 입력하세요"
                     className="w-full pl-10 pr-4 py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:!border-transparent"
                     required
                     data-oid="b-lmb0w"
                   />
                 </div>
-              </div>
-
-              {/* Phone */}
-              <div data-oid="g-bw90.">
-                <label
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                  data-oid="kr-pk4_"
-                >
-                  전화번호
-                </label>
-                <div className="relative" data-oid="z41tuxz">
-                  <div
-                    className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                    data-oid="4no:90u"
-                  >
-                    <Phone
-                      className="w-5 h-5 text-gray-400"
-                      data-oid="8b0rlnp"
-                    />
-                  </div>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => handleInputChange("phone", e.target.value)}
-                    placeholder="전화번호를 입력하세요"
-                    className="w-full pl-10 pr-4 py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:!border-transparent"
-                    data-oid="x98.h9q"
-                  />
-                </div>
+                {validationEmail && <div className="mt-2 text-sm text-red-500">이미 사용 중인 이메일입니다.</div>}
               </div>
 
               {/* Password */}
@@ -256,8 +262,8 @@ export default function SignupPage() {
                     )}
                   </button>
                 </div>
-                <p className="mt-1 text-xs text-gray-500" data-oid="1gccjkm">
-                  8자 이상, 영문, 숫자, 특수문자 포함
+                <p className="mt-2 text-xs text-gray-500" data-oid="1gccjkm">
+                  6자 이상, 영문, 숫자, 특수문자 포함
                 </p>
               </div>
 
@@ -312,7 +318,7 @@ export default function SignupPage() {
                 </div>
                 {formData.confirmPassword &&
                   formData.password !== formData.confirmPassword && (
-                    <p className="mt-1 text-xs text-red-500" data-oid=".-pp83e">
+                    <p className="mt-1 text-xs text-red-500 mt-2" data-oid=".-pp83e">
                       비밀번호가 일치하지 않습니다.
                     </p>
                   )}

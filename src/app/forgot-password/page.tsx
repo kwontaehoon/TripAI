@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Bot, Mail, CheckCircle, AlertCircle } from 'lucide-react';
+import { createClient } from '@/service/supabase/client';
 
 export default function ForgotPasswordPage() {
+    const supabase = createClient()
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -31,10 +33,15 @@ export default function ForgotPasswordPage() {
         setIsSuccess(true);
     };
 
+      const signInWithEmail = async() => {
+        await supabase.auth.resetPasswordForEmail('gju04195@google.com', {
+            redirectTo: 'http://localhost:3000/reset-password',
+          })
+      }
+
     if (isSuccess) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28">
-                
                 {/* Success Content */}
                 <main className="max-w-md mx-auto px-4 py-8">
                     <div className="bg-white rounded-2xl shadow-xl border !border-gray-200 overflow-hidden">
@@ -100,7 +107,7 @@ export default function ForgotPasswordPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28">
-
+                {/* <div onClick={signInWithEmail}>비밀번호 찾기</div> */}
             {/* Main Content */}
             <main className="max-w-md mx-auto px-4 py-8">
                 <div className="bg-white rounded-2xl shadow-xl border !border-gray-200 overflow-hidden">

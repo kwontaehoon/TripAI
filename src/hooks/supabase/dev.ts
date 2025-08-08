@@ -1,5 +1,5 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate } from "@/service/supabase";
+import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate, postEmailCheck, postSignup } from "@/service/supabase";
 import { uploadMultipleImages } from "@/service/supabase/storage";
 import { getGeminiAi } from "@/service/gemini";
 
@@ -11,6 +11,28 @@ const TEST_QUERY_KEY = {
     coursesAndBoards: ["coursesAndBoards"],
     popularSearch: ["popularSearch"]
 }
+
+// users 이메일 확인
+export const useEmailCheckMutation = (params) => {
+    const mutationOptions = {
+        mutationFn: async () => {
+            const results = await postEmailCheck(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// 회원가입
+export const useSignupMutation = (params) => {
+    const mutationOptions = {
+        mutationFn: async () => {
+            const results = await postSignup(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
 
 // courses
 export const useCoursesQuery = () => {
