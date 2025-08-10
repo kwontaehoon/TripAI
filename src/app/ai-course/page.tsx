@@ -22,7 +22,6 @@ import Card from "@/common/card/course_details_card"
 
 export default function AICourse() {
   const [aiCourseData, setAiCourseData] = useState([])
-  console.log("aiCourseData: ", aiCourseData)
   const searchParams = useSearchParams()
   const router = useRouter()
   const [isRegenerating, setIsRegenerating] = useState(false)

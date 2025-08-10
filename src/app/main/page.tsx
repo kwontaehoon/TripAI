@@ -3,11 +3,17 @@ import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"
 import Right from "./right/page"
 import Intro from './Intro'
+import { createClient } from "@/service/supabase/server"
 // import { useSession } from "next-auth/react"
 // import { queryClient } from "@/config/provider/queryClientProvider"
 // import { Metadata, ResolvingMetadata } from "next"
 
 const Page = async() => {
+
+  const supabase = await createClient()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
   
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
@@ -51,7 +57,7 @@ const Page = async() => {
       </div> */}
 
       <Intro />
-      <Left />
+      <Left initialSession={session} />
       <Right />
 
       {/* Floating Elements */}

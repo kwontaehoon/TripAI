@@ -7,11 +7,11 @@ import Search from "./search"
 import { createClient } from "@/service/supabase/client"
 import { useEffect } from "react"
 
-const Page = () => {
+const Page = ({ initialSession }) => {
 
   return (
     <div className="mb-12 w-full lg:w-[700px]">
-      <Search />
+      <Search initialSession={initialSession} />
       <Recommend />
       <Popular />
       <Board />

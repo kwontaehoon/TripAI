@@ -16,3 +16,6 @@ export const loadingModalAtom = atom({
     isOpen: false,
     message: ""
 })
+
+// session
+export const sessionAtom = atom()

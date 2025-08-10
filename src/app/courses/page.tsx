@@ -154,7 +154,7 @@ export default function CoursesPage() {
                     data-oid="1u.jo5e"
                   >
                     <div
-                      className="flex-1 flex items-center px-4"
+                      className="flex-1 flex items-center space-x-3 px-4"
                       data-oid="jjxdduf"
                     >
                       <Search

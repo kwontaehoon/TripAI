@@ -5,7 +5,7 @@ const Popular = () => {
   const router = useRouter()
   const popularDestinations = [
     {
-      name: "제주도",
+      name: "제주",
       count: "1,247개 코스",
       gradient: "from-blue-400 to-cyan-300",
     },

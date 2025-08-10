@@ -1,6 +1,6 @@
 "use client"
 import { createClient } from "@/service/supabase/client"
-import { introModalAtom, modalUiStateAtom } from "@/store/ai"
+import { introModalAtom, modalUiStateAtom, sessionAtom } from "@/store/ai"
 import { useAtom } from "jotai"
 import { Bot, User, Settings, LogOut, ChevronDown } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -13,7 +13,7 @@ const getScrollbarWidth = () => {
 const Page = ({ initialSession }) => {
   const router = useRouter()
   const supabase = createClient()
-  const [session, setSession] = useState(initialSession)
+  const [session, setSession] = useAtom(sessionAtom)
   const [isVisible, setIsVisible] = useState(true)
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -27,16 +27,6 @@ const Page = ({ initialSession }) => {
   const shouldDisableScroll = Object.values(aiModalUiStateModal).some(
     (state) => state,
   )
-
-  useEffect(() => {
-    // onAuthStateChange 리스너로 실시간 상태 변화 감지
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-      }
-    );
-    return () => subscription.unsubscribe();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,7 +102,7 @@ const Page = ({ initialSession }) => {
         </div>
         <div className="flex-1 flex flex-row-reverse" data-oid="nst0g5j">
           <div className="flex items-center space-x-4" data-oid="j6cwnl9">
-            {session ? (
+            {(initialSession || session) ? (
               <>
                 {/* User Menu */}
                 <div className="relative" data-oid="cw85quk">
@@ -131,7 +121,7 @@ const Page = ({ initialSession }) => {
                       className="text-sm font-medium text-gray-700 hidden md:block"
                       data-oid=":h9uxts"
                     >
-                      {session.user.identities[0].identity_data.display_name || session.user.identities[0].identity_data.full_name}
+                      {(initialSession||session).user.identities[0].identity_data.display_name || (initialSession||session).user.identities[0].identity_data.full_name}
                     </span>
                     <ChevronDown
                       className="w-4 h-4 text-gray-500"
@@ -154,12 +144,12 @@ const Page = ({ initialSession }) => {
                           data-oid="44ie_.b"
                         >
                           {
-                            session.user.identities[0].identity_data
+                            (initialSession||session).user.identities[0].identity_data
                               .display_name
                           }
                         </p>
                         <p className="text-xs text-gray-500" data-oid="i9.yd_6">
-                          {session.user.email}
+                          {(initialSession||session).user.email}
                         </p>
                       </div>
 
