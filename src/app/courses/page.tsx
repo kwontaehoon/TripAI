@@ -11,8 +11,9 @@ import {
   Sparkles,
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Skeleton from "./skeleton"
+import { sleep } from "@/util/sleep"
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()
@@ -27,13 +28,14 @@ export default function CoursesPage() {
     rating: 1,
     period: 1,
   })
+  const [isLoading, setIsLoading] = useState(true)
   const [filteredCourses, setFilteredCourses] = useState([])
-  console.log("filteredCourses: ", filteredCourses)
 
-  const { data: coursesData, isSuccess, isLoading } = useCoursesQuery()
+  const { data: coursesData } = useCoursesQuery()
 
   useEffect(() => {
     const dest = searchParams.get("destination")
+
     if (dest) {
       setDestination(dest)
       setSearchQuery(dest)
@@ -41,7 +43,7 @@ export default function CoursesPage() {
   }, [searchParams])
 
   useEffect(() => {
-    if (!isSuccess || !coursesData?.length) return
+    if (!coursesData?.length) return
 
     setAvg({
       rating:
@@ -78,8 +80,24 @@ export default function CoursesPage() {
       return matchTag && matchesSearch && matchQuick
     })
 
-    setFilteredCourses(filtered)
-  }, [isSuccess, selectedFilter, searchQuery, coursesData, quickedFilter])
+    let isCanceled = false
+
+    const finishFiltering = async () => {
+      setFilteredCourses(filtered)
+
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      if (!isCanceled && isLoading) {
+        setIsLoading(false)
+      }
+    }
+
+    finishFiltering()
+
+    return () => {
+      isCanceled = true
+    }
+  }, [selectedFilter, searchQuery, coursesData, quickedFilter])
 
   const filters = [
     "전체",

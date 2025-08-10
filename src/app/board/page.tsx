@@ -28,10 +28,10 @@ export default function BoardPage() {
     rating: 1,
     period: 1,
   })
+  const [isLoading, setIsLoading] = useState(true)
   const [filteredBoards, setFilteredBoards] = useState([])
 
-  const { data: boardsData, isSuccess, isLoading } = useBoardsQuery()
-  console.log("boardsData: ", boardsData)
+  const { data: boardsData } = useBoardsQuery()
 
   const filters = [
     "전체",
@@ -58,7 +58,7 @@ export default function BoardPage() {
   }
 
   useEffect(() => {
-    if (!isSuccess || !boardsData?.length) return
+    if (!boardsData?.length) return
 
     setAvg({
       rating:
@@ -93,8 +93,24 @@ export default function BoardPage() {
       return matchTag && matchesSearch && matchQuick
     })
 
-    setFilteredBoards(filtered)
-  }, [isSuccess, selectedFilter, searchQuery, boardsData, quickedFilter])
+    let isCanceled = false
+
+    const finishFiltering = async () => {
+      setFilteredBoards(filtered)
+
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      if (!isCanceled && isLoading) {
+        setIsLoading(false)
+      }
+    }
+
+    finishFiltering()
+
+    return () => {
+      isCanceled = true
+    }
+  }, [selectedFilter, searchQuery, boardsData, quickedFilter])
 
   return isLoading ? (
     <Skeleton />
@@ -205,6 +221,7 @@ export default function BoardPage() {
                 </form>
 
                 {/* Write Post Button */}
+                <div className="flex justify-end">
                 <button
                   onClick={() => router.push("/board/write")}
                   className="
@@ -225,6 +242,7 @@ export default function BoardPage() {
                   />
                   여행 코스 공유하기
                 </button>
+                </div>
               </div>
 
               {/* Background Pattern */}

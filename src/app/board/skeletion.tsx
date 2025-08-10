@@ -1,12 +1,6 @@
 "use client"
 
-import {
-  MessageCircle,
-  Mic,
-  Plus,
-  Search,
-  Send
-} from "lucide-react"
+import { MessageCircle, Mic, Plus, Search, Send } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -127,17 +121,20 @@ export default function BoardSkeletonPage() {
                 </form>
 
                 {/* Write Post Button - Original UI */}
-                <button
-                  onClick={() => router.push("/board/write")}
-                  className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center text-sm sm:text-base font-medium"
-                  data-oid="11ks3h5"
-                >
-                  <Plus
-                    className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
-                    data-oid="olki.4n"
-                  />
-                  여행 코스 공유하기
-                </button>
+                <div className="flex justify-end">
+                  <button
+                    disabled
+                    onClick={() => router.push("/board/write")}
+                    className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-blue-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg hover:shadow-lg transition-all flex items-center justify-center text-sm sm:text-base font-medium"
+                    data-oid="11ks3h5"
+                  >
+                    <Plus
+                      className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
+                      data-oid="olki.4n"
+                    />
+                    여행 코스 공유하기
+                  </button>
+                </div>
               </div>
 
               {/* Background Pattern */}
@@ -191,7 +188,6 @@ export default function BoardSkeletonPage() {
                   className="bg-white rounded-2xl shadow-lg border !border-gray-200 overflow-hidden"
                   data-oid="yzs72-q"
                 >
-
                   <div className="md:flex" data-oid="952kw93">
                     {/* Image Skeleton */}
                     <div className="md:w-1/3" data-oid="pokp6we">
