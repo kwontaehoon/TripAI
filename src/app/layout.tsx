@@ -62,6 +62,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
+      <head>
+        <meta name="naver-site-verification" content="e3c5ec6e135ce21f551650839ebfa0a1a755e4ee" />
+      </head>
         <Suspense fallback={<></>}>
           <AuthProvider>
             {/* <NextAuthSessionProvider> */}
