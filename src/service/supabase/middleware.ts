@@ -41,23 +41,29 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl
   const loginPath = "/login"
+  const writePath = "/board/write"
+  const mypagePath = "/mypage"
 
+  // 로그인 후 /login 으로 접속했을 때 / 으로 처리
   if (user && pathname === loginPath) {
     const url = request.nextUrl.clone()
     url.pathname = "/"
     return NextResponse.redirect(url)
   }
 
-  // if (
-  //   !user &&
-  //   !request.nextUrl.pathname.startsWith('/login') &&
-  //   !request.nextUrl.pathname.startsWith('/auth')
-  // ) {
-  //   // no user, potentially respond by redirecting the user to the login page
-  //   const url = request.nextUrl.clone()
-  //   url.pathname = '/login'
-  //   return NextResponse.redirect(url)
-  // }
+  // 로그인 전 /board/write 으로 접속했을 때 /login 으로 처리
+  if(!user && pathname === writePath) {
+    const url = request.nextUrl.clone()
+    url.pathname = "/login"
+    return NextResponse.redirect(url)
+  }
+
+  // 로그인 전 /mypage 로 접속했을 때 /login 으로 처리
+  if(!user && pathname === mypagePath) {
+    const url = request.nextUrl.clone()
+    url.pathname = "/login"
+    return NextResponse.redirect(url)
+  }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:

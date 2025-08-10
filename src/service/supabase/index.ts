@@ -13,7 +13,18 @@ const keywordQueries = [
   { keyword: "강원도", key: "gangwon" },
 ]
 
-// users 이메일 확인
+// user 정보 가져오기
+export const getUserInfo = async (params) => {
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .eq("email", params)
+    .single()
+
+  return data
+}
+
+// user 이메일 확인
 export const postEmailCheck = async (params) => {
   const { data, error } = await supabase
     .from("users")
@@ -24,6 +35,7 @@ export const postEmailCheck = async (params) => {
   return data
 }
 
+// 회원가입
 export const postSignup = async (params) => {
   const { data, error } = await supabase.from("users").insert([
     {

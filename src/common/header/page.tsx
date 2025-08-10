@@ -13,7 +13,7 @@ const getScrollbarWidth = () => {
 const Page = ({ initialSession }) => {
   const router = useRouter()
   const supabase = createClient()
-  const [session, setSession] = useAtom(sessionAtom)
+  const [session] = useAtom(sessionAtom)
   const [isVisible, setIsVisible] = useState(true)
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -156,25 +156,13 @@ const Page = ({ initialSession }) => {
                       <button
                         onClick={() => {
                           setIsDropdownOpen(false)
-                          router.push("/profile")
+                          router.push("/mypage")
                         }}
                         className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                         data-oid="4bh8-0u"
                       >
                         <User className="w-4 h-4 mr-3" data-oid="0d_kz7_" />
-                        프로필
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setIsDropdownOpen(false)
-                          router.push("/settings")
-                        }}
-                        className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        data-oid="wr771yd"
-                      >
-                        <Settings className="w-4 h-4 mr-3" data-oid="1-d:8nb" />
-                        설정
+                        마이페이지
                       </button>
 
                       <div
