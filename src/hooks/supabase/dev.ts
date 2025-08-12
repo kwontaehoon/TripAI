@@ -1,5 +1,5 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate, postEmailCheck, postSignup, getUserInfo } from "@/service/supabase";
+import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate, postEmailCheck, postSignup, getUserInfo, postLike, postComment, postCommentRegister, postCommentDelete, getComments, postCommentReplyRegister, postCommentReplyDelete } from "@/service/supabase";
 import { uploadMultipleImages } from "@/service/supabase/storage";
 import { getGeminiAi } from "@/service/gemini";
 
@@ -10,6 +10,7 @@ const TEST_QUERY_KEY = {
     boards: ["boards"],
     boardDetails: ["boardDetails"],
     coursesAndBoards: ["coursesAndBoards"],
+    comments: ["comments"],
     popularSearch: ["popularSearch"]
 }
 
@@ -24,6 +25,17 @@ export const useUserInfoQuery = (params) => {
     };
 
     return useQuery(queryOptions);
+};
+
+// user 정보 요청하기
+export const useUserInfoMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params) => {
+            const results = await getUserInfo(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
 };
 
 // user 이메일 확인
@@ -110,6 +122,74 @@ export const useCoursesAndBoardsQuery = () => {
     };
 
     return useQuery(queryOptions);
+};
+
+// 좋아요
+export const useLikeMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postLike(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// 댓글 리스트
+export const useCommentsQuery = (params) => {
+    const queryOptions = {
+        queryKey: TEST_QUERY_KEY.comments,
+        queryFn: async () => {
+            const data = await getComments(params);
+            return data;
+        },
+    };
+
+    return useQuery(queryOptions);
+};
+
+// 댓글 등록
+export const useCommentRegisterMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postCommentRegister(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// 댓글 답글 등록
+export const useCommentReplyRegisterMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postCommentReplyRegister(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// 댓글 삭제
+export const useCommentDeleteMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postCommentDelete(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+};
+
+// 댓글 답글 삭제
+export const useCommentReplyDeleteMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postCommentReplyDelete(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
 };
 
 // 인기 검색어

@@ -66,9 +66,10 @@ export default async function RootLayout({
         <meta name="naver-site-verification" content="e3c5ec6e135ce21f551650839ebfa0a1a755e4ee" />
       </head>
         <Suspense fallback={<></>}>
-          <AuthProvider>
+
             {/* <NextAuthSessionProvider> */}
             <QueryClientProvider>
+            <AuthProvider>
               {/* <div id="global-modal"></div> */}
               <Hydration state={dehydrate(queryClient)}>
                 <Modal />
@@ -77,8 +78,9 @@ export default async function RootLayout({
                 {children}
                 <Footer />
               </Hydration>
+              </AuthProvider>
             </QueryClientProvider>
-          </AuthProvider>
+
           {/* </NextAuthSessionProvider> */}
         </Suspense>
       </body>

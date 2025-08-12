@@ -55,7 +55,10 @@ export const postSignup = async (params) => {
 
 // courses
 export const getCourses = async () => {
-  const { data } = await supabase.from("courses").select(`
+  const { data } = await supabase
+    .from("courses")
+    .select(
+      `
       *,
       course_ai_insights (
         title,
@@ -103,8 +106,9 @@ export const getCourses = async () => {
           longitude
         )
       )
-    `)
-    .order('created_at', { ascending: true })
+    `,
+    )
+    .order("created_at", { ascending: true })
   return data
 }
 
@@ -169,7 +173,10 @@ export const getCourseDetails = async (params: number) => {
 
 // boards
 export const getBoards = async () => {
-  const { data } = await supabase.from("boards").select(`
+  const { data } = await supabase
+    .from("boards")
+    .select(
+      `
     *,
     board_ai_insights (
       title,
@@ -218,8 +225,9 @@ export const getBoards = async () => {
         longitude
       )
     )
-  `)
-  .order('created_at', { ascending: true })
+  `,
+    )
+    .order("created_at", { ascending: true })
   return data
 }
 
@@ -362,6 +370,142 @@ export const getCoursesAndBoards = async () => {
   ])
   return [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])]
 }
+
+// 좋아요
+export const postLike = async (params) => {
+  // 1. 현재 좋아요 개수 가져오기
+  const { data: courseData, error: selectError } = await supabase
+    .from("courses")
+    .select("likes")
+    .eq("id", params.id)
+    .single();
+
+  if (selectError) {
+    console.error("Error fetching course likes:", selectError);
+    return null;
+  }
+
+  const currentLikes = courseData.likes;
+
+  // 2. 좋아요 추가/삭제에 따라 값 업데이트
+  const newLikes = params.flag === "add" ? currentLikes + 1 : currentLikes - 1;
+
+  // 3. `courses` 테이블 업데이트
+  const { data: updatedData, error: updateError } = await supabase
+    .from("courses")
+    .update({ likes: newLikes })
+    .eq("id", params.id)
+    .select(); // 업데이트된 데이터 반환을 위해 `select()` 추가
+
+  if (updateError) {
+    console.error("Error updating course likes:", updateError);
+    return null;
+  }
+
+  return updatedData;
+};
+
+// comments list
+export const getComments = async (params) => {
+  let query = supabase
+    .from("comments")
+    .select(
+      `
+      *,
+      users(*),
+      comments_replies(
+        *,
+        users(*)
+      )
+      `
+    )
+    .order("created_at", { ascending: true });
+
+  // `board_id`가 null이 아니면 조건 추가
+  if (params.board_id) {
+    query = query.eq("board_id", params.board_id);
+  }
+
+  // `course_id`가 null이 아니면 조건 추가
+  if (params.course_id) {
+    query = query.eq("course_id", params.course_id);
+  }
+  
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching comments:", error);
+    return null;
+  }
+
+  return data;
+};
+
+// comment 등록
+export const postCommentRegister = async (params) => {
+  const { data, error } = await supabase
+    .from("comments")
+    .insert(params)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error CommentRegister:", error);
+    return null;
+  }
+
+  return data;
+};
+
+// comment 답글 등록
+export const postCommentReplyRegister = async (params) => {
+  const { data, error } = await supabase
+    .from("comments_replies")
+    .insert(params)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error CommentRegister:", error);
+    return null;
+  }
+
+  return data;
+};
+
+// comment 삭제
+export const postCommentDelete = async (params) => {
+  const { data, error } = await supabase
+    .from("comments")
+    .delete()
+    .eq("id", params)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error CommentDelete:", error);
+    return null;
+  }
+
+  return data;
+};
+
+// comment 답글 삭제
+export const postCommentReplyDelete = async (params) => {
+  const { data, error } = await supabase
+    .from("comments_replies")
+    .delete()
+    .eq("id", params)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error CommentDelete:", error);
+    return null;
+  }
+
+  return data;
+};
 
 export const getPopularSearch = async () => {
   const results: Record<string, number> = {}

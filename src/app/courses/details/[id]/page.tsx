@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation"
 import { use, useState } from "react"
 import Skeleton from "./skeleton"
 import Image from "next/image"
+import CommentCard from "@/common/card/comment_details_card"
 
 export default function CourseDetailsPage({
   params,
@@ -79,7 +80,7 @@ export default function CourseDetailsPage({
                   </span>
                 </div>
 
-                <h2
+                {/* <h2
                   className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 leading-tight"
                   data-oid="ruzhgcp"
                 >
@@ -98,10 +99,10 @@ export default function CourseDetailsPage({
                   data-oid="eytz6u-"
                 >
                   {courseDetailsData[0].description}
-                </p>
+                </p> */}
 
                 {/* AI Analysis Badges */}
-                <div
+                {/* <div
                   className="flex flex-wrap gap-2 mb-4 sm:mb-6"
                   data-oid="3wb-n1w"
                 >
@@ -123,10 +124,10 @@ export default function CourseDetailsPage({
                         </span>
                       )
                     })}
-                </div>
+                </div> */}
 
                 {/* Action Buttons */}
-                <div
+                {/* <div
                   className="flex flex-wrap gap-2 sm:gap-3"
                   data-oid="eolj5g_"
                 >
@@ -182,7 +183,7 @@ export default function CourseDetailsPage({
                       지도보기
                     </span>
                   </button>
-                </div>
+                </div> */}
               </div>
 
               {/* Background Pattern */}
@@ -267,10 +268,8 @@ export default function CourseDetailsPage({
                 ))}
               </div>
             </div>
-
-            {isSuccess && (
-              <Card data={courseDetailsData} selectedDay={selectedDay} />
-            )}
+            {/* <Card data={courseDetailsData} selectedDay={selectedDay} /> */}
+            <CommentCard id={id} />
           </div>
 
           {/* Right Column - Summary & Info */}
