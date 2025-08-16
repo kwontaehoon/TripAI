@@ -47,7 +47,7 @@ const profile = ({ userInfo, userProfile, isEditing }) => {
             />
           ) : (
             <p className="text-gray-900" data-oid="8uo6ixw">
-              {userInfo.name}
+              {userInfo?.name}
             </p>
           )}
         </div>

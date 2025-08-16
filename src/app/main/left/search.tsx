@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Search, Sparkles, ArrowRight, Send, Mic, Zap } from "lucide-react"
-import { useAtom } from "jotai"
+import { useAtom, useAtomValue } from "jotai"
 import { modalUiStateAtom, sessionAtom } from "@/store/ai"
 import { useRouter } from "next/navigation"
 
@@ -10,7 +10,7 @@ const SearchPage = ({ initialSession }) => {
   const [searchQuery, setSearchQuery] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
-  const [session, setSession] = useAtom(sessionAtom)
+  const session = useAtomValue(sessionAtom)
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()

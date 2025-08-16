@@ -13,7 +13,6 @@ import {
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import Skeleton from "./skeleton"
-import { sleep } from "@/util/sleep"
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()

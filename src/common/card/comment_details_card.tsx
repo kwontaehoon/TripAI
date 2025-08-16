@@ -1,16 +1,20 @@
 import React, { use, useState } from "react"
-import { Send, ThumbsUp, X } from "lucide-react"
+import { Send, ThumbsUp, X, Trash2 } from "lucide-react"
 import {
   useCommentDeleteMutation,
+  useCommentLikeMutation,
   useCommentRegisterMutation,
+  useCommentReplyDeleteMutation,
+  useCommentReplyLikeMutation,
   useCommentReplyRegisterMutation,
   useCommentsQuery,
+  useLikeMutation,
 } from "@/hooks/supabase/dev"
-import { sessionAtom, userInfoAtom } from "@/store/ai"
+import { userInfoAtom } from "@/store/ai"
 import { useAtomValue } from "jotai"
 import { usePathname } from "next/navigation"
 import moment from "moment"
-const comments = ({ id }) => {
+const comments = ({ id, userInfo }) => {
   const pathname = usePathname()
 
   // pathname이 '/courses'로 시작하는지 확인
@@ -19,67 +23,11 @@ const comments = ({ id }) => {
   // pathname이 '/board'로 시작하는지 확인
   const isBoardPage = pathname.startsWith("/board")
 
-  // 댓글 데이터
-  const comments = [
-    {
-      id: 1,
-      author: {
-        name: "가족여행러",
-        avatar: "👨‍👩‍👧",
-        level: "Silver",
-      },
-      content:
-        "정말 유용한 정보 감사해요! 저희도 7살, 9살 아이들과 제주도 가려고 하는데 많은 도움이 됐습니다.",
-      createdAt: "2024-03-16",
-      likes: 12,
-      replies: [
-        {
-          id: 11,
-          author: {
-            name: "여행러버맘",
-            avatar: "👩‍👧‍👦",
-            level: "Gold",
-          },
-          content:
-            "도움이 되셨다니 기뻐요! 혹시 궁금한 점 있으시면 언제든 물어보세요 😊",
-          createdAt: "2024-03-16",
-          likes: 5,
-        },
-      ],
-    },
-    {
-      id: 2,
-      author: {
-        name: "제주도민",
-        avatar: "🏝️",
-        level: "Platinum",
-      },
-      content:
-        "제주도민으로서 정말 잘 다녀가신 것 같아요! 성산일출봉은 정말 아이들과 가기 좋은 곳이죠.",
-      createdAt: "2024-03-16",
-      likes: 8,
-      replies: [],
-    },
-    {
-      id: 3,
-      author: {
-        name: "여행초보맘",
-        avatar: "🤱",
-        level: "Bronze",
-      },
-      content:
-        "아이들과 첫 여행 계획 중인데 정말 도움이 많이 됐어요. 혹시 준비물 리스트 같은 것도 공유해주실 수 있나요?",
-      createdAt: "2024-03-17",
-      likes: 6,
-      replies: [],
-    },
-  ]
-
   const [newComment, setNewComment] = useState("")
   const { mutateAsync: commentRegister } = useCommentRegisterMutation()
   const { mutateAsync: commentReplyRegister } =
     useCommentReplyRegisterMutation()
-  const userInfo = useAtomValue(userInfoAtom)
+  console.log("aaa userInfo: ", userInfo)
   const {
     data: commentsData,
     isLoading: commentsDataIsLoading,
@@ -89,25 +37,30 @@ const comments = ({ id }) => {
     course_id: isCoursePage ? id : null,
   })
   console.log("aaa commentsData: ", commentsData)
-  const { mutate: commentDelete } = useCommentDeleteMutation(id)
+  const totalCommentCount = commentsData?.length + commentsData?.reduce((accumulator, comment) => {
+    return accumulator + comment.comments_replies.length;
+  }, 0)
+  const { mutateAsync: commentDelete } = useCommentDeleteMutation()
+  const { mutateAsync: commentReplyDelete } = useCommentReplyDeleteMutation()
+  const { mutateAsync: commentLike } = useCommentLikeMutation()
+  const { mutateAsync: commentReplyLike } = useCommentReplyLikeMutation()
 
-  const [replies, setReplies] = useState<any[]>([])
   const [activeReplyForm, setActiveReplyForm] = useState<number | null>(null)
   const [newReplyComment, setNewReplyComment] = useState("")
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
+    if(!userInfo) return
     e.preventDefault()
     if (newComment.trim()) {
-      // 댓글 추가 로직
       await commentRegister({
         content: newComment,
         user_id: userInfo.id,
         board_id: isBoardPage ? id : null,
         course_id: isCoursePage ? id : null,
-        like: 0,
+        likes: 0,
       })
-      setNewComment("")
       commentsDataRefetch()
+      setNewComment("")
     }
   }
 
@@ -121,20 +74,48 @@ const comments = ({ id }) => {
     }
   }
 
-  const handleLikeReply = (replyId: number) => {
-    setReplies(
-      replies.map((reply) =>
-        reply.id === replyId ? { ...reply, likes: reply.likes + 1 } : reply,
-      ),
-    )
-  }
-
   const handleNestedReplySubmit = async (comment_id: number) => {
     await commentReplyRegister({
       user_id: userInfo.id,
       parent_comment_id: comment_id,
       content: newReplyComment,
+      likes: 0
     })
+    setTimeout(() => {
+      commentsDataRefetch()
+    }, 500);
+    setActiveReplyForm(null)
+  }
+
+  const handleCommentLike = async (comment_id: number) => {
+    await commentLike({
+      comment_id: comment_id,
+      user_id: userInfo.id,
+      board_id: isBoardPage ? id : null,
+      course_id: isCoursePage ? id : null,
+    })
+    commentsDataRefetch()
+  }
+
+  const handleCommentReplyLike = async (comment_reply_id: number) => {
+    await commentReplyLike({
+      comment_reply_id: comment_reply_id,
+      user_id: userInfo.id,
+      board_id: isBoardPage ? id : null,
+      course_id: isCoursePage ? id : null,
+    })
+    commentsDataRefetch()
+  }
+
+  // 댓글 삭제
+  const handleCommentDelete = async(comment_id: number) => {
+    await commentDelete(comment_id)
+    commentsDataRefetch()
+  }
+
+  // 댓글 답글 삭제
+  const handleCommentDeleteReply = async(reply_id: number) => {
+    await commentReplyDelete(reply_id)
     commentsDataRefetch()
   }
 
@@ -149,7 +130,7 @@ const comments = ({ id }) => {
         className="text-lg font-semibold text-gray-900 mb-4"
         data-oid="beshk9h"
       >
-        댓글 ({comments.length})
+        댓글 ({totalCommentCount})
       </h3>
 
       {/* Comment Form */}
@@ -219,12 +200,23 @@ const comments = ({ id }) => {
                   <span className="text-xs text-gray-500" data-oid="n76upee">
                     {moment(comment.created_at).format("YYYY-MM-DD")}
                   </span>
+                  {userInfo && userInfo.commentsItem.comments.includes(comment.id) && (
+                    <button
+                      onClick={() => handleCommentDelete(comment.id)}
+                      className="text-red-500 hover:text-red-700 p-1"
+                      title="답글 삭제"
+                      data-oid="hob.qxw"
+                    >
+                      <Trash2 className="w-3 h-3" data-oid="1pl-e1e" />
+                    </button>
+                  )}
                 </div>
                 <p className="text-sm text-gray-700 mb-2" data-oid="hyvu73a">
                   {comment.content}
                 </p>
                 <div className="flex items-center space-x-4" data-oid="0kae553">
                   <button
+                    onClick={() => handleCommentLike(comment.id)}
                     className="flex items-center space-x-1 text-xs text-gray-500 hover:text-blue-600"
                     data-oid="tmkwnl9"
                   >
@@ -355,6 +347,19 @@ const comments = ({ id }) => {
                             >
                               {moment(reply.created_at).format("YYYY-MM-DD")}
                             </span>
+                            {userInfo && userInfo.commentsItem.comments_replies.includes(reply.id) && (
+                              <button
+                                onClick={() => handleCommentDeleteReply(reply.id)}
+                                className="text-red-500 hover:text-red-700 p-1"
+                                title="답글 삭제"
+                                data-oid="hob.qxw"
+                              >
+                                <Trash2
+                                  className="w-3 h-3"
+                                  data-oid="1pl-e1e"
+                                />
+                              </button>
+                            )}
                           </div>
                           <p
                             className="text-sm text-gray-700 mb-2"
@@ -363,6 +368,7 @@ const comments = ({ id }) => {
                             {reply.content}
                           </p>
                           <button
+                            onClick={() => handleCommentReplyLike(reply.id)}
                             className="flex items-center space-x-1 text-xs text-gray-500 hover:text-blue-600"
                             data-oid="ot95jg0"
                           >
