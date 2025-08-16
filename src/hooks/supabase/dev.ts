@@ -1,17 +1,17 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate, postEmailCheck, postSignup, getUserInfo, postLike, postComment, postCommentRegister, postCommentDelete, getComments, postCommentReplyRegister, postCommentReplyDelete } from "@/service/supabase";
+import { getCourses, getCourseDetails, getBoards, getBoardDetails, getCoursesAndBoards, getPopularSearch, postBoardCreate, postEmailCheck, postSignup, getUserInfo, postLike, postCommentRegister, postCommentDelete, getComments, postCommentReplyRegister, postCommentReplyDelete, postCommentLike, postCommentReplyLike } from "@/service/supabase";
 import { uploadMultipleImages } from "@/service/supabase/storage";
 import { getGeminiAi } from "@/service/gemini";
 
 const TEST_QUERY_KEY = {
-    userInfo: ["userInfo"],
-    courses: ["courses"],
-    courseDetails: ["courseDetails"],
-    boards: ["boards"],
-    boardDetails: ["boardDetails"],
-    coursesAndBoards: ["coursesAndBoards"],
-    comments: ["comments"],
-    popularSearch: ["popularSearch"]
+    userInfo: "userInfo",
+    courses: "courses",
+    courseDetails: "courseDetails",
+    boards: "boards",
+    boardDetails: "boardDetails",
+    coursesAndBoards: "coursesAndBoards",
+    comments: "comments",
+    popularSearch: "popularSearch"
 }
 
 // user 정보 가져오기
@@ -124,7 +124,7 @@ export const useCoursesAndBoardsQuery = () => {
     return useQuery(queryOptions);
 };
 
-// 좋아요
+// 게시글 좋아요
 export const useLikeMutation = () => {
     const mutationOptions = {
         mutationFn: async (params: object) => {
@@ -135,10 +135,34 @@ export const useLikeMutation = () => {
     return useMutation(mutationOptions);
 };
 
+// 댓글 좋아요
+export const useCommentLikeMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postCommentLike(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+}
+
+// 댓글 답글 좋아요
+export const useCommentReplyLikeMutation = () => {
+    const mutationOptions = {
+        mutationFn: async (params: object) => {
+            const results = await postCommentReplyLike(params);
+            return results;
+        },
+    };
+    return useMutation(mutationOptions);
+}
+
 // 댓글 리스트
 export const useCommentsQuery = (params) => {
+    const targetId = params.board_id || params.course_id
+    const targetIdColumn = params.board_id ? "board_id" : "course_id"
     const queryOptions = {
-        queryKey: TEST_QUERY_KEY.comments,
+        queryKey: [TEST_QUERY_KEY.comments, targetId + targetIdColumn],
         queryFn: async () => {
             const data = await getComments(params);
             return data;
@@ -173,8 +197,8 @@ export const useCommentReplyRegisterMutation = () => {
 // 댓글 삭제
 export const useCommentDeleteMutation = () => {
     const mutationOptions = {
-        mutationFn: async (params: object) => {
-            const results = await postCommentDelete(params);
+        mutationFn: async (id: number) => {
+            const results = await postCommentDelete(id);
             return results;
         },
     };
@@ -184,8 +208,8 @@ export const useCommentDeleteMutation = () => {
 // 댓글 답글 삭제
 export const useCommentReplyDeleteMutation = () => {
     const mutationOptions = {
-        mutationFn: async (params: object) => {
-            const results = await postCommentReplyDelete(params);
+        mutationFn: async (id: number) => {
+            const results = await postCommentReplyDelete(id);
             return results;
         },
     };

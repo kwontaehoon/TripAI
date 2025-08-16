@@ -17,12 +17,55 @@ const keywordQueries = [
 export const getUserInfo = async (params) => {
   const { data, error } = await supabase
     .from("users")
-    .select("*")
+    .select(`
+      *,
+      likes(
+        id,
+        board_id,
+        course_id,
+        comment_id,
+        comment_reply_id
+      ),
+      comments(
+        id
+      ),
+      comments_replies(
+        id
+      )
+    `)
     .eq("email", params)
-    .single()
+    .single();
 
-  return data
-}
+  if (error) {
+    console.error("Error fetching user info with likes:", error);
+    return null;
+  }
+  
+  if (data) {
+    const { comments, comments_replies, likes, ...userInfo } = data;
+
+    // 본인이 작성한 댓글, 댓글의 답글 id 조회한 배열을 userInfo에 추가
+    const commentsItem = {
+      comments: comments.map(comment => comment.id),
+      comments_replies: comments_replies.map(reply => reply.id)
+    }
+    // 본인이 누른 좋아요 추가
+    const likesItem = {
+      courses: likes.map(course => course.course_id),
+      boards: likes.map(board => board.board_id),
+      comments: likes.map(comments => comments.comment_id),
+      comments_replies: likes.map(comments_replies => comments_replies.comments_replies)
+    }
+    
+    return {
+      ...userInfo,
+      commentsItem,
+      likesItem
+    };
+  }
+
+  return null;
+};
 
 // user 이메일 확인
 export const postEmailCheck = async (params) => {
@@ -371,39 +414,169 @@ export const getCoursesAndBoards = async () => {
   return [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])]
 }
 
-// 좋아요
+// 게시글 좋아요
 export const postLike = async (params) => {
-  // 1. 현재 좋아요 개수 가져오기
-  const { data: courseData, error: selectError } = await supabase
-    .from("courses")
-    .select("likes")
-    .eq("id", params.id)
-    .single();
+  const { board_id, course_id, user_id } = params
 
-  if (selectError) {
-    console.error("Error fetching course likes:", selectError);
-    return null;
+  // 좋아요 대상 ID (board_id 또는 course_id)를 결정합니다.
+  const targetId = board_id || course_id
+  const targetIdColumn = board_id ? "board_id" : "course_id"
+
+  try {
+    // 1. 좋아요가 이미 존재하는지 확인
+    const { data: existingLike, error: selectError } = await supabase
+      .from("likes")
+      .select("id")
+      .eq(targetIdColumn, targetId)
+      .eq("user_id", user_id)
+      .maybeSingle()
+
+    if (selectError) {
+      console.error(selectError)
+    }
+
+    // 2. 좋아요 상태에 따라 처리
+    if (existingLike) {
+      // 좋아요가 이미 존재하면 삭제 (좋아요 취소)
+      const { error: deleteError } = await supabase
+        .from("likes")
+        .delete()
+        .eq(targetIdColumn, targetId)
+        .eq("user_id", user_id)
+
+      if (deleteError) {
+        console.error("Error deleting like:", deleteError.message)
+        return { success: false, error: deleteError.message }
+      }
+      return { success: true, action: "deleted" }
+    } else {
+      // 좋아요가 존재하지 않으면 추가
+      const { error: insertError } = await supabase.from("likes").insert({
+        [targetIdColumn]: targetId,
+        user_id: user_id,
+      })
+
+      if (insertError) {
+        console.error("Error inserting like:", insertError.message)
+        return { success: false, error: insertError.message }
+      }
+      return { success: true, action: "inserted" }
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error)
+    return { success: false, error: error.message }
   }
+}
 
-  const currentLikes = courseData.likes;
+// 게시글 댓글 좋아요
+export const postCommentLike = async (params) => {
+  const { comment_id, user_id, board_id, course_id } = params
 
-  // 2. 좋아요 추가/삭제에 따라 값 업데이트
-  const newLikes = params.flag === "add" ? currentLikes + 1 : currentLikes - 1;
+  const targetId = board_id || course_id
+  const targetIdColumn = board_id ? "board_id" : "course_id"
+  console.log("aaa target: ", targetId, targetIdColumn)
 
-  // 3. `courses` 테이블 업데이트
-  const { data: updatedData, error: updateError } = await supabase
-    .from("courses")
-    .update({ likes: newLikes })
-    .eq("id", params.id)
-    .select(); // 업데이트된 데이터 반환을 위해 `select()` 추가
+  try {
+    // 1. 좋아요가 이미 존재하는지 확인
+    const { data: existingLike, error: selectError } = await supabase
+      .from("likes")
+      .select("id")
+      .eq(targetIdColumn, targetId)
+      .eq("comment_id", comment_id)
+      .eq("user_id", user_id)
+      .maybeSingle()
 
-  if (updateError) {
-    console.error("Error updating course likes:", updateError);
-    return null;
+    if (selectError) {
+      console.error(selectError)
+    }
+
+    // 2. 좋아요 상태에 따라 처리
+    if (existingLike) {
+      // 좋아요가 이미 존재하면 삭제 (좋아요 취소)
+      const { error: deleteError } = await supabase
+        .from("likes")
+        .delete()
+        .eq(targetIdColumn, targetId)
+        .eq("comment_id", comment_id)
+        .eq("user_id", user_id)
+
+      if (deleteError) {
+        console.error("Error deleting like:", deleteError.message)
+        return { success: false, error: deleteError.message }
+      }
+      return { success: true, action: "deleted" }
+    } else {
+      // 좋아요가 존재하지 않으면 추가
+      const { error: insertError } = await supabase.from("likes").insert({
+        ["comment_id"]: comment_id,
+        user_id: user_id,
+        [targetIdColumn]: targetId,
+      })
+
+      if (insertError) {
+        console.error("Error inserting like:", insertError.message)
+        return { success: false, error: insertError.message }
+      }
+      return { success: true, action: "inserted" }
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error)
+    return { success: false, error: error.message }
   }
+}
 
-  return updatedData;
-};
+// 게시글 답글 좋아요
+export const postCommentReplyLike = async (params) => {
+  const { comment_reply_id, user_id, board_id, course_id } = params
+  const targetId = board_id || course_id
+  const targetIdColumn = board_id ? "board_id" : "course_id"
+  try {
+    // 1. 좋아요가 이미 존재하는지 확인
+    const { data: existingLike, error: selectError } = await supabase
+      .from("likes")
+      .select("id")
+      .eq(targetIdColumn, targetId)
+      .eq("comment_reply_id", comment_reply_id)
+      .eq("user_id", user_id)
+      .maybeSingle()
+
+    if (selectError) {
+      console.error(selectError)
+    }
+
+    // 2. 좋아요 상태에 따라 처리
+    if (existingLike) {
+      // 좋아요가 이미 존재하면 삭제 (좋아요 취소)
+      const { error: deleteError } = await supabase
+        .from("likes")
+        .delete()
+        .eq("comment_reply_id", comment_reply_id)
+        .eq("user_id", user_id)
+
+      if (deleteError) {
+        console.error("Error deleting like:", deleteError.message)
+        return { success: false, error: deleteError.message }
+      }
+      return { success: true, action: "deleted" }
+    } else {
+      // 좋아요가 존재하지 않으면 추가
+      const { error: insertError } = await supabase.from("likes").insert({
+        ["comment_reply_id"]: comment_reply_id,
+        user_id: user_id,
+        [targetIdColumn]: targetId,
+      })
+
+      if (insertError) {
+        console.error("Error inserting like:", insertError.message)
+        return { success: false, error: insertError.message }
+      }
+      return { success: true, action: "inserted" }
+    }
+  } catch (error) {
+    console.error("An unexpected error occurred:", error)
+    return { success: false, error: error.message }
+  }
+}
 
 // comments list
 export const getComments = async (params) => {
@@ -417,29 +590,31 @@ export const getComments = async (params) => {
         *,
         users(*)
       )
-      `
+      `,
     )
-    .order("created_at", { ascending: true });
+    .order("created_at", { ascending: true })
+    .order("created_at", { referencedTable: "comments_replies", ascending: true });
+    
 
   // `board_id`가 null이 아니면 조건 추가
   if (params.board_id) {
-    query = query.eq("board_id", params.board_id);
+    query = query.eq("board_id", params.board_id)
   }
 
   // `course_id`가 null이 아니면 조건 추가
   if (params.course_id) {
-    query = query.eq("course_id", params.course_id);
+    query = query.eq("course_id", params.course_id)
   }
-  
-  const { data, error } = await query;
+
+  const { data, error } = await query
 
   if (error) {
-    console.error("Error fetching comments:", error);
-    return null;
+    console.error("Error fetching comments:", error)
+    return null
   }
 
-  return data;
-};
+  return data
+}
 
 // comment 등록
 export const postCommentRegister = async (params) => {
@@ -447,15 +622,15 @@ export const postCommentRegister = async (params) => {
     .from("comments")
     .insert(params)
     .select()
-    .single();
+    .single()
 
   if (error) {
-    console.error("Error CommentRegister:", error);
-    return null;
+    console.error("Error CommentRegister:", error)
+    return null
   }
 
-  return data;
-};
+  return data
+}
 
 // comment 답글 등록
 export const postCommentReplyRegister = async (params) => {
@@ -463,49 +638,48 @@ export const postCommentReplyRegister = async (params) => {
     .from("comments_replies")
     .insert(params)
     .select()
-    .single();
+    .single()
 
   if (error) {
-    console.error("Error CommentRegister:", error);
-    return null;
+    console.error("Error CommentRegister:", error)
+    return null
   }
 
-  return data;
-};
+  return data
+}
 
 // comment 삭제
-export const postCommentDelete = async (params) => {
+export const postCommentDelete = async (id: number) => {
   const { data, error } = await supabase
     .from("comments")
     .delete()
-    .eq("id", params)
+    .eq("id", id)
     .select()
-    .single();
+    .single()
 
   if (error) {
-    console.error("Error CommentDelete:", error);
-    return null;
+    console.error("Error CommentDelete:", error)
+    return null
   }
 
-  return data;
-};
+  return data
+}
 
 // comment 답글 삭제
-export const postCommentReplyDelete = async (params) => {
+export const postCommentReplyDelete = async (id: number) => {
   const { data, error } = await supabase
     .from("comments_replies")
     .delete()
-    .eq("id", params)
+    .eq("id", id)
     .select()
-    .single();
 
   if (error) {
-    console.error("Error CommentDelete:", error);
-    return null;
+    console.error("Error CommentDelete:", error)
+    return null
   }
 
-  return data;
-};
+  return data
+}
 
 export const getPopularSearch = async () => {
   const results: Record<string, number> = {}

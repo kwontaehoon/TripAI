@@ -3,12 +3,12 @@ import { getBoardDetails, getBoards, getCourseDetails, getCourses, getCoursesAnd
 
 
 const TEST_QUERY_KEY = {
-    courses: ["courses"],
-    courseDetails: ["courseDetails"],
-    boards: ["boards"],
-    boardDetails: ["boardDetails"],
-    coursesAndBoards: ["coursesAndBoards"],
-    popularSearch: ["popularSearch"]
+    courses: "courses",
+    courseDetails: "courseDetails",
+    boards: "boards",
+    boardDetails: "boardDetails",
+    coursesAndBoards: "coursesAndBoards",
+    popularSearch: "popularSearch"
 }
 
 // courses prefetch

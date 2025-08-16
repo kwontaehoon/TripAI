@@ -19,3 +19,6 @@ export const loadingModalAtom = atom({
 
 // session
 export const sessionAtom = atom()
+
+// userInfo
+export const userInfoAtom = atom()
