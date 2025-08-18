@@ -14,7 +14,7 @@ import {
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
-const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
+const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter, ref }) => {
   const router = useRouter()
 
   const handleCourseClick = (courseId: number) => {
@@ -44,8 +44,11 @@ const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
 
   return (
     <div className="space-y-6" data-oid="r0qbuqm">
-      {filteredCourses.map((course) => (
+      {filteredCourses.map((course, idx) => {
+        const isLastItem = idx === filteredCourses.length - 1;
+        return (
         <div
+          ref={isLastItem ? ref : null}
           key={course.id}
           onClick={() => handleCourseClick(course.id)}
           className="bg-white rounded-2xl shadow-lg border !border-gray-200 overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1 cursor-pointer"
@@ -244,7 +247,7 @@ const Page = ({ filteredCourses, setSelectedFilter, setQuickedFilter }) => {
             </div>
           </div>
         </div>
-      ))}
+      )})}
       {/* No Results */}
       {filteredCourses.length === 0 && (
         <div

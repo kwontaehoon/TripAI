@@ -2,11 +2,19 @@
 import React from "react"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useCoursesQuery } from "@/hooks/supabase/dev"
+import { useCoursesInfiniteQuery } from "@/hooks/supabase/dev"
 
 const Recommend = () => {
   const router = useRouter()
-  const { data: coursesData } = useCoursesQuery()
+  const {
+    data: coursesInfiniteData,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useCoursesInfiniteQuery()
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
@@ -23,8 +31,8 @@ const Recommend = () => {
         </button>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        {Array.isArray(coursesData) &&
-        coursesData.slice(0, 4).map((course) => (
+        {Array.isArray(coursesInfiniteData) &&
+        coursesInfiniteData.slice(0, 4).map((course) => (
           <button
             onClick={() => router.push(`/courses/details/${course.id}`)}
             key={course.id}

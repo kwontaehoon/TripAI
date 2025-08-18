@@ -1,12 +1,20 @@
 "use client"
 
-import { useBoardsQuery } from "@/hooks/supabase/dev"
+import { useBoardsInfiniteQuery } from "@/hooks/supabase/dev"
 import { ArrowRight, Star } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 const Board = () => {
   const router = useRouter()
-  const { data: boardsData } = useBoardsQuery()
+  const {
+    data: boardsInfiniteData,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useBoardsInfiniteQuery()
   return (
     <div>
       {/* Community Board Preview */}
@@ -31,8 +39,8 @@ const Board = () => {
           </button>
         </div>
         <div className="space-y-3" data-oid="8pkznx8">
-          {Array.isArray(boardsData) &&
-            boardsData.slice(0, 3).map((board, index) => (
+          {Array.isArray(boardsInfiniteData) &&
+            boardsInfiniteData.slice(0, 3).map((board, index) => (
               <button
                 key={index}
                 onClick={() => router.push(`/board/details/${board.id}`)}

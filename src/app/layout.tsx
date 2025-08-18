@@ -10,9 +10,11 @@ import { dehydrate, QueryClient } from "@tanstack/react-query"
 import {
   prefetchBoardDetails,
   prefetchBoards,
+  prefetchBoardsInfinite,
   prefetchCourseDetails,
   prefetchCourses,
   prefetchCoursesAndBoards,
+  prefetchCoursesInfinite,
 } from "@/service/prefetch"
 import { Hydration } from "./Hydration"
 import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
@@ -37,7 +39,9 @@ export const metadata: Metadata = {
 // prefech
 const queryClient = new QueryClient()
 await prefetchCourses(queryClient)
+await prefetchCoursesInfinite(queryClient, null)
 await prefetchBoards(queryClient)
+await prefetchBoardsInfinite(queryClient, null)
 
 await prefetchCoursesAndBoards(queryClient)
 

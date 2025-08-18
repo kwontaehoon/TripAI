@@ -1,14 +1,16 @@
 import { QueryClient } from "@tanstack/react-query";
-import { getBoardDetails, getBoards, getCourseDetails, getCourses, getCoursesAndBoards, getPopularSearch } from "./supabase";
+import { getBoardDetails, getBoards, getBoardsInfinite, getCourseDetails, getCourses, getCoursesAndBoards, getCoursesInfinite, getPopularSearch } from "./supabase";
 
 
 const TEST_QUERY_KEY = {
-    courses: "courses",
-    courseDetails: "courseDetails",
-    boards: "boards",
-    boardDetails: "boardDetails",
-    coursesAndBoards: "coursesAndBoards",
-    popularSearch: "popularSearch"
+    courses: ["courses"],
+    coursesInfinite: ["courses", "infinite"],
+    courseDetails: ["courseDetails"],
+    boards: ["boards"],
+    boardsInfinite: ["boards", "infinite"],
+    boardDetails: ["boardDetails"],
+    coursesAndBoards: ["coursesAndBoards"],
+    popularSearch: ["popularSearch"]
 }
 
 // courses prefetch
@@ -18,6 +20,17 @@ export const prefetchCourses = async (queryClient: QueryClient) => {
       queryFn: getCourses,
     })
 }
+
+// courses infinite prefetch
+export const prefetchCoursesInfinite = async (queryClient: QueryClient, pageParam: string | null) => {
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: TEST_QUERY_KEY.coursesInfinite,
+      queryFn: async () => {
+          return getCoursesInfinite({ pageParam });
+      },
+      initialPageParam: pageParam
+  });
+};
 
 // courseDetails prefetch 초기 4개
 export const prefetchCourseDetails = async (queryClient: QueryClient, params:number) => {
@@ -34,6 +47,17 @@ export const prefetchBoards = async (queryClient: QueryClient) => {
       queryFn: getBoards,
     })
 }
+
+// boards infinite prefetch
+export const prefetchBoardsInfinite = async (queryClient: QueryClient, pageParam: string | null) => {
+    await queryClient.prefetchInfiniteQuery({
+      queryKey: TEST_QUERY_KEY.boardsInfinite,
+      queryFn: async () => {
+          return getBoardsInfinite({ pageParam });
+      },
+      initialPageParam: pageParam
+  });
+};
 
 // boardDetails prefetch 초기 3개
 export const prefetchBoardDetails = async (queryClient: QueryClient, params:number) => {

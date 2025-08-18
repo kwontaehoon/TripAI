@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/boards_card"
-import { useBoardsQuery } from "@/hooks/supabase/dev"
+import { useBoardsInfiniteQuery, useBoardsQuery } from "@/hooks/supabase/dev"
 import {
   Filter,
   MessageCircle,
@@ -16,6 +16,7 @@ import {
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Skeleton from "./skeletion"
+import { useInView } from "react-intersection-observer"
 
 export default function BoardPage() {
   const router = useRouter()
@@ -31,7 +32,15 @@ export default function BoardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [filteredBoards, setFilteredBoards] = useState([])
 
-  const { data: boardsData } = useBoardsQuery()
+  const {
+    data: boardsInfiniteData,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useBoardsInfiniteQuery()
 
   const filters = [
     "전체",
@@ -46,6 +55,23 @@ export default function BoardPage() {
   const quickFilter = ["⭐ 평점 4.5 이상", "💰 20만원 이하", "🔥 이번 주 인기"]
   const sortOptions = ["최신순", "인기순", "평점순", "댓글순"]
 
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+  useEffect(() => {
+    window.scrollTo({behavior: 'instant', top: 0})
+  }, [])
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      const timer = setTimeout(() => {
+        fetchNextPage();
+      }, 500)
+  
+      return () => clearTimeout(timer)
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
@@ -58,18 +84,18 @@ export default function BoardPage() {
   }
 
   useEffect(() => {
-    if (!boardsData?.length) return
+    if (!boardsInfiniteData?.length) return
 
     setAvg({
       rating:
-        boardsData.reduce((sum, board) => sum + board.rating, 0) /
-        boardsData.length,
+      boardsInfiniteData.reduce((sum, board) => sum + board.rating, 0) /
+      boardsInfiniteData.length,
       period:
-        boardsData.reduce((sum, board) => sum + board.board_days.length, 0) /
-        boardsData.length,
+      boardsInfiniteData.reduce((sum, board) => sum + board.board_days.length, 0) /
+      boardsInfiniteData.length,
     })
 
-    const filtered = boardsData.filter((board) => {
+    const filtered = boardsInfiniteData.filter((board) => {
       const matchTag =
         selectedFilter === "전체" ||
         board.board_tags.some((tag) => tag.tag === selectedFilter)
@@ -110,7 +136,7 @@ export default function BoardPage() {
     return () => {
       isCanceled = true
     }
-  }, [selectedFilter, searchQuery, boardsData, quickedFilter])
+  }, [selectedFilter, searchQuery, boardsInfiniteData, quickedFilter])
 
   return isLoading ? (
     <Skeleton />
@@ -313,6 +339,7 @@ export default function BoardPage() {
               filteredBoards={filteredBoards}
               setSelectedFilter={setSelectedFilter}
               setQuickedFilter={setQuickedFilter}
+              ref={ref}
             />
           </div>
 
@@ -334,7 +361,7 @@ export default function BoardPage() {
                 인기 게시글
               </h3>
               <div className="space-y-3" data-oid="6:78ejy">
-                {boardsData.slice(0, 5).map((post, index) => (
+                {boardsInfiniteData.slice(0, 5).map((post, index) => (
                   <button
                     key={post.id}
                     onClick={() => handlePostClick(post.id)}
@@ -402,7 +429,7 @@ export default function BoardPage() {
                     총 게시글
                   </span>
                   <span className="font-bold text-blue-600" data-oid="d7-j2.d">
-                    {boardsData.length}개
+                    {boardsInfiniteData.length}개
                   </span>
                 </div>
                 <div

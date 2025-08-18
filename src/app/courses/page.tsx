@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/courses_card"
-import { useCoursesQuery } from "@/hooks/supabase/dev"
+import { useCoursesInfiniteQuery } from "@/hooks/supabase/dev"
 import {
   Filter,
   Mic,
@@ -13,6 +13,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import Skeleton from "./skeleton"
+import { useInView } from 'react-intersection-observer'; // 스크롤 감지 훅
 
 export default function CoursesPage() {
   const searchParams = useSearchParams()
@@ -30,10 +31,19 @@ export default function CoursesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [filteredCourses, setFilteredCourses] = useState([])
 
-  const { data: coursesData } = useCoursesQuery()
+  const {
+    data: coursesInfiniteData,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useCoursesInfiniteQuery()
 
   useEffect(() => {
     const dest = searchParams.get("destination")
+    window.scrollTo({behavior: 'instant', top: 0})
 
     if (dest) {
       setDestination(dest)
@@ -42,20 +52,20 @@ export default function CoursesPage() {
   }, [searchParams])
 
   useEffect(() => {
-    if (!coursesData?.length) return
+    if (!coursesInfiniteData?.length) return
 
     setAvg({
       rating:
-        coursesData.reduce((sum, course) => sum + course.rating, 0) /
-        coursesData.length,
+      coursesInfiniteData.reduce((sum, course) => sum + course.rating, 0) /
+      coursesInfiniteData.length,
       period:
-        coursesData.reduce(
+      coursesInfiniteData.reduce(
           (sum, course) => sum + course.course_days.length,
           0,
-        ) / coursesData.length,
+        ) / coursesInfiniteData.length,
     })
 
-    const filtered = coursesData.filter((course) => {
+    const filtered = coursesInfiniteData.filter((course) => {
       const matchTag =
         selectedFilter === "전체" ||
         course.course_tags.some((tag) => tag.tag === selectedFilter)
@@ -96,7 +106,21 @@ export default function CoursesPage() {
     return () => {
       isCanceled = true
     }
-  }, [selectedFilter, searchQuery, coursesData, quickedFilter])
+  }, [selectedFilter, searchQuery, coursesInfiniteData, quickedFilter])
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      const timer = setTimeout(() => {
+        fetchNextPage();
+      }, 500)
+  
+      return () => clearTimeout(timer)
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const filters = [
     "전체",
@@ -271,6 +295,7 @@ export default function CoursesPage() {
               filteredCourses={filteredCourses}
               setSelectedFilter={setSelectedFilter}
               setQuickedFilter={setQuickedFilter}
+              ref={ref}
             />
           </div>
 
@@ -341,7 +366,7 @@ export default function CoursesPage() {
                     총 코스 수
                   </span>
                   <span className="font-bold text-blue-600" data-oid="1hrabd3">
-                    {coursesData.length}개
+                    {coursesInfiniteData.length}개
                   </span>
                 </div>
                 <div

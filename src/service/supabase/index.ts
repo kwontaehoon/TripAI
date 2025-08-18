@@ -17,7 +17,8 @@ const keywordQueries = [
 export const getUserInfo = async (params) => {
   const { data, error } = await supabase
     .from("users")
-    .select(`
+    .select(
+      `
       *,
       likes(
         id,
@@ -32,40 +33,43 @@ export const getUserInfo = async (params) => {
       comments_replies(
         id
       )
-    `)
+    `,
+    )
     .eq("email", params)
-    .single();
+    .single()
 
   if (error) {
-    console.error("Error fetching user info with likes:", error);
-    return null;
+    console.error("Error fetching user info with likes:", error)
+    return null
   }
-  
+
   if (data) {
-    const { comments, comments_replies, likes, ...userInfo } = data;
+    const { comments, comments_replies, likes, ...userInfo } = data
 
     // 본인이 작성한 댓글, 댓글의 답글 id 조회한 배열을 userInfo에 추가
     const commentsItem = {
-      comments: comments.map(comment => comment.id),
-      comments_replies: comments_replies.map(reply => reply.id)
+      comments: comments.map((comment) => comment.id),
+      comments_replies: comments_replies.map((reply) => reply.id),
     }
     // 본인이 누른 좋아요 추가
     const likesItem = {
-      courses: likes.map(course => course.course_id),
-      boards: likes.map(board => board.board_id),
-      comments: likes.map(comments => comments.comment_id),
-      comments_replies: likes.map(comments_replies => comments_replies.comments_replies)
+      courses: likes.map((course) => course.course_id),
+      boards: likes.map((board) => board.board_id),
+      comments: likes.map((comments) => comments.comment_id),
+      comments_replies: likes.map(
+        (comments_replies) => comments_replies.comments_replies,
+      ),
     }
-    
+
     return {
       ...userInfo,
       commentsItem,
-      likesItem
-    };
+      likesItem,
+    }
   }
 
-  return null;
-};
+  return null
+}
 
 // user 이메일 확인
 export const postEmailCheck = async (params) => {
@@ -152,7 +156,99 @@ export const getCourses = async () => {
     `,
     )
     .order("created_at", { ascending: true })
+    .order("id", { ascending: true })
   return data
+}
+
+type GetCoursesResponse = {
+  courses: object[] | null
+  nextCursor: string | null
+}
+
+// getCoursesInfinite
+export const getCoursesInfinite = async ({
+  pageParam,
+  limit = 10,
+}: {
+  pageParam?: string | null
+  limit?: number
+}): Promise<GetCoursesResponse> => {
+  let query = supabase
+    .from("courses")
+    .select(
+      `
+      *,
+      course_ai_insights (
+        title,
+        insight
+      ),
+      course_tags (
+        tag
+      ),
+      course_highlights (
+        highlight
+      ),
+      course_images (
+        image_url
+      ),
+      course_badges (
+        badge
+      ),
+      course_days (
+        day,
+        title,
+        subtitle,
+        total_distance,
+        total_time,
+        author_note,
+        estimated_cost,
+        course_places (
+          id,
+          name,
+          description,
+          location_type,
+          stay,
+          open_time,
+          entry_fee,
+          location,
+          distance,
+          recommend_reason,
+          rating_count,
+          review_count,
+          next_distance,
+          next_time,
+          place_tips (
+            tip
+          ),
+          latitude,
+          longitude
+        )
+      )
+      `,
+    )
+    .order("id", { ascending: true })
+
+  if (pageParam) {
+    query = query.gte("id", pageParam)
+  }
+
+  const { data, error } = await query.limit(limit + 1)
+
+  if (error) {
+    throw error
+  }
+
+  let nextCursor = null
+  if (data && data.length > limit) {
+    const lastItem = data[limit - 1]
+    nextCursor = lastItem.id + 1
+    data.pop()
+  }
+
+  return {
+    courses: data,
+    nextCursor,
+  }
 }
 
 // courseDetails
@@ -270,8 +366,100 @@ export const getBoards = async () => {
     )
   `,
     )
-    .order("created_at", { ascending: true })
+    .order("id", { ascending: true })
   return data
+}
+
+type GetBoardsResponse = {
+  boards: object[] | null
+  nextCursor: string | null
+}
+
+// getBoardInfinite
+export const getBoardsInfinite = async ({
+  pageParam,
+  limit = 10,
+}: {
+  pageParam?: string | null
+  limit?: number
+}): Promise<GetBoardsResponse> => {
+  let query = supabase
+    .from("boards")
+    .select(
+      `
+        *,
+        board_ai_insights (
+          title,
+          insight
+        ),
+        board_tags (
+          tag
+        ),
+        board_highlights (
+          highlight
+        ),
+        board_images (
+          image_url
+        ),
+        board_badges (
+          badge
+        ),
+        board_days (
+          id,
+          day,
+          title,
+          subtitle,
+          total_distance,
+          total_time,
+          author_note,
+          estimated_cost,
+          board_places (
+            id,
+            name,
+            description,
+            location_type,
+            stay,
+            open_time,
+            entry_fee,
+            location,
+            distance,
+            recommend_reason,
+            rating_count,
+            review_count,
+            next_distance,
+            next_time,
+            board_place_tips (
+              tip
+            ),
+            latitude,
+            longitude
+          )
+        )
+      `,
+    )
+    .order("id", { ascending: true })
+
+  if (pageParam) {
+    query = query.gte("id", pageParam)
+  }
+
+  const { data, error } = await query.limit(limit + 1)
+
+  if (error) {
+    throw error
+  }
+
+  let nextCursor = null
+  if (data && data.length > limit) {
+    const lastItem = data[limit - 1]
+    nextCursor = lastItem.id + 1
+    data.pop()
+  }
+
+  return {
+    boards: data,
+    nextCursor,
+  }
 }
 
 // boardDetails
@@ -593,8 +781,10 @@ export const getComments = async (params) => {
       `,
     )
     .order("created_at", { ascending: true })
-    .order("created_at", { referencedTable: "comments_replies", ascending: true });
-    
+    .order("created_at", {
+      referencedTable: "comments_replies",
+      ascending: true,
+    })
 
   // `board_id`가 null이 아니면 조건 추가
   if (params.board_id) {
