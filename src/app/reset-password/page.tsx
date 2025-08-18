@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Bot, Eye, EyeOff, Lock, Shield, Key } from 'lucide-react';
 import { createClient } from '@/service/supabase/client';
@@ -13,6 +13,7 @@ export default function PasswordChangePage() {
         newPassword: '',
         confirmPassword: '',
     });
+
     const [showPasswords, setShowPasswords] = useState({
         current: false,
         new: false,
@@ -84,12 +85,11 @@ export default function PasswordChangePage() {
         setIsLoading(true);
 
         // 비밀번호 변경 로직 시뮬레이션
-        const aa = await supabase.auth.updateUser({ password: formData.currentPassword })
-        console.log("aaaaa: ", aa)
+       await supabase.auth.updateUser({ password: formData.newPassword })
 
         alert('비밀번호가 성공적으로 변경되었습니다!');
         setIsLoading(false);
-        // router.push('/');
+        router.push('/');
     };
 
     return (

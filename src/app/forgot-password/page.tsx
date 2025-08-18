@@ -26,18 +26,16 @@ export default function ForgotPasswordPage() {
             return;
         }
 
+        await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/reset-password`,
+          })
+
         // 비밀번호 재설정 로직 시뮬레이션
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         setIsLoading(false);
         setIsSuccess(true);
     };
-
-      const signInWithEmail = async() => {
-        await supabase.auth.resetPasswordForEmail('gju04195@google.com', {
-            redirectTo: 'http://localhost:3000/reset-password',
-          })
-      }
 
     if (isSuccess) {
         return (
@@ -107,7 +105,6 @@ export default function ForgotPasswordPage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28">
-                {/* <div onClick={signInWithEmail}>비밀번호 찾기</div> */}
             {/* Main Content */}
             <main className="max-w-md mx-auto px-4 py-8">
                 <div className="bg-white rounded-2xl shadow-xl border !border-gray-200 overflow-hidden">
