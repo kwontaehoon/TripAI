@@ -73,9 +73,9 @@ export const useEmailCheckMutation = (params) => {
 }
 
 // 회원가입
-export const useSignupMutation = (params) => {
+export const useSignupMutation = () => {
   const mutationOptions = {
-    mutationFn: async () => {
+    mutationFn: async (params: object) => {
       const results = await postSignup(params)
       return results
     },
@@ -304,9 +304,9 @@ export const usePopularSearchQuery = () => {
 }
 
 // board 생성
-export const useBoardCreateMutation = (params: object) => {
+export const useBoardCreateMutation = () => {
   const mutationOptions = {
-    mutationFn: async () => {
+    mutationFn: async (params: object) => {
       const { success, error, newBoardId } = await postBoardCreate(params)
       return { success, error, newBoardId }
     },

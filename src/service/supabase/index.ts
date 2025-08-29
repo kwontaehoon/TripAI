@@ -83,22 +83,23 @@ export const postEmailCheck = async (params) => {
 }
 
 // 회원가입
-export const postSignup = async (params) => {
-  const { data, error } = await supabase.from("users").insert([
-    {
-      email: params.email,
-      name: params.name,
-      profile_image_url: params.profile_image_url,
-    },
-  ])
+// 사실상 회원가입은 auth -> 트리거로 users 테이블에 생성되기 때문에 users 테이블의 name만 변경
+export const postSignup = async (params: object) => {
+  const { data, error } = await supabase
+    .from("users")
+    .update({ name: params.name })
+    .eq("email", params.email)
 
   if (error) {
-    console.error("회원 등록 실패:", error)
+    console.error("사용자 이름 업데이트 실패:", error)
   } else {
-    console.log("회원 등록 성공:", data)
+    console.log("사용자 이름 업데이트 성공:", data)
   }
+
   return data
 }
+
+//
 
 // courses
 export const getCourses = async () => {
@@ -506,6 +507,7 @@ export const getBoardDetails = async (params: number) => {
         distance,
         recommend_reason,
         rating_count,
+        review,
         review_count,
         next_distance,
         next_time,
@@ -993,7 +995,6 @@ export const postBoardCreate = async (boardData: any) => {
       next_distance: "km",
       next_time: "",
       open_time: "",
-      rating_count: 4.5,
       recommend_reason: "",
       review_count: 0,
     }
@@ -1001,17 +1002,19 @@ export const postBoardCreate = async (boardData: any) => {
     if (dayIndex > -1) {
       acc[dayIndex].board_places.push(placeWithoutDay)
     } else {
-      const meta = copiedData.board_day_meta?.find((d) => d.day === day) || {}
+      // dayTitles, daySubtitles, dayNotes 데이터 추가
+      const title = copiedData.dayTitles[day] || ""
+      const subtitle = copiedData.daySubtitles[day] || ""
+      const author_note = copiedData.dayNotes[day] || ""
 
-      // boards에 필요한 나머지 데이터 추가
       acc.push({
         day,
-        title: meta.title || "",
-        subtitle: meta.subtitle || "",
-        total_distance: meta.total_distance || "",
-        total_time: meta.total_time || "",
-        estimated_cost: meta.estimated_cost || 0,
-        author_note: meta.author_note || "",
+        title,
+        subtitle,
+        total_distance: "",
+        total_time: "",
+        estimated_cost: 0,
+        author_note,
         board_places: [placeWithoutDay],
       })
     }
@@ -1020,6 +1023,9 @@ export const postBoardCreate = async (boardData: any) => {
   }, [])
   // boards.board_days에 board_places를 넣었으므로 boards.board_places는 삭제
   delete copiedData.board_places
+  delete copiedData.dayTitles
+  delete copiedData.daySubtitles
+  delete copiedData.dayNotes
 
   // boards.board_tags = { tag: tag }
   const board_tags_input = copiedData.board_tags.map((tag) => ({ tag }))
@@ -1037,7 +1043,6 @@ export const postBoardCreate = async (boardData: any) => {
     type: "user-post",
     estimated_time: copiedData.duration,
     bookmark: 0,
-    content: "",
     created_at: moment().format("YYYY-MM-DD"),
     likes: 0,
     rating: 0,
@@ -1220,6 +1225,7 @@ export const postBoardCreate = async (boardData: any) => {
               latitude: placeBaseData.latitude,
               longitude: placeBaseData.longitude,
               rating_count: placeBaseData.rating_count,
+              review: placeBaseData.review,
               review_count: placeBaseData.review_count,
               next_distance: placeBaseData.next_distance,
               next_time: placeBaseData.next_time,

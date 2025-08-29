@@ -42,7 +42,7 @@ export default function SignupPage() {
   const { mutateAsync: emailCheck } = useEmailCheckMutation(
     formData.email,
   )
-  const { mutate: signup } = useSignupMutation(formData)
+  const { mutate: signup } = useSignupMutation()
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -81,26 +81,48 @@ export default function SignupPage() {
     // 회원가입 로직 시뮬레이션
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
-    const { data, error } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        // emailRedirectTo: 'https://example.com/welcome',
-        data: {
-          display_name: formData.name,
-        },
-      },
-    })
     const emailCheckFlag = await emailCheck()
+
     if (emailCheckFlag) {
       setValidationEmail(true)
     } else {
-      signup()
+
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          // emailRedirectTo: 'https://example.com/welcome',
+          data: {
+            display_name: formData.name,
+          },
+        },
+      })
+
+      signup(formData)
       alert("회원가입이 완료되었습니다!")
       router.push("/login")
     }
     setIsLoading(false)
     // router.push("/login")
+  }
+
+  const redirectToUrl = process.env.NEXT_PUBLIC_SITE_URL
+
+  const signInWithKakao = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "kakao",
+      options: {
+        redirectTo: redirectToUrl,
+      },
+    })
+  }
+  const signInWithGoogle = async () => {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: redirectToUrl,
+      },
+    })
   }
 
   const handleSocialSignup = (provider: string) => {
@@ -449,7 +471,7 @@ export default function SignupPage() {
             {/* Social Signup */}
             <div className="space-y-3" data-oid="9ja2mez">
               <button
-                onClick={() => handleSocialSignup("Google")}
+                onClick={signInWithGoogle}
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="m6ubwv5"
               >
@@ -463,7 +485,7 @@ export default function SignupPage() {
               </button>
 
               <button
-                onClick={() => handleSocialSignup("GitHub")}
+                onClick={signInWithKakao}
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="nals0pz"
               >
@@ -472,7 +494,7 @@ export default function SignupPage() {
                   data-oid="cafij9x"
                 />
                 <span className="text-gray-700 font-medium" data-oid="9c.qkm9">
-                  GitHub로 회원가입
+                  Kakao로 회원가입
                 </span>
               </button>
 
