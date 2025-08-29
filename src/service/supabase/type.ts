@@ -13,6 +13,7 @@ interface BoardPlace {
   latitude: number;
   longitude: number;
   rating_count: number;
+  review: string;
   review_count: number;
   next_distance: string;
   next_time: string;

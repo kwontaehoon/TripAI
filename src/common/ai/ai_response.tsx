@@ -83,7 +83,7 @@ export const ai_boardResponse_func = (assignBoard: GeminiBoardResponse) => {
       {
         "parts": [
           {
-            "text": `${JSON.stringify(assignBoard)} board_tags, board_highlights는 그대로 사용하고 views, likes, total_comments, bookmark는 0으로하고 places에는 위도경도와 distance, recommend_reason, rating_count, description, next_distance, next_time을 포함하여 부족한 값을 채워서 json으로 다시 만들어줘 json 말고 다른 내용은 없이 응답해줘`
+            "text": `${JSON.stringify(assignBoard)} board_tags, board_highlights는 그대로 사용하고 views, likes, total_comments, bookmark는 0으로하고 places에는 위도경도와 distance, next_distance, next_time을 포함하여 부족한 값을 채워서 json으로 다시 만들어줘 json 말고 다른 내용은 없이 응답해줘`
           }
         ]
       }

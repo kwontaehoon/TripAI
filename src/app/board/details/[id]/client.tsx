@@ -287,7 +287,7 @@ export default function BoardDetailsPage({
                 className="prose prose-sm sm:prose max-w-none"
                 data-oid="o5-:rk6"
               >
-                {boradDetailsData[0].content
+                {boradDetailsData[0].description
                   .split("\n")
                   .map((paragraph, index) => (
                     <p

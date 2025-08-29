@@ -1,9 +1,12 @@
 "use client"
 
-import { useBoardCreateMutation, useUploadImagesToBucketMutation } from "@/hooks/supabase/dev"
+import {
+  useBoardCreateMutation,
+  useUploadImagesToBucketMutation,
+} from "@/hooks/supabase/dev"
 import { loadingModalAtom } from "@/store/ai"
 import { useAtom } from "jotai"
-import { Camera, Clock, Eye, MapPin, Plus, Save, X } from "lucide-react"
+import { Camera, Clock, Eye, MapPin, Plus, Save, X, Star, MessageSquare } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -43,8 +46,10 @@ export default function BoardWritePage() {
     board_tags: [],
     board_highlights: [],
     board_places: [],
+    dayTitles: {}, // 일차별 제목
+    daySubtitles: {}, // 일차별 서브 제목
+    dayNotes: {}, // 일차별 작성자 노트
   })
-  console.log("formData: ", formData)
 
   const [newTag, setNewTag] = useState("")
   const [newHighlight, setNewHighlight] = useState("")
@@ -55,29 +60,38 @@ export default function BoardWritePage() {
     description: "",
     location_type: "관광지",
     day: 1,
+    review: "", // 후기 추가
+    rating_count: 5, // 평점 추가
   })
   const [file, setFile] = useState<File[]>([])
   const [images, setImages] = useState<string[]>([])
   const [_, setLoadingAtom] = useAtom(loadingModalAtom)
 
-  const { mutateAsync: uploadImagesToBucket, data: uploadImages, isSuccess: uploadImagesIsSuccess } = useUploadImagesToBucketMutation(file)
+  const {
+    mutateAsync: uploadImagesToBucket,
+    data: uploadImages,
+    isSuccess: uploadImagesIsSuccess,
+  } = useUploadImagesToBucketMutation(file)
 
-  const { mutateAsync: boardCreate, isSuccess: boardCreateIsSuccess, data: boardCreateData } = useBoardCreateMutation(Object.assign(formData, { board_images: uploadImages}))
+  const {
+    mutateAsync: boardCreate,
+    isSuccess: boardCreateIsSuccess,
+    data: boardCreateData,
+  } = useBoardCreateMutation()
 
   useEffect(() => {
-    if(uploadImagesIsSuccess){
-      boardCreate()
+    if (uploadImagesIsSuccess) {
+      boardCreate(Object.assign(formData, { board_images: uploadImages }))
     }
   }, [uploadImages])
 
   useEffect(() => {
-    if(boardCreateData && !boardCreateData?.success){
+    if (boardCreateData && !boardCreateData?.success) {
       alert("오류가 발생했습니다. 다시 시도해주세요.")
       setLoadingAtom({ isOpen: false, message: "" })
-      return;
+      return
     }
-    if(boardCreateIsSuccess && boardCreateData?.success){
-      console.log("boardCreateData: ", boardCreateData)
+    if (boardCreateIsSuccess && boardCreateData?.success) {
       setLoadingAtom({ isOpen: false, message: "" })
       alert("게시글이 저장되었습니다!")
       router.push("/board")
@@ -112,6 +126,39 @@ export default function BoardWritePage() {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
+    }))
+  }
+
+  // 일차별 제목 업데이트
+  const handleDayTitleChange = (day: number, title: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      dayTitles: {
+        ...prev.dayTitles,
+        [day]: title,
+      },
+    }))
+  }
+
+  // 일차별 서브 제목 업데이트
+  const handleDaySubtitleChange = (day: number, subtitle: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      daySubtitles: {
+        ...prev.daySubtitles,
+        [day]: subtitle,
+      },
+    }))
+  }
+
+  // 일차별 작성자 노트 업데이트
+  const handleDayNoteChange = (day: number, note: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      dayNotes: {
+        ...prev.dayNotes,
+        [day]: note,
+      },
     }))
   }
 
@@ -167,6 +214,8 @@ export default function BoardWritePage() {
         description: "",
         location_type: "관광지",
         day: 1,
+        review: "",
+        rating_count: 5
       })
     }
   }
@@ -174,18 +223,17 @@ export default function BoardWritePage() {
   const removePlace = (placeId: number) => {
     setFormData((prev) => ({
       ...prev,
-      places: prev.board_places.filter((place) => place.id !== placeId),
+      board_places: prev.board_places.filter((place) => place.id !== placeId),
     }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // 게시글 저장 로직
-    if(formData.board_places.length === 0){
+    if (formData.board_places.length === 0) {
       alert("여행 장소를 추가해주세요.")
-    }else {
-      console.log("Form data:", formData)
-      setLoadingAtom({isOpen: true, message: "게시글을 저장하고 있습니다..."})
+    } else {
+      setLoadingAtom({ isOpen: true, message: "게시글을 저장하고 있습니다..." })
       uploadImagesToBucket(file)
     }
   }
@@ -193,6 +241,34 @@ export default function BoardWritePage() {
   const handlePreview = () => {
     // 미리보기 로직
     alert("미리보기 기능은 준비 중입니다.")
+  }
+
+  // 별점 렌더링 함수
+  const renderStars = (
+    rating: number,
+    onRatingChange?: (rating: number) => void,
+  ) => {
+    return (
+      <div className="flex items-center space-x-1" data-oid="uhaeekg">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            type="button"
+            onClick={() => onRatingChange && onRatingChange(star)}
+            className={`${
+              star <= rating ? "text-yellow-400" : "text-gray-300"
+            } hover:text-yellow-400 transition-colors`}
+            disabled={!onRatingChange}
+            data-oid="gfho6ht"
+          >
+            <Star className="w-5 h-5 fill-current" data-oid="ve6z55f" />
+          </button>
+        ))}
+        <span className="text-sm text-gray-600 ml-2" data-oid="361nry9">
+          {rating}/5
+        </span>
+      </div>
+    )
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -373,6 +449,104 @@ export default function BoardWritePage() {
               </div>
             </div>
           </div>
+          {formData.duration && (
+            <div
+              className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
+              data-oid="ba72prz"
+            >
+              <h2
+                className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6"
+                data-oid="bxv:6cq"
+              >
+                일차별 제목
+              </h2>
+              <div className="space-y-6" data-oid="jwznphr">
+                {getDayOptions().map((day) => (
+                  <div
+                    key={day}
+                    className="bg-gray-50 rounded-lg p-4"
+                    data-oid="6.tf88n"
+                  >
+                    <div className="flex items-center mb-4" data-oid="0dxzndo">
+                      <div
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-medium mr-3"
+                        data-oid="k0gp1kf"
+                      >
+                        {day}일차
+                      </div>
+                      <h3
+                        className="text-lg font-medium text-gray-900"
+                        data-oid="gsd7n52"
+                      >
+                        일차별 제목 및 서브 제목
+                      </h3>
+                    </div>
+
+                    <div className="space-y-4" data-oid="ew0apg1">
+                      {/* 메인 제목 */}
+                      <div data-oid="y571h22">
+                        <label
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                          data-oid="6.4f7cu"
+                        >
+                          {day}일차 메인 제목
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.dayTitles[day] || ""}
+                          onChange={(e) =>
+                            handleDayTitleChange(day, e.target.value)
+                          }
+                          placeholder={`${day}일차 여행의 메인 제목을 입력하세요 (예: 서울 시내 관광)`}
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                          data-oid="sol0rcp"
+                        />
+                      </div>
+
+                      {/* 서브 제목 */}
+                      <div data-oid="knxjnxa">
+                        <label
+                          className="block text-sm font-medium text-gray-700 mb-2"
+                          data-oid=".-mg4-x"
+                        >
+                          {day}일차 서브 제목
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.daySubtitles[day] || ""}
+                          onChange={(e) =>
+                            handleDaySubtitleChange(day, e.target.value)
+                          }
+                          placeholder={`${day}일차 여행의 서브 제목을 입력하세요 (예: 경복궁과 북촌 한옥마을 탐방)`}
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                          data-oid="f.fzi9a"
+                        />
+                      </div>
+                    </div>
+                    {/* 작성자 노트 */}
+                    <div data-oid="977o47h">
+                      <label
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                        data-oid="gttm1kr"
+                      >
+                        {day}일차 작성자 노트
+                      </label>
+                      <textarea
+                        value={formData.dayNotes[day] || ""}
+                        onChange={(e) =>
+                          handleDayNoteChange(day, e.target.value)
+                        }
+                        placeholder={`${day}일차에 대한 개인적인 메모나 팁을 작성하세요 (예: 아침 일찍 가는 것을 추천, 주차가 어려우니 대중교통 이용)`}
+                        rows={3}
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base resize-none"
+                        data-oid="b_jggy3"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Tags */}
           <div className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200">
@@ -621,6 +795,19 @@ export default function BoardWritePage() {
                     data-oid="j29lelr"
                   />
                 </div>
+                <div data-oid="z6q_ydl">
+                  <label
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                    data-oid=".0_uyg6"
+                  >
+                    평점 *
+                  </label>
+                  <div className="mt-1" data-oid="m-00zrt">
+                    {renderStars(newPlace.rating_count, (rating_count) =>
+                      setNewPlace((prev) => ({ ...prev, rating_count })),
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="mb-4" data-oid="4flyzh9">
                 <label
@@ -642,6 +829,27 @@ export default function BoardWritePage() {
                   className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
                   data-oid="jzwvjvb"
                 />
+                <div className="mb-4" data-oid="e:pxh85">
+                  <label
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                    data-oid="quowv7."
+                  >
+                    후기 *
+                  </label>
+                  <textarea
+                    value={newPlace.review}
+                    onChange={(e) =>
+                      setNewPlace((prev) => ({
+                        ...prev,
+                        review: e.target.value,
+                      }))
+                    }
+                    placeholder="이 장소에 대한 솔직한 후기를 작성해주세요"
+                    rows={3}
+                    className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                    data-oid="_6wu6qf"
+                  />
+                </div>
               </div>
               <button
                 type="button"
@@ -723,7 +931,7 @@ export default function BoardWritePage() {
                                   className="bg-gray-100 text-gray-600 px-2 py-1 rounded-md text-xs"
                                   data-oid="ey6ce:-"
                                 >
-                                  {place?.type}
+                                  {place?.location_type}
                                 </span>
                               </div>
                               <button
@@ -748,7 +956,9 @@ export default function BoardWritePage() {
                                   data-oid="o8nku_7"
                                 />
 
-                                <span data-oid="4bsuz73">{place?.location}</span>
+                                <span data-oid="4bsuz73">
+                                  {place?.location}
+                                </span>
                               </div>
                               {place?.stay && (
                                 <div
@@ -769,6 +979,53 @@ export default function BoardWritePage() {
                                 <p className="mt-2" data-oid="qjk:.jy">
                                   {place?.description}
                                 </p>
+                              )}
+                              <div
+                                className="flex items-center"
+                                data-oid="f376.q9"
+                              >
+                                <Star
+                                  className="w-3 h-3 mr-1 text-yellow-400 fill-current"
+                                  data-oid="circd2:"
+                                />
+
+                                <span data-oid="jmbily3">
+                                  평점: {place.rating}/5
+                                </span>
+                              </div>
+                              {place.description && (
+                                <p className="mt-2" data-oid="fz:oh2k">
+                                  {place.description}
+                                </p>
+                              )}
+                              {place.review && (
+                                <div
+                                  className="mt-2 p-3 bg-blue-50 rounded-lg"
+                                  data-oid="7a49a4:"
+                                >
+                                  <div
+                                    className="flex items-center mb-1"
+                                    data-oid="j0753m2"
+                                  >
+                                    <MessageSquare
+                                      className="w-3 h-3 mr-1 text-blue-600"
+                                      data-oid="8ur5jeg"
+                                    />
+
+                                    <span
+                                      className="text-xs font-medium text-blue-600"
+                                      data-oid="5v6ss9s"
+                                    >
+                                      후기
+                                    </span>
+                                  </div>
+                                  <p
+                                    className="text-sm text-gray-700"
+                                    data-oid="52r9duk"
+                                  >
+                                    {place.review}
+                                  </p>
+                                </div>
                               )}
                             </div>
                           </div>
