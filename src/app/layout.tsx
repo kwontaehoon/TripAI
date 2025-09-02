@@ -20,6 +20,7 @@ import { Hydration } from "./Hydration"
 import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
 import { AuthProvider } from "@/config/provider/authProvider"
 import { createClient } from "@/service/supabase/server"
+import { ToTop } from "@/components/toTop"
 
 export const metadata: Metadata = {
   title: "TripAI",
@@ -53,6 +54,7 @@ await Promise.all(
 )
 
 
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -80,6 +82,7 @@ export default async function RootLayout({
                 <ScrollController />
                 <Header initialSession={session} />
                 {children}
+                <ToTop />
                 <Footer />
               </Hydration>
               </AuthProvider>
