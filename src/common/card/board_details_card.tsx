@@ -206,7 +206,7 @@ const Board_details_card = ({data, selectedDay}) => {
                           className="text-sm text-blue-600"
                           data-oid="h4gr:l0"
                         >
-                          -
+                          {place.review ? place.review : "-"}
                         </p>
                       </div>
 

@@ -10,8 +10,6 @@ import {
   useCommentsQuery,
   useLikeMutation,
 } from "@/hooks/supabase/dev"
-import { userInfoAtom } from "@/store/ai"
-import { useAtomValue } from "jotai"
 import { usePathname } from "next/navigation"
 import moment from "moment"
 const comments = ({ id, userInfo }) => {
@@ -27,7 +25,6 @@ const comments = ({ id, userInfo }) => {
   const { mutateAsync: commentRegister } = useCommentRegisterMutation()
   const { mutateAsync: commentReplyRegister } =
     useCommentReplyRegisterMutation()
-  console.log("aaa userInfo: ", userInfo)
   const {
     data: commentsData,
     isLoading: commentsDataIsLoading,
@@ -36,7 +33,6 @@ const comments = ({ id, userInfo }) => {
     board_id: isBoardPage ? id : null,
     course_id: isCoursePage ? id : null,
   })
-  console.log("aaa commentsData: ", commentsData)
   const totalCommentCount = commentsData?.length + commentsData?.reduce((accumulator, comment) => {
     return accumulator + comment.comments_replies.length;
   }, 0)

@@ -318,6 +318,7 @@ export const getBoards = async () => {
     .select(
       `
     *,
+    users(*),
     board_ai_insights (
       title,
       insight
@@ -389,6 +390,7 @@ export const getBoardsInfinite = async ({
     .select(
       `
         *,
+        users(*),
         board_ai_insights (
           title,
           insight
@@ -465,11 +467,12 @@ export const getBoardsInfinite = async ({
 
 // boardDetails
 export const getBoardDetails = async (params: number) => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("boards")
     .select(
       `
     *,
+    users(*),
     board_ai_insights (
       title,
       insight
@@ -521,6 +524,27 @@ export const getBoardDetails = async (params: number) => {
   `,
     )
     .eq("id", params)
+
+  if (error || !data || data.length === 0) {
+    console.error("데이터를 찾을 수 없거나 오류가 발생했습니다.", error)
+    return []
+  }
+
+  const userId = data[0].users.id
+
+  // boards의 게시글 수
+  const { count: boardCount, error: boardError } = await supabase
+    .from("boards")
+    .select("*", { count: "exact" })
+    .eq("user_id", userId)
+
+  const totalCount = (boardCount || 0)
+
+  data[0].users = {
+    ...data[0].users,
+    total_post: totalCount,
+  }
+
   return data
 }
 
@@ -1038,8 +1062,9 @@ export const postBoardCreate = async (boardData: any) => {
   const assignBoard = Object.assign(copiedData, {
     board_tags: board_tags_input,
     board_highlights: board_highlights_input,
-    author: "게스트",
-    author_type: "guest",
+    author: copiedData.userInfo.name,
+    user_id: copiedData.userInfo.id,
+    author_type: "user",
     type: "user-post",
     estimated_time: copiedData.duration,
     bookmark: 0,
@@ -1049,7 +1074,7 @@ export const postBoardCreate = async (boardData: any) => {
     total_comments: 0,
     total_distance: "km",
     total_locations: 0,
-    total_places: 0,
+    total_places: copiedData.board_places.length,
     views: 0,
     board_ai_insights: [
       {
@@ -1066,6 +1091,9 @@ export const postBoardCreate = async (boardData: any) => {
     board_images: copiedData.board_images,
   })
 
+  delete copiedData.userInfo
+  delete copiedData.board_places
+
   try {
     // 1. Gemini AI로부터 데이터 가져오기
     const aiResponse = await getGeminiAi(ai_boardResponse_func(assignBoard))
@@ -1075,7 +1103,6 @@ export const postBoardCreate = async (boardData: any) => {
       aiResponse.data.candidates[0].content.parts[0].text,
     )
     const fullBoardData: GeminiBoardResponse = JSON.parse(cleanedJsonString)
-    console.log("fullBoardData: ", fullBoardData)
 
     // 2. boards 테이블에 해당 필드의 데이터 삽입
     // fullBoardData에서 boards 테이블에 직접 들어갈 칼럼만 추출

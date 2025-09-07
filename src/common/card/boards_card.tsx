@@ -16,6 +16,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { If } from "react-haiku"
 
 const Board_card = ({
   filteredBoards,
@@ -49,6 +50,21 @@ const Board_card = ({
 
   const handlePostClick = (postId: number) => {
     router.push(`/board/details/${postId}`)
+  }
+
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case "Platinum":
+        return "bg-purple-100 text-purple-700"
+      case "Gold":
+        return "bg-yellow-100 text-yellow-700"
+      case "Silver":
+        return "bg-gray-100 text-gray-700"
+      case "Bronze":
+        return "bg-orange-100 text-orange-700"
+      default:
+        return "bg-blue-100 text-blue-700"
+    }
   }
 
   return (
@@ -196,17 +212,17 @@ const Board_card = ({
                           {post.author}
                         </span>
                         <span
-                          className={`px-2 py-0.5 rounded-full text-xs`}
+                          className={`px-2 py-0.5 rounded-full text-xs ${getLevelColor("Platinum")}`}
                           data-oid="_fofxo."
                         >
                           {/* {post.author.level} */}
                           level
                         </span>
                       </div>
-                      <div className="text-xs text-gray-500" data-oid="2o6.2-t">
+                      {/* <div className="text-xs text-gray-500" data-oid="2o6.2-t">
                         게시글 0개 • {post.created_at}
-                        {/* {post.author.posts} */}
-                      </div>
+                        {post.author.posts}
+                      </div> */}
                     </div>
                   </div>
 
@@ -266,6 +282,7 @@ const Board_card = ({
                   </div>
 
                   {/* Tags */}
+                  <If isTrue={post.board_tags.length > 0}>
                   <div
                     className="flex flex-wrap gap-1 sm:gap-2 mb-4"
                     data-oid=".eevsua"
@@ -288,8 +305,10 @@ const Board_card = ({
                       </span>
                     )}
                   </div>
+                  </If>
 
                   {/* Highlights */}
+                  <If isTrue={post.board_highlights.length > 0}>
                   <div className="mb-4" data-oid="s_p.6z:">
                     <h4
                       className="text-xs sm:text-sm font-semibold text-gray-900 mb-2"
@@ -322,6 +341,7 @@ const Board_card = ({
                       )}
                     </div>
                   </div>
+                  </If>
 
                   {/* Bottom Info */}
                   <div

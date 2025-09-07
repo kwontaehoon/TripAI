@@ -10,6 +10,7 @@ import {
   Share2,
   Star,
   ThumbsUp,
+  User
 } from "lucide-react"
 import { use, useState } from "react"
 import Skeleton from "./skeleton"
@@ -17,6 +18,7 @@ import Image from "next/image"
 import CommentCard from "@/common/card/comment_details_card"
 import { userInfoAtom } from "@/store/ai"
 import { useSetAtom } from "jotai"
+import { If } from "react-haiku"
 
 export default function BoardDetailsPage({
   params,
@@ -133,12 +135,13 @@ export default function BoardDetailsPage({
                 className="flex items-center space-x-3 mb-4 pb-4 border-b !border-gray-200"
                 data-oid="cly6160"
               >
-                <span
-                  className="text-2xl border w-8 h-8 rounded-full"
-                  data-oid="h37gdgx"
-                >
+                <div
+                      className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                      data-oid="dzrezk7"
+                    >
+                      <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
+                    </div>
                   {/* {boradDetailsData[0].author.avatar} */}
-                </span>
                 <div className="flex-1" data-oid="yqef21d">
                   <div
                     className="flex items-center space-x-2"
@@ -161,7 +164,7 @@ export default function BoardDetailsPage({
                     </span>
                   </div>
                   <div className="text-sm text-gray-500" data-oid="x9c7r00">
-                    게시글 0개 • 팔로워{" 12"}명 •{" "}
+                    {/* 게시글 0개 • 팔로워{" 12"}명 •{" "} */}
                     {boradDetailsData[0].created_at}
                     {/* {boradDetailsData[0].author.posts} */}
                     {/* {boradDetailsData[0].author.followers} */}
@@ -292,7 +295,7 @@ export default function BoardDetailsPage({
                   .map((paragraph, index) => (
                     <p
                       key={index}
-                      className="mb-4 text-gray-700 leading-relaxed"
+                      className="text-gray-700 leading-relaxed"
                       data-oid="uey53sz"
                     >
                       {paragraph}
@@ -393,12 +396,12 @@ export default function BoardDetailsPage({
                 작성자 정보
               </h3>
               <div className="text-center" data-oid="2_i4s3k">
-                <span
-                  className="text-4xl mb-3 block m-auto border w-8 h-8 rounded-full"
-                  data-oid=".wn-buf"
-                >
-                  {/* {boradDetailsData[0].author.avatar} */}
-                </span>
+                {<div className="w-h-center mb-4">
+                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 rounded-full w-h-center">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                </div>}
+                {/* {boradDetailsData[0].author.avatar} */}
                 <h4
                   className="font-semibold text-gray-900 mb-1"
                   data-oid="rvsr0b4"
@@ -411,11 +414,11 @@ export default function BoardDetailsPage({
                 >
                   {/* {boradDetailsData[0].author.level} */}level
                 </span>
+                <If isTrue={userInfo.introduce}>
                 <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
-                  {/* {boradDetailsData[0].author.bio} */}두 아이와 함께하는
-                  가족여행 전문가입니다. 아이들이 즐거워하는 여행지를
-                  찾아다녀요!
+                  {userInfo.introduce}
                 </p>
+                </If>
                 <div
                   className="grid grid-cols-3 gap-4 text-center mb-4"
                   data-oid="j7rygv3"
@@ -425,7 +428,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="v_pf3hq"
                     >
-                      {/* {boradDetailsData[0].author.posts} */}0
+                      {boradDetailsData[0].users.total_post}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="35kbqh1">
                       게시글
@@ -436,7 +439,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="hvo7tug"
                     >
-                      {/* {boradDetailsData[0].author.followers} */}0
+                      {boradDetailsData[0].users.follower}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="j2sbkzo">
                       팔로워
@@ -447,7 +450,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="4rocb71"
                     >
-                      {/* {boradDetailsData[0].author.following} */}0
+                      {boradDetailsData[0].users.following}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="_0pgcn0">
                       팔로잉
@@ -524,7 +527,7 @@ export default function BoardDetailsPage({
                   data-oid="dza276n"
                 >
                   <span className="text-sm text-gray-600" data-oid="w9.ehvf">
-                    평점
+                    평균 평점
                   </span>
                   <div className="flex items-center" data-oid="5s-etr3">
                     <Star
@@ -541,6 +544,7 @@ export default function BoardDetailsPage({
             </div>
 
             {/* Tags */}
+            <If isTrue={boradDetailsData[0].board_tags.length > 0}>
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
               data-oid="02-:h4t"
@@ -563,6 +567,7 @@ export default function BoardDetailsPage({
                 ))}
               </div>
             </div>
+            </If>
 
             {/* Related Posts */}
             <div
