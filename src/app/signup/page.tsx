@@ -93,14 +93,14 @@ export default function SignupPage() {
         options: {
           // emailRedirectTo: 'https://example.com/welcome',
           data: {
-            display_name: formData.name,
+            full_name: formData.name,
           },
         },
       })
 
-      signup(formData)
+      // signup(data)
       alert("회원가입이 완료되었습니다!")
-      router.push("/login")
+      router.push("/")
     }
     setIsLoading(false)
     // router.push("/login")
