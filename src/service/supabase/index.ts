@@ -391,6 +391,10 @@ export const getBoardsInfinite = async ({
       `
         *,
         users(*),
+        comments (
+          *,
+          comments_replies (*)
+        ),
         board_ai_insights (
           title,
           insight
@@ -473,6 +477,10 @@ export const getBoardDetails = async (params: number) => {
       `
     *,
     users(*),
+    comments (
+          *,
+          comments_replies (*)
+        ),
     board_ai_insights (
       title,
       insight
@@ -538,7 +546,7 @@ export const getBoardDetails = async (params: number) => {
     .select("*", { count: "exact" })
     .eq("user_id", userId)
 
-  const totalCount = (boardCount || 0)
+  const totalCount = boardCount || 0
 
   data[0].users = {
     ...data[0].users,
@@ -1046,7 +1054,6 @@ export const postBoardCreate = async (boardData: any) => {
     return acc
   }, [])
   // boards.board_days에 board_places를 넣었으므로 boards.board_places는 삭제
-  delete copiedData.board_places
   delete copiedData.dayTitles
   delete copiedData.daySubtitles
   delete copiedData.dayNotes
@@ -1071,10 +1078,11 @@ export const postBoardCreate = async (boardData: any) => {
     created_at: moment().format("YYYY-MM-DD"),
     likes: 0,
     rating: 0,
+    total_cost: copiedData.total_cost || 0,
     total_comments: 0,
     total_distance: "km",
-    total_locations: 0,
-    total_places: copiedData.board_places.length,
+    total_locations: copiedData.board_places.length || 0,
+    total_places: copiedData.board_places.length || 0,
     views: 0,
     board_ai_insights: [
       {

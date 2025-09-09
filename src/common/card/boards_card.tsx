@@ -13,6 +13,7 @@ import {
   ThumbsUp,
   Users,
   Search,
+  User,
 } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -72,6 +73,15 @@ const Board_card = ({
       {/* Post List */}
       <div className="space-y-4 sm:space-y-6" data-oid="oug.bhz">
         {filteredBoards.map((post, idx) => {
+          const totalCommentsReplies = post.comments.reduce((sum, comment) => {
+            return (
+              sum +
+              (comment.comments_replies ? comment.comments_replies.length : 0)
+            )
+          }, 0)
+
+          const totalCommentsCount = post.comments.length + totalCommentsReplies
+
           const isLastItem = idx === filteredBoards.length - 1
           return (
             <div
@@ -197,7 +207,15 @@ const Board_card = ({
                       className="text-lg sm:text-xl w-8 h-8 rounded-full"
                       data-oid="aqxkzhp"
                     >
-                      🍜
+                      <div
+                        className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                        data-oid="dzrezk7"
+                      >
+                        <User
+                          className="w-4 h-4 text-white"
+                          data-oid="0ez2wo7"
+                        />
+                      </div>
                       {/* {post.author.avatar} */}
                     </span>
                     <div className="min-w-0" data-oid="o7zv6:o">
@@ -268,79 +286,81 @@ const Board_card = ({
                       />
                       <span data-oid="-6m4kn6">{post.total_places}개 장소</span>
                     </div>
-                    <div
-                      className="flex items-center text-gray-600"
-                      data-oid="qjpkpk_"
-                    >
-                      <span
-                        className="font-bold text-blue-600"
-                        data-oid="k7i5hm5"
+                    <If isTrue={post.total_cost !== 0}>
+                      <div
+                        className="flex items-center text-gray-600"
+                        data-oid="qjpkpk_"
                       >
-                        {comma(post.total_cost, true)}
-                      </span>
-                    </div>
+                        <span
+                          className="font-bold text-blue-600"
+                          data-oid="k7i5hm5"
+                        >
+                          {comma(post.total_cost, true)}
+                        </span>
+                      </div>
+                    </If>
                   </div>
 
                   {/* Tags */}
                   <If isTrue={post.board_tags.length > 0}>
-                  <div
-                    className="flex flex-wrap gap-1 sm:gap-2 mb-4"
-                    data-oid=".eevsua"
-                  >
-                    {post.board_tags.slice(0, 4).map((tag, index) => (
-                      <span
-                        key={index}
-                        className="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-xs"
-                        data-oid="g4o:5jn"
-                      >
-                        {tag.tag}
-                      </span>
-                    ))}
-                    {post.board_tags.length > 4 && (
-                      <span
-                        className="text-xs flex items-center text-gray-500"
-                        data-oid=".iz11:7"
-                      >
-                        +{post.board_tags.length - 4}
-                      </span>
-                    )}
-                  </div>
+                    <div
+                      className="flex flex-wrap gap-1 sm:gap-2 mb-4"
+                      data-oid=".eevsua"
+                    >
+                      {post.board_tags.slice(0, 4).map((tag, index) => (
+                        <span
+                          key={index}
+                          className="bg-blue-50 text-blue-600 px-2 py-1 rounded-md text-xs"
+                          data-oid="g4o:5jn"
+                        >
+                          {tag.tag}
+                        </span>
+                      ))}
+                      {post.board_tags.length > 4 && (
+                        <span
+                          className="text-xs flex items-center text-gray-500"
+                          data-oid=".iz11:7"
+                        >
+                          +{post.board_tags.length - 4}
+                        </span>
+                      )}
+                    </div>
                   </If>
 
                   {/* Highlights */}
                   <If isTrue={post.board_highlights.length > 0}>
-                  <div className="mb-4" data-oid="s_p.6z:">
-                    <h4
-                      className="text-xs sm:text-sm font-semibold text-gray-900 mb-2"
-                      data-oid="xch:h1w"
-                    >
-                      주요 명소
-                    </h4>
-                    <div className="flex flex-wrap gap-1" data-oid="ihovclx">
-                      {post.board_highlights
-                        .slice(0, 3)
-                        .map((highlight, index) => (
+                    <div className="mb-4" data-oid="s_p.6z:">
+                      <h4
+                        className="text-xs sm:text-sm font-semibold text-gray-900 mb-2"
+                        data-oid="xch:h1w"
+                      >
+                        주요 명소
+                      </h4>
+                      <div className="flex flex-wrap gap-1" data-oid="ihovclx">
+                        {post.board_highlights
+                          .slice(0, 3)
+                          .map((highlight, index) => (
+                            <span
+                              key={index}
+                              className="text-xs text-gray-600"
+                              data-oid="dwxl-_q"
+                            >
+                              {highlight.highlight}
+                              {index <
+                                Math.min(post.board_highlights.length, 3) - 1 &&
+                                " • "}
+                            </span>
+                          ))}
+                        {post.board_highlights.length > 3 && (
                           <span
-                            key={index}
-                            className="text-xs text-gray-600"
-                            data-oid="dwxl-_q"
+                            className="text-xs text-gray-500"
+                            data-oid="35ukzcw"
                           >
-                            {highlight.highlight}
-                            {index <
-                              Math.min(post.board_highlights.length, 3) - 1 &&
-                              " • "}
+                            외 {post.board_highlights.length - 3}곳
                           </span>
-                        ))}
-                      {post.board_highlights.length > 3 && (
-                        <span
-                          className="text-xs text-gray-500"
-                          data-oid="35ukzcw"
-                        >
-                          외 {post.board_highlights.length - 3}곳
-                        </span>
-                      )}
+                        )}
+                      </div>
                     </div>
-                  </div>
                   </If>
 
                   {/* Bottom Info */}
@@ -382,7 +402,7 @@ const Board_card = ({
                           className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
                           data-oid="du4cvy7"
                         />
-                        <span data-oid="03q0u6.">{post.total_comments}</span>
+                        <span data-oid="03q0u6.">{totalCommentsCount}</span>
                       </div>
                       <div
                         className="flex items-center text-xs sm:text-sm text-gray-500"

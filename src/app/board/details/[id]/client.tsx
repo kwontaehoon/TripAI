@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/board_details_card"
-import { useBoardDetailssQuery, useLikeMutation } from "@/hooks/supabase/dev"
+import { useBoardDetailssQuery, useCommentsQuery, useLikeMutation } from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
 import {
   Bookmark,
@@ -10,7 +10,7 @@ import {
   Share2,
   Star,
   ThumbsUp,
-  User
+  User,
 } from "lucide-react"
 import { use, useState } from "react"
 import Skeleton from "./skeleton"
@@ -22,7 +22,7 @@ import { If } from "react-haiku"
 
 export default function BoardDetailsPage({
   params,
-  userInfo
+  userInfo,
 }: {
   params: Promise<{ id: number }>
 }) {
@@ -31,15 +31,19 @@ export default function BoardDetailsPage({
   const [selectedDay, setSelectedDay] = useState(1)
   const setUserInfo = useSetAtom(userInfoAtom)
 
-  const { data: boradDetailsData, isLoading: boradDetailsDataIsLoading, refetch: boradDetailsDataRefetch } = useBoardDetailssQuery(
-    Number(id),
-  )
+  const {
+    data: boradDetailsData,
+    isLoading: boradDetailsDataIsLoading,
+    refetch: boradDetailsDataRefetch,
+  } = useBoardDetailssQuery(Number(id))
 
   const { mutateAsync: like } = useLikeMutation()
 
   // 유저가 코스에 좋아요를 눌렀는지 유무
-  const userBoardLikeFlag = !userInfo ? null : userInfo.likesItem.boards.includes(Number(id))
-  
+  const userBoardLikeFlag = !userInfo
+    ? null
+    : userInfo.likesItem.boards.includes(Number(id))
+
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked)
   }
@@ -81,6 +85,17 @@ export default function BoardDetailsPage({
       default:
         return "bg-blue-100 text-blue-700"
     }
+  }
+
+  const totalCommentCount = () => {
+    const comments = boradDetailsData[0].comments;
+    const totalReplies = comments.reduce((sum, comment) => {
+      return sum + (comment.comments_replies ? comment.comments_replies.length : 0);
+    }, 0);
+  
+    const totalCount = comments.length + totalReplies;
+
+    return totalCount
   }
 
   return boradDetailsDataIsLoading ? (
@@ -136,12 +151,12 @@ export default function BoardDetailsPage({
                 data-oid="cly6160"
               >
                 <div
-                      className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
-                      data-oid="dzrezk7"
-                    >
-                      <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
-                    </div>
-                  {/* {boradDetailsData[0].author.avatar} */}
+                  className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                  data-oid="dzrezk7"
+                >
+                  <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
+                </div>
+                {/* {boradDetailsData[0].author.avatar} */}
                 <div className="flex-1" data-oid="yqef21d">
                   <div
                     className="flex items-center space-x-2"
@@ -189,7 +204,7 @@ export default function BoardDetailsPage({
                 >
                   <Eye className="w-4 h-4 mr-1" data-oid="tutpe_9" />
                   <span data-oid="knr.:yc">
-                    {boradDetailsData[0].views.toLocaleString()}
+                    {boradDetailsData[0].views}
                   </span>
                 </div>
                 <div
@@ -205,7 +220,7 @@ export default function BoardDetailsPage({
                 >
                   <MessageCircle className="w-4 h-4 mr-1" data-oid="3j_2_3j" />
                   <span data-oid="5nzuinf">
-                    {boradDetailsData[0].total_comments}
+                    {totalCommentCount()}
                   </span>
                 </div>
                 <div
@@ -396,11 +411,13 @@ export default function BoardDetailsPage({
                 작성자 정보
               </h3>
               <div className="text-center" data-oid="2_i4s3k">
-                {<div className="w-h-center mb-4">
-                  <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 rounded-full w-h-center">
-                    <User className="w-4 h-4 text-white" />
+                {
+                  <div className="w-h-center mb-4">
+                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 rounded-full w-h-center">
+                      <User className="w-4 h-4 text-white" />
+                    </div>
                   </div>
-                </div>}
+                }
                 {/* {boradDetailsData[0].author.avatar} */}
                 <h4
                   className="font-semibold text-gray-900 mb-1"
@@ -414,10 +431,10 @@ export default function BoardDetailsPage({
                 >
                   {/* {boradDetailsData[0].author.level} */}level
                 </span>
-                <If isTrue={userInfo.introduce}>
-                <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
-                  {userInfo.introduce}
-                </p>
+                <If isTrue={boradDetailsData[0].users.introduce}>
+                  <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
+                    {boradDetailsData[0].users.introduce}
+                  </p>
                 </If>
                 <div
                   className="grid grid-cols-3 gap-4 text-center mb-4"
@@ -545,28 +562,28 @@ export default function BoardDetailsPage({
 
             {/* Tags */}
             <If isTrue={boradDetailsData[0].board_tags.length > 0}>
-            <div
-              className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-              data-oid="02-:h4t"
-            >
-              <h3
-                className="font-semibold text-gray-900 mb-4"
-                data-oid="_gxe.32"
+              <div
+                className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
+                data-oid="02-:h4t"
               >
-                태그
-              </h3>
-              <div className="flex flex-wrap gap-2" data-oid="n8yapiw">
-                {boradDetailsData[0].board_tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"
-                    data-oid="snktoue"
-                  >
-                    {tag.tag}
-                  </span>
-                ))}
+                <h3
+                  className="font-semibold text-gray-900 mb-4"
+                  data-oid="_gxe.32"
+                >
+                  태그
+                </h3>
+                <div className="flex flex-wrap gap-2" data-oid="n8yapiw">
+                  {boradDetailsData[0].board_tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"
+                      data-oid="snktoue"
+                    >
+                      {tag.tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
             </If>
 
             {/* Related Posts */}

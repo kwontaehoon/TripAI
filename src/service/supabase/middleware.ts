@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
+import { getUserInfo } from "."
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -52,17 +53,63 @@ export async function updateSession(request: NextRequest) {
   }
 
   // 로그인 전 /board/write 으로 접속했을 때 /login 으로 처리
-  if(!user && pathname === writePath) {
+  if (!user && pathname === writePath) {
     const url = request.nextUrl.clone()
     url.pathname = "/login"
     return NextResponse.redirect(url)
   }
 
   // 로그인 전 /mypage 로 접속했을 때 /login 으로 처리
-  if(!user && pathname === mypagePath) {
+  if (!user && pathname === mypagePath) {
     const url = request.nextUrl.clone()
     url.pathname = "/login"
     return NextResponse.redirect(url)
+  }
+
+  // 게시물 상세 페이지 경로를 정규식으로 매칭
+  const boardDetailsRegex = /^\/board\/details\/(\d+)/
+  const match = pathname.match(boardDetailsRegex)
+
+  if (match) {
+    const boardId = match[1]
+    const userInfo = await getUserInfo(user?.email)
+    const cookieName = userInfo ? `viewed_board_${boardId}_${userInfo.id}` : `viewed_board_${boardId}`
+
+    // 쿠키가 이미 존재하는지 확인
+    const hasViewedCookie = request.cookies.has(cookieName)
+
+    if (!hasViewedCookie) {
+      // 1. 조회수 증가 API 호출
+      const { error: view_history_insertError } = await supabase
+        .from("view_history")
+        .insert({
+          user_id: Number(userInfo?.id) || null,
+          board_id: Number(boardId),
+        })
+
+      const { data: boardData } = await supabase
+        .from("boards")
+        .select("views")
+        .eq("id", boardId)
+        .single()
+      const currentViews = boardData?.views
+
+      const newViews = currentViews + 1;
+
+      await supabase.from('boards').update({ views: newViews }).eq('id', boardId);
+
+      if (view_history_insertError) {
+        console.error("insertError: ", view_history_insertError)
+      } else {
+        // 2. 조회수 증가에 성공하면 쿠키 설정
+        const oneDay = 24 * 60 * 60 * 1000
+        supabaseResponse.cookies.set(cookieName, "true", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: oneDay,
+        })
+      }
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

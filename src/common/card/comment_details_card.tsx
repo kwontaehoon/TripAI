@@ -33,9 +33,11 @@ const comments = ({ id, userInfo }) => {
     board_id: isBoardPage ? id : null,
     course_id: isCoursePage ? id : null,
   })
+
   const totalCommentCount = commentsData?.length + commentsData?.reduce((accumulator, comment) => {
     return accumulator + comment.comments_replies.length;
   }, 0)
+
   const { mutateAsync: commentDelete } = useCommentDeleteMutation()
   const { mutateAsync: commentReplyDelete } = useCommentReplyDeleteMutation()
   const { mutateAsync: commentLike } = useCommentLikeMutation()

@@ -31,7 +31,7 @@ export default function BoardPage() {
   })
   const [isLoading, setIsLoading] = useState(true)
   const [filteredBoards, setFilteredBoards] = useState([])
-
+  
   const {
     data: boardsInfiniteData,
     error,
@@ -57,17 +57,17 @@ export default function BoardPage() {
 
   const { ref, inView } = useInView({
     threshold: 0,
-  });
+  })
   useEffect(() => {
-    window.scrollTo({behavior: 'instant', top: 0})
+    window.scrollTo({ behavior: "instant", top: 0 })
   }, [])
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       const timer = setTimeout(() => {
-        fetchNextPage();
+        fetchNextPage()
       }, 500)
-  
+
       return () => clearTimeout(timer)
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
@@ -88,11 +88,13 @@ export default function BoardPage() {
 
     setAvg({
       rating:
-      boardsInfiniteData.reduce((sum, board) => sum + board.rating, 0) /
-      boardsInfiniteData.length,
+        boardsInfiniteData.reduce((sum, board) => sum + board.rating, 0) /
+        boardsInfiniteData.length,
       period:
-      boardsInfiniteData.reduce((sum, board) => sum + board.board_days.length, 0) /
-      boardsInfiniteData.length,
+        boardsInfiniteData.reduce(
+          (sum, board) => sum + board.board_days.length,
+          0,
+        ) / boardsInfiniteData.length,
     })
 
     const filtered = boardsInfiniteData.filter((board) => {
@@ -248,9 +250,9 @@ export default function BoardPage() {
 
                 {/* Write Post Button */}
                 <div className="flex justify-end">
-                <button
-                  onClick={() => router.push("/board/write")}
-                  className="
+                  <button
+                    onClick={() => router.push("/board/write")}
+                    className="
                   w-full
                   flex items-center justify-center
                   px-4
@@ -260,14 +262,14 @@ export default function BoardPage() {
                   sm:px-6 py-2.5 sm:py-3 sm:text-base sm:w-auto
                   hover:shadow-lg
                   transition-all"
-                  data-oid="larkkgs"
-                >
-                  <Plus
-                    className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
-                    data-oid="b1sbr6g"
-                  />
-                  여행 코스 공유하기
-                </button>
+                    data-oid="larkkgs"
+                  >
+                    <Plus
+                      className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
+                      data-oid="b1sbr6g"
+                    />
+                    여행 코스 공유하기
+                  </button>
                 </div>
               </div>
 

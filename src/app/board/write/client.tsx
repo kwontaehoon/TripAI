@@ -36,7 +36,7 @@ interface FormData {
   description: string
   duration: string
   participants: string
-  total_cost: string
+  total_cost: number
   difficulty: string
   board_tags: string[]
   board_highlights: string[]
@@ -51,7 +51,7 @@ export default function BoardWritePage({ userInfo }) {
     description: "",
     duration: "",
     participants: "",
-    total_cost: "",
+    total_cost: 0,
     difficulty: "쉬움",
     board_tags: [],
     board_highlights: [],
@@ -60,7 +60,6 @@ export default function BoardWritePage({ userInfo }) {
     daySubtitles: {}, // 일차별 서브 제목
     dayNotes: {}, // 일차별 작성자 노트
   })
-  console.log("aaa formData: ", formData)
 
   const [newTag, setNewTag] = useState("")
   const [newHighlight, setNewHighlight] = useState("")
