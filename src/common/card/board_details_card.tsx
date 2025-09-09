@@ -211,7 +211,7 @@ const Board_details_card = ({data, selectedDay}) => {
                       </div>
 
                       {/* Next Location Info */}
-                      {place.next_distance !== "km" && place.next_distance !== "" && (
+                      {place.next_distance !== "km" && place.next_distance !== "" && place.next_distance !== "0km" && (
                         <div
                           className="flex items-center space-x-2 text-sm text-green-600 bg-green-50 rounded-lg px-3 py-2"
                           data-oid="or1m1:b"

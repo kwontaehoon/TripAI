@@ -1,5 +1,5 @@
 import React, { use, useState } from "react"
-import { Send, ThumbsUp, X, Trash2 } from "lucide-react"
+import { Send, ThumbsUp, X, Trash2, User } from "lucide-react"
 import {
   useCommentDeleteMutation,
   useCommentLikeMutation,
@@ -34,9 +34,11 @@ const comments = ({ id, userInfo }) => {
     course_id: isCoursePage ? id : null,
   })
 
-  const totalCommentCount = commentsData?.length + commentsData?.reduce((accumulator, comment) => {
-    return accumulator + comment.comments_replies.length;
-  }, 0)
+  const totalCommentCount =
+    commentsData?.length +
+    commentsData?.reduce((accumulator, comment) => {
+      return accumulator + comment.comments_replies.length
+    }, 0)
 
   const { mutateAsync: commentDelete } = useCommentDeleteMutation()
   const { mutateAsync: commentReplyDelete } = useCommentReplyDeleteMutation()
@@ -47,7 +49,7 @@ const comments = ({ id, userInfo }) => {
   const [newReplyComment, setNewReplyComment] = useState("")
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
-    if(!userInfo) return
+    if (!userInfo) return
     e.preventDefault()
     if (newComment.trim()) {
       await commentRegister({
@@ -77,11 +79,11 @@ const comments = ({ id, userInfo }) => {
       user_id: userInfo.id,
       parent_comment_id: comment_id,
       content: newReplyComment,
-      likes: 0
+      likes: 0,
     })
     setTimeout(() => {
       commentsDataRefetch()
-    }, 500);
+    }, 500)
     setActiveReplyForm(null)
   }
 
@@ -106,13 +108,13 @@ const comments = ({ id, userInfo }) => {
   }
 
   // 댓글 삭제
-  const handleCommentDelete = async(comment_id: number) => {
+  const handleCommentDelete = async (comment_id: number) => {
     await commentDelete(comment_id)
     commentsDataRefetch()
   }
 
   // 댓글 답글 삭제
-  const handleCommentDeleteReply = async(reply_id: number) => {
+  const handleCommentDeleteReply = async (reply_id: number) => {
     await commentReplyDelete(reply_id)
     commentsDataRefetch()
   }
@@ -175,9 +177,12 @@ const comments = ({ id, userInfo }) => {
             data-oid="psvy3jc"
           >
             <div className="flex space-x-3" data-oid="m.8zi0f">
-              <span className="text-lg" data-oid="0teb3c9">
-                👩‍👧‍👦
-              </span>
+              <div
+                className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                data-oid="dzrezk7"
+              >
+                <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
+              </div>
               <div className="flex-1" data-oid="7ecfe30">
                 <div
                   className="flex items-center space-x-2 mb-1"
@@ -198,16 +203,17 @@ const comments = ({ id, userInfo }) => {
                   <span className="text-xs text-gray-500" data-oid="n76upee">
                     {moment(comment.created_at).format("YYYY-MM-DD")}
                   </span>
-                  {userInfo && userInfo.commentsItem.comments.includes(comment.id) && (
-                    <button
-                      onClick={() => handleCommentDelete(comment.id)}
-                      className="text-red-500 hover:text-red-700 p-1"
-                      title="답글 삭제"
-                      data-oid="hob.qxw"
-                    >
-                      <Trash2 className="w-3 h-3" data-oid="1pl-e1e" />
-                    </button>
-                  )}
+                  {userInfo &&
+                    userInfo.commentsItem.comments.includes(comment.id) && (
+                      <button
+                        onClick={() => handleCommentDelete(comment.id)}
+                        className="text-red-500 hover:text-red-700 p-1"
+                        title="답글 삭제"
+                        data-oid="hob.qxw"
+                      >
+                        <Trash2 className="w-3 h-3" data-oid="1pl-e1e" />
+                      </button>
+                    )}
                 </div>
                 <p className="text-sm text-gray-700 mb-2" data-oid="hyvu73a">
                   {comment.content}
@@ -319,9 +325,15 @@ const comments = ({ id, userInfo }) => {
                         className="flex space-x-3"
                         data-oid="zgn:9r."
                       >
-                        <span className="text-sm" data-oid="vkcjuhc">
-                          {/* {reply.author.avatar} */}
-                        </span>
+                        <div
+                          className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                          data-oid="dzrezk7"
+                        >
+                          <User
+                            className="w-4 h-4 text-white"
+                            data-oid="0ez2wo7"
+                          />
+                        </div>
                         <div className="flex-1" data-oid="swvjkj:">
                           <div
                             className="flex items-center space-x-2 mb-1"
@@ -345,19 +357,24 @@ const comments = ({ id, userInfo }) => {
                             >
                               {moment(reply.created_at).format("YYYY-MM-DD")}
                             </span>
-                            {userInfo && userInfo.commentsItem.comments_replies.includes(reply.id) && (
-                              <button
-                                onClick={() => handleCommentDeleteReply(reply.id)}
-                                className="text-red-500 hover:text-red-700 p-1"
-                                title="답글 삭제"
-                                data-oid="hob.qxw"
-                              >
-                                <Trash2
-                                  className="w-3 h-3"
-                                  data-oid="1pl-e1e"
-                                />
-                              </button>
-                            )}
+                            {userInfo &&
+                              userInfo.commentsItem.comments_replies.includes(
+                                reply.id,
+                              ) && (
+                                <button
+                                  onClick={() =>
+                                    handleCommentDeleteReply(reply.id)
+                                  }
+                                  className="text-red-500 hover:text-red-700 p-1"
+                                  title="답글 삭제"
+                                  data-oid="hob.qxw"
+                                >
+                                  <Trash2
+                                    className="w-3 h-3"
+                                    data-oid="1pl-e1e"
+                                  />
+                                </button>
+                              )}
                           </div>
                           <p
                             className="text-sm text-gray-700 mb-2"
