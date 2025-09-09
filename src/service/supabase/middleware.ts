@@ -72,8 +72,7 @@ export async function updateSession(request: NextRequest) {
 
   if (match) {
     const boardId = match[1]
-    const userInfo = await getUserInfo(user?.email)
-    const cookieName = userInfo ? `viewed_board_${boardId}_${userInfo.id}` : `viewed_board_${boardId}`
+    const cookieName = user ? `viewed_board_${boardId}_${user.id}` : `viewed_board_${boardId}`
 
     // 쿠키가 이미 존재하는지 확인
     const hasViewedCookie = request.cookies.has(cookieName)
@@ -83,7 +82,7 @@ export async function updateSession(request: NextRequest) {
       const { error: view_history_insertError } = await supabase
         .from("view_history")
         .insert({
-          user_id: Number(userInfo?.id) || null,
+          user_id: user?.id || null,
           board_id: Number(boardId),
         })
 
