@@ -87,17 +87,6 @@ export async function updateSession(request: NextRequest) {
           board_id: Number(boardId),
         })
 
-      const { data: boardData } = await supabase
-        .from("boards")
-        .select("views")
-        .eq("id", boardId)
-        .single()
-      const currentViews = boardData?.views
-
-      const newViews = currentViews + 1;
-
-      await supabase.from('boards').update({ views: newViews }).eq('id', boardId);
-
       if (view_history_insertError) {
         console.error("insertError: ", view_history_insertError)
       } else {
