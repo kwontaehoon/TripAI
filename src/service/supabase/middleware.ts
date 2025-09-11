@@ -83,6 +83,7 @@ export async function updateSession(request: NextRequest) {
         .insert({
           user_id: user?.id,
           board_id: Number(boardId),
+          user_flag: !user ? false : true
         })
 
       if (view_history_insertError) {
