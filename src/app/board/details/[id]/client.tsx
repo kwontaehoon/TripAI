@@ -54,6 +54,10 @@ export default function BoardDetailsPage({
   }
 
   const handleLike = async () => {
+    if(!userInfo){
+      alert("로그인 후 이용할 수 있습니다!")
+      return
+    }
     await like({
       board_id: Number(id),
       user_id: userInfo.id,
@@ -64,11 +68,10 @@ export default function BoardDetailsPage({
         (x) => x !== Number(id),
       )
       copyUserInfo.likesItem.boards = deletedBoardLike
-      setUserInfo(copyUserInfo)
     } else {
       copyUserInfo.likesItem.boards.push(Number(id))
-      setUserInfo(copyUserInfo)
     }
+    setUserInfo(copyUserInfo)
     boradDetailsDataRefetch()
   }
 

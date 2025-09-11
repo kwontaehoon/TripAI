@@ -1,6 +1,9 @@
 "use client"
 
+import { useLikeMutation } from "@/hooks/supabase/dev"
+import { userInfoAtom } from "@/store/ai"
 import { comma } from "@/util/comma"
+import { useSetAtom } from "jotai"
 import {
   ArrowRight,
   Calendar,
@@ -24,8 +27,12 @@ const Board_card = ({
   setSelectedFilter,
   setQuickedFilter,
   ref,
+  userInfo,
+  boardsRefetch
 }) => {
   const router = useRouter()
+  const setUserInfo = useSetAtom(userInfoAtom)
+  const { mutateAsync: like } = useLikeMutation()
 
   const getDifficultyText = (difficulty: number) => {
     if (difficulty < 2) {
@@ -68,11 +75,40 @@ const Board_card = ({
     }
   }
 
+  const handleLike = async (e: React.FormEvent, id) => {
+    e.stopPropagation()
+  
+    if (!userInfo) {
+      alert("로그인 후 이용할 수 있습니다!")
+      return
+    }
+    await like({
+      board_id: Number(id),
+      user_id: userInfo.id,
+    })
+    const copyUserInfo = { ...userInfo }
+    if (userInfo.likesItem.boards.includes(Number(id))) {
+      const deletedBoardLike = copyUserInfo.likesItem.boards.filter(
+        (x) => x !== Number(id),
+      )
+      copyUserInfo.likesItem.boards = deletedBoardLike
+    } else {
+      copyUserInfo.likesItem.boards.push(Number(id))
+    }
+    setUserInfo(copyUserInfo)
+    boardsRefetch()
+  }
+
   return (
     <div>
       {/* Post List */}
       <div className="space-y-4 sm:space-y-6" data-oid="oug.bhz">
         {filteredBoards.map((post, idx) => {
+          // 유저가 코스에 좋아요를 눌렀는지 유무
+          const userBoardLikeFlag = !userInfo
+            ? null
+            : userInfo.likesItem.boards.includes(post.id)
+
           const totalCommentsReplies = post.comments.reduce((sum, comment) => {
             return (
               sum +
@@ -147,14 +183,24 @@ const Board_card = ({
                       data-oid="vf.k7tg"
                     >
                       <button
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => handleLike(e, post.id)}
                         className="bg-white/80 p-1.5 sm:p-2 rounded-full hover:bg-white transition-colors"
                         data-oid="l3o25pn"
                       >
-                        <Heart
-                          className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600"
-                          data-oid="g-kd11o"
-                        />
+                        <If isTrue={!userBoardLikeFlag}>
+                          <Heart
+                            className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600"
+                            data-oid="g-kd11o"
+                          />
+                        </If>
+                        <If isTrue={userBoardLikeFlag}>
+                          <Heart
+                            className="w-3 h-3 sm:w-4 sm:h-4"
+                            fill="#dc2626"
+                            stroke="#dc2626"
+                            data-oid="g-kd11o"
+                          />
+                        </If>
                       </button>
                       <button
                         onClick={(e) => e.stopPropagation()}

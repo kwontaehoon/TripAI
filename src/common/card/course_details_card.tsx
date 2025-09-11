@@ -265,7 +265,7 @@ const Course_details_card = ({ data, selectedDay }) => {
                               </div>
 
                               {/* Next Location Info */}
-                              {place.next_distance && (
+                              {place.next_distance !== "km" && place.next_distance !== "" && place.next_distance !== "0km" && (
                                 <div
                                   className="flex items-center space-x-2 text-sm text-purple-600 bg-purple-50 rounded-lg px-3 py-2"
                                   data-oid="b-rmbq:"

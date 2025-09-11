@@ -43,6 +43,10 @@ export default function CourseDetailsPage({
   const { mutateAsync: like } = useLikeMutation()
 
   const handleLike = async () => {
+    if(!userInfo){
+      alert("로그인 후 이용할 수 있습니다!")
+      return
+    }
     await like({
       course_id: Number(id),
       user_id: userInfo.id,
@@ -53,12 +57,11 @@ export default function CourseDetailsPage({
         (x) => x !== Number(id),
       )
       copyUserInfo.likesItem.courses = deletedCourseLike
-      setUserInfo(copyUserInfo)
+
     } else {
       copyUserInfo.likesItem.courses.push(Number(id))
-      setUserInfo(copyUserInfo)
     }
-
+    setUserInfo(copyUserInfo)
     courseDetailsDataRefetch()
 
     queryClient.refetchQueries({
@@ -171,7 +174,6 @@ export default function CourseDetailsPage({
                   className="flex flex-wrap gap-2 sm:gap-3"
                   data-oid="eolj5g_"
                 >
-                  <If isTrue={userInfo}>
                     <button
                       onClick={handleLike}
                       className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm ${
@@ -192,7 +194,6 @@ export default function CourseDetailsPage({
                           : "좋아요"}
                       </span>
                     </button>
-                  </If>
 
                   <button
                     onClick={handleDownload}

@@ -8,7 +8,6 @@ import {
   useCommentReplyLikeMutation,
   useCommentReplyRegisterMutation,
   useCommentsQuery,
-  useLikeMutation,
 } from "@/hooks/supabase/dev"
 import { usePathname } from "next/navigation"
 import moment from "moment"
@@ -49,7 +48,11 @@ const comments = ({ id, userInfo }) => {
   const [newReplyComment, setNewReplyComment] = useState("")
 
   const handleCommentSubmit = async (e: React.FormEvent) => {
-    if (!userInfo) return
+    e.preventDefault()
+    if (!userInfo){
+      alert("로그인 후 이용할 수 있습니다!")
+      return
+    }
     e.preventDefault()
     if (newComment.trim()) {
       await commentRegister({

@@ -179,6 +179,10 @@ export const getCoursesInfinite = async ({
     .select(
       `
       *,
+      comments (
+          *,
+          comments_replies (*)
+        ),
       course_ai_insights (
         title,
         insight
@@ -259,6 +263,10 @@ export const getCourseDetails = async (params: number) => {
     .select(
       `
     *,
+    comments (
+          *,
+          comments_replies (*)
+        ),
     course_ai_insights (
       title,
       insight
