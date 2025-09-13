@@ -1,19 +1,21 @@
 "use client"
 import { createClient } from "@/service/supabase/client"
-import { introModalAtom, modalUiStateAtom, sessionAtom } from "@/store/ai"
+import { introModalAtom, modalUiStateAtom, userInfoAtom } from "@/store/ai"
 import { useAtom } from "jotai"
-import { Bot, User, Settings, LogOut, ChevronDown } from "lucide-react"
+import { Bot, User, LogOut, ChevronDown } from "lucide-react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { If } from "react-haiku"
 
 const getScrollbarWidth = () => {
   return window.innerWidth - document.documentElement.clientWidth
 }
 
-const Page = ({ initialSession }) => {
+const Page = ({ InitialuserInfo }) => {
   const router = useRouter()
   const supabase = createClient()
-  const [session] = useAtom(sessionAtom)
+  const [userInfo, setUserInfo] = useAtom(userInfoAtom)
   const [isVisible, setIsVisible] = useState(true)
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -66,6 +68,8 @@ const Page = ({ initialSession }) => {
 
   async function signOut() {
     const { error } = await supabase.auth.signOut()
+    setUserInfo(null)
+    setIsDropdownOpen(false)
   }
 
   return (
@@ -102,7 +106,7 @@ const Page = ({ initialSession }) => {
         </div>
         <div className="flex-1 flex flex-row-reverse" data-oid="nst0g5j">
           <div className="flex items-center space-x-4" data-oid="j6cwnl9">
-            {(initialSession || session) ? (
+            {InitialuserInfo || userInfo ? (
               <>
                 {/* User Menu */}
                 <div className="relative" data-oid="cw85quk">
@@ -111,17 +115,46 @@ const Page = ({ initialSession }) => {
                     className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
                     data-oid="r9its24"
                   >
-                    <div
-                      className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
-                      data-oid="dzrezk7"
+                    <span
+                      className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
+                      data-oid="aqxkzhp"
                     >
-                      <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
-                    </div>
+                      <If
+                        isTrue={
+                          InitialuserInfo
+                            ? InitialuserInfo.profile_image_url
+                            : userInfo.profile_image_url
+                        }
+                      >
+                        <Image
+                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${InitialuserInfo ? InitialuserInfo.profile_image_url : userInfo.profile_image_url}`}
+                          className="rounded-full overflow-hidden"
+                          alt=""
+                          fill
+                        />
+                      </If>
+                      <If
+                        isTrue={
+                          !InitialuserInfo && !userInfo
+                        }
+                      >
+                        <div
+                          className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                          data-oid="dzrezk7"
+                        >
+                          <User
+                            className="w-4 h-4 text-white"
+                            data-oid="0ez2wo7"
+                          />
+                        </div>
+                      </If>
+                    </span>
+
                     <span
                       className="text-sm font-medium text-gray-700 hidden md:block"
                       data-oid=":h9uxts"
                     >
-                      {(initialSession||session).user.identities[0].identity_data.display_name || (initialSession||session).user.identities[0].identity_data.full_name}
+                      {InitialuserInfo ? InitialuserInfo.name : userInfo.name}
                     </span>
                     <ChevronDown
                       className="w-4 h-4 text-gray-500"
@@ -143,13 +176,14 @@ const Page = ({ initialSession }) => {
                           className="text-sm font-medium text-gray-900"
                           data-oid="44ie_.b"
                         >
-                          {
-                            (initialSession||session).user.identities[0].identity_data
-                              .display_name
-                          }
+                          {InitialuserInfo
+                            ? InitialuserInfo.name
+                            : userInfo.name}
                         </p>
                         <p className="text-xs text-gray-500" data-oid="i9.yd_6">
-                          {(initialSession||session).user.email}
+                          {InitialuserInfo
+                            ? InitialuserInfo.email
+                            : userInfo.email}
                         </p>
                       </div>
 

@@ -1,16 +1,15 @@
 "use client"
 import React, { useState } from "react"
 import { Search, Sparkles, ArrowRight, Send, Mic, Zap } from "lucide-react"
-import { useAtom, useAtomValue } from "jotai"
-import { modalUiStateAtom, sessionAtom } from "@/store/ai"
+import { useAtom } from "jotai"
+import { modalUiStateAtom } from "@/store/ai"
 import { useRouter } from "next/navigation"
 
-const SearchPage = ({ initialSession }) => {
+const SearchPage = ({ initialUserInfo }) => {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
-  const session = useAtomValue(sessionAtom)
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -92,9 +91,9 @@ const SearchPage = ({ initialSession }) => {
       </form>
 
       <div
-        className={`flex ${initialSession || session ? "justify-self-end" : ""} items-center`}
+        className={`flex ${initialUserInfo ? "justify-self-end" : ""} items-center`}
       >
-        {initialSession || session ? (
+        {initialUserInfo ? (
           ""
         ) : (
           <button

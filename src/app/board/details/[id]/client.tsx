@@ -1,7 +1,11 @@
 "use client"
 
 import Card from "@/common/card/board_details_card"
-import { useBoardDetailssQuery, useCommentsQuery, useLikeMutation } from "@/hooks/supabase/dev"
+import {
+  useBoardDetailssQuery,
+  useCommentsQuery,
+  useLikeMutation,
+} from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
 import {
   Bookmark,
@@ -54,7 +58,7 @@ export default function BoardDetailsPage({
   }
 
   const handleLike = async () => {
-    if(!userInfo){
+    if (!userInfo) {
       alert("로그인 후 이용할 수 있습니다!")
       return
     }
@@ -91,12 +95,14 @@ export default function BoardDetailsPage({
   }
 
   const totalCommentCount = () => {
-    const comments = boradDetailsData[0].comments;
+    const comments = boradDetailsData[0].comments
     const totalReplies = comments.reduce((sum, comment) => {
-      return sum + (comment.comments_replies ? comment.comments_replies.length : 0);
-    }, 0);
-  
-    const totalCount = comments.length + totalReplies;
+      return (
+        sum + (comment.comments_replies ? comment.comments_replies.length : 0)
+      )
+    }, 0)
+
+    const totalCount = comments.length + totalReplies
 
     return totalCount
   }
@@ -150,15 +156,31 @@ export default function BoardDetailsPage({
 
               {/* Author Info */}
               <div
-                className="flex items-center space-x-3 mb-4 pb-4 border-b !border-gray-200"
+                className="flex items-center space-x-3 mb-4 pb-4 border-b !border-gray-200 "
                 data-oid="cly6160"
               >
-                <div
-                  className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
-                  data-oid="dzrezk7"
+                <span
+                  className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
+                  data-oid="aqxkzhp"
                 >
-                  <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
-                </div>
+                  <If isTrue={boradDetailsData[0].users.profile_image_url}>
+                    <Image
+                      src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${boradDetailsData[0].users.profile_image_url}`}
+                      alt=""
+                      className="rounded-full overflow-hidden"
+                      fill
+                    />
+                  </If>
+                  <If isTrue={!boradDetailsData[0].users.profile_image_url}>
+                    <div
+                      className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                      data-oid="dzrezk7"
+                    >
+                      <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
+                    </div>
+                  </If>
+                </span>
+
                 {/* {boradDetailsData[0].author.avatar} */}
                 <div className="flex-1" data-oid="yqef21d">
                   <div
@@ -169,7 +191,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="jc95hi7"
                     >
-                      {boradDetailsData[0].author}
+                      {boradDetailsData[0].users.name}
                     </span>
                     <span
                       className={`px-2 py-1 rounded-full text-xs
@@ -206,9 +228,7 @@ export default function BoardDetailsPage({
                   data-oid="hqigo8y"
                 >
                   <Eye className="w-4 h-4 mr-1" data-oid="tutpe_9" />
-                  <span data-oid="knr.:yc">
-                    {boradDetailsData[0].views}
-                  </span>
+                  <span data-oid="knr.:yc">{boradDetailsData[0].views}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
@@ -222,9 +242,7 @@ export default function BoardDetailsPage({
                   data-oid="nrur02n"
                 >
                   <MessageCircle className="w-4 h-4 mr-1" data-oid="3j_2_3j" />
-                  <span data-oid="5nzuinf">
-                    {totalCommentCount()}
-                  </span>
+                  <span data-oid="5nzuinf">{totalCommentCount()}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
@@ -416,9 +434,24 @@ export default function BoardDetailsPage({
               <div className="text-center" data-oid="2_i4s3k">
                 {
                   <div className="w-h-center mb-4">
-                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 rounded-full w-h-center">
-                      <User className="w-4 h-4 text-white" />
-                    </div>
+                    <span
+                      className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
+                      data-oid="aqxkzhp"
+                    >
+                      <If isTrue={boradDetailsData[0].users.profile_image_url}>
+                        <Image
+                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${boradDetailsData[0].users.profile_image_url}`}
+                          alt=""
+                          className="rounded-full overflow-hidden"
+                          fill
+                        />
+                      </If>
+                      <If isTrue={!boradDetailsData[0].users.profile_image_url}>
+                        <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 rounded-full w-h-center">
+                          <User className="w-4 h-4 text-white" />
+                        </div>
+                      </If>
+                    </span>
                   </div>
                 }
                 {/* {boradDetailsData[0].author.avatar} */}
@@ -426,7 +459,7 @@ export default function BoardDetailsPage({
                   className="font-semibold text-gray-900 mb-1"
                   data-oid="rvsr0b4"
                 >
-                  {boradDetailsData[0].author}
+                  {boradDetailsData[0].users.name}
                 </h4>
                 <span
                   className={`px-3 py-1 rounded-full text-sm ${getLevelColor("Platinum")} mb-3 inline-block`}

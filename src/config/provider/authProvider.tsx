@@ -10,10 +10,10 @@ import { useUserInfoMutation } from '@/hooks/supabase/dev';
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const supabase = createClient();
-  // const { mutate: userInfo } = useUserInfoMutation()
+  const { mutate: userInfo } = useUserInfoMutation()
 
-  const setSession = useSetAtom(sessionAtom)
-  // const setUserInfo = useSetAtom(userInfoAtom)
+  // const setSession = useSetAtom(sessionAtom)
+  const setUserInfo = useSetAtom(userInfoAtom)
 
   useEffect(() => {
     // supabase.auth.getSession().then(({ data: { session } }) => {
@@ -24,15 +24,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession)
+      // setSession(newSession)
 
-      // if(newSession){
-      //   userInfo(newSession?.user.email, {
-      //     onSuccess: (userInfo) => {
-      //       setUserInfo(userInfo)
-      //     }
-      //   })
-      // }
+      if(newSession){
+        userInfo(newSession?.user.email, {
+          onSuccess: (userInfo) => {
+            setUserInfo(userInfo)
+          }
+        })
+      }
 
       if (_event === 'SIGNED_IN') {
         console.log('SIGNED_IN');

@@ -28,7 +28,7 @@ const Board_card = ({
   setQuickedFilter,
   ref,
   userInfo,
-  boardsRefetch
+  boardsRefetch,
 }) => {
   const router = useRouter()
   const setUserInfo = useSetAtom(userInfoAtom)
@@ -77,7 +77,7 @@ const Board_card = ({
 
   const handleLike = async (e: React.FormEvent, id) => {
     e.stopPropagation()
-  
+
     if (!userInfo) {
       alert("로그인 후 이용할 수 있습니다!")
       return
@@ -250,18 +250,28 @@ const Board_card = ({
                     data-oid="1qonzi3"
                   >
                     <span
-                      className="text-lg sm:text-xl w-8 h-8 rounded-full"
+                      className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                       data-oid="aqxkzhp"
                     >
-                      <div
-                        className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
-                        data-oid="dzrezk7"
-                      >
-                        <User
-                          className="w-4 h-4 text-white"
-                          data-oid="0ez2wo7"
+                      <If isTrue={post.users.profile_image_url}>
+                        <Image
+                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${post.users.profile_image_url}`}
+                          alt=""
+                          className="rounded-full overflow-hidden"
+                          fill
                         />
-                      </div>
+                      </If>
+                      <If isTrue={!post.users.profile_image_url}>
+                        <div
+                          className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                          data-oid="dzrezk7"
+                        >
+                          <User
+                            className="w-4 h-4 text-white"
+                            data-oid="0ez2wo7"
+                          />
+                        </div>
+                      </If>
                       {/* {post.author.avatar} */}
                     </span>
                     <div className="min-w-0" data-oid="o7zv6:o">
@@ -273,7 +283,7 @@ const Board_card = ({
                           className="text-sm font-medium text-gray-900"
                           data-oid="_2vzhp0"
                         >
-                          {post.author}
+                          {post.users.name}
                         </span>
                         <span
                           className={`px-2 py-0.5 rounded-full text-xs ${getLevelColor("Platinum")}`}

@@ -4,6 +4,7 @@ import Left from "./left/page"
 import Right from "./right/page"
 import Intro from './Intro'
 import { createClient } from "@/service/supabase/server"
+import { getUserInfo } from "@/service/supabase"
 // import { useSession } from "next-auth/react"
 // import { queryClient } from "@/config/provider/queryClientProvider"
 // import { Metadata, ResolvingMetadata } from "next"
@@ -14,6 +15,8 @@ const Page = async() => {
   const {
     data: { session },
   } = await supabase.auth.getSession()
+
+  const userInfo = !session ? null : await getUserInfo(session?.user.email)
   
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
@@ -57,7 +60,7 @@ const Page = async() => {
       </div> */}
 
       <Intro />
-      <Left initialSession={session} />
+      <Left initialUserInfo={userInfo} />
       <Right />
 
       {/* Floating Elements */}

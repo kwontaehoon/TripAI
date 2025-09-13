@@ -21,6 +21,7 @@ import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
 import { AuthProvider } from "@/config/provider/authProvider"
 import { createClient } from "@/service/supabase/server"
 import { ToTop } from "@/components/toTop"
+import { getUserInfo } from "@/service/supabase"
 
 export const metadata: Metadata = {
   title: "TripAI",
@@ -53,8 +54,6 @@ await Promise.all(
   [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id)),
 )
 
-
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -65,28 +64,32 @@ export default async function RootLayout({
     data: { session },
   } = await supabase.auth.getSession()
 
+  const userInfo = !session ? null : await getUserInfo(session?.user.email)
+
   return (
     <html lang="en">
       <body>
-      <head>
-        <meta name="naver-site-verification" content="e3c5ec6e135ce21f551650839ebfa0a1a755e4ee" />
-      </head>
+        <head>
+          <meta
+            name="naver-site-verification"
+            content="e3c5ec6e135ce21f551650839ebfa0a1a755e4ee"
+          />
+        </head>
         <Suspense fallback={<></>}>
-
-            {/* <NextAuthSessionProvider> */}
-            <QueryClientProvider>
+          {/* <NextAuthSessionProvider> */}
+          <QueryClientProvider>
             <AuthProvider>
               {/* <div id="global-modal"></div> */}
               <Hydration state={dehydrate(queryClient)}>
                 <Modal />
                 <ScrollController />
-                <Header initialSession={session} />
+                <Header InitialuserInfo={userInfo} />
                 {children}
                 <ToTop />
                 <Footer />
               </Hydration>
-              </AuthProvider>
-            </QueryClientProvider>
+            </AuthProvider>
+          </QueryClientProvider>
 
           {/* </NextAuthSessionProvider> */}
         </Suspense>
