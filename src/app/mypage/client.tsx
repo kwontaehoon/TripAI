@@ -6,91 +6,140 @@ import {
   User,
   Settings,
   Heart,
-  MapPin,
   Calendar,
-  Star,
   Edit3,
   Camera,
-  Mail,
-  Phone,
-  ArrowLeft,
-  Bot,
   Trophy,
   Clock,
-  Bookmark,
-  Share2,
-  Download,
-  ChevronRight,
-  Plus,
-  Globe,
-  Users,
-  Award,
 } from "lucide-react"
-import { useUserInfoQuery } from "@/hooks/supabase/dev"
+import {
+  useMypageEditMutation,
+  useMypageUpdateProfileMutation,
+  useUploadImagesToBucketMutation,
+} from "@/hooks/supabase/dev"
 import Profile from "./profile"
 import Activity from "./activity"
-import Analytics from './analytics'
-import Favorites from './favorites'
-import Setting from './settings'
-import { useAtom, useAtomValue } from "jotai"
-import { sessionAtom } from "@/store/ai"
+import Analytics from "./analytics"
+import Favorites from "./favorites"
+import Setting from "./settings"
 import moment from "moment"
+import Image from "next/image"
+import { If } from "react-haiku"
 
-interface TravelStats {
-  totalTrips: number
-  totalReviews: number
-  averageRating: number
-  favoriteDestination: string
-  totalDistance: number
-  countries: number
-}
-
-export default function MyPage({ initialSession }) {
-  const router = useRouter()
+export default function MyPage({ userInfo }) {
   const [activeTab, setActiveTab] = useState("profile")
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  const session = useAtomValue(sessionAtom)
+  const [file, setFile] = useState<File[]>([])
+  const [images, setImages] = useState<string[]>([])
+  const [newUserProfile, setNewUserProfile] = useState({ ...userInfo })
 
-  // Mock user data - replace with actual data from your auth system
-  const [userProfile, setUserProfile] = useState<UserProfile>({
-    name: "김여행",
-    email: "travel@example.com",
-    phone: "010-9876-5432",
-    bio: "전 세계를 여행하며 새로운 문화를 경험하는 것을 좋아합니다. 특히 현지 음식과 숨겨진 명소를 찾아다니는 것이 취미입니다!",
-    avatar: null,
-    joinDate: "2023.01.20",
-    location: "부산, 대한민국",
-    website: "https://travelblog.example.com",
-  })
+  const {
+    mutateAsync: uploadImagesToBucket,
+    data: uploadImages,
+    isSuccess: uploadImagesIsSuccess,
+  } = useUploadImagesToBucketMutation()
 
-  const [travelStats] = useState<TravelStats>({
-    totalTrips: 32,
-    totalReviews: 28,
-    averageRating: 4.9,
-    favoriteDestination: "교토",
-    totalDistance: 28750,
-    countries: 12,
-  })
+  const {
+    mutateAsync: mypageUpdateProfile,
+    isSuccess: mypageUpdateProfileIsSuccess,
+    data: mypageUpdateProfileData,
+  } = useMypageUpdateProfileMutation()
 
-  const { data: userInfo, isLoading: userInfoIsLoading } = useUserInfoQuery(initialSession.user.email)
+  const {
+    mutateAsync: mypageEdit,
+    data: oldProfileImage,
+    isSuccess: mypageEditIsSuccess,
+  } = useMypageEditMutation()
+
+  // 총 여행 수
+  const totalComment = () => {
+    const comments = userInfo.commentsItem
+    return comments.comments.length + comments.comments_replies.length
+  }
+
+  // 평균 점수
+  const totalRating = () => {
+    if (userInfo.boards.length === 0) {
+      return 0
+    } else
+      return (
+        userInfo.boards.reduce((sum, board) => sum + board.rating, 0) /
+        userInfo.boards.length
+      )
+  }
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (file.length > 4) {
+      alert("이미지는 5개까지 등록 가능합니다.")
+      return
+    }
+    if (!files) return
+
+    const fileArray = Array.from(files)
+    const imageUrls = fileArray.map((file) => URL.createObjectURL(file))
+
+    setFile(fileArray)
+    setImages(imageUrls)
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+    setImages([])
+    setNewUserProfile({ ...userInfo })
+  }
 
   useEffect(() => {
-    // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false)
-    }, 1000) 
+    }, 1000)
 
     return () => clearTimeout(timer)
   }, [])
 
-  const handleSaveProfile = () => {
+  // upload bucket 완료 후 users 테이블의 profile update 실행
+  useEffect(() => {
+    if (uploadImagesIsSuccess) {
+      mypageUpdateProfile(
+        Object.assign({
+          profile_image_url: uploadImages,
+          email: userInfo.email,
+        }),
+      )
+    }
+  }, [uploadImages])
+
+  useEffect(() => {
+    const updateImageBucketFunc = async () => {
+      if (mypageEditIsSuccess && oldProfileImage !== undefined) {
+        await uploadImagesToBucket(
+          Object.assign({
+            files: file,
+            oldProfileImage: oldProfileImage,
+          }),
+        )
+      }
+    }
+    updateImageBucketFunc()
+  }, [mypageEditIsSuccess])
+
+  useEffect(() => {
+    if (isEditing && mypageUpdateProfileIsSuccess && images.length !== 0) {
+      setIsEditing(false)
+      alert("프로필이 성공적으로 업데이트되었습니다!")
+    }
+  }, [mypageUpdateProfileData])
+
+  const handleSaveProfile = async () => {
     // Here you would typically save to your backend
-    console.log("Saving profile:", userProfile)
-    setIsEditing(false)
-    // Show success message
-    alert("프로필이 성공적으로 업데이트되었습니다!")
+    await mypageEdit(newUserProfile)
+
+    if (images.length === 0) {
+      setIsEditing(false)
+      alert("프로필이 성공적으로 업데이트되었습니다!")
+    }
   }
 
   if (isLoading) {
@@ -112,7 +161,7 @@ export default function MyPage({ initialSession }) {
     )
   }
 
-  return userInfoIsLoading ? '' : (
+  return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="6zs._r1"
@@ -134,17 +183,52 @@ export default function MyPage({ initialSession }) {
                 data-oid="0bl6ohq"
               >
                 {/* Avatar */}
+
                 <div className="relative" data-oid="0xj0e4v">
-                  <div
-                    className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center"
-                    data-oid="tc2.7ke"
-                  >
-                      <User
-                        className="w-12 h-12 text-white"
-                        data-oid="1309xxm"
-                      />
-                    
-                  </div>
+                  <label className="">
+                    <div
+                      className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center"
+                      data-oid="tc2.7ke"
+                    >
+                      <If isTrue={images.length === 0}>
+                        {!userInfo.profile_image_url ? (
+                          <User
+                            className="w-12 h-12 text-white"
+                            data-oid="1309xxm"
+                          />
+                        ) : (
+                          <Image
+                            src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${userInfo.profile_image_url}`}
+                            alt=""
+                            className="rounded-full overflow-hidden"
+                            fill
+                          />
+                        )}
+                      </If>
+                      <If isTrue={images.length !== 0}>
+                        <div className="rounded-full overflow-hidden">
+                          {images.map((src, idx) => (
+                            <div key={idx}>
+                              <Image
+                                width={300}
+                                height={300}
+                                src={src}
+                                alt="Uploaded"
+                                className="w-full h-auto"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </If>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageChange}
+                      disabled={!isEditing}
+                    />
+                  </label>
                   {isEditing && (
                     <button
                       className="absolute bottom-0 right-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors"
@@ -165,7 +249,7 @@ export default function MyPage({ initialSession }) {
                     data-oid="oc.v806"
                   >
                     <h1 className="text-2xl font-bold" data-oid="0_s0.0k">
-                      {userInfo.name}
+                      {newUserProfile.name}
                     </h1>
                     <div
                       className="flex items-center space-x-1 bg-white/20 px-2 py-1 rounded-full"
@@ -178,26 +262,27 @@ export default function MyPage({ initialSession }) {
                     </div>
                   </div>
                   <p className="text-purple-100 mb-2" data-oid="c59:6o4">
-                    {userProfile.bio}
+                    {newUserProfile.introduce}
                   </p>
                   <div
                     className="flex items-center space-x-4 text-sm text-purple-100"
                     data-oid="h.hkr:z"
                   >
-                    <div
+                    {/* <div
                       className="flex items-center space-x-1"
                       data-oid="2s7j:q5"
                     >
                       <MapPin className="w-4 h-4" data-oid="j6s5x66" />
-                      <span data-oid="r7e8ws:">{userProfile.location}</span>
-                    </div>
+                      <span data-oid="r7e8ws:">{newUserProfile.location}</span>
+                    </div> */}
                     <div
                       className="flex items-center space-x-1"
                       data-oid="dns1c.v"
                     >
                       <Calendar className="w-4 h-4" data-oid="i9t:n-_" />
                       <span data-oid="syi13:x">
-                        가입일: {moment(userInfo.created_at).format("YYYY-MM-DD")}
+                        가입일:{" "}
+                        {moment(newUserProfile.created_at).format("YYYY-MM-DD")}
                       </span>
                     </div>
                   </div>
@@ -215,7 +300,7 @@ export default function MyPage({ initialSession }) {
                         저장
                       </button>
                       <button
-                        onClick={() => setIsEditing(false)}
+                        onClick={handleCancel}
                         className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
                         data-oid="1qqnk3x"
                       >
@@ -247,7 +332,7 @@ export default function MyPage({ initialSession }) {
                     className="text-2xl font-bold text-purple-600"
                     data-oid="km.adg9"
                   >
-                    {travelStats.totalTrips}
+                    {userInfo.boards.length}
                   </div>
                   <div className="text-sm text-gray-600" data-oid="vpvu9y7">
                     총 여행
@@ -258,7 +343,7 @@ export default function MyPage({ initialSession }) {
                     className="text-2xl font-bold text-green-600"
                     data-oid="gxgng_u"
                   >
-                    {travelStats.totalReviews}
+                    {totalComment()}
                   </div>
                   <div className="text-sm text-gray-600" data-oid="035g50u">
                     리뷰
@@ -269,21 +354,10 @@ export default function MyPage({ initialSession }) {
                     className="text-2xl font-bold text-yellow-600"
                     data-oid="q36-.ok"
                   >
-                    {travelStats.averageRating}
+                    {totalRating()}
                   </div>
                   <div className="text-sm text-gray-600" data-oid="4p:-5mu">
                     평균 평점
-                  </div>
-                </div>
-                <div className="text-center" data-oid="k:65g9k">
-                  <div
-                    className="text-2xl font-bold text-blue-600"
-                    data-oid="jg.7332"
-                  >
-                    {travelStats.countries}
-                  </div>
-                  <div className="text-sm text-gray-600" data-oid="sa48qsu">
-                    방문 국가
                   </div>
                 </div>
                 <div className="text-center" data-oid="5m:rrei">
@@ -291,7 +365,7 @@ export default function MyPage({ initialSession }) {
                     className="text-2xl font-bold text-red-600"
                     data-oid="1iqi1gy"
                   >
-                    {travelStats.totalDistance.toLocaleString()}
+                    50
                   </div>
                   <div className="text-sm text-gray-600" data-oid="q6f5l-b">
                     총 거리(km)
@@ -302,7 +376,7 @@ export default function MyPage({ initialSession }) {
                     className="text-2xl font-bold text-indigo-600"
                     data-oid="wpiudgn"
                   >
-                    {travelStats.favoriteDestination}
+                    가평
                   </div>
                   <div className="text-sm text-gray-600" data-oid="5lk88.y">
                     최애 여행지
@@ -351,25 +425,21 @@ export default function MyPage({ initialSession }) {
             {/* Tab Content */}
             <div className="p-6" data-oid="du_2vo6">
               {activeTab === "profile" && (
-                <Profile userInfo={userInfo} userProfile={userProfile} isEditing={isEditing} />
+                <Profile
+                  userInfo={userInfo}
+                  newUserProfile={newUserProfile}
+                  setNewUserProfile={setNewUserProfile}
+                  isEditing={isEditing}
+                />
               )}
 
-              {activeTab === "activity" && (
-               <Activity />
-              )}
+              {activeTab === "activity" && <Activity />}
 
-              {activeTab === "analytics" && (
-                <Analytics />
-              )}
-       
+              {activeTab === "analytics" && <Analytics userInfo={userInfo} />}
 
-              {activeTab === "favorites" && (
-                <Favorites />
-              )}
+              {activeTab === "favorites" && <Favorites />}
 
-              {activeTab === "settings" && (
-                <Setting />
-              )}
+              {activeTab === "settings" && <Setting />}
             </div>
           </div>
         </div>

@@ -20,6 +20,10 @@ export const getUserInfo = async (params) => {
     .select(
       `
       *,
+      boards(
+      *,
+      board_images(*)
+      ),
       likes(
         id,
         board_id,
@@ -99,7 +103,45 @@ export const postSignup = async (params: object) => {
   return data
 }
 
-//
+// mypage update profile
+export const postMypageUpdateProfile = async (params: object) => {
+
+  const updateData = {
+    profile_image_url: params.profile_image_url[0].image_url,
+  };
+
+  const { data, error } = await supabase
+    .from("users")
+    .update(updateData) // update 메서드 사용 및 객체 전달
+    .eq("email", params.email) // email이 일치하는 행을 찾아서 업데이트
+
+  if (error) {
+    console.error("프로필 이미지 업데이트 오류:", error)
+    return { success: false, error: error.message }
+  }
+
+  return data
+}
+
+// mypage edit
+export const postMypageEdit = async (params: object) => {
+  const { data, error } = await supabase
+    .from("users")
+    .update({
+      name: params.name,
+      introduce: params.introduce,
+    })
+    .eq("email", params.email)
+    .select("profile_image_url")
+
+  if (error) {
+    console.error("mypage 업데이트 실패:", error)
+  } else {
+    console.log("mypage 업데이트 성공:", data)
+  }
+
+  return data
+}
 
 // courses
 export const getCourses = async () => {

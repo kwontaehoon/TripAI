@@ -81,7 +81,7 @@ export default function BoardWritePage({ userInfo }) {
     mutateAsync: uploadImagesToBucket,
     data: uploadImages,
     isSuccess: uploadImagesIsSuccess,
-  } = useUploadImagesToBucketMutation(file)
+  } = useUploadImagesToBucketMutation()
 
   const {
     mutateAsync: boardCreate,
@@ -244,7 +244,7 @@ export default function BoardWritePage({ userInfo }) {
       alert("여행 장소를 추가해주세요.")
     } else {
       setLoadingAtom({ isOpen: true, message: "게시글을 저장하고 있습니다..." })
-      uploadImagesToBucket(file)
+      uploadImagesToBucket({files: file})
     }
   }
 

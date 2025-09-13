@@ -20,6 +20,8 @@ import {
   postCommentLike,
   postCommentReplyLike,
   getBoardsInfinite,
+  postMypageEdit,
+  postMypageUpdateProfile,
 } from "@/service/supabase"
 import { uploadMultipleImages } from "@/service/supabase/storage"
 import { getGeminiAi } from "@/service/gemini"
@@ -77,6 +79,28 @@ export const useSignupMutation = () => {
   const mutationOptions = {
     mutationFn: async (params: object) => {
       const results = await postSignup(params)
+      return results
+    },
+  }
+  return useMutation(mutationOptions)
+}
+
+// mypage update profile
+export const useMypageUpdateProfileMutation = () => {
+  const mutationOptions = {
+    mutationFn: async (params: object) => {
+      const results = await postMypageUpdateProfile(params)
+      return results
+    },
+  }
+  return useMutation(mutationOptions)
+}
+
+// mypage edit
+export const useMypageEditMutation = () => {
+  const mutationOptions = {
+    mutationFn: async (params: object) => {
+      const results = await postMypageEdit(params)
       return results
     },
   }
@@ -315,10 +339,10 @@ export const useBoardCreateMutation = () => {
 }
 
 // uploadImages to bucket
-export const useUploadImagesToBucketMutation = (files: FileList | File[]) => {
+export const useUploadImagesToBucketMutation = () => {
   const mutationOptions = {
-    mutationFn: async () => {
-      const results = await uploadMultipleImages(files)
+    mutationFn: async (params) => {
+      const results = await uploadMultipleImages(params)
       return results
     },
   }
@@ -330,7 +354,6 @@ export const useAiRecommendMutation = () => {
   const mutationOptions = {
     mutationFn: async (params: object) => {
       const { data } = await getGeminiAi(params)
-      console.log("data: ", data)
       return data
     },
   }

@@ -1,20 +1,42 @@
-import React, { useState } from "react"
+"use client"
+import moment from "moment"
+import React, { useEffect, useState } from "react"
 
-const analytics = () => {
+const analytics = ({ userInfo }) => {
   interface MonthlyData {
     month: string
     trips: number
     photos: number
     reviews: number
   }
-  const [monthlyData] = useState<MonthlyData[]>([
-    { month: "1월", trips: 2, photos: 45, reviews: 3 },
-    { month: "2월", trips: 1, photos: 28, reviews: 2 },
-    { month: "3월", trips: 3, photos: 67, reviews: 4 },
-    { month: "4월", trips: 2, photos: 52, reviews: 3 },
-    { month: "5월", trips: 4, photos: 89, reviews: 6 },
-    { month: "6월", trips: 3, photos: 71, reviews: 5 },
-  ])
+  const [monthlyData, setMonthlyData] = useState(
+    Array.from({ length: 12 }, (_, index) => ({
+      month: `${index + 1}월`,
+      trips: 0,
+      photos: 0,
+      reviews: 0,
+    })),
+  )
+
+  useEffect(() => {
+    const updateMonthlyData = Array.from({ length: 12 }, (_, index) => ({
+      month: `${index + 1}월`,
+      trips: 0,
+      photos: 0,
+      reviews: 0,
+    }))
+
+    userInfo.boards.map((board) => {
+      if (moment(board.created_at).year() === moment().year()) {
+        // months 값
+        updateMonthlyData[moment(board.created_at).month()].trips += 1
+        // photos 값
+        updateMonthlyData[moment(board.created_at).month()].photos +=
+          board.board_images.length
+      }
+    })
+    setMonthlyData(updateMonthlyData)
+  }, [])
 
   const [activeMetric, setActiveMetric] = useState("trips")
   return (
@@ -28,7 +50,7 @@ const analytics = () => {
         </h2>
 
         <div className="flex space-x-2 justify-end" data-oid="nlwopiw">
-          {["trips", "photos", "reviews"].map((metric) => (
+          {["trips", "photos"].map((metric) => (
             <button
               key={metric}
               onClick={() => setActiveMetric(metric)}
@@ -77,7 +99,7 @@ const analytics = () => {
                 data-oid="h0pxpmq"
               >
                 <div
-                  className="bg-gradient-to-r from-gray-900 to-gray-700 h-full rounded-full transition-all duration-1000 flex items-center justify-end pr-3"
+                  className={`bg-gradient-to-r from-gray-900 to-gray-700 h-full rounded-full transition-all duration-1000 flex items-center justify-end ${percentage === 0 ? "pr-0" : "pr-3"}`}
                   style={{ width: `${percentage}%` }}
                   data-oid="9q80ioh"
                 >

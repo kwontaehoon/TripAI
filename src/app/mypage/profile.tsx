@@ -1,23 +1,18 @@
 import React from "react"
 
-const profile = ({ userInfo, userProfile, isEditing }) => {
+const profile = ({ userInfo, newUserProfile, setNewUserProfile, isEditing }) => {
 
   interface UserProfile {
     name: string
     email: string
-    phone: string
-    bio: string
-    avatar: string | null
-    joinDate: string
-    location: string
-    website: string
+    introduce: string
   }
 
   const handleProfileUpdate = (field: keyof UserProfile, value: string) => {
-    // setUserProfile((prev) => ({
-    //   ...prev,
-    //   [field]: value,
-    // }))
+    setNewUserProfile((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
   }
 
   return (
@@ -40,14 +35,14 @@ const profile = ({ userInfo, userProfile, isEditing }) => {
           {isEditing ? (
             <input
               type="text"
-              value={userProfile.name}
+              value={newUserProfile.name}
               onChange={(e) => handleProfileUpdate("name", e.target.value)}
               className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               data-oid="h8k0hi-"
             />
           ) : (
             <p className="text-gray-900" data-oid="8uo6ixw">
-              {userInfo?.name}
+              {newUserProfile.name}
             </p>
           )}
         </div>
@@ -59,22 +54,12 @@ const profile = ({ userInfo, userProfile, isEditing }) => {
           >
             이메일
           </label>
-          {isEditing ? (
-            <input
-              type="email"
-              value={userProfile.email}
-              onChange={(e) => handleProfileUpdate("email", e.target.value)}
-              className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              data-oid="-b:zlf_"
-            />
-          ) : (
             <p className="text-gray-900" data-oid="geg_aot">
               {userInfo.email}
             </p>
-          )}
         </div>
 
-        <div data-oid="xqncmgd">
+        {/* <div data-oid="xqncmgd">
           <label
             className="block text-sm font-medium text-gray-700 mb-2"
             data-oid="suyo_rs"
@@ -94,9 +79,9 @@ const profile = ({ userInfo, userProfile, isEditing }) => {
               {userInfo.phone ? userInfo.phone : '-'}
             </p>
           )}
-        </div>
+        </div> */}
 
-        <div data-oid="gxcam6c">
+        {/* <div data-oid="gxcam6c">
           <label
             className="block text-sm font-medium text-gray-700 mb-2"
             data-oid="piagk4s"
@@ -116,7 +101,7 @@ const profile = ({ userInfo, userProfile, isEditing }) => {
               {userProfile.location}
             </p>
           )}
-        </div>
+        </div> */}
       </div>
 
       <div data-oid="6v8sfu1">
@@ -128,44 +113,16 @@ const profile = ({ userInfo, userProfile, isEditing }) => {
         </label>
         {isEditing ? (
           <textarea
-            value={userProfile.bio}
-            onChange={(e) => handleProfileUpdate("bio", e.target.value)}
+            value={newUserProfile.introduce}
+            onChange={(e) => handleProfileUpdate("introduce", e.target.value)}
             rows={4}
             className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
             data-oid="i-sck3v"
           />
         ) : (
           <p className="text-gray-900" data-oid="82h2e4:">
-            {userProfile.bio}
+            {newUserProfile.introduce ? newUserProfile.introduce : "-"}
           </p>
-        )}
-      </div>
-
-      <div data-oid="i6jvbhb">
-        <label
-          className="block text-sm font-medium text-gray-700 mb-2"
-          data-oid="z52g-lv"
-        >
-          웹사이트
-        </label>
-        {isEditing ? (
-          <input
-            type="url"
-            value={userProfile.website}
-            onChange={(e) => handleProfileUpdate("website", e.target.value)}
-            className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            data-oid="4buvoel"
-          />
-        ) : (
-          <a
-            href={userProfile.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-purple-600 hover:text-purple-700"
-            data-oid="0w-mrp-"
-          >
-            {userProfile.website}
-          </a>
         )}
       </div>
     </div>
