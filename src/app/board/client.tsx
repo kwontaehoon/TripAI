@@ -49,6 +49,8 @@ export default function BoardPage({
     refetch: boardsInfiniteDataRefresh,
   } = useBoardsInfiniteQuery()
 
+  const activeUsers = boardsInfiniteData.map(board => board.users.id)
+
   const filters = [
     "전체",
     "가족여행",
@@ -452,7 +454,7 @@ export default function BoardPage({
                     이번 주 신규
                   </span>
                   <span className="font-bold text-green-600" data-oid="e26xr-a">
-                    12개
+                    3개
                   </span>
                 </div>
                 <div
@@ -480,7 +482,7 @@ export default function BoardPage({
                     className="font-bold text-purple-600"
                     data-oid="u6dtp8_"
                   >
-                    1,247명
+                    {new Set(activeUsers).size}
                   </span>
                 </div>
               </div>

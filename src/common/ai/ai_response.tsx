@@ -83,7 +83,7 @@ export const ai_boardResponse_func = (assignBoard: GeminiBoardResponse) => {
       {
         "parts": [
           {
-            "text": `${JSON.stringify(assignBoard)} board_tags, board_highlights는 그대로 사용하고 views, likes, total_comments, bookmark는 0으로하고 rating은 places의 rating_count 평균을, places에는 위도경도와 distance, next_distance, next_time을 포함하여 부족한 값을 채워서 json으로 다시 만들어줘 json 말고 다른 내용은 없이 응답해줘`
+            "text": `${JSON.stringify(assignBoard)} total_distance는 board_places의 총 이동거리를, total_time은 총 시간을 만들어주고 거리는 km 단위, 시간은 시간과 분 단위로 붙여주고, views, likes, total_comments, bookmark는 0으로하고 rating은 places의 rating_count 평균을, places에는 위도경도와 distance, next_distance, next_time을 포함하여 n일차를 board_places.day를 참고하여 board_days의 board_places의 index 순서대로 생성하되 부족한 값을 채워서 json으로 다시 만들어줘 json 말고 다른 내용은 없이 응답해줘`
           }
         ]
       }

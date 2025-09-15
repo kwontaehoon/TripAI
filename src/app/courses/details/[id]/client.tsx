@@ -1,10 +1,7 @@
 "use client"
 
 import Card from "@/common/card/course_details_card"
-import {
-  useCourseDetailsQuery,
-  useLikeMutation,
-} from "@/hooks/supabase/dev"
+import { useCourseDetailsQuery, useLikeMutation } from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
 import { getBadgeColor } from "@/util/styles"
 import { Download, Heart, MapPin, Sparkles } from "lucide-react"
@@ -20,7 +17,7 @@ import { QueryClient } from "@tanstack/react-query"
 
 export default function CourseDetailsPage({
   params,
-  userInfo
+  userInfo,
 }: {
   params: Promise<{ id: number }>
 }) {
@@ -31,19 +28,20 @@ export default function CourseDetailsPage({
   const setUserInfo = useSetAtom(userInfoAtom)
 
   // 유저가 코스에 좋아요를 눌렀는지 유무
-  const userCourseLikeFlag = !userInfo ? null : userInfo.likesItem.courses.includes(Number(id))
+  const userCourseLikeFlag = !userInfo
+    ? null
+    : userInfo.likesItem.courses.includes(Number(id))
 
   const {
     data: courseDetailsData,
     isLoading: courseDetailsDataIsLoading,
     refetch: courseDetailsDataRefetch,
   } = useCourseDetailsQuery(Number(id))
-  console.log("aaa courseDetailsData: ", courseDetailsData)
 
   const { mutateAsync: like } = useLikeMutation()
 
   const handleLike = async () => {
-    if(!userInfo){
+    if (!userInfo) {
       alert("로그인 후 이용할 수 있습니다!")
       return
     }
@@ -57,7 +55,6 @@ export default function CourseDetailsPage({
         (x) => x !== Number(id),
       )
       copyUserInfo.likesItem.courses = deletedCourseLike
-
     } else {
       copyUserInfo.likesItem.courses.push(Number(id))
     }
@@ -66,15 +63,14 @@ export default function CourseDetailsPage({
 
     queryClient.refetchQueries({
       queryKey: ["courseDetails", Number(id)],
-    });
+    })
 
     queryClient.invalidateQueries({
       queryKey: ["courseDetails", Number(id)],
-    });
-
+    })
   }
 
-  const handleDownload = async() => {
+  const handleDownload = async () => {
     alert("코스 다운로드 기능은 준비 중입니다.")
   }
 
@@ -174,26 +170,24 @@ export default function CourseDetailsPage({
                   className="flex flex-wrap gap-2 sm:gap-3"
                   data-oid="eolj5g_"
                 >
-                    <button
-                      onClick={handleLike}
-                      className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm ${
-                        userCourseLikeFlag
-                          ? "bg-red-100 text-red-600"
-                          : "bg-white text-gray-600 hover:bg-gray-50"
-                      }`}
-                      data-oid="1x35gks"
-                    >
-                      <Heart
-                        className={`w-4 h-4 ${userCourseLikeFlag ? "fill-current" : ""}`}
-                        data-oid="0v-kjcb"
-                      />
+                  <button
+                    onClick={handleLike}
+                    className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm ${
+                      userCourseLikeFlag
+                        ? "bg-red-100 text-red-600"
+                        : "bg-white text-gray-600 hover:bg-gray-50"
+                    }`}
+                    data-oid="1x35gks"
+                  >
+                    <Heart
+                      className={`w-4 h-4 ${userCourseLikeFlag ? "fill-current" : ""}`}
+                      data-oid="0v-kjcb"
+                    />
 
-                      <span className="hidden sm:inline" data-oid="zmgv42v">
-                        {userCourseLikeFlag
-                          ? "좋아요 취소"
-                          : "좋아요"}
-                      </span>
-                    </button>
+                    <span className="hidden sm:inline" data-oid="zmgv42v">
+                      {userCourseLikeFlag ? "좋아요 취소" : "좋아요"}
+                    </span>
+                  </button>
 
                   <button
                     onClick={handleDownload}
@@ -413,17 +407,6 @@ export default function CourseDetailsPage({
                 통계
               </h3>
               <div className="space-y-3 sm:space-y-4" data-oid="6ntr7vf">
-                <div
-                  className="flex justify-between items-center"
-                  data-oid="1xtm:vg"
-                >
-                  <span className="text-sm text-gray-600" data-oid="g5xy6s4">
-                    조회수
-                  </span>
-                  <span className="font-medium" data-oid="imtq.hz">
-                    {courseDetailsData[0].views?.toLocaleString()}
-                  </span>
-                </div>
                 <div
                   className="flex justify-between items-center"
                   data-oid="pm:xq42"

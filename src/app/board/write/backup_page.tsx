@@ -41,7 +41,6 @@ export default function BoardWritePage() {
     highlights: [],
     places: [],
   })
-  console.log("formData: ", formData)
 
   const [newTag, setNewTag] = useState("")
   const [newHighlight, setNewHighlight] = useState("")
@@ -55,7 +54,6 @@ export default function BoardWritePage() {
   })
   const [file, setFile] = useState<File[]>([])
   const [images, setImages] = useState<string[]>([])
-  console.log("images: ", images)
 
   const difficultyOptions = ["쉬움", "보통", "어려움"]
   const participantOptions = ["혼자", "커플", "가족", "친구들", "단체"]
@@ -154,7 +152,6 @@ export default function BoardWritePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // 게시글 저장 로직
-    console.log("Form data:", formData)
     alert("게시글이 저장되었습니다!")
     // router.push("/board")
   }

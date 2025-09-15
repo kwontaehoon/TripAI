@@ -582,6 +582,8 @@ export const getBoardDetails = async (params: number) => {
   `,
     )
     .eq("id", params)
+    .order("day", { foreignTable: "board_days" }) // board_days를 day 기준으로 정렬
+    .order("id", { foreignTable: "board_days.board_places" }); // board_places를 id 기준으로 정렬
 
   if (error || !data || data.length === 0) {
     console.error("데이터를 찾을 수 없거나 오류가 발생했습니다.", error)
@@ -1321,6 +1323,7 @@ export const postBoardCreate = async (boardData: any) => {
               .insert([{ ...formattedPlaceBaseData, board_day_id: newDayId }])
               .select("id") // 생성된 place_id 반환 요청
 
+              console.log("aaa placeRes: ", formattedPlaceBaseData, placeRes)
             if (placeError) {
               return { success: false, error: placeError.message }
             }

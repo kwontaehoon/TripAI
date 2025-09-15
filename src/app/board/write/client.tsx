@@ -986,11 +986,6 @@ export default function BoardWritePage({ userInfo }) {
                                   </span>
                                 </div>
                               )}
-                              {place?.description && (
-                                <p className="mt-2" data-oid="qjk:.jy">
-                                  {place?.description}
-                                </p>
-                              )}
                               <div
                                 className="flex items-center"
                                 data-oid="f376.q9"
