@@ -163,8 +163,11 @@ const Board_card = ({
                     ) : (
                       <Image
                         src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${post.board_images[0].image_url}`}
-                        alt=""
+                        alt={post.title}
                         fill
+                        quality={50}
+                        priority={true}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     )}
                     <div
@@ -256,9 +259,10 @@ const Board_card = ({
                       <If isTrue={post.users.profile_image_url}>
                         <Image
                           src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${post.users.profile_image_url}`}
-                          alt=""
+                          alt={post.users.name}
                           className="rounded-full overflow-hidden"
                           fill
+                          sizes="32w"
                         />
                       </If>
                       <If isTrue={!post.users.profile_image_url}>

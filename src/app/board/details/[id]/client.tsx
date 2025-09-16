@@ -169,7 +169,7 @@ export default function BoardDetailsPage({
                   <If isTrue={boradDetailsData[0].users.profile_image_url}>
                     <Image
                       src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${boradDetailsData[0].users.profile_image_url}`}
-                      alt=""
+                      alt={boradDetailsData[0].users.name}
                       className="rounded-full overflow-hidden"
                       fill
                     />
@@ -312,7 +312,9 @@ export default function BoardDetailsPage({
                   </span>
                 </button>
                 <button
-                  onClick={() => router.push(`/map?boardId=${boradDetailsData[0].id}`)}
+                  onClick={() =>
+                    router.push(`/map?boardId=${boradDetailsData[0].id}`)
+                  }
                   className="flex items-center space-x-2 bg-gray-100 text-gray-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm"
                   data-oid="bqegnee"
                 >
@@ -382,8 +384,10 @@ export default function BoardDetailsPage({
                         >
                           <Image
                             src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${photo.image_url}`}
-                            alt=""
+                            alt={boradDetailsData[0].title}
                             fill
+                            priority={true}
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw"
                           />
                           {/* <Camera
                           className="w-8 h-8 text-white"

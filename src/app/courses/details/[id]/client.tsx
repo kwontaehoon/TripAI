@@ -266,8 +266,10 @@ export default function CourseDetailsPage({
                         >
                           <Image
                             src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${photo.image_url}`}
-                            alt=""
+                            alt={courseDetailsData[0].title}
                             fill
+                            priority={true}
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw"
                           />
                           {/* <Camera
                           className="w-8 h-8 text-white"

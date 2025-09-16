@@ -117,8 +117,11 @@ const Page = ({
                   ) : (
                     <Image
                       src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${course.course_images[0].image_url}`}
-                      alt=""
+                      alt={course.title}
                       fill
+                      quality={50}
+                      priority={true}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
                     />
                   )}
                   <div className="absolute top-4 left-4" data-oid="h6-0_oq">
