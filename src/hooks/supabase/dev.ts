@@ -1,4 +1,9 @@
-import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query"
+import {
+  InfiniteData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query"
 import {
   getCourses,
   getCoursesInfinite,
@@ -121,9 +126,9 @@ export const useCoursesQuery = () => {
 }
 
 type GetCoursesResponse = {
-    courses: object[] | null;
-    nextCursor: string | null;
-  };
+  courses: object[] | null
+  nextCursor: string | null
+}
 
 // 무한스크롤 courses
 export const useCoursesInfiniteQuery = () => {
@@ -138,11 +143,11 @@ export const useCoursesInfiniteQuery = () => {
     queryFn: async ({ pageParam }) => await getCoursesInfinite({ pageParam }),
     initialPageParam: null,
     getNextPageParam: (lastPage, pages) => {
-        return lastPage.nextCursor
+      return lastPage.nextCursor
     },
     select: (data) => {
-        return data.pages.flatMap(page => page.courses);
-      },
+      return data.pages.flatMap((page) => page.courses)
+    },
   })
 }
 
@@ -172,30 +177,30 @@ export const useBoardsQuery = () => {
 }
 
 type GetBoardssResponse = {
-    boards: object[] | null;
-    nextCursor: string | null;
-  };
+  boards: object[] | null
+  nextCursor: string | null
+}
 
 // 무한스크롤 boards
 export const useBoardsInfiniteQuery = () => {
-    return useInfiniteQuery<
-      GetBoardssResponse,
-      Error,
-      (object | null)[],
-      string[],
-      string | null
-    >({
-      queryKey: TEST_QUERY_KEY.boardsInfinite,
-      queryFn: async ({ pageParam }) => await getBoardsInfinite({ pageParam }),
-      initialPageParam: null,
-      getNextPageParam: (lastPage, pages) => {
-          return lastPage.nextCursor
-      },
-      select: (data) => {
-          return data.pages.flatMap(page => page.boards);
-        },
-    })
-  }
+  return useInfiniteQuery<
+    GetBoardssResponse,
+    Error,
+    (object | null)[],
+    string[],
+    string | null
+  >({
+    queryKey: TEST_QUERY_KEY.boardsInfinite,
+    queryFn: async ({ pageParam }) => await getBoardsInfinite({ pageParam }),
+    initialPageParam: null,
+    getNextPageParam: (lastPage, pages) => {
+      return lastPage.nextCursor
+    },
+    select: (data) => {
+      return data.pages.flatMap((page) => page.boards)
+    },
+  })
+}
 
 // board_details
 export const useBoardDetailssQuery = (params: number) => {

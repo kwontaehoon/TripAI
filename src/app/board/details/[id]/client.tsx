@@ -10,6 +10,7 @@ import { comma } from "@/util/comma"
 import {
   Bookmark,
   Eye,
+  MapPin,
   MessageCircle,
   Share2,
   Star,
@@ -23,6 +24,7 @@ import CommentCard from "@/common/card/comment_details_card"
 import { userInfoAtom } from "@/store/ai"
 import { useSetAtom } from "jotai"
 import { If } from "react-haiku"
+import { useRouter } from "next/navigation"
 
 export default function BoardDetailsPage({
   params,
@@ -30,6 +32,7 @@ export default function BoardDetailsPage({
 }: {
   params: Promise<{ id: number }>
 }) {
+  const router = useRouter()
   const { id } = use(params)
   const [isBookmarked, setIsBookmarked] = useState(false)
   const [selectedDay, setSelectedDay] = useState(1)
@@ -306,6 +309,16 @@ export default function BoardDetailsPage({
                   <Share2 className="w-4 h-4" data-oid="u7iqdfk" />
                   <span className="hidden sm:inline" data-oid="bh3z13f">
                     공유
+                  </span>
+                </button>
+                <button
+                  onClick={() => router.push(`/map?boardId=${boradDetailsData[0].id}`)}
+                  className="flex items-center space-x-2 bg-gray-100 text-gray-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm"
+                  data-oid="bqegnee"
+                >
+                  <MapPin className="w-4 h-4" data-oid="u7iqdfk" />
+                  <span className="hidden sm:inline" data-oid="bh3z13f">
+                    지도보기
                   </span>
                 </button>
               </div>

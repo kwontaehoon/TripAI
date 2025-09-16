@@ -206,7 +206,7 @@ const Board_details_card = ({ data, selectedDay }) => {
                           place.next_distance !== "" &&
                           place.next_distance !== "0km" && (
                             <div
-                              className="flex items-center space-x-2 text-sm text-green-600 bg-green-50 rounded-lg px-3 py-2"
+                              className="flex items-center space-x-2 text-sm text-green-600 bg-green-50 rounded-lg px-3 py-2 my-3"
                               data-oid="or1m1:b"
                             >
                               <span data-oid="8bog8nd">
