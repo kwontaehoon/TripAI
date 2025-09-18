@@ -1,42 +1,13 @@
 "use client"
-import moment from "moment"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
-const analytics = ({ userInfo }) => {
+const analytics = ({ userInfo, analyticsData }) => {
   interface MonthlyData {
     month: string
     trips: number
     photos: number
     reviews: number
   }
-  const [monthlyData, setMonthlyData] = useState(
-    Array.from({ length: 12 }, (_, index) => ({
-      month: `${index + 1}월`,
-      trips: 0,
-      photos: 0,
-      reviews: 0,
-    })),
-  )
-
-  useEffect(() => {
-    const updateMonthlyData = Array.from({ length: 12 }, (_, index) => ({
-      month: `${index + 1}월`,
-      trips: 0,
-      photos: 0,
-      reviews: 0,
-    }))
-
-    userInfo.boards.map((board) => {
-      if (moment(board.created_at).year() === moment().year()) {
-        // months 값
-        updateMonthlyData[moment(board.created_at).month()].trips += 1
-        // photos 값
-        updateMonthlyData[moment(board.created_at).month()].photos +=
-          board.board_images.length
-      }
-    })
-    setMonthlyData(updateMonthlyData)
-  }, [])
 
   const [activeMetric, setActiveMetric] = useState("trips")
   return (
@@ -73,10 +44,10 @@ const analytics = ({ userInfo }) => {
 
       {/* Simple Bar Chart */}
       <div className="space-y-4" data-oid="r9mms9:">
-        {monthlyData.map((data, index) => {
+        {analyticsData.map((data, index) => {
           const value = data[activeMetric as keyof MonthlyData] as number
           const maxValue = Math.max(
-            ...monthlyData.map(
+            ...analyticsData.map(
               (d) => d[activeMetric as keyof MonthlyData] as number,
             ),
           )

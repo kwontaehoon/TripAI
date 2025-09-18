@@ -27,12 +27,14 @@ import {
   getBoardsInfinite,
   postMypageEdit,
   postMypageUpdateProfile,
+  getMypageLikes,
 } from "@/service/supabase"
 import { uploadMultipleImages } from "@/service/supabase/storage"
 import { getGeminiAi } from "@/service/gemini"
 
 const TEST_QUERY_KEY = {
   userInfo: ["userInfo"],
+  mypageLikes: ["mypageLikes"],
   courses: ["courses"],
   coursesInfinite: ["courses", "infinite"],
   courseDetails: ["courseDetails"],
@@ -110,6 +112,19 @@ export const useMypageEditMutation = () => {
     },
   }
   return useMutation(mutationOptions)
+}
+
+// mypage likes
+export const useMypageLikesQuery = (courseIds: [], boardIds: []) => {
+  const queryOptions = {
+    queryKey: TEST_QUERY_KEY.mypageLikes,
+    queryFn: async () => {
+      const data = await getMypageLikes(courseIds, boardIds)
+      return data
+    },
+  }
+
+  return useQuery(queryOptions)
 }
 
 // courses

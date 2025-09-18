@@ -26,8 +26,8 @@ import moment from "moment"
 import Image from "next/image"
 import { If } from "react-haiku"
 
-export default function MyPage({ userInfo }) {
-  const [activeTab, setActiveTab] = useState("profile")
+export default function MyPage({ userInfo, analyticsData }) {
+  const [activeTab, setActiveTab] = useState("favorites")
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -175,7 +175,7 @@ export default function MyPage({ userInfo }) {
             data-oid="s0qvb.."
           >
             <div
-              className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-8 text-white relative"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 text-white relative"
               data-oid="-:zlup2"
             >
               <div
@@ -199,26 +199,13 @@ export default function MyPage({ userInfo }) {
                         ) : (
                           <Image
                             src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${userInfo.profile_image_url}`}
-                            alt=""
+                            alt={userInfo.name}
                             className="rounded-full overflow-hidden"
                             fill
+                            priority={true}
+                            sizes="24w"
                           />
                         )}
-                      </If>
-                      <If isTrue={images.length !== 0}>
-                        <div className="rounded-full overflow-hidden">
-                          {images.map((src, idx) => (
-                            <div key={idx}>
-                              <Image
-                                width={300}
-                                height={300}
-                                src={src}
-                                alt="Uploaded"
-                                className="w-full h-auto"
-                              />
-                            </div>
-                          ))}
-                        </div>
                       </If>
                     </div>
                     <input
@@ -397,7 +384,7 @@ export default function MyPage({ userInfo }) {
                   { id: "profile", label: "프로필 정보", icon: User },
                   { id: "activity", label: "최근 활동", icon: Clock },
                   { id: "analytics", label: "분석", icon: Clock },
-                  { id: "favorites", label: "즐겨찾는 여행지", icon: Heart },
+                  { id: "favorites", label: "내가 좋아한 글", icon: Heart },
                   { id: "settings", label: "설정", icon: Settings },
                 ].map((tab) => {
                   const Icon = tab.icon
@@ -407,7 +394,7 @@ export default function MyPage({ userInfo }) {
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex items-center space-x-2 py-4 border-b-2 transition-colors ${
                         activeTab === tab.id
-                          ? "!border-purple-600 text-purple-600"
+                          ? "!border-blue-600 text-blue-600"
                           : "border-transparent text-gray-600 hover:text-gray-900"
                       }`}
                       data-oid="zfxn156"
@@ -435,9 +422,9 @@ export default function MyPage({ userInfo }) {
 
               {activeTab === "activity" && <Activity />}
 
-              {activeTab === "analytics" && <Analytics userInfo={userInfo} />}
+              {activeTab === "analytics" && <Analytics userInfo={userInfo} analyticsData={analyticsData} />}
 
-              {activeTab === "favorites" && <Favorites />}
+              {activeTab === "favorites" && <Favorites userInfo={userInfo} />}
 
               {activeTab === "settings" && <Setting />}
             </div>
