@@ -1,10 +1,10 @@
 import { Heart, Share2, MapPin } from "lucide-react"
 import React from "react"
 
-const FavoritesSkeletonPage = () => {
+const FavoritesSkeletonPage = ({ likePostsLength }) => {
   return (
     <div className="grid md:grid-cols-2 gap-6">
-      {[...Array(4)].map((_, index) => (
+      {[...Array(likePostsLength)].map((_, index) => (
         <div
           key={index}
           className="bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl p-6 animate-pulse"

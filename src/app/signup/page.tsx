@@ -180,7 +180,7 @@ export default function SignupPage() {
                   className="block text-sm font-medium text-gray-700 mb-2"
                   data-oid="3o5d5:-"
                 >
-                  이름 *
+                  닉네임 *
                 </label>
                 <div className="relative" data-oid="cpkpf8r">
                   <div

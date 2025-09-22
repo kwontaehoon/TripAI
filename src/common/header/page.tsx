@@ -14,11 +14,9 @@ const getScrollbarWidth = () => {
 
 const Page = ({ InitialuserInfo }) => {
 
-  console.log("InitialUserInfo: ", InitialuserInfo)
   const router = useRouter()
   const supabase = createClient()
   const [userInfo, setUserInfo] = useAtom(userInfoAtom)
-  console.log("userInfo: ", userInfo)
   const [isVisible, setIsVisible] = useState(true)
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)

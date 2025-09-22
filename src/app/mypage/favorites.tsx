@@ -12,6 +12,10 @@ const favorites = ({ userInfo }) => {
     userInfo.likesItem.boards.filter((like) => !!like),
   )
 
+  const likePostsLength =
+    userInfo.likesItem.courses.filter((course) => course).length +
+    userInfo.likesItem.boards.filter((board) => board).length
+
   const handleSharePost = (e) => {
     e.stopPropagation()
     alert("링크가 복사되었습니다!")
@@ -27,16 +31,16 @@ const favorites = ({ userInfo }) => {
       </h3>
       {/* 데이터 로딩 중 */}
       <If isTrue={isLoading}>
-        <FavoritesSkeletonPage />
+        <FavoritesSkeletonPage likePostsLength={likePostsLength} />
       </If>
       {/* 데이터 로딩 끝 */}
       <If isTrue={!isLoading}>
         <div
-          className={`grid ${mypageLikesData?.length === 0 ? "md:grid-cols-1" : "md:grid-cols-2"} gap-6`}
+          className={`grid ${likePostsLength === 0 ? "md:grid-cols-1" : "md:grid-cols-2"} gap-6`}
           data-oid="ne1.ro:"
         >
           {/* 데이터가 없을 때 */}
-          <If isTrue={mypageLikesData?.length === 0}>
+          <If isTrue={likePostsLength === 0}>
             <div className="text-center py-16 w-full" data-oid="mfe3gkd">
               <div className="max-w-md mx-auto" data-oid=":c-plez">
                 <div
@@ -106,7 +110,7 @@ const favorites = ({ userInfo }) => {
           </If>
 
           {/* 데이터가 있을 때 */}
-          <If isTrue={mypageLikesData?.length !== 0}>
+          <If isTrue={likePostsLength !== 0}>
             {mypageLikesData?.map((post, index) => (
               <div
                 key={index}
@@ -114,7 +118,7 @@ const favorites = ({ userInfo }) => {
                 onClick={() => {
                   if (post.type === "user-post") {
                     router.push(`/board/details/${post.id}`)
-                  }else router.push(`/courses/details/${post.id}`)
+                  } else router.push(`/courses/details/${post.id}`)
                 }}
                 data-oid="wipms-z"
               >
@@ -136,7 +140,12 @@ const favorites = ({ userInfo }) => {
                   >
                     <Share2 className="w-3 h-3" data-oid="swvablf" />
 
-                    <span onClick={(e)=>handleSharePost(e)} data-oid="jpjogts">공유</span>
+                    <span
+                      onClick={(e) => handleSharePost(e)}
+                      data-oid="jpjogts"
+                    >
+                      공유
+                    </span>
                   </button>
                   <button
                     className="flex items-center space-x-1 bg-white/20 px-3 py-1 rounded-full text-sm hover:bg-white/30 transition-colors"
