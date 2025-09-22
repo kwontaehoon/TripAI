@@ -28,6 +28,7 @@ import {
   postMypageEdit,
   postMypageUpdateProfile,
   getMypageLikes,
+  deleteUser,
 } from "@/service/supabase"
 import { uploadMultipleImages } from "@/service/supabase/storage"
 import { getGeminiAi } from "@/service/gemini"
@@ -75,6 +76,17 @@ export const useEmailCheckMutation = (params) => {
   const mutationOptions = {
     mutationFn: async () => {
       const results = await postEmailCheck(params)
+      return results
+    },
+  }
+  return useMutation(mutationOptions)
+}
+
+// user 계정 삭제
+export const useDeleteUserMutation = () => {
+  const mutationOptions = {
+    mutationFn: async (email:string) => {
+      const results = await deleteUser(email)
       return results
     },
   }

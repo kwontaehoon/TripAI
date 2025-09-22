@@ -1,10 +1,13 @@
 import React from "react"
-import {
-  Download,
-  ChevronRight
-} from "lucide-react"
+import { Download, ChevronRight } from "lucide-react"
+import { useAtom } from "jotai"
+import { accountDeleteAtom, passwordChangeAtom } from "@/store/ai"
 
-const settings = () => {
+const settings = ({ getUserData }) => {
+  const [passwordChangeModal, setPasswordChangeModal] =
+    useAtom(passwordChangeAtom)
+  const [accountDeleteModal, setAccountDeleteModal] = useAtom(accountDeleteAtom)
+
   return (
     <div className="space-y-6" data-oid="r3cgl-3">
       <h3
@@ -14,7 +17,7 @@ const settings = () => {
         계정 설정
       </h3>
 
-      <div className="space-y-4" data-oid="tdjconp">
+      {/* <div className="space-y-4" data-oid="tdjconp">
         <div
           className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
           data-oid="282hk82"
@@ -83,7 +86,7 @@ const settings = () => {
             ></div>
           </button>
         </div>
-      </div>
+      </div> */}
 
       <div className="border-t !border-gray-200 pt-6" data-oid="no766m7">
         <h4 className="font-medium text-gray-900 mb-4" data-oid="p8ki-b_">
@@ -96,6 +99,7 @@ const settings = () => {
           >
             <div
               className="flex items-center justify-between"
+              onClick={() => setPasswordChangeModal(true)}
               data-oid="a.dd0kb"
             >
               <span className="text-gray-700" data-oid="mx9ve9p">
@@ -107,7 +111,7 @@ const settings = () => {
               />
             </div>
           </button>
-          <button
+          {/* <button
             className="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors"
             data-oid="jkna7j8"
           >
@@ -120,13 +124,20 @@ const settings = () => {
               </span>
               <Download className="w-4 h-4 text-gray-400" data-oid="vt26hz0" />
             </div>
-          </button>
+          </button> */}
           <button
             className="w-full text-left p-3 rounded-lg hover:bg-red-50 transition-colors text-red-600"
             data-oid="m34:w3n"
           >
             <div
               className="flex items-center justify-between"
+              onClick={() =>
+                setAccountDeleteModal({
+                  isOpen: true,
+                  uid: getUserData.id,
+                  email: getUserData.email,
+                })
+              }
               data-oid="_5_td.2"
             >
               <span data-oid="a3wewg5">계정 삭제</span>

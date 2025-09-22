@@ -86,6 +86,16 @@ export const postEmailCheck = async (params) => {
   return data
 }
 
+// user 계정 삭제
+export const deleteUser = async (email: string) => {
+  const { data, error } = await supabase
+    .from("users")
+    .delete()
+    .eq("email", email);
+
+  return data
+}
+
 // 회원가입
 // 사실상 회원가입은 auth -> 트리거로 users 테이블에 생성되기 때문에 users 테이블의 name만 변경
 export const postSignup = async (params: object) => {

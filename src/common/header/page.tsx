@@ -13,9 +13,12 @@ const getScrollbarWidth = () => {
 }
 
 const Page = ({ InitialuserInfo }) => {
+
+  console.log("InitialUserInfo: ", InitialuserInfo)
   const router = useRouter()
   const supabase = createClient()
   const [userInfo, setUserInfo] = useAtom(userInfoAtom)
+  console.log("userInfo: ", userInfo)
   const [isVisible, setIsVisible] = useState(true)
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -119,23 +122,26 @@ const Page = ({ InitialuserInfo }) => {
                       className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                       data-oid="aqxkzhp"
                     >
-                      <If
-                        isTrue={
-                          InitialuserInfo
-                            ? InitialuserInfo.profile_image_url
-                            : userInfo.profile_image_url
-                        }
-                      >
+                      <If isTrue={!InitialuserInfo ? !userInfo ? false : userInfo.profile_image_url : InitialuserInfo?.profile_image_url}>
                         <Image
-                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${InitialuserInfo ? InitialuserInfo.profile_image_url : userInfo.profile_image_url}`}
+                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${!InitialuserInfo ? !userInfo ? "" : userInfo.profile_image_url : InitialuserInfo?.profile_image_url}`}
                           className="rounded-full overflow-hidden"
-                          alt=""
+                          alt={
+                            InitialuserInfo
+                              ? InitialuserInfo.name
+                              : userInfo.name
+                          }
                           fill
+                          sizes="32w"
                         />
                       </If>
                       <If
                         isTrue={
-                          !InitialuserInfo && !userInfo
+                          InitialuserInfo
+                            ? !InitialuserInfo.profile_image_url
+                            : userInfo
+                              ? !userInfo.profile_image_url
+                              : false
                         }
                       >
                         <div

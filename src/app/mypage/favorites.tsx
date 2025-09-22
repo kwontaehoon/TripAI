@@ -12,6 +12,11 @@ const favorites = ({ userInfo }) => {
     userInfo.likesItem.boards.filter((like) => !!like),
   )
 
+  const handleSharePost = (e) => {
+    e.stopPropagation()
+    alert("링크가 복사되었습니다!")
+  }
+
   return (
     <div className="space-y-6" data-oid="xx0eth7">
       <h3
@@ -107,9 +112,9 @@ const favorites = ({ userInfo }) => {
                 key={index}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white cursor-pointer hover:shadow-lg transition-all transform hover:-translate-y-1"
                 onClick={() => {
-                  if (post.type === "ai-course") {
+                  if (post.type === "user-post") {
                     router.push(`/board/details/${post.id}`)
-                  }else router.push(`/course/details/${post.id}`)
+                  }else router.push(`/courses/details/${post.id}`)
                 }}
                 data-oid="wipms-z"
               >
@@ -120,12 +125,6 @@ const favorites = ({ userInfo }) => {
                   <h4 className="text-xl font-bold" data-oid="yniklu2">
                     {post.title}
                   </h4>
-                  <Heart
-                    className="w-6 h-6"
-                    fill="#dc2626"
-                    stroke="#dc2626"
-                    data-oid="y_w9exo"
-                  />
                 </div>
                 <p className="text-purple-100 text-sm mb-3" data-oid="-b_-di5">
                   {post.description}
@@ -137,7 +136,7 @@ const favorites = ({ userInfo }) => {
                   >
                     <Share2 className="w-3 h-3" data-oid="swvablf" />
 
-                    <span data-oid="jpjogts">공유</span>
+                    <span onClick={(e)=>handleSharePost(e)} data-oid="jpjogts">공유</span>
                   </button>
                   <button
                     className="flex items-center space-x-1 bg-white/20 px-3 py-1 rounded-full text-sm hover:bg-white/30 transition-colors"

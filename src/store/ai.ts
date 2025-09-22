@@ -17,6 +17,16 @@ export const loadingModalAtom = atom({
     message: ""
 })
 
+// 비밀번호 변경 modal
+export const passwordChangeAtom = atom(false)
+
+// 계정 삭제 modal
+export const accountDeleteAtom = atom({
+    isOpen: false,
+    uid: null,
+    email: null
+})
+
 // session
 export const sessionAtom = atom()
 

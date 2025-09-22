@@ -1,12 +1,14 @@
 'use client'
 import { useEffect } from "react"
 import { useAtomValue } from "jotai"
-import { loadingModalAtom, modalUiStateAtom } from "@/store/ai"
+import { accountDeleteAtom, loadingModalAtom, modalUiStateAtom, passwordChangeAtom } from "@/store/ai"
 
 export function ScrollController() {
   const modalUiState = useAtomValue(modalUiStateAtom)
   const loadingState = useAtomValue(loadingModalAtom)
-  const shouldDisableScroll = Object.values(modalUiState).some((v) => v) || loadingState.isOpen
+  const passwordChangeState = useAtomValue(passwordChangeAtom)
+  const accountDeleteState = useAtomValue(accountDeleteAtom)
+  const shouldDisableScroll = Object.values(modalUiState).some((v) => v) || loadingState.isOpen || passwordChangeState || accountDeleteState.isOpen
 
   useEffect(() => {
     if (shouldDisableScroll) {

@@ -26,8 +26,8 @@ import moment from "moment"
 import Image from "next/image"
 import { If } from "react-haiku"
 
-export default function MyPage({ userInfo, analyticsData }) {
-  const [activeTab, setActiveTab] = useState("favorites")
+export default function MyPage({ userInfo, analyticsData, getUserData }) {
+  const [activeTab, setActiveTab] = useState("profile")
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -129,17 +129,13 @@ export default function MyPage({ userInfo, analyticsData }) {
     if (isEditing && mypageUpdateProfileIsSuccess && images.length !== 0) {
       setIsEditing(false)
       alert("프로필이 성공적으로 업데이트되었습니다!")
+      window.location.reload()
     }
   }, [mypageUpdateProfileData])
 
   const handleSaveProfile = async () => {
     // Here you would typically save to your backend
     await mypageEdit(newUserProfile)
-
-    if (images.length === 0) {
-      setIsEditing(false)
-      alert("프로필이 성공적으로 업데이트되었습니다!")
-    }
   }
 
   if (isLoading) {
@@ -187,7 +183,7 @@ export default function MyPage({ userInfo, analyticsData }) {
                 <div className="relative" data-oid="0xj0e4v">
                   <label className="">
                     <div
-                      className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center"
+                      className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center relative"
                       data-oid="tc2.7ke"
                     >
                       <If isTrue={images.length === 0}>
@@ -206,6 +202,16 @@ export default function MyPage({ userInfo, analyticsData }) {
                             sizes="24w"
                           />
                         )}
+                      </If>
+                      <If isTrue={isEditing && images.length !== 0}>
+                        <Image
+                          src={images[0]}
+                          alt={`preview-img-${file[0]?.name}`}
+                          className="rounded-full overflow-hidden"
+                          fill
+                          priority={true}
+                          sizes="24w"
+                        />
                       </If>
                     </div>
                     <input
@@ -347,12 +353,23 @@ export default function MyPage({ userInfo, analyticsData }) {
                     평균 평점
                   </div>
                 </div>
+                <div className="text-center" data-oid="sggrkt2">
+                  <div
+                    className="text-2xl font-bold text-purple-600"
+                    data-oid="96_nw8k"
+                  >
+                    -
+                  </div>
+                  <div className="text-sm text-gray-600" data-oid="p6egmud">
+                    방문 국가
+                  </div>
+                </div>
                 <div className="text-center" data-oid="5m:rrei">
                   <div
                     className="text-2xl font-bold text-red-600"
                     data-oid="1iqi1gy"
                   >
-                    50
+                    -
                   </div>
                   <div className="text-sm text-gray-600" data-oid="q6f5l-b">
                     총 거리(km)
@@ -363,7 +380,7 @@ export default function MyPage({ userInfo, analyticsData }) {
                     className="text-2xl font-bold text-indigo-600"
                     data-oid="wpiudgn"
                   >
-                    가평
+                    -
                   </div>
                   <div className="text-sm text-gray-600" data-oid="5lk88.y">
                     최애 여행지
@@ -382,7 +399,7 @@ export default function MyPage({ userInfo, analyticsData }) {
               <nav className="flex space-x-8 px-6" data-oid="ua7g183">
                 {[
                   { id: "profile", label: "프로필 정보", icon: User },
-                  { id: "activity", label: "최근 활동", icon: Clock },
+                  // { id: "activity", label: "최근 활동", icon: Clock },
                   { id: "analytics", label: "분석", icon: Clock },
                   { id: "favorites", label: "내가 좋아한 글", icon: Heart },
                   { id: "settings", label: "설정", icon: Settings },
@@ -422,11 +439,15 @@ export default function MyPage({ userInfo, analyticsData }) {
 
               {activeTab === "activity" && <Activity />}
 
-              {activeTab === "analytics" && <Analytics userInfo={userInfo} analyticsData={analyticsData} />}
+              {activeTab === "analytics" && (
+                <Analytics userInfo={userInfo} analyticsData={analyticsData} />
+              )}
 
               {activeTab === "favorites" && <Favorites userInfo={userInfo} />}
 
-              {activeTab === "settings" && <Setting />}
+              {activeTab === "settings" && (
+                <Setting getUserData={getUserData} />
+              )}
             </div>
           </div>
         </div>

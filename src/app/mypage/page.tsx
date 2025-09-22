@@ -12,6 +12,8 @@ const page = async() => {
 
    const userInfo = !session ? null : await getUserInfo(session?.user.email)
 
+   const getUser = await supabase.auth.getUser()
+
    // 활동 분석
    const analyticsData = Array.from({ length: 12 }, (_, index) => ({
     month: `${index + 1}월`,
@@ -31,7 +33,7 @@ const page = async() => {
   })
 
   return (
-    <Client userInfo={userInfo} analyticsData={analyticsData}/>
+    <Client userInfo={userInfo} analyticsData={analyticsData} getUserData={getUser.data.user}/>
   )
 }
 
