@@ -91,7 +91,7 @@ export const deleteUser = async (email: string) => {
   const { data, error } = await supabase
     .from("users")
     .delete()
-    .eq("email", email);
+    .eq("email", email)
 
   return data
 }
@@ -975,6 +975,85 @@ export const postCommentReplyDelete = async (id: number) => {
   return data
 }
 
+
+const locationKeywordMap = {
+  gimpo: ["김포"],
+  gangwon: ["강원도", "강릉", "속초", "양양"],
+  seoul: ["서울", "은평구", "송파구", "강남구", "종로구", "마포구"],
+  jeju: ["제주", "제주시", "서귀포시"],
+};
+
+// 쿼리 문자열을 동적으로 생성하는 헬퍼 함수
+const buildSearchQuery = (map) => {
+  const conditions = [];
+  for (const mainLocation in map) {
+    map[mainLocation].forEach((keyword) => {
+      conditions.push(`title.ilike.%${keyword}%`);
+      conditions.push(`content.ilike.%${keyword}%`);
+    });
+  }
+  return conditions.join(",");
+};
+
+// 메인 인기 여행지
+export const getPopularLocation = async () => {
+  const searchQuery = buildSearchQuery(locationKeywordMap);
+
+  const [coursesRes, boardsRes] = await Promise.all([
+    supabase
+      .from("courses")
+      .select(
+        `
+        id,
+        title,
+        content
+      `
+      )
+      .or(searchQuery),
+
+    supabase
+      .from("boards")
+      .select(
+        `
+        id,
+        title,
+        content
+      `
+      )
+      .or(searchQuery),
+  ]);
+
+  const allData = [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])];
+
+  const categorizedData = {
+    gimpo: [],
+    gangwon: [],
+    seoul: [],
+    jeju: [],
+  };
+
+  const processedIds = new Set();
+  const mainLocations = Object.keys(locationKeywordMap);
+
+  allData.forEach((item) => {
+    if (!item.title && !item.content) return;
+    if (processedIds.has(item.id)) return;
+    
+    const combinedText = `${item.title || ""} ${item.content || ""}`;
+    
+    for (const mainLocation of mainLocations) {
+      if (locationKeywordMap[mainLocation].some(keyword => combinedText.includes(keyword))) {
+        categorizedData[mainLocation].push(item);
+        processedIds.add(item.id);
+        break; 
+      }
+    }
+  });
+
+  return categorizedData;
+};
+
+// 인기 여행지
 export const getPopularSearch = async () => {
   const results: Record<string, number> = {}
   for (const { keyword, key } of keywordQueries) {

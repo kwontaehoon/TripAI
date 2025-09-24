@@ -29,6 +29,7 @@ import {
   postMypageUpdateProfile,
   getMypageLikes,
   deleteUser,
+  getPopularLocation,
 } from "@/service/supabase"
 import { uploadMultipleImages } from "@/service/supabase/storage"
 import { getGeminiAi } from "@/service/gemini"
@@ -39,6 +40,7 @@ const TEST_QUERY_KEY = {
   courses: ["courses"],
   coursesInfinite: ["courses", "infinite"],
   courseDetails: ["courseDetails"],
+  popularLocation: ["popularLocation"],
   boards: ["boards"],
   boardsInfinite: ["boards", "infinite"],
   boardDetails: ["boardDetails"],
@@ -344,6 +346,19 @@ export const useCommentReplyDeleteMutation = () => {
     },
   }
   return useMutation(mutationOptions)
+}
+
+// 메인 페이지 여행지
+export const usePopularLocationQuery = () => {
+  const queryOptions = {
+    queryKey: TEST_QUERY_KEY.popularLocation,
+    queryFn: async () => {
+      const data = await getPopularLocation()
+      return data
+    },
+  }
+
+  return useQuery(queryOptions)
 }
 
 // 인기 검색어

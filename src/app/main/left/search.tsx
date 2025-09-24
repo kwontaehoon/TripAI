@@ -51,7 +51,7 @@ const SearchPage = ({ initialUserInfo }) => {
           rounded-2xl border !border-gray-200
           bg-white shadow-lg"
           >
-            <div className="flex-1 flex items-center space-x-3 px-4">
+            <div className="flex-1 flex items-center space-x-3 px-1 md:px-4">
               <Search className="w-5 h-5 text-gray-400" />
               <input
                 type="text"
