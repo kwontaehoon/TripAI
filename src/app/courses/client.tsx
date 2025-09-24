@@ -19,6 +19,7 @@ export default function CoursesPage({ id, userInfo }) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
+  const [searachInput, setSearchInput] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("전체")
   const [quickedFilter, setQuickedFilter] = useState("")
@@ -136,8 +137,8 @@ export default function CoursesPage({ id, userInfo }) {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+    if (searachInput.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searachInput)}`)
     }
   }
 
@@ -207,7 +208,7 @@ export default function CoursesPage({ id, userInfo }) {
                       <input
                         type="text"
                         placeholder="다른 여행지를 검색해보세요"
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onChange={(e) => setSearchInput(e.target.value)}
                         className="flex-1 outline-none text-gray-700 placeholder-gray-400"
                         data-oid="hrodp9f"
                       />

@@ -27,6 +27,7 @@ export default function BoardPage({
   const { id } = use(params)
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
+  const [searchInput, setSearchInput] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("전체")
   const [quickedFilter, setQuickedFilter] = useState("")
@@ -84,8 +85,8 @@ export default function BoardPage({
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+    if (searchInput.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchInput)}`)
     }
   }
 
@@ -148,7 +149,7 @@ export default function BoardPage({
     return () => {
       isCanceled = true
     }
-  }, [selectedFilter, searchQuery, boardsInfiniteData, quickedFilter])
+  }, [selectedFilter, boardsInfiniteData, quickedFilter])
 
   return isLoading ? (
     <Skeleton />
@@ -223,8 +224,8 @@ export default function BoardPage({
                       <input
                         type="text"
                         placeholder="여행 코스를 검색해보세요"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
                         className="flex-1 outline-none text-gray-700 placeholder-gray-400 text-sm sm:text-base"
                         data-oid="c7_l5dg"
                       />
