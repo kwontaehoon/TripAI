@@ -14,7 +14,7 @@ const analytics = ({ userInfo, analyticsData }) => {
     <div className="space-y-6" data-oid="xx0eth7">
       <div className="flex">
         <h2
-          className="flex-1 text-xl font-bold text-gray-900"
+          className="flex-1 text-lg font-semibold text-gray-900"
           data-oid="8omxw_c"
         >
           활동 분석

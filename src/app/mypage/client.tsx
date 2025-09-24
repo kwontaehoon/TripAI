@@ -302,7 +302,7 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                     </>
                   ) : (
                     <button
-                      onClick={() => setIsEditing(true)}
+                      onClick={() => {setIsEditing(true); setActiveTab("profile");}}
                       className="flex items-center space-x-2 px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
                       data-oid="8dj9qoh"
                     >
