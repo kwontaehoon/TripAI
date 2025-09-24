@@ -9,7 +9,7 @@ export const google_place_nearby = (lat:number, lng:number) => {
           latitude: lat,
           longitude: lng,
         },
-        radius: 50000.0,
+        radius: 5000.0,
       },
     },
   }
