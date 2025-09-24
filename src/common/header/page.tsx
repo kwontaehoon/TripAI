@@ -13,7 +13,6 @@ const getScrollbarWidth = () => {
 }
 
 const Page = ({ InitialuserInfo }) => {
-
   const router = useRouter()
   const supabase = createClient()
   const [userInfo, setUserInfo] = useAtom(userInfoAtom)
@@ -77,6 +76,7 @@ const Page = ({ InitialuserInfo }) => {
     <header
       className={`
           w-full h-16
+          pl-5
           flex fixed
           top-0 left-0 z-50
           bg-white shadow-md opacity-90
@@ -105,7 +105,10 @@ const Page = ({ InitialuserInfo }) => {
             </p>
           </div>
         </div>
-        <div className="flex-1 flex flex-row-reverse" data-oid="nst0g5j">
+        <div
+          className="flex-1 flex flex-row-reverse pr-4"
+          data-oid="nst0g5j"
+        >
           <div className="flex items-center space-x-4" data-oid="j6cwnl9">
             {InitialuserInfo || userInfo ? (
               <>
@@ -120,9 +123,17 @@ const Page = ({ InitialuserInfo }) => {
                       className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                       data-oid="aqxkzhp"
                     >
-                      <If isTrue={!InitialuserInfo ? !userInfo ? false : userInfo.profile_image_url : InitialuserInfo?.profile_image_url}>
+                      <If
+                        isTrue={
+                          !InitialuserInfo
+                            ? !userInfo
+                              ? false
+                              : userInfo.profile_image_url
+                            : InitialuserInfo?.profile_image_url
+                        }
+                      >
                         <Image
-                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${!InitialuserInfo ? !userInfo ? "" : userInfo.profile_image_url : InitialuserInfo?.profile_image_url}`}
+                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${!InitialuserInfo ? (!userInfo ? "" : userInfo.profile_image_url) : InitialuserInfo?.profile_image_url}`}
                           className="rounded-full overflow-hidden"
                           alt={
                             InitialuserInfo

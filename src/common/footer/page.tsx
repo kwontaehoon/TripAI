@@ -169,7 +169,7 @@ export default function Footer() {
                                 data-oid="i3n45:a"
                             >
                                 <Mail className="w-4 h-4 text-blue-400" data-oid="nej9w6f" />
-                                <span data-oid="2c.0:_5">contact@tripai.com</span>
+                                <span data-oid="2c.0:_5">gju04195@gmail.com</span>
                             </div>
                             <div
                                 className="flex items-center space-x-3 text-sm text-gray-300"
