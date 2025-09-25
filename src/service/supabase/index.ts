@@ -630,6 +630,10 @@ export const getCoursesAndBoards = async () => {
   const [coursesRes, boardsRes] = await Promise.all([
     supabase.from("courses").select(`
         *,
+        comments (
+          *,
+          comments_replies (*)
+        ),
         course_ai_insights ( title, insight ),
         course_tags ( tag ),
         course_highlights ( highlight ),
@@ -663,10 +667,16 @@ export const getCoursesAndBoards = async () => {
             longitude
           )
         )
-      `),
+      `)
+      .order("id", { ascending: true }),
 
     supabase.from("boards").select(`
         *,
+        users(*),
+        comments (
+          *,
+          comments_replies (*)
+        ),
         board_ai_insights ( title, insight ),
         board_tags ( tag ),
         board_highlights ( highlight ),
@@ -701,7 +711,8 @@ export const getCoursesAndBoards = async () => {
             longitude
           )
         )
-      `),
+      `)
+      .order("id", { ascending: true }),
   ])
   return [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])]
 }

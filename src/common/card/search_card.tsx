@@ -3,19 +3,21 @@
 import {
   ArrowRight,
   Calendar,
-  Eye,
   MapPin,
   MessageCircle,
   Search,
   Sparkles,
   Star,
   ThumbsUp,
+  User,
   Users,
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 import { comma } from "@/util/comma"
+import { If } from "react-haiku"
+import Image from "next/image"
 
 const Search_card = ({ filteredData, setSelectedFilter }) => {
   const router = useRouter()
@@ -138,10 +140,30 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                   data-oid="3rdmb_1"
                 >
                   <span
-                    className="text-lg border w-8 h-8 rounded-full sm:text-xl"
-                    data-oid="313ycoo"
+                    className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
+                    data-oid="aqxkzhp"
                   >
-                    {/* {result.author.avatar} */}
+                    <If isTrue={result.users.profile_image_url}>
+                      <Image
+                        src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${result.users.profile_image_url}`}
+                        alt={result.users.name}
+                        className="rounded-full overflow-hidden"
+                        fill
+                        sizes="32w"
+                      />
+                    </If>
+                    <If isTrue={!result.users.profile_image_url}>
+                      <div
+                        className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
+                        data-oid="dzrezk7"
+                      >
+                        <User
+                          className="w-4 h-4 text-white"
+                          data-oid="0ez2wo7"
+                        />
+                      </div>
+                    </If>
+                    {/* {post.author.avatar} */}
                   </span>
                   <div className="min-w-0" data-oid="n8nfu_h">
                     <div
@@ -152,7 +174,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                         className="text-sm font-medium text-gray-900"
                         data-oid="ua88r2t"
                       >
-                        {result.author}
+                        {result.users.name}
                       </span>
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs ${getLevelColor(result.author.level)}`}
@@ -163,7 +185,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                       </span>
                     </div>
                     <div className="text-xs text-gray-500" data-oid="i.:.ldz">
-                      게시글 11개 • {result.created_at}
+                      {result.created_at}
                     </div>
                   </div>
                 </div>
@@ -309,43 +331,26 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                   </div>
                   <div
                     className="flex items-center text-xs sm:text-sm text-gray-500"
-                    data-oid="gc6.wry"
+                    data-oid="acmwz.5"
                   >
-                    <Eye
+                    <ThumbsUp
                       className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                      data-oid="pwacq2i"
+                      data-oid="k6zjhsm"
                     />
 
-                    <span data-oid="ioc:s9o">
-                      {result.views || result.likes}
-                    </span>
+                    <span data-oid="2.nvh3c">{result.likes}</span>
                   </div>
-                  {result.type === "user-post" && (
-                    <>
-                      <div
-                        className="flex items-center text-xs sm:text-sm text-gray-500"
-                        data-oid="acmwz.5"
-                      >
-                        <ThumbsUp
-                          className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                          data-oid="k6zjhsm"
-                        />
+                  <div
+                    className="flex items-center text-xs sm:text-sm text-gray-500"
+                    data-oid=".71o5mk"
+                  >
+                    <MessageCircle
+                      className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
+                      data-oid="7ppvft_"
+                    />
 
-                        <span data-oid="2.nvh3c">{result.likes}</span>
-                      </div>
-                      <div
-                        className="flex items-center text-xs sm:text-sm text-gray-500"
-                        data-oid=".71o5mk"
-                      >
-                        <MessageCircle
-                          className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                          data-oid="7ppvft_"
-                        />
-
-                        <span data-oid="betu9wv">{result.comments}</span>
-                      </div>
-                    </>
-                  )}
+                    <span data-oid="betu9wv">{result.comments.length}</span>
+                  </div>
                 </div>
                 <button
                   className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center text-xs sm:text-sm"

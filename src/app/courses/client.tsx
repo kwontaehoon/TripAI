@@ -317,7 +317,7 @@ export default function CoursesPage({ id, userInfo }) {
                 인기 여행지
               </h3>
               <div className="space-y-3" data-oid="aiira4w">
-                {["김포", "서울", "부산", "강릉", "경주"].map((dest) => (
+                {["김포", "서울", "부산", "강릉", "제주"].map((dest) => (
                   <button
                     key={dest}
                     onClick={() => {
@@ -328,7 +328,7 @@ export default function CoursesPage({ id, userInfo }) {
                         router.push("/courses")
                       } else {
                         router.push(
-                          `/courses?destination=${encodeURIComponent(dest)}`,
+                          `/search?q=${encodeURIComponent(dest)}`,
                         )
                       }
                     }}
