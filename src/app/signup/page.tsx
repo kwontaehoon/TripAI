@@ -18,6 +18,10 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import KakaoSVG from "../../../public/svg/kakao.svg"
+import GoogleSVG from "../../../public/svg/google.svg"
+import AppleSVG from "../../../public/svg/apple.svg"
+import Image from "next/image"
 
 export default function SignupPage() {
   const router = useRouter()
@@ -26,7 +30,7 @@ export default function SignupPage() {
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -39,9 +43,7 @@ export default function SignupPage() {
   // 이메일 중복시 경고문
   const [validationEmail, setValidationEmail] = useState(false)
 
-  const { mutateAsync: emailCheck } = useEmailCheckMutation(
-    formData.email,
-  )
+  const { mutateAsync: emailCheck } = useEmailCheckMutation(formData.email)
   const { mutate: signup } = useSignupMutation()
 
   const handleInputChange = (field: string, value: string) => {
@@ -71,7 +73,7 @@ export default function SignupPage() {
       return
     }
 
-    if(formData.password.length < 6) {
+    if (formData.password.length < 6) {
       alert("비밀번호를 확인해주세요.")
       return
     }
@@ -86,7 +88,6 @@ export default function SignupPage() {
     if (emailCheckFlag) {
       setValidationEmail(true)
     } else {
-
       const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -225,14 +226,21 @@ export default function SignupPage() {
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => { handleInputChange("email", e.target.value); setValidationEmail(false)}}
+                    onChange={(e) => {
+                      handleInputChange("email", e.target.value)
+                      setValidationEmail(false)
+                    }}
                     placeholder="이메일을 입력하세요"
                     className="w-full pl-10 pr-4 py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:!border-transparent"
                     required
                     data-oid="b-lmb0w"
                   />
                 </div>
-                {validationEmail && <div className="mt-2 text-sm text-red-500">이미 사용 중인 이메일입니다.</div>}
+                {validationEmail && (
+                  <div className="mt-2 text-sm text-red-500">
+                    이미 사용 중인 이메일입니다.
+                  </div>
+                )}
               </div>
 
               {/* Password */}
@@ -340,7 +348,10 @@ export default function SignupPage() {
                 </div>
                 {formData.confirmPassword &&
                   formData.password !== formData.confirmPassword && (
-                    <p className="mt-1 text-xs text-red-500 mt-2" data-oid=".-pp83e">
+                    <p
+                      className="mt-1 text-xs text-red-500 mt-2"
+                      data-oid=".-pp83e"
+                    >
                       비밀번호가 일치하지 않습니다.
                     </p>
                   )}
@@ -475,9 +486,10 @@ export default function SignupPage() {
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="m6ubwv5"
               >
-                <Chrome
-                  className="w-5 h-5 text-red-500 mr-3"
-                  data-oid="8-78sax"
+                <Image
+                  src={GoogleSVG}
+                  alt="kakao login svg"
+                  className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700 font-medium" data-oid="ziz2eto">
                   Google로 회원가입
@@ -489,9 +501,10 @@ export default function SignupPage() {
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="nals0pz"
               >
-                <Github
-                  className="w-5 h-5 text-gray-900 mr-3"
-                  data-oid="cafij9x"
+                <Image
+                  src={KakaoSVG}
+                  alt="kakao login svg"
+                  className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700 font-medium" data-oid="9c.qkm9">
                   Kakao로 회원가입
@@ -503,9 +516,10 @@ export default function SignupPage() {
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="ejj_65j"
               >
-                <Apple
-                  className="w-5 h-5 text-gray-900 mr-3"
-                  data-oid="2lv5jpc"
+                <Image
+                  src={AppleSVG}
+                  alt="kakao login svg"
+                  className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700 font-medium" data-oid="e2u3rn5">
                   Apple로 회원가입

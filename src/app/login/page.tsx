@@ -13,6 +13,10 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import KakaoSVG from "../../../public/svg/kakao.svg"
+import GoogleSVG from "../../../public/svg/google.svg"
+import AppleSVG from "../../../public/svg/apple.svg"
+import Image from "next/image"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -286,9 +290,10 @@ export default function LoginPage() {
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="xew9kql"
               >
-                <Chrome
-                  className="w-5 h-5 text-red-500 mr-3"
-                  data-oid="jn-c3gk"
+                <Image
+                  src={GoogleSVG}
+                  alt="kakao login svg"
+                  className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700 font-medium" data-oid="14ejvrq">
                   Google로 로그인
@@ -300,9 +305,10 @@ export default function LoginPage() {
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="c7pplo-"
               >
-                <Github
-                  className="w-5 h-5 text-gray-900 mr-3"
-                  data-oid="6h:wpmm"
+                <Image
+                  src={KakaoSVG}
+                  alt="kakao login svg"
+                  className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700 font-medium" data-oid="uwsfaxt">
                   Kakao로 로그인
@@ -314,9 +320,10 @@ export default function LoginPage() {
                 className="w-full flex items-center justify-center px-4 py-3 border !border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 data-oid="92nzfei"
               >
-                <Apple
-                  className="w-5 h-5 text-gray-900 mr-3"
-                  data-oid="crx9wo4"
+                <Image
+                  src={AppleSVG}
+                  alt="kakao login svg"
+                  className="w-5 h-5 mr-3"
                 />
                 <span className="text-gray-700 font-medium" data-oid="-6z1-aa">
                   Apple로 로그인
