@@ -68,7 +68,7 @@ interface Course {
 }
 
 export default function MapPage() {
-    // ai-course / courseId에 따라 course / board 구분
+  // ai-course / courseId에 따라 course / board 구분
   const searchParams = useSearchParams()
   const courseId = searchParams.get("courseId")
   const boardId = searchParams.get("boardId")
@@ -88,9 +88,12 @@ export default function MapPage() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null)
   const [loadingAtom, setLoadingAtom] = useAtom(loadingModalAtom)
 
-  const { data: mapData, isLoading } = courseId
-    ? useCourseDetailsQuery(Number(id))
-    : useBoardDetailssQuery(Number(id))
+  const { data: mapData, isLoading } =
+    courseId === "ai-course"
+      ? useCourseDetailsQuery(0)
+      : courseId
+        ? useCourseDetailsQuery(Number(id))
+        : useBoardDetailssQuery(Number(id))
 
   // 커스텀 마커 생성 함수
   const createCustomMarker = (number: number, color: string) => {
@@ -558,7 +561,9 @@ export default function MapPage() {
                 </span>
                 <button
                   onClick={() =>
-                    router.push(`/${courseId ? 'courses' : 'board'}/details/${course[0].id}`)
+                    router.push(
+                      `/${courseId ? "courses" : "board"}/details/${course[0].id}`,
+                    )
                   }
                   className="text-sm text-gray-600 hover:text-gray-900 flex items-center"
                 >
@@ -726,12 +731,12 @@ export default function MapPage() {
                                 index === 0
                                   ? "bg-green-500"
                                   : index ===
-                                  (courseId
-                                    ? currentDaySchedule.course_places
-                                        .length
-                                    : currentDaySchedule.board_places
-                                        .length) -
-                                    1
+                                      (courseId
+                                        ? currentDaySchedule.course_places
+                                            .length
+                                        : currentDaySchedule.board_places
+                                            .length) -
+                                        1
                                     ? "bg-red-500"
                                     : "bg-blue-500"
                               }`}
