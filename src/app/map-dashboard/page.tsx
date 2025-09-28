@@ -254,6 +254,7 @@ function WWPageContent() {
   const router = useRouter()
   const mapRef = useRef<HTMLDivElement>(null)
   const skipIdleRef = useRef(false)
+  const zoomRef = useRef<number | undefined>(null)
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [markerClusterer, setMarkerClusterer] = useState<any>(null)
   const [currentZoom, setCurrentZoom] = useState(8)
@@ -275,6 +276,7 @@ function WWPageContent() {
   const [_, setAiResponse] = useAtom(aiResponseAtom)
   const { mutateAsync: aiRecommend, data, isSuccess } = useAiRecommendMutation()
   const prevNearbyDataRef = useRef<any>(null)
+  const currentMarkersRef = useRef([])
 
   // 플레이리스트
   const [myPlaylists, setMyPlaylists] = useState<PlaylistItem[]>([])
@@ -284,11 +286,9 @@ function WWPageContent() {
       const cleanedJsonString = cleanJson(
         data.candidates[0].content.parts[0].text,
       )
-      console.log("cleanedJsonString: ", cleanedJsonString)
 
       try {
         const jsonData = JSON.parse(cleanedJsonString)
-        console.log("jsonData: ", jsonData)
         setAiResponse(jsonData)
         localStorage.setItem("aiList", JSON.stringify(jsonData))
       } catch (error) {
@@ -355,6 +355,7 @@ function WWPageContent() {
         // 줌 변경 시 다음 idle 이벤트를 건너뜀
         mapInstance.addListener("zoom_changed", () => {
           const zoom = mapInstance.getZoom()
+          zoomRef.current = zoom
           if (zoom !== undefined) {
             setCurrentZoom(zoom)
             skipNextIdle = true
@@ -363,7 +364,8 @@ function WWPageContent() {
 
         // 지도 움직임 종료(idle) 시 API 호출
         mapInstance.addListener("idle", () => {
-          if (skipNextIdle) {
+          // 단일 클러스터 마커를 누를시 map.setZoom(15)로 이동되기때문에 15에서는 새로운 데이터로 변경
+          if (skipNextIdle && zoomRef.current !== 15) {
             skipNextIdle = false
             return // 줌 변경 후 발생한 idle은 무시
           }
@@ -375,7 +377,6 @@ function WWPageContent() {
           if (center) {
             const lat = center.lat()
             const lng = center.lng()
-            console.log("지도 중심 좌표:", lat, lng)
             nearbyMutation(google_place_nearby(lat, lng))
           }
         })
@@ -405,21 +406,26 @@ function WWPageContent() {
 
     const updateMarkers = async () => {
       try {
-        // 기존 클러스터러 제거
+        // ------------------------------------------
+        // 1. 기존 마커 정리 (통일된 단일 로직)
+        // ------------------------------------------
         if (markerClusterer) {
           markerClusterer.clearMarkers()
           setMarkerClusterer(null)
         }
 
-        // 기존 개별 마커들 제거
-        currentMarkers.forEach((marker) => {
+        // ⭐ (핵심) useRef에 담긴 이전 마커들을 모두 지도에서 제거합니다.
+        currentMarkersRef.current.forEach((marker) => {
           marker.setMap(null)
         })
-        currentMarkers = []
+        // ⭐ useRef 배열을 비워서 새 마커를 받을 준비를 합니다.
+        currentMarkersRef.current = []
 
         if (currentZoom >= CLUSTER_ZOOM_THRESHOLD) {
           // 높은 줌 레벨: 개별 마커 표시
-          currentMarkers = nearBydata?.places?.map((spot) => {
+          let isMounted = true
+
+          currentMarkersRef.current = nearBydata?.places?.map((spot) => {
             const marker = new google.maps.Marker({
               position: {
                 lat: spot.location.latitude,
@@ -440,38 +446,38 @@ function WWPageContent() {
             // 정보창 생성
             const contentDiv = document.createElement("div")
             contentDiv.innerHTML = `
-  <div class="p-4 max-w-[250px]">
-    <h3 class="font-bold text-lg text-gray-900 mb-3">${spot.displayName.text}</h3>
-    <p class="text-sm text-gray-600 mb-3">${spot.formattedAddress}</p>
-    <div class="flex flex-wrap gap-1 mb-3">
-      ${spot.types
-        ?.slice(0, 3)
-        .map(
-          (category) =>
-            `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${location_types(
-              category,
-            )}</span>`,
-        )
-        .join("")}
-    </div>
-    
-    <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <div class="flex items-center mr-3">
-          <span class="text-yellow-500 mr-1">★</span>
-          <span class="font-semibold text-gray-900">${spot.rating}</span>
-        </div>
-        <div class="text-sm text-gray-600">
-          리뷰 ${comma(spot.userRatingCount, false)}개
-        </div>
-      </div>
-    </div>
-    <button id="add-to-plan-${spot.id}"
-      class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg hover:shadow-lg transition-all flex items-center justify-center space-x-1 text-sm font-medium"
-    >
-      <span>여행 코스에 추가</span>
-    </button>
+<div class="p-4 max-w-[250px]">
+<h3 class="font-bold text-lg text-gray-900 mb-3">${spot.displayName.text}</h3>
+<p class="text-sm text-gray-600 mb-3">${spot.formattedAddress}</p>
+<div class="flex flex-wrap gap-1 mb-3">
+${spot.types
+  ?.slice(0, 3)
+  .map(
+    (category) =>
+      `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${location_types(
+        category,
+      )}</span>`,
+  )
+  .join("")}
+</div>
+
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+  <div class="flex items-center mr-3">
+    <span class="text-yellow-500 mr-1">★</span>
+    <span class="font-semibold text-gray-900">${spot.rating}</span>
   </div>
+  <div class="text-sm text-gray-600">
+    리뷰 ${comma(spot.userRatingCount, false)}개
+  </div>
+</div>
+</div>
+<button id="add-to-plan-${spot.id}"
+class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg hover:shadow-lg transition-all flex items-center justify-center space-x-1 text-sm font-medium"
+>
+<span>여행 코스에 추가</span>
+</button>
+</div>
 `
 
             const infoWindow = new google.maps.InfoWindow({
@@ -507,7 +513,7 @@ function WWPageContent() {
           )
 
           // 클러스터용 마커들 생성 (map에 직접 추가하지 않음)
-          currentMarkers = nearBydata?.places?.map((spot) => {
+          currentMarkersRef.current = nearBydata?.places?.map((spot) => {
             const marker = new google.maps.Marker({
               position: {
                 lat: spot.location.latitude,
@@ -534,7 +540,7 @@ function WWPageContent() {
           if (isMounted && map) {
             const clusterer = new MarkerClusterer({
               map,
-              markers: currentMarkers,
+              markers: currentMarkersRef.current,
               gridSize: 60,
               maxZoom: CLUSTER_ZOOM_THRESHOLD - 1,
               renderer: {
@@ -565,15 +571,15 @@ function WWPageContent() {
       }
     }
     if (nearBydata) {
-
       // 이전 데이터와 현재 데이터의 places id를 비교해서 변경되었으면 마커 다시 표시
       // 변경되지 않았으면 현재 마커 유지
-      const nearByDataId = nearBydata.places.map(x => x.id)
+      const nearByDataId = nearBydata.places.map((x) => x.id)
       let prevNearByDataId
-      if(prevNearbyDataRef.current){
-        prevNearByDataId = prevNearbyDataRef.current.map(x => x.id)
+      if (prevNearbyDataRef.current) {
+        prevNearByDataId = prevNearbyDataRef.current.map((x) => x.id)
       }
-      const isEqual = JSON.stringify(nearByDataId) === JSON.stringify(prevNearByDataId);
+      const isEqual =
+        JSON.stringify(nearByDataId) === JSON.stringify(prevNearByDataId)
       prevNearbyDataRef.current = nearBydata.places
       if (!isEqual) {
         updateMarkers()
