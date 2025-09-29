@@ -402,7 +402,6 @@ function WWPageContent() {
     if (!map) return
 
     let isMounted = true
-    let currentMarkers: google.maps.Marker[] = []
 
     const updateMarkers = async () => {
       try {
@@ -423,7 +422,6 @@ function WWPageContent() {
 
         if (currentZoom >= CLUSTER_ZOOM_THRESHOLD) {
           // 높은 줌 레벨: 개별 마커 표시
-          let isMounted = true
 
           currentMarkersRef.current = nearBydata?.places?.map((spot) => {
             const marker = new google.maps.Marker({
@@ -587,9 +585,9 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
         return () => {
           isMounted = false
           // 컴포넌트 언마운트 시 마커들 정리
-          currentMarkers.forEach((marker) => {
-            marker.setMap(null)
-          })
+          // currentMarkersRef.current.forEach((marker) => {
+          //   marker.setMap(null)
+          // })
         }
       }
     }
