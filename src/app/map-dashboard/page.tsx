@@ -655,7 +655,7 @@ function WWPageContent() {
   const zoomRef = useRef<number | undefined>(null)
   const fixedMarkersRef = useRef<google.maps.Marker[]>([])
   const isClusterZoomRef = useRef(false)
-  const test = useRef<boolean>(false)
+  const placeTypeRef = useRef<boolean>(false)
   const [map, setMap] = useState<google.maps.Map | null>(null)
   const [placeType, setPlaceType] = useState<boolean>(false)
   const [markerClusterer, setMarkerClusterer] = useState<any>(null)
@@ -807,7 +807,7 @@ function WWPageContent() {
           if (center) {
             const lat = center.lat()
             const lng = center.lng()
-            test.current
+            placeTypeRef.current
               ? textSearchMutation(google_place_textSearch(lat, lng))
               : nearbyMutation(google_place_nearby(lat, lng))
           }
@@ -1114,7 +1114,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
 
   useEffect(() => {
     if (!map) return
-    test.current = placeType
+    placeTypeRef.current = placeType
     const center = map.getCenter()
     if (center) {
       const lat = center.lat()
