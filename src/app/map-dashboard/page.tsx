@@ -807,9 +807,11 @@ function WWPageContent() {
           if (center) {
             const lat = center.lat()
             const lng = center.lng()
-            placeTypeRef.current
-              ? textSearchMutation(google_place_textSearch(lat, lng))
-              : nearbyMutation(google_place_nearby(lat, lng))
+            if (placeTypeRef.current) {
+              textSearchMutation(google_place_textSearch(lat, lng));
+            } else {
+              nearbyMutation(google_place_nearby(lat, lng));
+            }
           }
         })
         setIsLoading(false)
@@ -1121,9 +1123,11 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
       const lng = center.lng()
       // nearbyMutation을 즉시 호출
       // 이 경우, 불필요한 idle 이벤트를 유발하지 않도록 skipIdleRef를 설정할 필요 없음
-      placeType
-        ? textSearchMutation(google_place_textSearch(lat, lng))
-        : nearbyMutation(google_place_nearby(lat, lng))
+      if (placeTypeRef.current) {
+        textSearchMutation(google_place_textSearch(lat, lng));
+      } else {
+        nearbyMutation(google_place_nearby(lat, lng));
+      }
     }
   }, [placeType, map]) // placeType이 변경될 때 실행
 
