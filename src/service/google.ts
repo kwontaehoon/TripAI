@@ -8,9 +8,7 @@ const GOOGLE_PLACE_URL = {
 }
 
 // googlePlace text
-export const getGooglePlaceText = (params: object) => googlePlaceTextAxios.post(GOOGLE_PLACE_URL.text, {
-    textQuery: params
-});
+export const getGooglePlaceText = (params: object) => googlePlaceTextAxios.post(GOOGLE_PLACE_URL.text, params);
 
 // googlePlace nearby
 export const getGooglePlaceNearby = (params: object) => {

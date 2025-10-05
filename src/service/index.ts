@@ -68,7 +68,7 @@ export const googlePlaceTextAxios = axios.create({
     // "Access-Control-Allow-Credentials": true,
     // "Access-Control-Allow-Origin": "*",
     "X-Goog-Api-Key": process.env.NEXT_PUBLIC_GOOGLE_MAP_API as string,
-    "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.priceLevel,places.id"
+    "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.id,places.location,places.rating,places.userRatingCount,places.types"
   },
   responseType: "json",
   responseEncoding: "utf8",

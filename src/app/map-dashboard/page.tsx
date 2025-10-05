@@ -7,6 +7,9 @@ import { Loader } from "@googlemaps/js-api-loader"
 import {
   Search,
   Star,
+  Users,
+  Tag,
+  DollarSign,
   X,
   Navigation,
   List,
@@ -15,10 +18,20 @@ import {
   Route,
   Sparkles,
   ArrowRight,
+  Filter,
   Calendar,
+  CalendarDays,
+  UtensilsCrossed,
+  Building2,
 } from "lucide-react"
-import { useGooglePlaceNearbyMutation } from "@/hooks/springboot/dev"
-import { google_place_nearby } from "@/common/google/nearby"
+import {
+  useGooglePlaceNearbyMutation,
+  useGooglePlaceTextMutation,
+} from "@/hooks/springboot/dev"
+import {
+  google_place_nearby,
+  google_place_nearby_restaurant,
+} from "@/common/google/nearby"
 import { location_types } from "@/util/google_nearby_api/location_types"
 import { comma } from "@/util/comma"
 import { aiResponseAtom, loadingModalAtom } from "@/store/ai"
@@ -27,6 +40,7 @@ import { useAiRecommendMutation } from "@/hooks/supabase/dev"
 import { cleanJson } from "@/util/cleanJson"
 import { useRouter } from "next/navigation"
 import { ai_mapDashboardResponse_func } from "@/common/ai/ai_response"
+import { google_place_textSearch } from "@/common/google/textSearch"
 
 interface TouristSpot {
   id: string
@@ -37,6 +51,13 @@ interface TouristSpot {
   rating: number
   reviewCount: number
   description: string
+}
+
+interface TravelFilters {
+  period: string
+  numberOfPeople: string
+  theme: string
+  budget: string
 }
 
 interface PlaylistItem {
@@ -250,17 +271,403 @@ const PlaylistDropZone = ({
   )
 }
 
+// 여행 필터 컴포넌트
+const TravelFilterBar = ({
+  filters,
+  setFilters,
+  isFixed,
+}: {
+  filters: TravelFilters
+  setFilters: (filters: TravelFilters) => void
+  isFixed: boolean
+}) => {
+  const getBudgetLabel = (value: string) => {
+    switch (value) {
+      case "low":
+        return "10만원 이하"
+      case "medium":
+        return "10-30만원"
+      case "high":
+        return "30-50만원"
+      case "luxury":
+        return "50만원 이상"
+      default:
+        return value
+    }
+  }
+
+  const getPeriodLabel = (value: string) => {
+    switch (value) {
+      case "1day":
+        return "당일치기"
+      case "2-3days":
+        return "1박 2일 ~ 2박 3일"
+      case "4-7days":
+        return "3박 4일 ~ 1주일"
+      case "1week+":
+        return "1주일 이상"
+      default:
+        return value
+    }
+  }
+
+  const getPeopleLabel = (value: string) => {
+    switch (value) {
+      case "solo":
+        return "혼자 (1명)"
+      case "couple":
+        return "커플 (2명)"
+      case "small-group":
+        return "소그룹 (3-5명)"
+      case "large-group":
+        return "대그룹 (6명 이상)"
+      default:
+        return value
+    }
+  }
+
+  return (
+    <div
+      className={`${isFixed ? "fixed top-0 left-0 right-0 z-50 opacity-100" : "relative"} transition-all duration-300`}
+      data-oid="e64-r04"
+    >
+      <div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4"
+        data-oid=".:sxij9"
+      >
+        <div
+          className="bg-white rounded-2xl shadow border !border-gray-200 p-6"
+          data-oid="-q:mvq0"
+        >
+          {/* <div className="flex items-center space-x-3 mb-4" data-oid="yi_knsg">
+            <div
+              className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+              data-oid="5akw6s5"
+            >
+              <Filter className="w-4 h-4 text-white" data-oid="mi9vsf7" />
+            </div>
+            <h2 className="text-lg font-bold text-gray-900" data-oid="i4-mwka">
+              여행 필터
+            </h2>
+            <div className="flex-1" data-oid="v.a2ed3"></div>
+            <div className="text-sm text-gray-500" data-oid="al0s4w-">
+              코스 생성 시 반영됩니다
+            </div>
+          </div> */}
+
+          <div
+            className="grid grid-cols-1 md:grid-cols-4 gap-4"
+            data-oid="qqh0uoh"
+          >
+            {/* 여행 기간 */}
+            <div data-oid="n.k0g:o">
+              <label
+                className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
+                data-oid="33st7.6"
+              >
+                <CalendarDays
+                  className="w-4 h-4 text-blue-500"
+                  data-oid="47ty9ru"
+                />
+
+                <span data-oid="pu4zomd">여행 기간</span>
+              </label>
+              <select
+                required
+                value={filters.period}
+                onChange={(e) =>
+                  setFilters({ ...filters, period: e.target.value })
+                }
+                className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                data-oid="br16gqg"
+              >
+                <option value="" data-oid="1vt2j0x">
+                  선택해주세요
+                </option>
+                <option value="당일치기" data-oid="f_gtp_b">
+                  당일치기
+                </option>
+                <option value="1박 2일" data-oid="wr96-vo">
+                  1박 2일
+                </option>
+                <option value="2박 3일">2박 3일</option>
+                <option value="3박 4일" data-oid="28l-_v5">
+                  3박 4일
+                </option>
+                <option value="일주일 이상" data-oid="68og0s6">
+                  일주일 이상
+                </option>
+              </select>
+            </div>
+
+            {/* 인원수 */}
+            <div data-oid="s6hejlh">
+              <label
+                className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
+                data-oid="6cn7-xb"
+              >
+                <Users className="w-4 h-4 text-green-500" data-oid=":2vhsjk" />
+                <span data-oid="yn4sdbk">인원수</span>
+              </label>
+              <select
+                value={filters.numberOfPeople}
+                onChange={(e) =>
+                  setFilters({ ...filters, numberOfPeople: e.target.value })
+                }
+                className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                data-oid="dup1ydf"
+              >
+                <option value="" data-oid="w74cvkb">
+                  선택해주세요
+                </option>
+                <option value="혼자" data-oid="6l8t2a7">
+                  혼자 (1명)
+                </option>
+                <option value="커플" data-oid="uwh_y8v">
+                  커플 (2명)
+                </option>
+                <option value="3~5명" data-oid="eu.h.iq">
+                  소그룹 (3-5명)
+                </option>
+                <option value="6명 이상" data-oid="oxw-bq9">
+                  대그룹 (6명 이상)
+                </option>
+              </select>
+            </div>
+
+            {/* 테마 */}
+            <div data-oid="jxwryhf">
+              <label
+                className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
+                data-oid="3nuvxur"
+              >
+                <Tag className="w-4 h-4 text-purple-500" data-oid="iuk5dlr" />
+                <span data-oid="8yknj1n">테마</span>
+              </label>
+              <select
+                value={filters.theme}
+                onChange={(e) =>
+                  setFilters({ ...filters, theme: e.target.value })
+                }
+                className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                data-oid="toiq9e0"
+              >
+                <option value="" data-oid="2b1tetf">
+                  선택해주세요
+                </option>
+                <option value="역사" data-oid="2sp8imj">
+                  역사
+                </option>
+                <option value="문화" data-oid="chiaopg">
+                  문화
+                </option>
+                <option value="자연" data-oid="b.4z3e7">
+                  자연
+                </option>
+                <option value="쇼핑" data-oid="hvmabht">
+                  쇼핑
+                </option>
+                <option value="해변" data-oid="a4lnl_j">
+                  해변
+                </option>
+                <option value="랜드마크" data-oid="jyfee8e">
+                  랜드마크
+                </option>
+                <option value="야경" data-oid="-:6:6-6">
+                  야경
+                </option>
+                <option value="클럽" data-oid="pn05rwm">
+                  클럽
+                </option>
+                <option value="예술" data-oid="_awbdbc">
+                  예술
+                </option>
+              </select>
+            </div>
+
+            {/* 예산 */}
+            <div data-oid="x20p77q">
+              <label
+                className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
+                data-oid="2auhna0"
+              >
+                <DollarSign
+                  className="w-4 h-4 text-orange-500"
+                  data-oid="fl1pqav"
+                />
+
+                <span data-oid=":ww757m">예산</span>
+              </label>
+              <select
+                value={filters.budget}
+                onChange={(e) =>
+                  setFilters({ ...filters, budget: e.target.value })
+                }
+                className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                data-oid="e-ef6oy"
+              >
+                <option value="" data-oid="ne.1y27">
+                  선택해주세요
+                </option>
+                <option value="10만원 이하" data-oid="nylgll7">
+                  10만원 이하
+                </option>
+                <option value="10~30만원" data-oid=".acedll">
+                  10-30만원
+                </option>
+                <option value="30~50만원" data-oid="86_xd1c">
+                  30-50만원
+                </option>
+                <option value="50만원 이상" data-oid="a1_v1.6">
+                  50만원 이상
+                </option>
+              </select>
+            </div>
+          </div>
+
+          {/* 활성 필터 칩들 */}
+          {(filters.period ||
+            filters.numberOfPeople ||
+            filters.theme ||
+            filters.budget) && (
+            <div
+              className="mt-4 pt-4 border-t !border-gray-200"
+              data-oid="8m-ch47"
+            >
+              <div
+                className="flex flex-wrap items-center gap-2 mb-3"
+                data-oid=".7zxy-x"
+              >
+                <span
+                  className="text-sm font-medium text-gray-700"
+                  data-oid=":0ccfu8"
+                >
+                  활성 필터:
+                </span>
+                {filters.period && (
+                  <div
+                    className="flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                    data-oid="zx.jeq_"
+                  >
+                    <span data-oid="38u.-je">
+                      기간: {getPeriodLabel(filters.period)}
+                    </span>
+                    <button
+                      onClick={() => setFilters({ ...filters, period: "" })}
+                      className="ml-2 hover:bg-blue-200 rounded-full p-0.5"
+                      data-oid="w037s68"
+                    >
+                      <X className="w-3 h-3" data-oid="fkb0k5z" />
+                    </button>
+                  </div>
+                )}
+                {filters.numberOfPeople && (
+                  <div
+                    className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
+                    data-oid="1omo42g"
+                  >
+                    <span data-oid="du_ngoz">
+                      인원: {getPeopleLabel(filters.numberOfPeople)}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setFilters({ ...filters, numberOfPeople: "" })
+                      }
+                      className="ml-2 hover:bg-green-200 rounded-full p-0.5"
+                      data-oid="blnhz4i"
+                    >
+                      <X className="w-3 h-3" data-oid="20mn-a3" />
+                    </button>
+                  </div>
+                )}
+                {filters.theme && (
+                  <div
+                    className="flex items-center bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
+                    data-oid="7eg5q.o"
+                  >
+                    <span data-oid="57mualn">테마: {filters.theme}</span>
+                    <button
+                      onClick={() => setFilters({ ...filters, theme: "" })}
+                      className="ml-2 hover:bg-purple-200 rounded-full p-0.5"
+                      data-oid="8_vl94w"
+                    >
+                      <X className="w-3 h-3" data-oid="f.g_v-6" />
+                    </button>
+                  </div>
+                )}
+                {filters.budget && (
+                  <div
+                    className="flex items-center bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm"
+                    data-oid="x0zu41r"
+                  >
+                    <span data-oid="il_134d">
+                      예산: {getBudgetLabel(filters.budget)}
+                    </span>
+                    <button
+                      onClick={() => setFilters({ ...filters, budget: "" })}
+                      className="ml-2 hover:bg-orange-200 rounded-full p-0.5"
+                      data-oid="ufruatd"
+                    >
+                      <X className="w-3 h-3" data-oid="_r7819t" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* 필터 초기화 */}
+          {(filters.period ||
+            filters.numberOfPeople ||
+            filters.theme ||
+            filters.budget) && (
+            <div
+              className="flex justify-end mt-4 pt-4 border-t !border-gray-200"
+              data-oid="if-9vyq"
+            >
+              <button
+                onClick={() =>
+                  setFilters({
+                    period: "",
+                    numberOfPeople: "",
+                    theme: "",
+                    budget: "",
+                  })
+                }
+                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
+                data-oid="vtw_-94"
+              >
+                <X className="w-4 h-4" data-oid="996q:y1" />
+                <span data-oid="jkt5tst">모든 필터 초기화</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function WWPageContent() {
   const router = useRouter()
   const mapRef = useRef<HTMLDivElement>(null)
   const skipIdleRef = useRef(false)
   const zoomRef = useRef<number | undefined>(null)
+  const fixedMarkersRef = useRef<google.maps.Marker[]>([])
+  const isClusterZoomRef = useRef(false)
+  const test = useRef<boolean>(false)
   const [map, setMap] = useState<google.maps.Map | null>(null)
+  const [placeType, setPlaceType] = useState<boolean>(false)
   const [markerClusterer, setMarkerClusterer] = useState<any>(null)
   const [currentZoom, setCurrentZoom] = useState(8)
   const [isLoading, setIsLoading] = useState(true)
-  const { mutateAsync: nearbyMutation, data: nearBydata } =
+  const [nearBydata, setNearbyData] = useState()
+  const [showTouristSpots, setShowTouristSpots] = useState(true)
+  const [showRestaurants, setShowRestaurants] = useState(false) 
+  const { mutateAsync: nearbyMutation, data: nearBydataaa } =
     useGooglePlaceNearbyMutation()
+  const { mutateAsync: textSearchMutation, data: textSearchData } =
+    useGooglePlaceTextMutation()
   const [loadingAtom, setLoadingAtom] = useAtom(loadingModalAtom)
   const [formData, setFormData] = useState({
     destination: "",
@@ -273,13 +680,31 @@ function WWPageContent() {
     purpose: "",
     budget: "",
   })
+  // 여행 필터 상태
+  const [travelFilters, setTravelFilters] = useState<TravelFilters>({
+    period: "",
+    numberOfPeople: "",
+    theme: "",
+    budget: "",
+  })
   const [_, setAiResponse] = useAtom(aiResponseAtom)
   const { mutateAsync: aiRecommend, data, isSuccess } = useAiRecommendMutation()
   const prevNearbyDataRef = useRef<any>(null)
   const currentMarkersRef = useRef([])
+  const isAllFilled = Object.values(travelFilters).every(
+    (value) => value !== "",
+  )
 
   // 플레이리스트
   const [myPlaylists, setMyPlaylists] = useState<PlaylistItem[]>([])
+
+  useEffect(() => {
+    setNearbyData(nearBydataaa)
+  }, [nearBydataaa])
+
+  useEffect(() => {
+    setNearbyData(textSearchData)
+  }, [textSearchData])
 
   useEffect(() => {
     if (isSuccess) {
@@ -302,6 +727,10 @@ function WWPageContent() {
         destination: myPlaylists.map((x) => x.spot.displayName.text).join(","),
         generated: "true",
         mapDashboard: "true", // ai-input에서 생성한 ai 코스를 구분하기 위한 값
+        durationType: travelFilters.period,
+        travelers: travelFilters.numberOfPeople,
+        purpose: travelFilters.theme,
+        budget: travelFilters.budget,
       })
 
       setFormData({
@@ -370,6 +799,7 @@ function WWPageContent() {
             return // 줌 변경 후 발생한 idle은 무시
           }
           if (skipIdleRef.current) {
+            skipIdleRef.current = false
             return
           }
 
@@ -377,10 +807,11 @@ function WWPageContent() {
           if (center) {
             const lat = center.lat()
             const lng = center.lng()
-            nearbyMutation(google_place_nearby(lat, lng))
+            test.current
+              ? textSearchMutation(google_place_textSearch(lat, lng))
+              : nearbyMutation(google_place_nearby(lat, lng))
           }
         })
-
         setIsLoading(false)
       } catch (error) {
         console.error("Google Maps 로드 실패:", error)
@@ -405,25 +836,119 @@ function WWPageContent() {
 
     const updateMarkers = async () => {
       try {
-        // ------------------------------------------
-        // 1. 기존 마커 정리 (통일된 단일 로직)
-        // ------------------------------------------
         if (markerClusterer) {
           markerClusterer.clearMarkers()
           setMarkerClusterer(null)
         }
 
-        // ⭐ (핵심) useRef에 담긴 이전 마커들을 모두 지도에서 제거합니다.
         currentMarkersRef.current.forEach((marker) => {
           marker.setMap(null)
         })
-        // ⭐ useRef 배열을 비워서 새 마커를 받을 준비를 합니다.
         currentMarkersRef.current = []
+
+        fixedMarkersRef.current.forEach((marker) => {
+          marker.setMap(null)
+        })
+        fixedMarkersRef.current = []
+
+        const newFixedMarkers = myPlaylists.map((item) => {
+          const spot = item.spot
+
+          const fixedMarkerIcon = {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: "#9333ea",
+            fillOpacity: 0.9,
+            strokeColor: "#FFFFFF",
+            strokeWeight: 2,
+            scale: 10,
+          }
+
+          const marker = new google.maps.Marker({
+            position: {
+              lat: spot.location.latitude,
+              lng: spot.location.longitude,
+            },
+            map: map,
+            title: `[나의 코스] ${spot.displayName.text}`,
+            icon: fixedMarkerIcon,
+            zIndex: 999,
+          })
+
+          const contentDiv = document.createElement("div")
+          contentDiv.innerHTML = `
+<div class="p-4 max-w-[250px]">
+<h3 class="font-bold text-lg text-gray-900 mb-3">${spot.displayName.text}</h3>
+<p class="text-sm text-gray-600 mb-3">${spot.formattedAddress}</p>
+<div class="flex flex-wrap gap-1 mb-3">
+${spot.types
+  ?.slice(0, 3)
+  .map(
+    (category) =>
+      `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">${location_types(
+        category,
+      )}</span>`,
+  )
+  .join("")}
+</div>
+
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+  <div class="flex items-center mr-3">
+    <span class="text-yellow-500 mr-1">★</span>
+    <span class="font-semibold text-gray-900">${spot.rating}</span>
+  </div>
+  <div class="text-sm text-gray-600">
+    리뷰 ${comma(spot.userRatingCount, false)}개
+  </div>
+</div>
+</div>
+<button id="add-to-plan-${spot.id}"
+class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg hover:shadow-lg transition-all flex items-center justify-center space-x-1 text-sm font-medium"
+>
+<span>여행 코스에 추가</span>
+</button>
+</div>
+`
+
+          const infoWindow = new google.maps.InfoWindow({
+            content: contentDiv,
+          })
+
+          // 이벤트 리스너 수동으로 추가
+          setTimeout(() => {
+            const button = contentDiv.querySelector(`#add-to-plan-${spot.id}`)
+            if (button) {
+              button.addEventListener("click", () => {
+                addToPlaylist(spot)
+              })
+            }
+          }, 0)
+
+          marker.addListener("click", () => {
+            skipIdleRef.current = true
+            if (isMounted) {
+              infoWindow.open(map, marker)
+            }
+          })
+
+          return marker
+        })
+
+        fixedMarkersRef.current = newFixedMarkers // 고정 마커 배열 업데이트
 
         if (currentZoom >= CLUSTER_ZOOM_THRESHOLD) {
           // 높은 줌 레벨: 개별 마커 표시
 
           currentMarkersRef.current = nearBydata?.places?.map((spot) => {
+            const customIcon = {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 10,
+              fillColor: placeType ? "#10B981" : "#3B82F6",
+              fillOpacity: 0.8,
+              strokeColor: "#ffffff",
+              strokeWeight: 2,
+            }
+
             const marker = new google.maps.Marker({
               position: {
                 lat: spot.location.latitude,
@@ -431,14 +956,7 @@ function WWPageContent() {
               },
               map: map,
               title: spot.displayName.text,
-              //   icon: {
-              //     path: google.maps.SymbolPath.CIRCLE,
-              //     scale: 10,
-              //     // fillColor: getCategoryColor(spot.category),
-              //     fillOpacity: 0.8,
-              //     strokeColor: "#ffffff",
-              //     strokeWeight: 2,
-              //   },
+              icon: customIcon, // ⭐ 정의한 customIcon 적용
             })
 
             // 정보창 생성
@@ -482,7 +1000,6 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
               content: contentDiv,
             })
 
-            // 이벤트 리스너 수동으로 추가
             setTimeout(() => {
               const button = contentDiv.querySelector(`#add-to-plan-${spot.id}`)
               if (button) {
@@ -496,9 +1013,6 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
               skipIdleRef.current = true
               if (isMounted) {
                 infoWindow.open(map, marker)
-                setTimeout(() => {
-                  skipIdleRef.current = false
-                }, 3000)
               }
             })
 
@@ -510,7 +1024,6 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
             "@googlemaps/markerclusterer"
           )
 
-          // 클러스터용 마커들 생성 (map에 직접 추가하지 않음)
           currentMarkersRef.current = nearBydata?.places?.map((spot) => {
             const marker = new google.maps.Marker({
               position: {
@@ -518,7 +1031,6 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                 lng: spot.location.longitude,
               },
               title: spot.displayName.text,
-              // map 속성을 제거하여 직접 지도에 추가되지 않도록 함
             })
 
             // 클러스터에서도 개별 마커 클릭 이벤트
@@ -561,17 +1073,24 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
               },
             })
 
+            // 클러스터 모임을 클릭할 경우
+            clusterer.addListener("click", (cluster) => {
+              isClusterZoomRef.current = true
+            })
+
             setMarkerClusterer(clusterer)
           }
         }
+        isClusterZoomRef.current = false
       } catch (error) {
         console.error("마커 업데이트 실패:", error)
       }
     }
+
     if (nearBydata) {
       // 이전 데이터와 현재 데이터의 places id를 비교해서 변경되었으면 마커 다시 표시
       // 변경되지 않았으면 현재 마커 유지
-      const nearByDataId = nearBydata.places.map((x) => x.id)
+      const nearByDataId = nearBydata?.places?.map((x) => x.id)
       let prevNearByDataId
       if (prevNearbyDataRef.current) {
         prevNearByDataId = prevNearbyDataRef.current.map((x) => x.id)
@@ -579,7 +1098,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
       const isEqual =
         JSON.stringify(nearByDataId) === JSON.stringify(prevNearByDataId)
       prevNearbyDataRef.current = nearBydata.places
-      if (!isEqual) {
+      if (!isEqual || isClusterZoomRef.current) {
         updateMarkers()
       } else {
         return () => {
@@ -592,6 +1111,59 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
       }
     }
   }, [map, currentZoom, nearBydata])
+
+  useEffect(() => {
+    if (!map) return
+    test.current = placeType
+    const center = map.getCenter()
+    if (center) {
+      const lat = center.lat()
+      const lng = center.lng()
+      // nearbyMutation을 즉시 호출
+      // 이 경우, 불필요한 idle 이벤트를 유발하지 않도록 skipIdleRef를 설정할 필요 없음
+      placeType
+        ? textSearchMutation(google_place_textSearch(lat, lng))
+        : nearbyMutation(google_place_nearby(lat, lng))
+    }
+  }, [placeType, map]) // placeType이 변경될 때 실행
+
+  useEffect(() => {
+    if (!map) return
+
+    const updateFixedMarkers = () => {
+      fixedMarkersRef.current.forEach((marker) => {
+        marker.setMap(null)
+      })
+      fixedMarkersRef.current = []
+
+      const newFixedMarkers = myPlaylists.map((item) => {
+        const spot = item.spot
+
+        const fixedMarkerIcon = {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: "#9333ea", // 붉은 계열 (고정된 마커임을 강조)
+          fillOpacity: 0.9,
+          strokeColor: "#FFFFFF",
+          strokeWeight: 2,
+          scale: 10,
+        }
+
+        const marker = new google.maps.Marker({
+          position: {
+            lat: spot.location.latitude,
+            lng: spot.location.longitude,
+          },
+          map: map,
+          icon: fixedMarkerIcon,
+          zIndex: 999,
+        })
+        return marker
+      })
+
+      fixedMarkersRef.current = newFixedMarkers
+    }
+    updateFixedMarkers()
+  }, [map, myPlaylists])
 
   // 플레이리스트 관리
   const addToPlaylist = useCallback((spot: TouristSpot) => {
@@ -619,7 +1191,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
     })
     // AI 생성 시뮬레이션 (3초 대기)
     await new Promise((resolve) => setTimeout(resolve, 3000))
-    await aiRecommend(ai_mapDashboardResponse_func(myPlaylists))
+    await aiRecommend(ai_mapDashboardResponse_func(myPlaylists, travelFilters))
   }
 
   return (
@@ -627,6 +1199,16 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
       data-oid="._m99n4"
     >
+      {/* Filter Bar - 스크롤 시 고정 */}
+      <div data-oid="7r5l1wk">
+        <TravelFilterBar
+          filters={travelFilters}
+          setFilters={setTravelFilters}
+          isFixed={false}
+          data-oid="_0mrtae"
+        />
+      </div>
+
       {/* Main Content */}
       <div
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12"
@@ -724,7 +1306,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
           >
             {/* Tourist Spots List - 작은 카드들 */}
             <div
-              className="bg-white rounded-2xl shadow-lg border !border-gray-200 md:h-[40vh] h-[500px] flex flex-col w-1/2 md:w-full"
+              className="bg-white rounded-2xl shadow-lg border !border-gray-200 md:h-[40vh] h-[500px] flex flex-col w-full"
               data-oid="69-muth"
             >
               <div className="p-4 border-b !border-gray-200" data-oid="v0-vkxw">
@@ -749,16 +1331,13 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                     </h3>
                   </div>
                   <span className="text-xs text-gray-600" data-oid="m_94de4">
-                    {nearBydata?.places?.length}개
+                    {nearBydata?.places?.length || 0}개
                   </span>
                 </div>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4" data-oid="dzv8er1">
-                <div
-                  className="grid md:grid-cols-2 grid-cols-1 gap-3"
-                  data-oid="_aq0fa:"
-                >
+                <div className="grid grid-cols-2 gap-3" data-oid="_aq0fa:">
                   {nearBydata?.places?.map((spot, index) => (
                     <DraggableSpotCard
                       key={index}
@@ -828,7 +1407,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
 
             {/* Playlist Dashboard - 더 긴 높이 */}
             <div
-              className="bg-white rounded-2xl shadow-lg border !border-gray-200 h-[500px] md:h-[40vh] flex flex-col w-1/2 md:w-full"
+              className="bg-white rounded-2xl shadow-lg border !border-gray-200 h-[500px] md:h-[40vh] flex-col w-1/2 md:w-full hidden md:flex"
               data-oid="hb11rk0"
             >
               <div className="p-4 border-b !border-gray-200" data-oid=".--x9i:">
@@ -870,12 +1449,12 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                   <span className="text-gray-600" data-oid="x5r.k6j">
                     {myPlaylists.length}개 관광지 선택됨
                   </span>
-                  <span
+                  {/* <span
                     className="text-purple-600 font-medium"
                     data-oid="9i9n3vo"
                   >
                     예상 {myPlaylists.length * 2}시간
-                  </span>
+                  </span> */}
                 </div>
               </div>
 
@@ -934,8 +1513,14 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                   data-oid="ghke3qh"
                 >
                   <button
+                    disabled={!isAllFilled}
                     onClick={generateCourse}
-                    className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white rounded-lg hover:shadow-xl transition-all font-semibold text-sm flex items-center justify-center space-x-2"
+                    className={`w-full px-4 py-3 rounded-lg hover:shadow-xl transition-all font-semibold text-sm flex items-center justify-center space-x-2
+                     ${
+                       isAllFilled
+                         ? "bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white"
+                         : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                     }`}
                     data-oid="biq.uqr"
                   >
                     <Sparkles className="w-4 h-4" data-oid="syqudbb" />
@@ -944,6 +1529,114 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                   </button>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Fixed Toggle Buttons - Bottom Right */}
+      <div className="fixed bottom-6 right-6 z-50 w-40" data-oid="zo8p4lz">
+        <div
+          className="bg-white rounded-2xl shadow-2xl border !border-gray-200 p-4"
+          data-oid="bukvnze"
+        >
+          <div className="flex items-center space-x-2 mb-3" data-oid="bk.ze7h">
+            <div
+              className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+              data-oid="bzmfqie"
+            >
+              <Filter className="w-3 h-3 text-white" data-oid="2s3vluz" />
+            </div>
+            <span
+              className="text-sm font-semibold text-gray-900"
+              data-oid="nk54pjq"
+            >
+              표시 설정
+            </span>
+          </div>
+
+          <div className="space-y-2" data-oid="g.klffk">
+            <button
+              onClick={() => {
+                setShowTouristSpots(!showTouristSpots)
+                setShowRestaurants(false)
+                setPlaceType(false)
+              }}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                showTouristSpots
+                  ? "bg-blue-100 text-blue-700 border !border-blue-300"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+              data-oid="hcdazgq"
+            >
+              <div className="flex items-center space-x-2 mr-2" data-oid="_2az044">
+                <Building2 className="w-4 h-4" data-oid="spqpkxy" />
+                <span data-oid="yg_6pog">관광지</span>
+              </div>
+              <div
+                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                  showTouristSpots
+                    ? "!border-blue-500 bg-blue-500"
+                    : "!border-gray-400"
+                }`}
+                data-oid="9.uxz.t"
+              >
+                {showTouristSpots && (
+                  <div
+                    className="w-2 h-2 bg-white rounded-full"
+                    data-oid="iwe41wd"
+                  ></div>
+                )}
+              </div>
+            </button>
+
+            <button
+              onClick={() => {
+                setShowRestaurants(!showRestaurants)
+                setShowTouristSpots(false)
+                setPlaceType(true)
+              }}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                showRestaurants
+                  ? "bg-orange-100 text-orange-700 border !border-orange-300"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              }`}
+              data-oid="wffu5tr"
+            >
+              <div className="flex items-center space-x-2 mr-2" data-oid="2dycass">
+                <UtensilsCrossed className="w-4 h-4" data-oid="-h8cw.z" />
+                <span data-oid="mb3kgtq">맛집</span>
+              </div>
+              <div
+                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                  showRestaurants
+                    ? "!border-orange-500 bg-orange-500"
+                    : "!border-gray-400"
+                }`}
+                data-oid="he_rkin"
+              >
+                {showRestaurants && (
+                  <div
+                    className="w-2 h-2 bg-white rounded-full"
+                    data-oid="2bno.ye"
+                  ></div>
+                )}
+              </div>
+            </button>
+          </div>
+
+          <div
+            className="mt-3 pt-3 border-t !border-gray-200"
+            data-oid="tb:j0m8"
+          >
+            <div
+              className="text-xs text-gray-500 text-center"
+              data-oid=":5nc422"
+            >
+              {showTouristSpots
+                ? "관광지만 표시"
+                : showRestaurants
+                  ? "맛집만 표시"
+                  : "숨김"}
             </div>
           </div>
         </div>

@@ -144,7 +144,7 @@ export const useGooglePlaceTextMutation = () => {
   const mutationOptions = {
     mutationFn: async (params: object) => {
       const { data } = await getGooglePlaceText(params)
-      return data.places[0]
+      return data
     },
   }
   return useMutation(mutationOptions)
