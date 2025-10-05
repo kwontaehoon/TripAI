@@ -628,7 +628,10 @@ export const getBoardDetails = async (params: number) => {
 
 export const getCoursesAndBoards = async () => {
   const [coursesRes, boardsRes] = await Promise.all([
-    supabase.from("courses").select(`
+    supabase
+      .from("courses")
+      .select(
+        `
         *,
         comments (
           *,
@@ -667,10 +670,14 @@ export const getCoursesAndBoards = async () => {
             longitude
           )
         )
-      `)
+      `,
+      )
       .order("id", { ascending: true }),
 
-    supabase.from("boards").select(`
+    supabase
+      .from("boards")
+      .select(
+        `
         *,
         users(*),
         comments (
@@ -711,10 +718,140 @@ export const getCoursesAndBoards = async () => {
             longitude
           )
         )
-      `)
+      `,
+      )
       .order("id", { ascending: true }),
   ])
   return [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])]
+}
+
+export const getCoursesAndBoardsGallery = async () => {
+  const [coursesRes, boardsRes] = await Promise.all([
+    supabase
+      .from("courses")
+      .select(
+        `
+        *,
+        comments_count:comments!course_id(count),
+        comments (
+          *,
+          comments_replies (*)
+        ),
+        course_ai_insights ( title, insight ),
+        course_tags ( tag ),
+        course_highlights ( highlight ),
+        course_images ( image_url ),
+        course_badges ( badge ),
+        course_days (
+          day,
+          title,
+          subtitle,
+          total_distance,
+          total_time,
+          author_note,
+          estimated_cost,
+          course_places (
+            id,
+            name,
+            description,
+            location_type,
+            stay,
+            open_time,
+            entry_fee,
+            location,
+            distance,
+            recommend_reason,
+            rating_count,
+            review_count,
+            next_distance,
+            next_time,
+            place_tips ( tip ),
+            latitude,
+            longitude
+          )
+        )
+      `,
+      )
+      .order("likes", { ascending: false })
+      .order("count", { ascending: false, foreignTable: "comments!course_id" })
+      .limit(6),
+
+    supabase
+      .from("boards")
+      .select(
+        `
+        *,
+        users(*),
+        comments_count:comments!board_id(count),
+        comments (
+          *,
+          comments_replies (*)
+        ),
+        board_ai_insights ( title, insight ),
+        board_tags ( tag ),
+        board_highlights ( highlight ),
+        board_images ( image_url ),
+        board_badges ( badge ),
+        board_days (
+          id,
+          day,
+          title,
+          subtitle,
+          total_distance,
+          total_time,
+          author_note,
+          estimated_cost,
+          board_places (
+            id,
+            name,
+            description,
+            location_type,
+            stay,
+            open_time,
+            entry_fee,
+            location,
+            distance,
+            recommend_reason,
+            rating_count,
+            review_count,
+            next_distance,
+            next_time,
+            board_place_tips ( tip ),
+            latitude,
+            longitude
+          )
+        )
+      `,
+      )
+      .order("likes", { ascending: false })
+      .order("count", { ascending: false, foreignTable: "comments!board_id" })
+      .limit(6),
+  ])
+
+  // 데이터 가공: comments_count 필드의 count 값을 추출하여 숫자로 만듭니다.
+  const coursesData = (coursesRes.data ?? []).map(item => ({ 
+    ...item, 
+    comments_count: item.comments_count?.[0]?.count || 0 
+  }));
+  const boardsData = (boardsRes.data ?? []).map(item => ({ 
+    ...item, 
+    comments_count: item.comments_count?.[0]?.count || 0 
+  }));
+
+  const allData = [...coursesData, ...boardsData]
+
+  // 최종 정렬 로직: 1차 likes 내림차순, 2차 comments_count 내림차순
+  allData.sort((a, b) => {
+    // 1차 정렬: likes
+    if ((b.likes || 0) !== (a.likes || 0)) {
+      return (b.likes || 0) - (a.likes || 0);
+    }
+    // 2차 정렬: comments_count
+    return (b.comments_count || 0) - (a.comments_count || 0);
+  });
+
+  // 상위 6개만 반환
+  return allData.slice(0, 6)
 }
 
 // 게시글 좋아요
@@ -986,29 +1123,28 @@ export const postCommentReplyDelete = async (id: number) => {
   return data
 }
 
-
 const locationKeywordMap = {
   gimpo: ["김포"],
   gangwon: ["강원도", "강릉", "속초", "양양"],
   seoul: ["서울", "은평구", "송파구", "강남구", "종로구", "마포구"],
   jeju: ["제주", "제주시", "서귀포시"],
-};
+}
 
 // 쿼리 문자열을 동적으로 생성하는 헬퍼 함수
 const buildSearchQuery = (map) => {
-  const conditions = [];
+  const conditions = []
   for (const mainLocation in map) {
     map[mainLocation].forEach((keyword) => {
-      conditions.push(`title.ilike.%${keyword}%`);
-      conditions.push(`content.ilike.%${keyword}%`);
-    });
+      conditions.push(`title.ilike.%${keyword}%`)
+      conditions.push(`content.ilike.%${keyword}%`)
+    })
   }
-  return conditions.join(",");
-};
+  return conditions.join(",")
+}
 
 // 메인 인기 여행지
 export const getPopularLocation = async () => {
-  const searchQuery = buildSearchQuery(locationKeywordMap);
+  const searchQuery = buildSearchQuery(locationKeywordMap)
 
   const [coursesRes, boardsRes] = await Promise.all([
     supabase
@@ -1018,7 +1154,7 @@ export const getPopularLocation = async () => {
         id,
         title,
         content
-      `
+      `,
       )
       .or(searchQuery),
 
@@ -1029,40 +1165,44 @@ export const getPopularLocation = async () => {
         id,
         title,
         content
-      `
+      `,
       )
       .or(searchQuery),
-  ]);
+  ])
 
-  const allData = [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])];
+  const allData = [...(coursesRes.data ?? []), ...(boardsRes.data ?? [])]
 
   const categorizedData = {
     gimpo: [],
     gangwon: [],
     seoul: [],
     jeju: [],
-  };
+  }
 
-  const processedIds = new Set();
-  const mainLocations = Object.keys(locationKeywordMap);
+  const processedIds = new Set()
+  const mainLocations = Object.keys(locationKeywordMap)
 
   allData.forEach((item) => {
-    if (!item.title && !item.content) return;
-    if (processedIds.has(item.id)) return;
-    
-    const combinedText = `${item.title || ""} ${item.content || ""}`;
-    
+    if (!item.title && !item.content) return
+    if (processedIds.has(item.id)) return
+
+    const combinedText = `${item.title || ""} ${item.content || ""}`
+
     for (const mainLocation of mainLocations) {
-      if (locationKeywordMap[mainLocation].some(keyword => combinedText.includes(keyword))) {
-        categorizedData[mainLocation].push(item);
-        processedIds.add(item.id);
-        break; 
+      if (
+        locationKeywordMap[mainLocation].some((keyword) =>
+          combinedText.includes(keyword),
+        )
+      ) {
+        categorizedData[mainLocation].push(item)
+        processedIds.add(item.id)
+        break
       }
     }
-  });
+  })
 
-  return categorizedData;
-};
+  return categorizedData
+}
 
 // 인기 여행지
 export const getPopularSearch = async () => {

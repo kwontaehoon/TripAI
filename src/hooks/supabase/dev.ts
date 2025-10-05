@@ -30,6 +30,7 @@ import {
   getMypageLikes,
   deleteUser,
   getPopularLocation,
+  getCoursesAndBoardsGallery,
 } from "@/service/supabase"
 import { uploadMultipleImages } from "@/service/supabase/storage"
 import { getGeminiAi } from "@/service/gemini"
@@ -45,6 +46,7 @@ const TEST_QUERY_KEY = {
   boardsInfinite: ["boards", "infinite"],
   boardDetails: ["boardDetails"],
   coursesAndBoards: ["coursesAndBoards"],
+  coursesAndBoardsGallery: ["coursesAndBoardsGallery"],
   comments: ["comments"],
   popularSearch: ["popularSearch"],
 }
@@ -250,6 +252,17 @@ export const useCoursesAndBoardsQuery = () => {
     queryKey: TEST_QUERY_KEY.coursesAndBoards,
     queryFn: async () => {
       return await getCoursesAndBoards()
+    },
+  }
+
+  return useQuery(queryOptions)
+}
+
+export const useCoursesAndBoardsGalleryQuery = () => {
+  const queryOptions = {
+    queryKey: TEST_QUERY_KEY.coursesAndBoardsGallery,
+    queryFn: async () => {
+      return await getCoursesAndBoardsGallery()
     },
   }
 

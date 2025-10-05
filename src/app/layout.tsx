@@ -14,6 +14,7 @@ import {
   prefetchCourseDetails,
   prefetchCourses,
   prefetchCoursesAndBoards,
+  prefetchCoursesAndBoardsGallery,
   prefetchCoursesInfinite,
   prefetchPopularLocation,
 } from "@/service/prefetch"
@@ -48,7 +49,8 @@ await prefetchCoursesInfinite(queryClient, null)
 await prefetchBoards(queryClient)
 await prefetchBoardsInfinite(queryClient, null)
 
-await prefetchCoursesAndBoards(queryClient)
+// await prefetchCoursesAndBoards(queryClient)
+await prefetchCoursesAndBoardsGallery(queryClient)
 
 await Promise.all(
   [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),

@@ -6,6 +6,7 @@ import {
   getCourseDetails,
   getCourses,
   getCoursesAndBoards,
+  getCoursesAndBoardsGallery,
   getCoursesInfinite,
   getPopularLocation,
 } from "./supabase"
@@ -20,6 +21,7 @@ const TEST_QUERY_KEY = {
   boardDetails: ["boardDetails"],
   coursesAndBoards: ["coursesAndBoards"],
   popularSearch: ["popularSearch"],
+  coursesAndBoardsGallery: ["coursesAndBoardsGallery"]
 }
 
 // popular location
@@ -101,5 +103,13 @@ export const prefetchCoursesAndBoards = async (queryClient: QueryClient) => {
   await queryClient.prefetchQuery({
     queryKey: TEST_QUERY_KEY.coursesAndBoards,
     queryFn: getCoursesAndBoards,
+  })
+}
+
+// coursesAndBoardsGallery prefetch
+export const prefetchCoursesAndBoardsGallery = async (queryClient: QueryClient) => {
+  await queryClient.prefetchQuery({
+    queryKey: TEST_QUERY_KEY.coursesAndBoardsGallery,
+    queryFn: getCoursesAndBoardsGallery,
   })
 }
