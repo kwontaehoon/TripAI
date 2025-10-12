@@ -7,7 +7,20 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    remotePatterns: [new URL('https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/**')],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'tvkqolkaaqmqftrawadd.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/trip-ai/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'places.googleapis.com', 
+        port: '',
+        pathname: '/v1/places/**',
+      },
+    ],
   },
 };
 
