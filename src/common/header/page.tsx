@@ -15,6 +15,7 @@ const getScrollbarWidth = () => {
 const Page = ({ InitialuserInfo }) => {
   const router = useRouter()
   const supabase = createClient()
+  const mobileWidth = 1024
   const [userInfo, setUserInfo] = useAtom(userInfoAtom)
   const [isVisible, setIsVisible] = useState(true)
 
@@ -33,6 +34,12 @@ const Page = ({ InitialuserInfo }) => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
+      const isMobile = window.innerWidth <= mobileWidth
+
+      if (isMobile) {
+        setIsVisible(true)
+        return
+      }
 
       if (currentScrollY > lastScrollY) {
         setIsVisible(false)
@@ -105,10 +112,7 @@ const Page = ({ InitialuserInfo }) => {
             </p>
           </div>
         </div>
-        <div
-          className="flex-1 flex flex-row-reverse pr-4"
-          data-oid="nst0g5j"
-        >
+        <div className="flex-1 flex flex-row-reverse pr-4" data-oid="nst0g5j">
           <div className="flex items-center space-x-4" data-oid="j6cwnl9">
             {InitialuserInfo || userInfo ? (
               <>
