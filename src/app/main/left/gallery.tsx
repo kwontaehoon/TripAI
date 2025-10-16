@@ -13,8 +13,9 @@ import { useRouter } from "next/navigation"
 const gallery = () => {
   const router = useRouter()
 
-  const { data: galleryList } = useCoursesAndBoardsGalleryQuery()
-  return (
+  const { data: galleryList, isSuccess } = useCoursesAndBoardsGalleryQuery()
+  
+  return !isSuccess ? '' : (
     <div className="mb-8" data-oid="travel-gallery">
       <div
         className="flex items-center justify-between mb-4"
