@@ -42,22 +42,22 @@ export const metadata: Metadata = {
 
 // prefech
 const queryClient = new QueryClient()
-await prefetchPopularLocation(queryClient)
+// await prefetchPopularLocation(queryClient)
 
-await prefetchCourses(queryClient)
-await prefetchCoursesInfinite(queryClient, null)
-await prefetchBoards(queryClient)
-await prefetchBoardsInfinite(queryClient, null)
+// await prefetchCourses(queryClient)
+// await prefetchCoursesInfinite(queryClient, null)
+// await prefetchBoards(queryClient)
+// await prefetchBoardsInfinite(queryClient, null)
 
-// await prefetchCoursesAndBoards(queryClient)
-await prefetchCoursesAndBoardsGallery(queryClient)
+// // await prefetchCoursesAndBoards(queryClient)
+// await prefetchCoursesAndBoardsGallery(queryClient)
 
-await Promise.all(
-  [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),
-)
-await Promise.all(
-  [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id)),
-)
+// await Promise.all(
+//   [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),
+// )
+// await Promise.all(
+//   [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id)),
+// )
 
 export default async function RootLayout({
   children,
