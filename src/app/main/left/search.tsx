@@ -118,7 +118,7 @@ const SearchPage = ({ initialUserInfo }) => {
         </button>
         <button
           onClick={() => router.push("/map-dashboard")}
-          className="flex items-center space-x-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all ml-1"
+          className="flex items-center z-10 space-x-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all ml-1"
           data-oid="7h70-m_"
         >
           <Zap className="w-4 h-4" data-oid="v6q0v7d" />

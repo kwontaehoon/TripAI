@@ -1,8 +1,10 @@
 import {
   InfiniteData,
+  QueryClient,
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query"
 import {
   getCourses,
@@ -89,7 +91,7 @@ export const useEmailCheckMutation = (params) => {
 // user 계정 삭제
 export const useDeleteUserMutation = () => {
   const mutationOptions = {
-    mutationFn: async (email:string) => {
+    mutationFn: async (email: string) => {
       const results = await deleteUser(email)
       return results
     },
@@ -190,6 +192,9 @@ export const useCourseDetailsQuery = (params: number) => {
       const data = await getCourseDetails(params)
       return data
     },
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   }
   return useQuery(queryOptions)
 }
@@ -241,6 +246,9 @@ export const useBoardDetailssQuery = (params: number) => {
       const data = await getBoardDetails(params)
       return data
     },
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   }
 
   return useQuery(queryOptions)
@@ -271,10 +279,22 @@ export const useCoursesAndBoardsGalleryQuery = () => {
 
 // 게시글 좋아요
 export const useLikeMutation = () => {
+  const queryClient = useQueryClient()
   const mutationOptions = {
     mutationFn: async (params: object) => {
       const results = await postLike(params)
       return results
+    },
+    onSuccess: async (data, params: object) => {
+      if (params.course_id === undefined) {
+        await queryClient.invalidateQueries({
+          queryKey: ["boardDetails", params.board_id],
+        })
+      } else {
+        await queryClient.invalidateQueries({
+          queryKey: ["courseDetails", params.course_id],
+        })
+      }
     },
   }
   return useMutation(mutationOptions)

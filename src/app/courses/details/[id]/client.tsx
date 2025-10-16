@@ -6,7 +6,7 @@ import { comma } from "@/util/comma"
 import { getBadgeColor } from "@/util/styles"
 import { Download, Heart, MapPin, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { use, useState } from "react"
+import { use, useEffect, useState } from "react"
 import Skeleton from "./skeleton"
 import Image from "next/image"
 import CommentCard from "@/common/card/comment_details_card"
@@ -22,7 +22,6 @@ export default function CourseDetailsPage({
   params: Promise<{ id: number }>
 }) {
   const router = useRouter()
-  const queryClient = new QueryClient()
   const { id } = use(params)
   const [selectedDay, setSelectedDay] = useState(1)
   const setUserInfo = useSetAtom(userInfoAtom)
@@ -60,14 +59,6 @@ export default function CourseDetailsPage({
     }
     setUserInfo(copyUserInfo)
     courseDetailsDataRefetch()
-
-    queryClient.refetchQueries({
-      queryKey: ["courseDetails", Number(id)],
-    })
-
-    queryClient.invalidateQueries({
-      queryKey: ["courseDetails", Number(id)],
-    })
   }
 
   const handleDownload = async () => {
