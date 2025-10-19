@@ -1,23 +1,64 @@
-
 import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"
 import Right from "./right/page"
-import Intro from './Intro'
+import Intro from "./Intro"
 import { createClient } from "@/service/supabase/server"
-import { getUserInfo } from "@/service/supabase"
+import {
+  getBoards,
+  getBoardsInfinite,
+  getCourses,
+  getCoursesAndBoardsGallery,
+  getCoursesInfinite,
+  getPopularLocation,
+  getUserInfo,
+} from "@/service/supabase"
+import { dehydrate, QueryClient } from "@tanstack/react-query"
+import {
+  prefetchBoards,
+  prefetchBoardsInfinite,
+  prefetchCourses,
+  prefetchCoursesAndBoards,
+  prefetchCoursesAndBoardsGallery,
+  prefetchCoursesInfinite,
+  prefetchPopularLocation,
+} from "@/service/prefetch"
+import { Hydration } from "../Hydration"
 // import { useSession } from "next-auth/react"
 // import { queryClient } from "@/config/provider/queryClientProvider"
 // import { Metadata, ResolvingMetadata } from "next"
 
-const Page = async() => {
-
+const Page = async () => {
   const supabase = await createClient()
   const {
     data: { session },
   } = await supabase.auth.getSession()
 
   const userInfo = !session ? null : await getUserInfo(session?.user.email)
-  
+
+  const galleryList = await getCoursesAndBoardsGallery()
+  const popularLocation = await getPopularLocation()
+  const boardsInfiniteData = await getBoardsInfinite({ pageParam: "1" })
+  const coursesInfiniteData = await getCoursesInfinite({ pageParam: "1" })
+  const boardsData = await getBoards()
+  const coursesData = await getCourses()
+
+  // prefech
+  const queryClient = new QueryClient()
+  await prefetchPopularLocation(queryClient)
+  await prefetchCourses(queryClient)
+  await prefetchCoursesInfinite(queryClient, null)
+  await prefetchBoards(queryClient)
+  await prefetchBoardsInfinite(queryClient, null)
+  await prefetchCoursesAndBoards(queryClient)
+  await prefetchCoursesAndBoardsGallery(queryClient)
+
+  // await Promise.all(
+  //   [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),
+  // )
+  // await Promise.all(
+  //   [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id)),
+  // )
+
   // const { data: pageNationData, isLoading, isFetching } = useTestPageNationQuery(state)
 
   // useEffect(() => {
@@ -37,15 +78,16 @@ const Page = async() => {
   //   );
   // }
 
-  return (  
-    <div
-      className="
+  return (
+    <Hydration state={dehydrate(queryClient)}>
+      <div
+        className="
         bg-#f8fafc
         justify-center
         px-4 lg:px-0 py-28 mb-4 space-x-0
         lg:flex lg:mb-12 lg:space-x-12"
-    >
-      {/* <div className="py-28">
+      >
+        {/* <div className="py-28">
         <button onClick={() => signIn("kakao", { callbackUrl: "/" })}>
           카카오 로그인
         </button>
@@ -59,28 +101,41 @@ const Page = async() => {
         </button>
       </div> */}
 
-      <Intro />
-      <Left initialUserInfo={userInfo} />
-      <Right />
+        <Intro />
+        <Left
+          initialUserInfo={userInfo}
+          galleryList={galleryList}
+          popularLocation={popularLocation}
+          boardsInfiniteData={boardsInfiniteData.boards}
+          coursesInfiniteData={coursesInfiniteData.courses}
+        />
+        <Right boardsData={boardsData} coursesData={coursesData} />
 
-      {/* Floating Elements */}
-      <div
-        className="absolute hidden 2xl:block top-32 left-20 animate-bounce"
-        data-oid="44lb0:h"
-      >
-        <div className="bg-white rounded-full p-4 shadow-lg" data-oid=".wyh69n">
-          <Camera className="h-6 w-6 text-blue-600" data-oid="v._bw-7" />
+        {/* Floating Elements */}
+        <div
+          className="absolute hidden 2xl:block top-32 left-20 animate-bounce"
+          data-oid="44lb0:h"
+        >
+          <div
+            className="bg-white rounded-full p-4 shadow-lg"
+            data-oid=".wyh69n"
+          >
+            <Camera className="h-6 w-6 text-blue-600" data-oid="v._bw-7" />
+          </div>
+        </div>
+        <div
+          className="absolute hidden 2xl:block top-32 right-20 animate-bounce delay-1000"
+          data-oid="w62gl6y"
+        >
+          <div
+            className="bg-white rounded-full p-4 shadow-lg"
+            data-oid="sd40lp9"
+          >
+            <Mountain className="h-6 w-6 text-green-600" data-oid="-kbcjph" />
+          </div>
         </div>
       </div>
-      <div
-        className="absolute hidden 2xl:block top-32 right-20 animate-bounce delay-1000"
-        data-oid="w62gl6y"
-      >
-        <div className="bg-white rounded-full p-4 shadow-lg" data-oid="sd40lp9">
-          <Mountain className="h-6 w-6 text-green-600" data-oid="-kbcjph" />
-        </div>
-      </div>
-      </div>
+    </Hydration>
   )
 
   // return (

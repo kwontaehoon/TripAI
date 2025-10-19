@@ -50,7 +50,7 @@ export default function BoardPage({
     refetch: boardsInfiniteDataRefresh,
   } = useBoardsInfiniteQuery()
 
-  const activeUsers = boardsInfiniteData.map(board => board.users.id)
+  const activeUsers = boardsInfiniteData?.map(board => board.users.id)
 
   const filters = [
     "전체",

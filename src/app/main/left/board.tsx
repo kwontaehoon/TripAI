@@ -1,20 +1,11 @@
 "use client"
 
-import { useBoardsInfiniteQuery } from "@/hooks/supabase/dev"
 import { ArrowRight, Star } from "lucide-react"
 import { useRouter } from "next/navigation"
 
-const Board = () => {
+const Board = ({ boardsInfiniteData }) => {
   const router = useRouter()
-  const {
-    data: boardsInfiniteData,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useBoardsInfiniteQuery()
+
   return (
     <div>
       {/* Community Board Preview */}

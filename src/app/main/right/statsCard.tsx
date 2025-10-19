@@ -1,12 +1,7 @@
 "use client"
-import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/dev"
 
-const StatsCard = () => {
-  const { data: boardsData, isLoading: boardLoading } = useBoardsQuery()
-  const { data: coursesData, isLoading: courseLoading } = useCoursesQuery()
-  return boardLoading || courseLoading ? (
-    ""
-  ) : (
+const StatsCard = ({ boardsData, coursesData }) => {
+  return (
     <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-6 text-white">
       <div className="text-center">
         <div className="text-sm opacity-80 mb-2">전체 생성된 코스 수</div>

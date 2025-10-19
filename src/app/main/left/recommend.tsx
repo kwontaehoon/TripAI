@@ -2,19 +2,9 @@
 import React from "react"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useCoursesInfiniteQuery } from "@/hooks/supabase/dev"
 
-const Recommend = () => {
+const Recommend = ({ coursesInfiniteData }) => {
   const router = useRouter()
-  const {
-    data: coursesInfiniteData,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useCoursesInfiniteQuery()
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
@@ -32,25 +22,25 @@ const Recommend = () => {
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         {Array.isArray(coursesInfiniteData) &&
-        coursesInfiniteData.slice(0, 4).map((course) => (
-          <button
-            onClick={() => router.push(`/courses/details/${course.id}`)}
-            key={course.id}
-            className="
+          coursesInfiniteData.slice(0, 4).map((course) => (
+            <button
+              onClick={() => router.push(`/courses/details/${course.id}`)}
+              key={course.id}
+              className="
                     p-4
                     rounded-xl
                     text-left
               bg-white border !border-gray-200
               hover:shadow-md hover:border-blue-300"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-gray-700 group-hover:text-blue-600 transition-colors">
-                {course.title}
-              </span>
-              <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
-            </div>
-          </button>
-        ))}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-gray-700 group-hover:text-blue-600 transition-colors">
+                  {course.title}
+                </span>
+                <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
+              </div>
+            </button>
+          ))}
       </div>
     </div>
   )

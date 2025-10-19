@@ -7,19 +7,8 @@ import QueryClientProvider from "@/config/provider/queryClientProvider"
 import { ScrollController } from "@/util/scrollController"
 import { Suspense } from "react"
 import { dehydrate, QueryClient } from "@tanstack/react-query"
-import {
-  prefetchBoardDetails,
-  prefetchBoards,
-  prefetchBoardsInfinite,
-  prefetchCourseDetails,
-  prefetchCourses,
-  prefetchCoursesAndBoards,
-  prefetchCoursesAndBoardsGallery,
-  prefetchCoursesInfinite,
-  prefetchPopularLocation,
-} from "@/service/prefetch"
 import { Hydration } from "./Hydration"
-import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
+// import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
 import { AuthProvider } from "@/config/provider/authProvider"
 import { createClient } from "@/service/supabase/server"
 import { ToTop } from "@/components/toTop"
@@ -40,24 +29,7 @@ export const metadata: Metadata = {
   },
 }
 
-// prefech
 const queryClient = new QueryClient()
-await prefetchPopularLocation(queryClient)
-
-await prefetchCourses(queryClient)
-await prefetchCoursesInfinite(queryClient, null)
-await prefetchBoards(queryClient)
-await prefetchBoardsInfinite(queryClient, null)
-
-// await prefetchCoursesAndBoards(queryClient)
-await prefetchCoursesAndBoardsGallery(queryClient)
-
-await Promise.all(
-  [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),
-)
-await Promise.all(
-  [1, 3, 6, 63].map((id) => prefetchBoardDetails(queryClient, id)),
-)
 
 export default async function RootLayout({
   children,
