@@ -11,6 +11,7 @@ const SearchPage = () => {
   const [isListening, setIsListening] = useState(false)
   const [modalUiState, setModalUiState] = useAtom(modalUiStateAtom)
   const userInfo = useAtomValue(userInfoAtom)
+  console.log("ddd userInfo: ", userInfo)
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -93,10 +94,6 @@ const SearchPage = () => {
 
       <div className="flex items-center">
         {userInfo === undefined ? (
-          <div className="flex-1">
-            <div className="bg-gray-300 w-48 h-10 rounded-lg animate-pulse"></div>
-          </div>
-        ) : userInfo ? (
           <div className="flex-1"></div>
         ) : (
           <button
