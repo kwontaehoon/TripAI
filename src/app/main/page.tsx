@@ -13,44 +13,55 @@ import {
   getUserInfo,
 } from "@/service/supabase"
 import { dehydrate, QueryClient } from "@tanstack/react-query"
-import {
-  prefetchBoards,
-  prefetchBoardsInfinite,
-  prefetchCourses,
-  prefetchCoursesAndBoards,
-  prefetchCoursesAndBoardsGallery,
-  prefetchCoursesInfinite,
-  prefetchPopularLocation,
-} from "@/service/prefetch"
+// import {
+//   prefetchBoards,
+//   prefetchBoardsInfinite,
+//   prefetchCourses,
+//   prefetchCoursesAndBoards,
+//   prefetchCoursesAndBoardsGallery,
+//   prefetchCoursesInfinite,
+//   prefetchPopularLocation,
+// } from "@/service/prefetch"
 import { Hydration } from "../Hydration"
 // import { useSession } from "next-auth/react"
 // import { queryClient } from "@/config/provider/queryClientProvider"
 // import { Metadata, ResolvingMetadata } from "next"
 
+export const revalidate = 3600
+
 const Page = async () => {
-  const supabase = await createClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // const supabase = await createClient()
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession()
 
-  const userInfo = !session ? null : await getUserInfo(session?.user.email)
+  // const userInfo = !session ? null : await getUserInfo(session?.user.email)
 
-  const galleryList = await getCoursesAndBoardsGallery()
-  const popularLocation = await getPopularLocation()
-  const boardsInfiniteData = await getBoardsInfinite({ pageParam: "1" })
-  const coursesInfiniteData = await getCoursesInfinite({ pageParam: "1" })
-  const boardsData = await getBoards()
-  const coursesData = await getCourses()
+  const [
+    galleryList,
+    popularLocation,
+    boardsInfiniteData,
+    coursesInfiniteData,
+    boardsData,
+    coursesData,
+  ] = await Promise.all([
+    getCoursesAndBoardsGallery(),
+    getPopularLocation(),
+    getBoardsInfinite({ pageParam: "1" }),
+    getCoursesInfinite({ pageParam: "1" }),
+    getBoards(),
+    getCourses(),
+  ])
 
   // prefech
   const queryClient = new QueryClient()
-  await prefetchPopularLocation(queryClient)
-  await prefetchCourses(queryClient)
-  await prefetchCoursesInfinite(queryClient, null)
-  await prefetchBoards(queryClient)
-  await prefetchBoardsInfinite(queryClient, null)
-  await prefetchCoursesAndBoards(queryClient)
-  await prefetchCoursesAndBoardsGallery(queryClient)
+  // await prefetchPopularLocation(queryClient)
+  // await prefetchCourses(queryClient)
+  // await prefetchCoursesInfinite(queryClient, null)
+  // await prefetchBoards(queryClient)
+  // await prefetchBoardsInfinite(queryClient, null)
+  // await prefetchCoursesAndBoards(queryClient)
+  // await prefetchCoursesAndBoardsGallery(queryClient)
 
   // await Promise.all(
   //   [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),
@@ -103,7 +114,7 @@ const Page = async () => {
 
         <Intro />
         <Left
-          initialUserInfo={userInfo}
+          initialUserInfo={false}
           galleryList={galleryList}
           popularLocation={popularLocation}
           boardsInfiniteData={boardsInfiniteData.boards}
