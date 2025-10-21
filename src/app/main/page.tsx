@@ -10,18 +10,8 @@ import {
   getCoursesAndBoardsGallery,
   getCoursesInfinite,
   getPopularLocation,
-  getUserInfo,
 } from "@/service/supabase"
 import { dehydrate, QueryClient } from "@tanstack/react-query"
-// import {
-//   prefetchBoards,
-//   prefetchBoardsInfinite,
-//   prefetchCourses,
-//   prefetchCoursesAndBoards,
-//   prefetchCoursesAndBoardsGallery,
-//   prefetchCoursesInfinite,
-//   prefetchPopularLocation,
-// } from "@/service/prefetch"
 import { Hydration } from "../Hydration"
 // import { useSession } from "next-auth/react"
 // import { queryClient } from "@/config/provider/queryClientProvider"
@@ -30,12 +20,6 @@ import { Hydration } from "../Hydration"
 export const revalidate = 3600
 
 const Page = async () => {
-  // const supabase = await createClient()
-  // const {
-  //   data: { session },
-  // } = await supabase.auth.getSession()
-
-  // const userInfo = !session ? null : await getUserInfo(session?.user.email)
 
   const [
     galleryList,
@@ -53,15 +37,7 @@ const Page = async () => {
     getCourses(),
   ])
 
-  // prefech
   const queryClient = new QueryClient()
-  // await prefetchPopularLocation(queryClient)
-  // await prefetchCourses(queryClient)
-  // await prefetchCoursesInfinite(queryClient, null)
-  // await prefetchBoards(queryClient)
-  // await prefetchBoardsInfinite(queryClient, null)
-  // await prefetchCoursesAndBoards(queryClient)
-  // await prefetchCoursesAndBoardsGallery(queryClient)
 
   // await Promise.all(
   //   [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),
@@ -114,7 +90,6 @@ const Page = async () => {
 
         <Intro />
         <Left
-          initialUserInfo={false}
           galleryList={galleryList}
           popularLocation={popularLocation}
           boardsInfiniteData={boardsInfiniteData.boards}

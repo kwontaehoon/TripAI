@@ -7,7 +7,6 @@ import Popular from "./popular"
 import Search from "./search"
 
 const Page = ({
-  initialUserInfo,
   galleryList,
   popularLocation,
   boardsInfiniteData,
@@ -15,7 +14,7 @@ const Page = ({
 }) => {
   return (
     <div className="mb-12 w-full lg:w-[700px]">
-      <Search initialUserInfo={initialUserInfo} />
+      <Search />
       <Gallery galleryList={galleryList} />
       <Recommend coursesInfiniteData={coursesInfiniteData} />
       <Popular popularLocation={popularLocation} />
