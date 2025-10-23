@@ -663,7 +663,7 @@ function WWPageContent() {
   const [isLoading, setIsLoading] = useState(true)
   const [nearBydata, setNearbyData] = useState()
   const [showTouristSpots, setShowTouristSpots] = useState(true)
-  const [showRestaurants, setShowRestaurants] = useState(false) 
+  const [showRestaurants, setShowRestaurants] = useState(false)
   const { mutateAsync: nearbyMutation, data: nearBydataaa } =
     useGooglePlaceNearbyMutation()
   const { mutateAsync: textSearchMutation, data: textSearchData } =
@@ -699,11 +699,17 @@ function WWPageContent() {
   const [myPlaylists, setMyPlaylists] = useState<PlaylistItem[]>([])
 
   useEffect(() => {
-    setNearbyData(nearBydataaa)
+    if (!placeTypeRef.current) {
+      if(nearBydataaa === undefined || Object.keys(nearBydataaa).length === 0){
+        setNearbyData({ places: []})
+      }else setNearbyData(nearBydataaa)
+    }
   }, [nearBydataaa])
 
   useEffect(() => {
-    setNearbyData(textSearchData)
+    if (placeTypeRef.current) {
+      setNearbyData(textSearchData)
+    }
   }, [textSearchData])
 
   useEffect(() => {
@@ -808,9 +814,9 @@ function WWPageContent() {
             const lat = center.lat()
             const lng = center.lng()
             if (placeTypeRef.current) {
-              textSearchMutation(google_place_textSearch(lat, lng));
+              textSearchMutation(google_place_textSearch(lat, lng))
             } else {
-              nearbyMutation(google_place_nearby(lat, lng));
+              nearbyMutation(google_place_nearby(lat, lng))
             }
           }
         })
@@ -1124,9 +1130,9 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
       // nearbyMutation을 즉시 호출
       // 이 경우, 불필요한 idle 이벤트를 유발하지 않도록 skipIdleRef를 설정할 필요 없음
       if (placeTypeRef.current) {
-        textSearchMutation(google_place_textSearch(lat, lng));
+        textSearchMutation(google_place_textSearch(lat, lng))
       } else {
-        nearbyMutation(google_place_nearby(lat, lng));
+        nearbyMutation(google_place_nearby(lat, lng))
       }
     }
   }, [placeType, map]) // placeType이 변경될 때 실행
@@ -1200,453 +1206,471 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
 
   return (
     <>
-    <div
-      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
-      data-oid="._m99n4"
-    >
-      {/* Filter Bar - 스크롤 시 고정 */}
-      <div data-oid="7r5l1wk">
-        <TravelFilterBar
-          filters={travelFilters}
-          setFilters={setTravelFilters}
-          isFixed={false}
-          data-oid="_0mrtae"
-        />
-      </div>
-
-      {/* Main Content */}
       <div
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12"
-        data-oid="kwxi8x2"
+        className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
+        data-oid="._m99n4"
       >
-        {/* Main Layout */}
+        {/* Filter Bar - 스크롤 시 고정 */}
+        <div data-oid="7r5l1wk">
+          <TravelFilterBar
+            filters={travelFilters}
+            setFilters={setTravelFilters}
+            isFixed={false}
+            data-oid="_0mrtae"
+          />
+        </div>
+
+        {/* Main Content */}
         <div
-          className="md:grid grid-cols-12 gap-8 min-h-[600px]"
-          data-oid="hdm0s7o"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12"
+          data-oid="kwxi8x2"
         >
-          {/* Left Side - Map */}
-          <div className="col-span-7" data-oid="wx8jpvy">
-            <div
-              className="bg-white rounded-3xl shadow-2xl border !border-gray-200 md:h-full h-[400px] overflow-hidden"
-              data-oid="jzabbp."
-            >
+          {/* Main Layout */}
+          <div
+            className="md:grid grid-cols-12 gap-8 min-h-[600px]"
+            data-oid="hdm0s7o"
+          >
+            {/* Left Side - Map */}
+            <div className="col-span-7" data-oid="wx8jpvy">
               <div
-                className="p-6 border-b !border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50"
-                data-oid="ag.4m5l"
+                className="bg-white rounded-3xl shadow-2xl border !border-gray-200 md:h-full h-[400px] overflow-hidden"
+                data-oid="jzabbp."
               >
                 <div
-                  className="flex items-center justify-between"
-                  data-oid="vf2d3:t"
+                  className="p-6 border-b !border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50"
+                  data-oid="ag.4m5l"
                 >
                   <div
-                    className="flex items-center space-x-3"
-                    data-oid="w3d7p2y"
+                    className="flex items-center justify-between"
+                    data-oid="vf2d3:t"
                   >
                     <div
-                      className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
-                      data-oid="pproyvn"
+                      className="flex items-center space-x-3"
+                      data-oid="w3d7p2y"
                     >
-                      <Map className="w-5 h-5 text-white" data-oid="grtf..m" />
-                    </div>
-                    <div data-oid="byl7gu6">
-                      <h2
-                        className="text-xl font-bold text-gray-900"
-                        data-oid="-5ae8dw"
+                      <div
+                        className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                        data-oid="pproyvn"
                       >
-                        인터랙티브 지도
-                      </h2>
-                      <p className="text-sm text-gray-600" data-oid="c0r2_:l">
-                        관광지를 클릭해서 상세 정보를 확인하세요
-                      </p>
+                        <Map
+                          className="w-5 h-5 text-white"
+                          data-oid="grtf..m"
+                        />
+                      </div>
+                      <div data-oid="byl7gu6">
+                        <h2
+                          className="text-xl font-bold text-gray-900"
+                          data-oid="-5ae8dw"
+                        >
+                          인터랙티브 지도
+                        </h2>
+                        <p className="text-sm text-gray-600" data-oid="c0r2_:l">
+                          관광지를 클릭해서 상세 정보를 확인하세요
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right" data-oid="n6yl.n:">
-                    <div
-                      className="text-sm font-medium text-gray-900"
-                      data-oid="c40mon1"
-                    >
-                      줌 레벨: {currentZoom}
-                    </div>
-                    <div className="text-xs text-gray-600" data-oid="6:t4h7r">
-                      {currentZoom >= CLUSTER_ZOOM_THRESHOLD
-                        ? "개별 마커"
-                        : "클러스터 모드"}
+                    <div className="text-right" data-oid="n6yl.n:">
+                      <div
+                        className="text-sm font-medium text-gray-900"
+                        data-oid="c40mon1"
+                      >
+                        줌 레벨: {currentZoom}
+                      </div>
+                      <div className="text-xs text-gray-600" data-oid="6:t4h7r">
+                        {currentZoom >= CLUSTER_ZOOM_THRESHOLD
+                          ? "개별 마커"
+                          : "클러스터 모드"}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="relative h-full" data-oid="m801ch-">
-                {isLoading && (
-                  <div
-                    className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center z-10"
-                    data-oid="422-791"
-                  >
-                    <div className="text-center" data-oid="y-77qh6">
-                      <div
-                        className="animate-spin rounded-full h-12 w-12 border-4 !border-blue-600 border-t-transparent mx-auto"
-                        data-oid="mtl2jtc"
-                      ></div>
-                      <p
-                        className="mt-4 text-gray-600 font-medium"
-                        data-oid="nf14nkj"
-                      >
-                        지도를 불러오는 중...
-                      </p>
+                <div className="relative h-full" data-oid="m801ch-">
+                  {isLoading && (
+                    <div
+                      className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center z-10"
+                      data-oid="422-791"
+                    >
+                      <div className="text-center" data-oid="y-77qh6">
+                        <div
+                          className="animate-spin rounded-full h-12 w-12 border-4 !border-blue-600 border-t-transparent mx-auto"
+                          data-oid="mtl2jtc"
+                        ></div>
+                        <p
+                          className="mt-4 text-gray-600 font-medium"
+                          data-oid="nf14nkj"
+                        >
+                          지도를 불러오는 중...
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-                <div
-                  ref={mapRef}
-                  className="w-full h-full"
-                  data-oid="e9f-mi7"
-                />
+                  )}
+                  <div
+                    ref={mapRef}
+                    className="w-full h-full"
+                    data-oid="e9f-mi7"
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Right Side - List & Dashboard */}
-          <div
-            className="col-span-5 block md:flex md:flex-col md:space-y-6 md:mt-0 mt-8 md:space-x-0"
-            data-oid="vgcpg5j"
-          >
-            {/* Tourist Spots List - 작은 카드들 */}
+            {/* Right Side - List & Dashboard */}
             <div
-              className="bg-white rounded-2xl shadow-lg border !border-gray-200 md:h-[40vh] h-[500px] flex flex-col w-full"
-              data-oid="69-muth"
+              className="col-span-5 block md:flex md:flex-col md:space-y-6 md:mt-0 mt-8 md:space-x-0"
+              data-oid="vgcpg5j"
             >
-              <div className="p-4 border-b !border-gray-200" data-oid="v0-vkxw">
+              {/* Tourist Spots List - 작은 카드들 */}
+              <div
+                className="bg-white rounded-2xl shadow-lg border !border-gray-200 md:h-[40vh] h-[500px] flex flex-col w-full"
+                data-oid="69-muth"
+              >
                 <div
-                  className="flex items-center justify-between"
-                  data-oid="6-0ag5z"
+                  className="p-4 border-b !border-gray-200"
+                  data-oid="v0-vkxw"
                 >
                   <div
-                    className="flex items-center space-x-2"
-                    data-oid="sa782or"
+                    className="flex items-center justify-between"
+                    data-oid="6-0ag5z"
                   >
-                    <List
-                      className="w-4 h-4 text-blue-600"
-                      data-oid=".v.pxus"
-                    />
-
-                    <h3
-                      className="text-base font-semibold text-gray-900"
-                      data-oid="1r6etm_"
+                    <div
+                      className="flex items-center space-x-2"
+                      data-oid="sa782or"
                     >
-                      관광지 목록
-                    </h3>
-                  </div>
-                  <span className="text-xs text-gray-600" data-oid="m_94de4">
-                    {nearBydata?.places?.length || 0}개
-                  </span>
-                </div>
-              </div>
+                      <List
+                        className="w-4 h-4 text-blue-600"
+                        data-oid=".v.pxus"
+                      />
 
-              <div className="flex-1 overflow-y-auto p-4" data-oid="dzv8er1">
-                <div className="grid grid-cols-2 gap-3" data-oid="_aq0fa:">
-                  {nearBydata?.places?.map((spot, index) => (
-                    <DraggableSpotCard
-                      key={index}
-                      spot={spot}
-                      data-oid="u5mj0ip"
-                    />
-                  ))}
-                </div>
-                {!nearBydata && (
-                  <div
-                    className="grid md:grid-cols-2 grid-cols-1 gap-3"
-                    data-oid="3itlqek"
-                  >
-                    {[1, 2, 3, 4, 5, 6].map((i) => (
-                      <div
-                        key={i}
-                        className="h-[100px] bg-gray-100 rounded-lg border !border-gray-200 animate-pulse"
-                        data-oid="genajtk"
+                      <h3
+                        className="text-base font-semibold text-gray-900"
+                        data-oid="1r6etm_"
                       >
+                        관광지 목록
+                      </h3>
+                    </div>
+                    <span className="text-xs text-gray-600" data-oid="m_94de4">
+                      {nearBydata?.places?.length || 0}개
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4" data-oid="dzv8er1">
+                  <div className="grid grid-cols-2 gap-3" data-oid="_aq0fa:">
+                    {nearBydata?.places?.map((spot, index) => (
+                      <DraggableSpotCard
+                        key={index}
+                        spot={spot}
+                        data-oid="u5mj0ip"
+                      />
+                    ))}
+                  </div>
+                  {!nearBydata && (
+                    <div
+                      className="grid md:grid-cols-2 grid-cols-1 gap-3"
+                      data-oid="3itlqek"
+                    >
+                      {[1, 2, 3, 4, 5, 6].map((i) => (
                         <div
-                          className="p-3 h-full flex flex-col justify-between"
-                          data-oid="5ohyaj2"
+                          key={i}
+                          className="h-[100px] bg-gray-100 rounded-lg border !border-gray-200 animate-pulse"
+                          data-oid="genajtk"
                         >
-                          <div className="flex-1 min-h-0" data-oid="dfa8twz">
-                            <div
-                              className="h-4 bg-gray-200 rounded w-3/4 mb-2"
-                              data-oid="sjj8y24"
-                            ></div>
-                            <div
-                              className="h-3 bg-gray-200 rounded w-full mb-1"
-                              data-oid="3bqgsi6"
-                            ></div>
-                            <div
-                              className="h-3 bg-gray-200 rounded w-2/3"
-                              data-oid="dbi0y4i"
-                            ></div>
-                          </div>
                           <div
-                            className="flex items-center justify-between mt-2"
-                            data-oid="-80-os_"
+                            className="p-3 h-full flex flex-col justify-between"
+                            data-oid="5ohyaj2"
                           >
-                            <div
-                              className="flex items-center"
-                              data-oid="cc19-pn"
-                            >
+                            <div className="flex-1 min-h-0" data-oid="dfa8twz">
                               <div
-                                className="w-3 h-3 bg-gray-200 rounded mr-1"
-                                data-oid="waxc_1u"
+                                className="h-4 bg-gray-200 rounded w-3/4 mb-2"
+                                data-oid="sjj8y24"
                               ></div>
                               <div
-                                className="h-3 bg-gray-200 rounded w-8"
-                                data-oid="au7um7r"
+                                className="h-3 bg-gray-200 rounded w-full mb-1"
+                                data-oid="3bqgsi6"
+                              ></div>
+                              <div
+                                className="h-3 bg-gray-200 rounded w-2/3"
+                                data-oid="dbi0y4i"
                               ></div>
                             </div>
                             <div
-                              className="h-5 bg-gray-200 rounded w-12"
-                              data-oid="yjg-dx3"
-                            ></div>
+                              className="flex items-center justify-between mt-2"
+                              data-oid="-80-os_"
+                            >
+                              <div
+                                className="flex items-center"
+                                data-oid="cc19-pn"
+                              >
+                                <div
+                                  className="w-3 h-3 bg-gray-200 rounded mr-1"
+                                  data-oid="waxc_1u"
+                                ></div>
+                                <div
+                                  className="h-3 bg-gray-200 rounded w-8"
+                                  data-oid="au7um7r"
+                                ></div>
+                              </div>
+                              <div
+                                className="h-5 bg-gray-200 rounded w-12"
+                                data-oid="yjg-dx3"
+                              ></div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Playlist Dashboard - 더 긴 높이 */}
-            <div
-              className="bg-white rounded-2xl shadow-lg border mt-8 md:mt-0 !border-gray-200 h-[500px] md:h-[40vh] flex-col md:w-full md:flex"
-              data-oid="hb11rk0"
-            >
-              <div className="p-4 border-b !border-gray-200" data-oid=".--x9i:">
-                <div
-                  className="flex items-center justify-between mb-3"
-                  data-oid=".0s7kuw"
-                >
-                  <div
-                    className="flex items-center space-x-2"
-                    data-oid="8ukvod6"
-                  >
-                    <LayoutDashboard
-                      className="w-4 h-4 text-purple-600"
-                      data-oid="sr7kn13"
-                    />
-
-                    <h3
-                      className="text-base font-semibold text-gray-900"
-                      data-oid="p2pmahu"
-                    >
-                      나의 여행 코스
-                    </h3>
-                  </div>
-                  {myPlaylists.length > 0 && (
-                    <button
-                      onClick={clearPlaylist}
-                      className="text-xs text-red-600 hover:text-red-700 font-medium"
-                      data-oid="3qgxwrl"
-                    >
-                      전체 삭제
-                    </button>
+                      ))}
+                    </div>
                   )}
                 </div>
+              </div>
 
+              {/* Playlist Dashboard - 더 긴 높이 */}
+              <div
+                className="bg-white rounded-2xl shadow-lg border mt-8 md:mt-0 !border-gray-200 h-[500px] md:h-[40vh] flex-col md:w-full md:flex"
+                data-oid="hb11rk0"
+              >
                 <div
-                  className="flex items-center justify-between text-xs"
-                  data-oid="1246ify"
+                  className="p-4 border-b !border-gray-200"
+                  data-oid=".--x9i:"
                 >
-                  <span className="text-gray-600" data-oid="x5r.k6j">
-                    {myPlaylists.length}개 관광지 선택됨
-                  </span>
-                  {/* <span
+                  <div
+                    className="flex items-center justify-between mb-3"
+                    data-oid=".0s7kuw"
+                  >
+                    <div
+                      className="flex items-center space-x-2"
+                      data-oid="8ukvod6"
+                    >
+                      <LayoutDashboard
+                        className="w-4 h-4 text-purple-600"
+                        data-oid="sr7kn13"
+                      />
+
+                      <h3
+                        className="text-base font-semibold text-gray-900"
+                        data-oid="p2pmahu"
+                      >
+                        나의 여행 코스
+                      </h3>
+                    </div>
+                    {myPlaylists.length > 0 && (
+                      <button
+                        onClick={clearPlaylist}
+                        className="text-xs text-red-600 hover:text-red-700 font-medium"
+                        data-oid="3qgxwrl"
+                      >
+                        전체 삭제
+                      </button>
+                    )}
+                  </div>
+
+                  <div
+                    className="flex items-center justify-between text-xs"
+                    data-oid="1246ify"
+                  >
+                    <span className="text-gray-600" data-oid="x5r.k6j">
+                      {myPlaylists.length}개 관광지 선택됨
+                    </span>
+                    {/* <span
                     className="text-purple-600 font-medium"
                     data-oid="9i9n3vo"
                   >
                     예상 {myPlaylists.length * 2}시간
                   </span> */}
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex-1 overflow-y-auto" data-oid="707.8yv">
-                <PlaylistDropZone onDrop={addToPlaylist} data-oid="2228b74">
-                  {myPlaylists.length === 0 ? (
-                    <div
-                      className="p-5 text-center text-gray-500"
-                      data-oid="kxldt6j"
-                    >
+                <div className="flex-1 overflow-y-auto" data-oid="707.8yv">
+                  <PlaylistDropZone onDrop={addToPlaylist} data-oid="2228b74">
+                    {myPlaylists.length === 0 ? (
                       <div
-                        className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                        data-oid="dcm5uvp"
+                        className="p-5 text-center text-gray-500"
+                        data-oid="kxldt6j"
                       >
-                        <Route
-                          className="w-8 h-8 text-blue-500"
-                          data-oid="2rg8vh2"
-                        />
+                        <div
+                          className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"
+                          data-oid="dcm5uvp"
+                        >
+                          <Route
+                            className="w-8 h-8 text-blue-500"
+                            data-oid="2rg8vh2"
+                          />
+                        </div>
+                        <p
+                          className="text-sm font-semibold text-gray-700 mb-2"
+                          data-oid="-4xhrgn"
+                        >
+                          여행 코스를 만들어보세요
+                        </p>
+                        <p
+                          className="text-xs text-gray-500 mb-1"
+                          data-oid="fxo_mz:"
+                        >
+                          관광지 카드를 드래그해서 여기에 놓거나
+                        </p>
+                        <p className="text-xs text-gray-500" data-oid="7c8m-bp">
+                          지도에서 선택해서 추가하세요
+                        </p>
                       </div>
-                      <p
-                        className="text-sm font-semibold text-gray-700 mb-2"
-                        data-oid="-4xhrgn"
-                      >
-                        여행 코스를 만들어보세요
-                      </p>
-                      <p
-                        className="text-xs text-gray-500 mb-1"
-                        data-oid="fxo_mz:"
-                      >
-                        관광지 카드를 드래그해서 여기에 놓거나
-                      </p>
-                      <p className="text-xs text-gray-500" data-oid="7c8m-bp">
-                        지도에서 선택해서 추가하세요
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="p-4 space-y-3" data-oid="kx66c5x">
-                      {myPlaylists.map((item, index) => (
-                        <PlaylistItem
-                          key={item.id}
-                          item={item}
-                          index={index}
-                          onRemove={removeFromPlaylist}
-                          data-oid="_lu90qu"
-                        />
-                      ))}
-                    </div>
-                  )}
-                </PlaylistDropZone>
-              </div>
+                    ) : (
+                      <div className="p-4 space-y-3" data-oid="kx66c5x">
+                        {myPlaylists.map((item, index) => (
+                          <PlaylistItem
+                            key={item.id}
+                            item={item}
+                            index={index}
+                            onRemove={removeFromPlaylist}
+                            data-oid="_lu90qu"
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </PlaylistDropZone>
+                </div>
 
-              {/* Action Buttons */}
-              {myPlaylists.length > 0 && (
-                <div
-                  className="p-4 border-t !border-gray-200 space-y-2"
-                  data-oid="ghke3qh"
-                >
-                  <button
-                    disabled={!isAllFilled}
-                    onClick={generateCourse}
-                    className={`w-full px-4 py-3 rounded-lg hover:shadow-xl transition-all font-semibold text-sm flex items-center justify-center space-x-2
+                {/* Action Buttons */}
+                {myPlaylists.length > 0 && (
+                  <div
+                    className="p-4 border-t !border-gray-200 space-y-2"
+                    data-oid="ghke3qh"
+                  >
+                    <button
+                      disabled={!isAllFilled}
+                      onClick={generateCourse}
+                      className={`w-full px-4 py-3 rounded-lg hover:shadow-xl transition-all font-semibold text-sm flex items-center justify-center space-x-2
                      ${
                        isAllFilled
                          ? "bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white"
                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
                      }`}
-                    data-oid="biq.uqr"
-                  >
-                    <Sparkles className="w-4 h-4" data-oid="syqudbb" />
-                    <span data-oid="hiwj:g1">AI 코스 생성하기</span>
-                    <ArrowRight className="w-4 h-4" data-oid="de0xjrc" />
-                  </button>
-                </div>
-              )}
+                      data-oid="biq.uqr"
+                    >
+                      <Sparkles className="w-4 h-4" data-oid="syqudbb" />
+                      <span data-oid="hiwj:g1">AI 코스 생성하기</span>
+                      <ArrowRight className="w-4 h-4" data-oid="de0xjrc" />
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* Fixed Toggle Buttons - Bottom Right */}
-      <div className="fixed bottom-6 right-6 z-50 w-40" data-oid="zo8p4lz">
-        <div
-          className="bg-white rounded-2xl shadow-2xl border !border-gray-200 p-4"
-          data-oid="bukvnze"
-        >
-          <div className="flex items-center space-x-2 mb-3" data-oid="bk.ze7h">
-            <div
-              className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
-              data-oid="bzmfqie"
-            >
-              <Filter className="w-3 h-3 text-white" data-oid="2s3vluz" />
-            </div>
-            <span
-              className="text-sm font-semibold text-gray-900"
-              data-oid="nk54pjq"
-            >
-              표시 설정
-            </span>
-          </div>
-
-          <div className="space-y-2" data-oid="g.klffk">
-            <button
-              onClick={() => {
-                setShowTouristSpots(!showTouristSpots)
-                setShowRestaurants(false)
-                setPlaceType(false)
-              }}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                showTouristSpots
-                  ? "bg-blue-100 text-blue-700 border !border-blue-300"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-              data-oid="hcdazgq"
-            >
-              <div className="flex items-center space-x-2 mr-2" data-oid="_2az044">
-                <Building2 className="w-4 h-4" data-oid="spqpkxy" />
-                <span data-oid="yg_6pog">관광지</span>
-              </div>
-              <div
-                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  showTouristSpots
-                    ? "!border-blue-500 bg-blue-500"
-                    : "!border-gray-400"
-                }`}
-                data-oid="9.uxz.t"
-              >
-                {showTouristSpots && (
-                  <div
-                    className="w-2 h-2 bg-white rounded-full"
-                    data-oid="iwe41wd"
-                  ></div>
-                )}
-              </div>
-            </button>
-
-            <button
-              onClick={() => {
-                setShowRestaurants(!showRestaurants)
-                setShowTouristSpots(false)
-                setPlaceType(true)
-              }}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                showRestaurants
-                  ? "bg-orange-100 text-orange-700 border !border-orange-300"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-              data-oid="wffu5tr"
-            >
-              <div className="flex items-center space-x-2 mr-2" data-oid="2dycass">
-                <UtensilsCrossed className="w-4 h-4" data-oid="-h8cw.z" />
-                <span data-oid="mb3kgtq">맛집</span>
-              </div>
-              <div
-                className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  showRestaurants
-                    ? "!border-orange-500 bg-orange-500"
-                    : "!border-gray-400"
-                }`}
-                data-oid="he_rkin"
-              >
-                {showRestaurants && (
-                  <div
-                    className="w-2 h-2 bg-white rounded-full"
-                    data-oid="2bno.ye"
-                  ></div>
-                )}
-              </div>
-            </button>
-          </div>
-
+        {/* Fixed Toggle Buttons - Bottom Right */}
+        <div className="fixed bottom-6 right-6 z-50 w-40" data-oid="zo8p4lz">
           <div
-            className="mt-3 pt-3 border-t !border-gray-200"
-            data-oid="tb:j0m8"
+            className="bg-white rounded-2xl shadow-2xl border !border-gray-200 p-4"
+            data-oid="bukvnze"
           >
             <div
-              className="text-xs text-gray-500 text-center"
-              data-oid=":5nc422"
+              className="flex items-center space-x-2 mb-3"
+              data-oid="bk.ze7h"
             >
-              {showTouristSpots
-                ? "관광지만 표시"
-                : showRestaurants
-                  ? "맛집만 표시"
-                  : "숨김"}
+              <div
+                className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
+                data-oid="bzmfqie"
+              >
+                <Filter className="w-3 h-3 text-white" data-oid="2s3vluz" />
+              </div>
+              <span
+                className="text-sm font-semibold text-gray-900"
+                data-oid="nk54pjq"
+              >
+                표시 설정
+              </span>
+            </div>
+
+            <div className="space-y-2" data-oid="g.klffk">
+              <button
+                onClick={() => {
+                  setShowTouristSpots(!showTouristSpots)
+                  setShowRestaurants(false)
+                  setPlaceType(false)
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  showTouristSpots
+                    ? "bg-blue-100 text-blue-700 border !border-blue-300"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                data-oid="hcdazgq"
+              >
+                <div
+                  className="flex items-center space-x-2 mr-2"
+                  data-oid="_2az044"
+                >
+                  <Building2 className="w-4 h-4" data-oid="spqpkxy" />
+                  <span data-oid="yg_6pog">관광지</span>
+                </div>
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    showTouristSpots
+                      ? "!border-blue-500 bg-blue-500"
+                      : "!border-gray-400"
+                  }`}
+                  data-oid="9.uxz.t"
+                >
+                  {showTouristSpots && (
+                    <div
+                      className="w-2 h-2 bg-white rounded-full"
+                      data-oid="iwe41wd"
+                    ></div>
+                  )}
+                </div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowRestaurants(!showRestaurants)
+                  setShowTouristSpots(false)
+                  setPlaceType(true)
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  showRestaurants
+                    ? "bg-orange-100 text-orange-700 border !border-orange-300"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                data-oid="wffu5tr"
+              >
+                <div
+                  className="flex items-center space-x-2 mr-2"
+                  data-oid="2dycass"
+                >
+                  <UtensilsCrossed className="w-4 h-4" data-oid="-h8cw.z" />
+                  <span data-oid="mb3kgtq">맛집</span>
+                </div>
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    showRestaurants
+                      ? "!border-orange-500 bg-orange-500"
+                      : "!border-gray-400"
+                  }`}
+                  data-oid="he_rkin"
+                >
+                  {showRestaurants && (
+                    <div
+                      className="w-2 h-2 bg-white rounded-full"
+                      data-oid="2bno.ye"
+                    ></div>
+                  )}
+                </div>
+              </button>
+            </div>
+
+            <div
+              className="mt-3 pt-3 border-t !border-gray-200"
+              data-oid="tb:j0m8"
+            >
+              <div
+                className="text-xs text-gray-500 text-center"
+                data-oid=":5nc422"
+              >
+                {showTouristSpots
+                  ? "관광지만 표시"
+                  : showRestaurants
+                    ? "맛집만 표시"
+                    : "숨김"}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   )
 }
