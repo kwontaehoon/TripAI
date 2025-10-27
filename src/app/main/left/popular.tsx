@@ -20,7 +20,7 @@ const Popular = ({ popularLocation }) => {
         >
           <h4 className="text-xl font-bold mb-1">제주</h4>
           <p className="text-white/80 text-sm">
-            {popularLocation?.jeju.length}개 코스
+            {popularLocation?.jeju?.length}개 코스
           </p>
         </div>
         <div
@@ -37,7 +37,7 @@ const Popular = ({ popularLocation }) => {
         >
           <h4 className="text-xl font-bold mb-1">강원도</h4>
           <p className="text-white/80 text-sm">
-            {popularLocation?.gangwon.length}개 코스
+            {popularLocation?.gangwon?.length}개 코스
           </p>
         </div>
         <div
@@ -52,7 +52,7 @@ const Popular = ({ popularLocation }) => {
         >
           <h4 className="text-xl font-bold mb-1">서울</h4>
           <p className="text-white/80 text-sm">
-            {popularLocation?.seoul.length}개 코스
+            {popularLocation?.seoul?.length}개 코스
           </p>
         </div>
         <div
@@ -67,7 +67,7 @@ const Popular = ({ popularLocation }) => {
         >
           <h4 className="text-xl font-bold mb-1">김포</h4>
           <p className="text-white/80 text-sm">
-            {popularLocation?.gimpo.length}개 코스
+            {popularLocation?.gimpo?.length}개 코스
           </p>
         </div>
       </div>

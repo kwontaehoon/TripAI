@@ -10,9 +10,7 @@ import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { Hydration } from "./Hydration"
 // import { NextAuthSessionProvider } from "@/config/provider/sessionProvider"
 import { AuthProvider } from "@/config/provider/authProvider"
-import { createClient } from "@/service/supabase/server"
 import { ToTop } from "@/components/toTop"
-import { getUserInfo } from "@/service/supabase"
 
 export const metadata: Metadata = {
   title: "TripAI",
@@ -36,12 +34,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const supabase = await createClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
-
-  const userInfo = !session ? null : await getUserInfo(session?.user.email)
 
   return (
     <html lang="en">
@@ -60,7 +52,7 @@ export default async function RootLayout({
               <Hydration state={dehydrate(queryClient)}>
                 <Modal />
                 <ScrollController />
-                <Header InitialuserInfo={userInfo} />
+                <Header />
                 {children}
                 <ToTop />
                 <Footer />

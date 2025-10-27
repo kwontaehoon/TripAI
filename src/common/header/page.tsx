@@ -1,4 +1,5 @@
 "use client"
+import { getUserInfo } from "@/service/supabase"
 import { createClient } from "@/service/supabase/client"
 import { introModalAtom, modalUiStateAtom, userInfoAtom } from "@/store/ai"
 import { useAtom } from "jotai"
@@ -12,10 +13,11 @@ const getScrollbarWidth = () => {
   return window.innerWidth - document.documentElement.clientWidth
 }
 
-const Page = ({ InitialuserInfo }) => {
+const Page = () => {
   const router = useRouter()
   const supabase = createClient()
   const mobileWidth = 1024
+  const [sessionInfo, setSessionInfo] = useState<string | object>("")
   const [userInfo, setUserInfo] = useAtom(userInfoAtom)
   const [isVisible, setIsVisible] = useState(true)
 
@@ -30,6 +32,18 @@ const Page = ({ InitialuserInfo }) => {
   const shouldDisableScroll = Object.values(aiModalUiStateModal).some(
     (state) => state,
   )
+
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+      if (session === null) {
+        setSessionInfo("not login")
+      } else setSessionInfo(session)
+    }
+    getSession()
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,6 +91,7 @@ const Page = ({ InitialuserInfo }) => {
     const { error } = await supabase.auth.signOut()
     setUserInfo(null)
     setIsDropdownOpen(false)
+    window.location.reload()
   }
 
   return (
@@ -114,7 +129,40 @@ const Page = ({ InitialuserInfo }) => {
         </div>
         <div className="flex-1 flex flex-row-reverse pr-4" data-oid="nst0g5j">
           <div className="flex items-center space-x-4" data-oid="j6cwnl9">
-            {InitialuserInfo || userInfo ? (
+            {sessionInfo === "" ? (
+              <div
+                className="flex items-center space-x-2 p-2"
+                data-oid="skeleton-loader"
+              >
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+                <div className="w-20 h-4 bg-gray-200 rounded hidden md:block animate-pulse" />
+              </div>
+            ) : sessionInfo === "not login" ? (
+              // Not Logged In UI
+              <>
+                <button
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  onClick={() => router.push("/login")}
+                  data-oid="r31ptmq"
+                >
+                  로그인
+                </button>
+                <button
+                  className="
+                                        px-4 py-2
+                                        rounded-lg
+                                        text-white
+                                        bg-gradient-to-r from-blue-600 to-purple-600
+                                        hover:shadow-lg"
+                  onClick={() => router.push("/signup")}
+                  data-oid="meq27pg"
+                >
+                  회원가입
+                </button>
+              </>
+            ) : !userInfo ? (
+              ""
+            ) : (
               <>
                 {/* User Menu */}
                 <div className="relative" data-oid="cw85quk">
@@ -127,36 +175,16 @@ const Page = ({ InitialuserInfo }) => {
                       className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                       data-oid="aqxkzhp"
                     >
-                      <If
-                        isTrue={
-                          !InitialuserInfo
-                            ? !userInfo
-                              ? false
-                              : userInfo.profile_image_url
-                            : InitialuserInfo?.profile_image_url
-                        }
-                      >
+                      <If isTrue={userInfo}>
                         <Image
-                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${!InitialuserInfo ? (!userInfo ? "" : userInfo.profile_image_url) : InitialuserInfo?.profile_image_url}`}
+                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${userInfo.profile_image_url}`}
                           className="rounded-full overflow-hidden"
-                          alt={
-                            InitialuserInfo
-                              ? InitialuserInfo.name
-                              : userInfo.name
-                          }
+                          alt={userInfo.name}
                           fill
                           sizes="32w"
                         />
                       </If>
-                      <If
-                        isTrue={
-                          InitialuserInfo
-                            ? !InitialuserInfo.profile_image_url
-                            : userInfo
-                              ? !userInfo.profile_image_url
-                              : false
-                        }
-                      >
+                      <If isTrue={userInfo === undefined}>
                         <div
                           className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
                           data-oid="dzrezk7"
@@ -173,7 +201,7 @@ const Page = ({ InitialuserInfo }) => {
                       className="text-sm font-medium text-gray-700 hidden md:block"
                       data-oid=":h9uxts"
                     >
-                      {InitialuserInfo ? InitialuserInfo.name : userInfo.name}
+                      {!userInfo ? "" : userInfo.name}
                     </span>
                     <ChevronDown
                       className="w-4 h-4 text-gray-500"
@@ -195,14 +223,10 @@ const Page = ({ InitialuserInfo }) => {
                           className="text-sm font-medium text-gray-900"
                           data-oid="44ie_.b"
                         >
-                          {InitialuserInfo
-                            ? InitialuserInfo.name
-                            : userInfo.name}
+                          {!userInfo ? "" : userInfo.name}
                         </p>
                         <p className="text-xs text-gray-500" data-oid="i9.yd_6">
-                          {InitialuserInfo
-                            ? InitialuserInfo.email
-                            : userInfo.email}
+                          {!userInfo ? "" : userInfo.email}
                         </p>
                       </div>
 
@@ -234,29 +258,6 @@ const Page = ({ InitialuserInfo }) => {
                     </div>
                   )}
                 </div>
-              </>
-            ) : (
-              // Not Logged In UI
-              <>
-                <button
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                  onClick={() => router.push("/login")}
-                  data-oid="r31ptmq"
-                >
-                  로그인
-                </button>
-                <button
-                  className="
-                                        px-4 py-2
-                                        rounded-lg
-                                        text-white
-                                        bg-gradient-to-r from-blue-600 to-purple-600
-                                        hover:shadow-lg"
-                  onClick={() => router.push("/signup")}
-                  data-oid="meq27pg"
-                >
-                  회원가입
-                </button>
               </>
             )}
           </div>

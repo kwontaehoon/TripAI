@@ -72,7 +72,7 @@ export default function LoginPage() {
     if (error) {
       setValidationLogin(true)
     } else {
-      router.replace("/")
+      window.location.replace('/');
     }
     setIsLoading(false)
   }

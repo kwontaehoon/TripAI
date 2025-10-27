@@ -2,7 +2,6 @@ import { Camera, Mountain } from "lucide-react"
 import Left from "./left/page"
 import Right from "./right/page"
 import Intro from "./Intro"
-import { createClient } from "@/service/supabase/server"
 import {
   getBoards,
   getBoardsInfinite,
@@ -92,8 +91,8 @@ const Page = async () => {
         <Left
           galleryList={galleryList}
           popularLocation={popularLocation}
-          boardsInfiniteData={boardsInfiniteData.boards}
-          coursesInfiniteData={coursesInfiniteData.courses}
+          boardsInfiniteData={boardsInfiniteData?.boards}
+          coursesInfiniteData={coursesInfiniteData?.courses}
         />
         <Right boardsData={boardsData} coursesData={coursesData} />
 

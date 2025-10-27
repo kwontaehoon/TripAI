@@ -7,10 +7,10 @@ import Popular from "./popular"
 import Search from "./search"
 
 const Page = ({
-  galleryList,
-  popularLocation,
-  boardsInfiniteData,
-  coursesInfiniteData,
+  galleryList = [],
+  popularLocation = [],
+  boardsInfiniteData = [],
+  coursesInfiniteData = [],
 }) => {
   return (
     <div className="mb-12 w-full lg:w-[700px]">
