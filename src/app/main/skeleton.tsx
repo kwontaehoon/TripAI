@@ -109,13 +109,13 @@ export default function HomeSkeleton() {
               </div>
 
               <div className="flex" data-oid="zrg5z19">
-                <button
+                {/* <button
                   className="flex flex-1 items-center space-x-2 text-blue-600 font-medium hover:text-blue-700"
                   data-oid="5no-d39"
                 >
                   <span data-oid="ugekji1">로그인 후 이용하기</span>
                   <ArrowRight className="w-4 h-4" data-oid="nmst9tc" />
-                </button>
+                </button> */}
                 <button
                   className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all mr-1"
                   data-oid="bapqirh"

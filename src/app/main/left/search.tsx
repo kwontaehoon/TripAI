@@ -91,8 +91,8 @@ const SearchPage = () => {
         </div>
       </form>
 
-      <div className="flex items-center">
-        {!!userInfo ? (
+      <div className="flex items-center justify-end">
+        {/* {!!userInfo ? (
           <div className="flex-1"></div>
         ) : (
           <button
@@ -106,7 +106,7 @@ const SearchPage = () => {
             <span>로그인 후 이용하기</span>
             <ArrowRight className="w-4 h-4 md:block hidden" />
           </button>
-        )}
+        )} */}
         <button
           onClick={() => setModalUiState({ ...modalUiState, aiInput: true })}
           className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all mr-1"

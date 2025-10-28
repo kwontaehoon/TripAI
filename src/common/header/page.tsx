@@ -135,7 +135,7 @@ const Page = () => {
                 data-oid="skeleton-loader"
               >
                 <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
-                <div className="w-20 h-4 bg-gray-200 rounded hidden md:block animate-pulse" />
+                <div className="w-16 h-4 bg-gray-200 rounded hidden md:block animate-pulse" />
               </div>
             ) : sessionInfo === "not login" ? (
               // Not Logged In UI
