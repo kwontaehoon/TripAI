@@ -19,7 +19,6 @@ import { Hydration } from "../Hydration"
 export const revalidate = 3600
 
 const Page = async () => {
-
   const [
     galleryList,
     popularLocation,
@@ -37,6 +36,15 @@ const Page = async () => {
   ])
 
   const queryClient = new QueryClient()
+
+  queryClient.setQueryData(["boards", "infinite"], {
+    pages: [boardsInfiniteData],
+    pageParams: [null],
+  })
+  queryClient.setQueryData(["courses", "infinite"], {
+    pages: [coursesInfiniteData],
+    pageParams: [null],
+  })
 
   // await Promise.all(
   //   [1, 2, 3, 4].map((id) => prefetchCourseDetails(queryClient, id)),

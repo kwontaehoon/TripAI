@@ -174,6 +174,7 @@ export const useCoursesInfiniteQuery = () => {
   >({
     queryKey: TEST_QUERY_KEY.coursesInfinite,
     queryFn: async ({ pageParam }) => await getCoursesInfinite({ pageParam }),
+    staleTime: 1000 * 60,
     initialPageParam: null,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.nextCursor
@@ -229,6 +230,7 @@ export const useBoardsInfiniteQuery = () => {
     queryKey: TEST_QUERY_KEY.boardsInfinite,
     queryFn: async ({ pageParam }) => await getBoardsInfinite({ pageParam }),
     initialPageParam: null,
+    staleTime: 1000 * 60,
     getNextPageParam: (lastPage, pages) => {
       return lastPage.nextCursor
     },
