@@ -1,6 +1,5 @@
 import { getUserInfo } from "@/service/supabase"
 import { createClient } from "@/service/supabase/server"
-import React from "react"
 import Client from "./client"
 
 const server = async ({ params }) => {

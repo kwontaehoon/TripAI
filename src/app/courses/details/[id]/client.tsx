@@ -6,14 +6,12 @@ import { comma } from "@/util/comma"
 import { getBadgeColor } from "@/util/styles"
 import { Download, Heart, MapPin, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { use, useEffect, useState } from "react"
+import { use, useState } from "react"
 import Skeleton from "./skeleton"
 import Image from "next/image"
 import CommentCard from "@/common/card/comment_details_card"
 import { userInfoAtom } from "@/store/ai"
 import { useSetAtom } from "jotai"
-import { If } from "react-haiku"
-import { QueryClient } from "@tanstack/react-query"
 
 export default function CourseDetailsPage({
   params,
@@ -59,6 +57,7 @@ export default function CourseDetailsPage({
     }
     setUserInfo(copyUserInfo)
     courseDetailsDataRefetch()
+    router.refresh()
   }
 
   const handleDownload = async () => {

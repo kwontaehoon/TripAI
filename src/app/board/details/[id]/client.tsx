@@ -3,7 +3,6 @@
 import Card from "@/common/card/board_details_card"
 import {
   useBoardDetailssQuery,
-  useCommentsQuery,
   useLikeMutation,
 } from "@/hooks/supabase/dev"
 import { comma } from "@/util/comma"
@@ -38,6 +37,11 @@ export default function BoardDetailsPage({
   const [selectedDay, setSelectedDay] = useState(1)
   const setUserInfo = useSetAtom(userInfoAtom)
 
+  // 유저가 코스에 좋아요를 눌렀는지 유무
+  const userBoardLikeFlag = !userInfo
+    ? null
+    : userInfo.likesItem.boards.includes(Number(id))
+
   const {
     data: boradDetailsData,
     isLoading: boradDetailsDataIsLoading,
@@ -45,11 +49,6 @@ export default function BoardDetailsPage({
   } = useBoardDetailssQuery(Number(id))
 
   const { mutateAsync: like } = useLikeMutation()
-
-  // 유저가 코스에 좋아요를 눌렀는지 유무
-  const userBoardLikeFlag = !userInfo
-    ? null
-    : userInfo.likesItem.boards.includes(Number(id))
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked)
@@ -80,6 +79,7 @@ export default function BoardDetailsPage({
     }
     setUserInfo(copyUserInfo)
     boradDetailsDataRefetch()
+    router.refresh()
   }
 
   const getLevelColor = (level: string) => {
@@ -98,7 +98,7 @@ export default function BoardDetailsPage({
   }
 
   const totalCommentCount = () => {
-    const comments = boradDetailsData[0].comments
+    const comments = boradDetailsData ? boradDetailsData[0].comments : []
     const totalReplies = comments.reduce((sum, comment) => {
       return (
         sum + (comment.comments_replies ? comment.comments_replies.length : 0)
