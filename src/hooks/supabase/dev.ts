@@ -33,6 +33,7 @@ import {
   deleteUser,
   getPopularLocation,
   getCoursesAndBoardsGallery,
+  postAiCourseSave,
 } from "@/service/supabase"
 import { uploadMultipleImages } from "@/service/supabase/storage"
 import { getGeminiAi } from "@/service/gemini"
@@ -415,6 +416,17 @@ export const useBoardCreateMutation = () => {
     mutationFn: async (params: object) => {
       const { success, error, newBoardId } = await postBoardCreate(params)
       return { success, error, newBoardId }
+    },
+  }
+  return useMutation(mutationOptions)
+}
+
+// ai course 저장
+export const useAiCourseSaveMutation = () => {
+  const mutationOptions = {
+    mutationFn: async (params: object) => {
+      const { success, error, newCourseId } = await postAiCourseSave(params)
+      return { success, error, newCourseId }
     },
   }
   return useMutation(mutationOptions)

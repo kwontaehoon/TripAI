@@ -1602,3 +1602,159 @@ export const postBoardCreate = async (boardData: any) => {
     return { success: false, error: error.message }
   }
 }
+
+
+// type definitions (외부 정의 가정)
+// interface GeminiCourseResponse { ... }
+
+export const postAiCourseSave = async (aiCourseData: any) => {
+  // 원본 데이터 변경 방지를 위해 깊은 복사
+  const copiedData = JSON.parse(JSON.stringify(aiCourseData)); 
+  
+  // ⭐ 핵심: course_days 배열을 그대로 사용합니다. (장소는 내부에 중첩되어 있다고 가정)
+  const rawCourseDays = copiedData.course_days; 
+
+  // 1. 태그 및 배지 데이터 형식 변환 (배열 of 스트링 -> 배열 of 객체)
+  // 입력 데이터의 필드명을 기반으로 변환합니다.
+  const tagsInput = copiedData.course_tags ? copiedData.course_tags.map((tag: string) => ({ tag })) : [];
+  const highlightsInput = copiedData.course_highlights ? copiedData.course_highlights.map((highlight: string) => ({ highlight })) : [];
+  const badgesInput = copiedData.course_badges ? copiedData.course_badges.map((badge: string) => ({ badge })) : [];
+  const aiInsightsInput = copiedData.course_ai_insights || []; 
+
+  // 2. ai_courses 테이블에 삽입할 최종 기본 데이터 구성
+  const aiCourseBaseData = {
+      title: copiedData.title,
+      subtitle: copiedData.subtitle,
+      description: copiedData.description,
+      duration: copiedData.duration,
+      participants: copiedData.participants,
+      difficulty: copiedData.difficulty,
+      estimated_time: copiedData.estimated_time,
+
+      // 사용자 정보 (userInfo는 입력 데이터의 최상위 객체에 있다고 가정)
+      author: copiedData.userInfo?.name || copiedData.author || "AI 여행 설계사",
+      author_type: copiedData.userInfo ? "user" : (copiedData.author_type || "AI"),
+      reliability: copiedData.reliability || "90%",
+      
+      // 메타데이터 초기화/매핑
+      total_cost: copiedData.total_cost || 0,
+      total_distance: copiedData.total_distance || "0km",
+      total_locations: copiedData.total_locations || 0,
+      total_places: copiedData.total_places || 0,
+      created_at: moment().format("YYYY-MM-DD"),
+      bookmark: 0,
+      likes: 0,
+      rating: copiedData.rating || 0,
+      total_comments: 0,
+      views: 0,
+  };
+
+  try {
+      // 1. ai_courses 테이블에 기본 데이터 삽입
+      const { data: courseRes, error: courseError } = await supabase
+          .from("ai_courses") 
+          .insert([aiCourseBaseData])
+          .select("id"); 
+
+      if (courseError) {
+          throw new Error(`AI Courses 테이블 삽입 오류: ${courseError.message}`);
+      }
+      if (!courseRes || courseRes.length === 0) {
+          throw new Error("AI Courses 테이블 삽입 후 ID를 반환받지 못했습니다.");
+      }
+      const newCourseId = courseRes[0].id;
+      console.log(`새로운 AI 코스 ID: ${newCourseId}`);
+
+      // 연관 테이블 삽입 (태그, 하이라이트, 배지, 인사이트)
+      
+      // 2. ai_course_tags 테이블에 삽입
+      if (tagsInput.length > 0) {
+          const tagsToInsert = tagsInput.map((tag: any) => ({ ...tag, ai_course_id: newCourseId }));
+          await supabase.from("ai_course_tags").insert(tagsToInsert);
+      }
+      
+      // 3. ai_course_highlights 테이블에 삽입
+      if (highlightsInput.length > 0) {
+          const highlightsToInsert = highlightsInput.map((highlight: any) => ({ ...highlight, ai_course_id: newCourseId }));
+          await supabase.from("ai_course_highlights").insert(highlightsToInsert);
+      }
+      
+      // 4. ai_course_badges 테이블에 삽입
+      if (badgesInput.length > 0) {
+          const badgesToInsert = badgesInput.map((badge: any) => ({ ...badge, ai_course_id: newCourseId }));
+          await supabase.from("ai_course_badges").insert(badgesToInsert);
+      }
+
+      // 5. ai_course_ai_insights 테이블에 삽입
+      if (aiInsightsInput.length > 0) {
+          const insightsToInsert = aiInsightsInput.map((insight: any) => ({ ...insight, ai_course_id: newCourseId }));
+          await supabase.from("ai_course_ai_insights").insert(insightsToInsert);
+      }
+      
+      // 6. 일차(Days) 및 중첩된 장소(Places), 팁(Tips) 삽입 (⭐ 핵심 수정 부분)
+      if (rawCourseDays.length > 0) {
+          for (const day of rawCourseDays) {
+              // day.course_places 배열을 분리합니다.
+              const { course_places, ...dayBaseData } = day;
+
+              // 6-1. ai_course_days 테이블에 삽입
+              const { data: dayRes, error: dayError } = await supabase
+                  .from("ai_course_days")
+                  .insert([{ ...dayBaseData, ai_course_id: newCourseId }])
+                  .select("id"); 
+
+              if (dayError) throw new Error(`AI Course Days 삽입 오류: ${dayError.message}`);
+              const newDayId = dayRes[0].id;
+
+              if (course_places && course_places.length > 0) {
+                  for (const place of course_places) {
+                      // place.place_tips 배열을 분리합니다.
+                      const { place_tips, ...placeBaseData } = place;
+
+                      // DB 컬럼명에 맞춰 필드 정리 (camelCase -> snake_case)
+                      const formattedPlaceBaseData = {
+                           // ID는 DB에서 생성되므로 제외하고, 나머지 필드 매핑
+                           name: placeBaseData.name,
+                           description: placeBaseData.description,
+                           location_type: placeBaseData.location_type,
+                           stay: placeBaseData.stay,
+                           // 나머지 필드도 동일하게 snake_case로 직접 매핑 필요
+                           // ...
+                           entry_fee: placeBaseData.entryFee, // 예시: entryFee -> entry_fee (수동 변환 필요)
+                           location: placeBaseData.location,
+                           rating_count: placeBaseData.rating_count,
+                           review_count: placeBaseData.review_count,
+                           // ... 모든 필드 매핑 ...
+                      };
+                      
+                      // 6-2. ai_course_places 테이블에 삽입
+                      const { data: placeRes, error: placeError } = await supabase
+                          .from("ai_course_places")
+                          .insert([{ ...formattedPlaceBaseData, day_id: newDayId }])
+                          .select("id");
+
+                      if (placeError) throw new Error(`AI Course Places 삽입 오류: ${placeError.message}`);
+                      const newPlaceId = placeRes[0].id;
+
+                      // 6-3. ai_course_place_tips 테이블에 삽입
+                      if (place_tips && place_tips.length > 0) {
+                          const tipsToInsert = place_tips.map((tip: any) => ({
+                              ...tip,
+                              ai_place_id: newPlaceId,
+                          }));
+                          await supabase.from("ai_course_place_tips").insert(tipsToInsert);
+                      }
+                  }
+              }
+          }
+          console.log("일차, 장소, 팁 데이터 삽입 완료");
+      }
+
+      console.log(`AI 코스 및 연관 데이터 삽입 성공! 새 코스 ID: ${newCourseId}`);
+      return { success: true, newCourseId: newCourseId };
+      
+  } catch (error: any) {
+      console.error("AI 코스 데이터 삽입 과정에서 오류 발생:", error.message);
+      return { success: false, error: error.message };
+  }
+};
