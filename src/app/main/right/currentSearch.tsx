@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 
 const CurrentSearch = () => {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
   const [currentSearchData, setCurrentSearchData] = useState([])
 
   useEffect(() => {
@@ -10,9 +11,10 @@ const CurrentSearch = () => {
       localStorage.getItem("currentSearch") || "[]",
     )
     setCurrentSearchData(currentSearch)
+    setIsLoading(true)
   }, [])
 
-  return (currentSearchData?.length ?? 0) === 0 ? (
+  return !isLoading ? (
     <div className="bg-white rounded-2xl p-6 border !border-gray-200 animate-pulse">
       <h3 className="font-semibold text-gray-900 mb-4">
         <div className="h-5 w-24 bg-gray-200 rounded"></div>
@@ -24,7 +26,7 @@ const CurrentSearch = () => {
         <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
       </div>
     </div>
-  ) : (
+  ) : (currentSearchData?.length ?? 0) === 0 ? "" : (
     <div className="bg-white rounded-2xl p-6 border !border-gray-200">
       <h3 className="font-semibold text-gray-900 mb-4">최근 검색어</h3>
       <div className="space-y-2">
