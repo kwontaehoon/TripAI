@@ -11,9 +11,9 @@ import {
   Sparkles,
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Skeleton from "./skeleton"
-import { useInView } from 'react-intersection-observer'; // 스크롤 감지 훅
+import { useInView } from 'react-intersection-observer'
 
 export default function CoursesPage({ id, userInfo }) {
   const searchParams = useSearchParams()

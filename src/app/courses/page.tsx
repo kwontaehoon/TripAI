@@ -1,6 +1,5 @@
 import { getUserInfo } from "@/service/supabase"
 import { createClient } from "@/service/supabase/server"
-import React from "react"
 import Client from "./client"
 
 const server = async ({ params }) => {
@@ -9,7 +8,7 @@ const server = async ({ params }) => {
     data: { session },
   } = await supabase.auth.getSession()
 
-  // 비로그인시 useInfo는 null로 처리
+  // 동적 함수(sesion) 사용으로 강제 SSR
   const userInfo = !session ? null : await getUserInfo(session?.user.email)
 
   return <Client params={params} userInfo={userInfo} />

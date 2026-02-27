@@ -62,7 +62,7 @@ export default function Footer() {
             { name: '고객센터', href: '/support' },
             { name: 'FAQ', href: '/faq' },
             { name: '이용가이드', href: '/guide' },
-            { name: '버그 신고', href: '/bug-report' }
+            // { name: '버그 신고', href: '/bug-report' }
         ],
 
         legal: [

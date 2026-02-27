@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/boards_card"
-import { useBoardsInfiniteQuery, useBoardsQuery } from "@/hooks/supabase/dev"
+import { useBoardsInfiniteQuery } from "@/hooks/supabase/dev"
 import {
   Filter,
   MessageCircle,
@@ -14,17 +14,11 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import Skeleton from "./skeletion"
 import { useInView } from "react-intersection-observer"
 
-export default function BoardPage({
-    params,
-    userInfo,
-  }: {
-    params: Promise<{ id: number }>
-  }) {
-  const { id } = use(params)
+export default function BoardPage({ id, userInfo }) {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [searchInput, setSearchInput] = useState("")
@@ -50,7 +44,7 @@ export default function BoardPage({
     refetch: boardsInfiniteDataRefresh,
   } = useBoardsInfiniteQuery()
 
-  const activeUsers = boardsInfiniteData?.map(board => board.users.id)
+  const activeUsers = boardsInfiniteData?.map((board) => board.users.id)
 
   const filters = [
     "전체",
@@ -70,7 +64,6 @@ export default function BoardPage({
   })
   useEffect(() => {
     window.scrollTo({ behavior: "instant", top: 0 })
-    boardsInfiniteDataRefresh()
   }, [])
 
   useEffect(() => {
