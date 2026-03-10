@@ -1,4 +1,4 @@
-import { timer } from "../src/util/callback";
+import { timer } from "./callback";
 
 
 // 콜백함수 보다는 Promise 사용

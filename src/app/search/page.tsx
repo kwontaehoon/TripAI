@@ -15,7 +15,7 @@ import { useEffect, useState } from "react"
 import {
   useCoursesAndBoardsQuery,
   usePopularSearchQuery,
-} from "@/hooks/supabase/dev"
+} from "@/hooks/supabase/queries"
 import Skeletion from "./skeleton"
 
 export default function SearchPage() {

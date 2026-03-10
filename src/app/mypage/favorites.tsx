@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Heart, MapPin, Share2, Plus, Globe } from "lucide-react"
-import { useMypageLikesQuery } from "@/hooks/supabase/dev"
+import { useMypageLikesQuery } from "@/hooks/supabase/queries"
 import FavoritesSkeletonPage from "./skeleton"
 import { If } from "react-haiku"
 import { useRouter } from "next/navigation"

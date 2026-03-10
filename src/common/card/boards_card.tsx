@@ -1,6 +1,6 @@
 "use client"
 
-import { useLikeMutation } from "@/hooks/supabase/dev"
+import { useLikeMutation } from "@/hooks/supabase/queries"
 import { userInfoAtom } from "@/store/ai"
 import { comma } from "@/util/comma"
 import { useSetAtom } from "jotai"

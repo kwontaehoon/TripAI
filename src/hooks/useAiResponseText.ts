@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
-import { useGooglePlaceTextMutation, useUrlCheckMutation, useUrlRegisterMutation } from './springboot/dev'
+import { useEffect, useState } from "react"
+import {
+  useGooglePlaceTextMutation,
+  useUrlCheckMutation,
+  useUrlRegisterMutation,
+} from "./springboot/queries"
 
 export const useAiResponseText = () => {
   const [aiResponseText, setAiResponseText] = useState<any[]>([])
-  const aiResponse = JSON.parse(localStorage.getItem('aiList') || '')
+  const aiResponse = JSON.parse(localStorage.getItem("aiList") || "")
   const { mutateAsync: textMutate, isSuccess } = useGooglePlaceTextMutation()
   const { mutateAsync: urlCheckMutate, status } = useUrlCheckMutation()
   // console.log("status: ", status)
@@ -12,30 +16,32 @@ export const useAiResponseText = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (aiResponse && aiResponse.days?.length > 0) {
-        const allLocations = aiResponse.days.flatMap((day: any) => day.locations)
+        const allLocations = aiResponse.days.flatMap(
+          (day: any) => day.locations,
+        )
         let results = []
 
         results = await Promise.all(
-          allLocations.map(async (loc:object[]) => {
-            const check = await urlCheckMutate({ location: loc.name });
+          allLocations.map(async (loc: object[]) => {
+            const check = await urlCheckMutate({ location: loc.name })
             try {
               if (!!check) {
-                console.log("이미있어", check);
-                return { id: check.textId };
+                console.log("이미있어", check)
+                return { id: check.textId }
               } else {
-                console.log("새로 요청");
-                const res = await textMutate(loc.name);
+                console.log("새로 요청")
+                const res = await textMutate(loc.name)
                 await urlRegisterMutate({
                   location: loc.name,
                   textId: res.id,
-                });
-                return res;
+                })
+                return res
               }
             } catch (e) {
-              console.error("textMutate 실패:", e);
-              return null;
+              console.error("textMutate 실패:", e)
+              return null
             }
-          })
+          }),
         )
         setAiResponseText(results)
       }

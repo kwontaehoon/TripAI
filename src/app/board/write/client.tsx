@@ -3,7 +3,7 @@
 import {
   useBoardCreateMutation,
   useUploadImagesToBucketMutation,
-} from "@/hooks/supabase/dev"
+} from "@/hooks/supabase/queries"
 import { loadingModalAtom } from "@/store/ai"
 import { useAtom } from "jotai"
 import {
@@ -91,7 +91,12 @@ export default function BoardWritePage({ userInfo }) {
 
   useEffect(() => {
     if (uploadImagesIsSuccess) {
-      boardCreate(Object.assign(formData, { board_images: uploadImages, userInfo: userInfo }))
+      boardCreate(
+        Object.assign(formData, {
+          board_images: uploadImages,
+          userInfo: userInfo,
+        }),
+      )
     }
   }, [uploadImages])
 
@@ -244,7 +249,7 @@ export default function BoardWritePage({ userInfo }) {
       alert("여행 장소를 추가해주세요.")
     } else {
       setLoadingAtom({ isOpen: true, message: "게시글을 저장하고 있습니다..." })
-      uploadImagesToBucket({files: file})
+      uploadImagesToBucket({ files: file })
     }
   }
 

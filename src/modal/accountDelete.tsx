@@ -5,7 +5,7 @@ import { X, AlertTriangle, Trash2, Shield } from "lucide-react"
 import { accountDeleteAtom } from "@/store/ai"
 import { useAtom } from "jotai"
 import { createAdminClient } from "@/service/supabase/admin"
-import { useDeleteUserMutation } from "@/hooks/supabase/dev"
+import { useDeleteUserMutation } from "@/hooks/supabase/queries"
 import { createClient } from "@/service/supabase/client"
 
 export default function AccountDeleteModal() {

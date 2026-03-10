@@ -1,4 +1,4 @@
-import { error, customeError, CustomeError } from "../src/util/throwFunction";
+import { error, customeError, CustomeError } from "./throwFunction";
 
 test('error가 잘 난다.', () => {
     expect(() => error()).toThrow(Error);

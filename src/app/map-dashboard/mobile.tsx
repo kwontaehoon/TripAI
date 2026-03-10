@@ -23,13 +23,13 @@ import {
 import {
   useGooglePlaceNearbyMutation,
   useGooglePlaceTextMutation,
-} from "@/hooks/springboot/dev"
+} from "@/hooks/springboot/queries"
 import { google_place_nearby } from "@/common/google/nearby"
 import { location_types } from "@/util/google_nearby_api/location_types"
 import { comma } from "@/util/comma"
 import { aiResponseAtom, loadingModalAtom } from "@/store/ai"
 import { useAtom } from "jotai"
-import { useAiRecommendMutation } from "@/hooks/supabase/dev"
+import { useAiRecommendMutation } from "@/hooks/supabase/queries"
 import { cleanJson } from "@/util/cleanJson"
 import { useRouter } from "next/navigation"
 import { ai_mapDashboardResponse_func } from "@/common/ai/ai_response"
@@ -57,10 +57,16 @@ const mobile = () => {
   const [nearBydata, setNearbyData] = useState()
   const [showTouristSpots, setShowTouristSpots] = useState(true)
   const [showRestaurants, setShowRestaurants] = useState(false)
-  const { mutateAsync: nearbyMutation, data: nearBydataaa, isSuccess: nearbyDataIsSuccess } =
-    useGooglePlaceNearbyMutation()
-  const { mutateAsync: textSearchMutation, data: textSearchData, isSuccess: textSearchDataIsSuccess } =
-    useGooglePlaceTextMutation()
+  const {
+    mutateAsync: nearbyMutation,
+    data: nearBydataaa,
+    isSuccess: nearbyDataIsSuccess,
+  } = useGooglePlaceNearbyMutation()
+  const {
+    mutateAsync: textSearchMutation,
+    data: textSearchData,
+    isSuccess: textSearchDataIsSuccess,
+  } = useGooglePlaceTextMutation()
   const [loadingAtom, setLoadingAtom] = useAtom(loadingModalAtom)
   const [formData, setFormData] = useState({
     destination: "",

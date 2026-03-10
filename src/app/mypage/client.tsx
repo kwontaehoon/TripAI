@@ -16,7 +16,7 @@ import {
   useMypageEditMutation,
   useMypageUpdateProfileMutation,
   useUploadImagesToBucketMutation,
-} from "@/hooks/supabase/dev"
+} from "@/hooks/supabase/queries"
 import Profile from "./profile"
 import Activity from "./activity"
 import Analytics from "./analytics"
@@ -302,7 +302,10 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                     </>
                   ) : (
                     <button
-                      onClick={() => {setIsEditing(true); setActiveTab("profile");}}
+                      onClick={() => {
+                        setIsEditing(true)
+                        setActiveTab("profile")
+                      }}
                       className="flex items-center space-x-2 px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
                       data-oid="8dj9qoh"
                     >

@@ -4,7 +4,7 @@ import {
   useEmailCheckMutation,
   useEmailCheckQuery,
   useSignupMutation,
-} from "@/hooks/supabase/dev"
+} from "@/hooks/supabase/queries"
 import { createClient } from "@/service/supabase/client"
 import {
   Apple,

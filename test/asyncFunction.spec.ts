@@ -1,4 +1,4 @@
-import { okPromise, okAsync, noAsync, noPromise } from '../src/util/asyncFunction';
+import { okPromise, okAsync, noAsync, noPromise } from './asyncFunction';
 
 test('okPromise 테스트', () => {
     const okSpy = jest.fn(okPromise);

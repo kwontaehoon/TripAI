@@ -1,4 +1,4 @@
-import { first, second, third } from "../src//util/order";
+import { first, second, third } from "./order";
 
 test('first -> second -> third', () => {
     const spy1 = jest.fn(first);

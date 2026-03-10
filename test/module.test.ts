@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { obj } from '../src/util/module'
+import { obj } from './module'
 
 // jest mock을 사용하면 객체인 obj를 통째로 바꿀 수 있다.
 // 호이스팅 됨

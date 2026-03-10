@@ -1,7 +1,10 @@
 "use client"
 
 import Card from "@/common/card/course_details_card"
-import { useCourseDetailsQuery, useLikeMutation } from "@/hooks/supabase/dev"
+import {
+  useCourseDetailsQuery,
+  useLikeMutation,
+} from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
 import { getBadgeColor } from "@/util/styles"
 import { Download, Heart, MapPin, Sparkles } from "lucide-react"

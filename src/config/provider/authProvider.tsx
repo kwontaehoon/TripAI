@@ -1,15 +1,15 @@
-'use client';
+"use client"
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSetAtom } from 'jotai'; // Jotai 훅 임포트
-import { createClient } from '@/service/supabase/client';
-import { sessionAtom, userInfoAtom } from '@/store/ai';
-import { useUserInfoMutation } from '@/hooks/supabase/dev';
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useSetAtom } from "jotai" // Jotai 훅 임포트
+import { createClient } from "@/service/supabase/client"
+import { sessionAtom, userInfoAtom } from "@/store/ai"
+import { useUserInfoMutation } from "@/hooks/supabase/queries"
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const supabase = createClient();
+  const router = useRouter()
+  const supabase = createClient()
   const { mutate: userInfo } = useUserInfoMutation()
 
   // const setSession = useSetAtom(sessionAtom)
@@ -26,31 +26,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
       // setSession(newSession)
 
-      if(newSession){
+      if (newSession) {
         userInfo(newSession?.user.email, {
           onSuccess: (userInfo) => {
             setUserInfo(userInfo)
-          }
+          },
         })
       }
 
-      if (_event === 'SIGNED_IN') {
-        console.log('SIGNED_IN');
-        
+      if (_event === "SIGNED_IN") {
+        console.log("SIGNED_IN")
+
         // router.push("/")
       }
-      if (_event === 'PASSWORD_RECOVERY') {
-        console.log('PASSWORD_RECOVERY');
+      if (_event === "PASSWORD_RECOVERY") {
+        console.log("PASSWORD_RECOVERY")
       }
-      if (_event === 'SIGNED_OUT') {
-        router.refresh();
+      if (_event === "SIGNED_OUT") {
+        router.refresh()
       }
-    });
+    })
 
     return () => {
       subscription.unsubscribe()
-    };
+    }
   }, [])
 
   return <>{children}</>
-};
+}

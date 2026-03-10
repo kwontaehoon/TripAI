@@ -1,11 +1,10 @@
-'use client'
-import { useTestQuery } from '@/hooks/springboot/dev'
-import { NextPage } from 'next'
-import FileUpload from './fileSave'
+"use client"
+import { useTestQuery } from "@/hooks/springboot/queries"
+import { NextPage } from "next"
+import FileUpload from "./fileSave"
 
 const Page: NextPage = () => {
-
-  const { data } = useTestQuery();
+  const { data } = useTestQuery()
 
   return (
     <div>
@@ -13,7 +12,7 @@ const Page: NextPage = () => {
       <div>Response Data: {JSON.stringify(data)}</div>
       <FileUpload />
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

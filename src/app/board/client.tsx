@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/boards_card"
-import { useBoardsInfiniteQuery } from "@/hooks/supabase/dev"
+import { useBoardsInfiniteQuery } from "@/hooks/supabase/queries"
 import {
   Filter,
   MessageCircle,

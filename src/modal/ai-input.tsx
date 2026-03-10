@@ -1,7 +1,7 @@
 "use client"
 
 import { ai_RecommendResponse_func } from "@/common/ai/ai_response"
-import { useAiRecommendMutation } from "@/hooks/supabase/dev"
+import { useAiRecommendMutation } from "@/hooks/supabase/queries"
 import { aiResponseAtom, modalUiStateAtom } from "@/store/ai"
 import { cleanJson } from "@/util/cleanJson"
 import { useAtom } from "jotai"
@@ -132,7 +132,7 @@ export default function AIRecommendationModal() {
         purpose: formData.purpose,
         budget: formData.budget,
         generated: "true",
-        mapDashboard: "false"  // ai-input에서 생성한 ai 코스를 구분하기 위한 값
+        mapDashboard: "false", // ai-input에서 생성한 ai 코스를 구분하기 위한 값
       })
 
       setFormData({
@@ -643,12 +643,10 @@ export default function AIRecommendationModal() {
                     <button
                       key={purpose.id}
                       onClick={() => {
-                        if(!isGenerating){
+                        if (!isGenerating) {
                           setFormData({ ...formData, purpose: purpose.name })
-                        } 
-                      }
-                        
-                      }
+                        }
+                      }}
                       className={`p-4 rounded-xl border-2 transition-all text-center ${
                         formData.purpose === purpose.name
                           ? "!border-blue-500 bg-blue-50 text-blue-700"
@@ -682,12 +680,10 @@ export default function AIRecommendationModal() {
                     <button
                       key={budget.id}
                       onClick={() => {
-                        if(!isGenerating){
+                        if (!isGenerating) {
                           setFormData({ ...formData, budget: budget.name })
                         }
-                        
-                      }
-                      }
+                      }}
                       className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
                         formData.budget === budget.name
                           ? "!border-blue-500 bg-blue-50"

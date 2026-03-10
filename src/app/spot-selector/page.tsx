@@ -19,7 +19,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react"
-import { useGooglePlaceTextMutation } from "@/hooks/springboot/dev"
+import { useGooglePlaceTextMutation } from "@/hooks/springboot/queries"
 import { google_place_selector_textSearch } from "@/common/google/textSearch"
 import { location_types } from "@/util/google_nearby_api/location_types"
 import Image from "next/image"

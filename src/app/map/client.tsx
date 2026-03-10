@@ -17,7 +17,7 @@ import {
 import {
   useBoardDetailssQuery,
   useCourseDetailsQuery,
-} from "@/hooks/supabase/dev"
+} from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
 import { useAtom } from "jotai"
 import { loadingModalAtom } from "@/store/ai"

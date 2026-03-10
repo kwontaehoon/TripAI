@@ -1,7 +1,7 @@
 "use client"
 
 import Card from "@/common/card/courses_card"
-import { useCoursesInfiniteQuery } from "@/hooks/supabase/dev"
+import { useCoursesInfiniteQuery } from "@/hooks/supabase/queries"
 import {
   Filter,
   Mic,
@@ -13,7 +13,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import Skeleton from "./skeleton"
-import { useInView } from 'react-intersection-observer'
+import { useInView } from "react-intersection-observer"
 
 export default function CoursesPage({ id, userInfo }) {
   const searchParams = useSearchParams()
@@ -40,12 +40,12 @@ export default function CoursesPage({ id, userInfo }) {
     isFetching,
     isFetchingNextPage,
     status,
-    refetch: coursesInfiniteRefetch
+    refetch: coursesInfiniteRefetch,
   } = useCoursesInfiniteQuery()
 
   useEffect(() => {
     const dest = searchParams.get("destination")
-    window.scrollTo({behavior: 'instant', top: 0})
+    window.scrollTo({ behavior: "instant", top: 0 })
 
     if (dest) {
       setDestination(dest)
@@ -58,10 +58,10 @@ export default function CoursesPage({ id, userInfo }) {
 
     setAvg({
       rating:
-      coursesInfiniteData.reduce((sum, course) => sum + course.rating, 0) /
-      coursesInfiniteData.length,
+        coursesInfiniteData.reduce((sum, course) => sum + course.rating, 0) /
+        coursesInfiniteData.length,
       period:
-      coursesInfiniteData.reduce(
+        coursesInfiniteData.reduce(
           (sum, course) => sum + course.course_days.length,
           0,
         ) / coursesInfiniteData.length,
@@ -112,14 +112,14 @@ export default function CoursesPage({ id, userInfo }) {
 
   const { ref, inView } = useInView({
     threshold: 0,
-  });
+  })
 
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       const timer = setTimeout(() => {
-        fetchNextPage();
+        fetchNextPage()
       }, 500)
-  
+
       return () => clearTimeout(timer)
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
@@ -327,9 +327,7 @@ export default function CoursesPage({ id, userInfo }) {
                         setDestination("")
                         router.push("/courses")
                       } else {
-                        router.push(
-                          `/search?q=${encodeURIComponent(dest)}`,
-                        )
+                        router.push(`/search?q=${encodeURIComponent(dest)}`)
                       }
                     }}
                     className={`w-full text-left p-3 rounded-lg transition-colors ${

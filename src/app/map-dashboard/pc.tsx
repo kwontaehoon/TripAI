@@ -27,7 +27,7 @@ import {
 import {
   useGooglePlaceNearbyMutation,
   useGooglePlaceTextMutation,
-} from "@/hooks/springboot/dev"
+} from "@/hooks/springboot/queries"
 import {
   google_place_nearby,
   google_place_nearby_restaurant,
@@ -36,7 +36,7 @@ import { location_types } from "@/util/google_nearby_api/location_types"
 import { comma } from "@/util/comma"
 import { aiResponseAtom, loadingModalAtom } from "@/store/ai"
 import { useAtom } from "jotai"
-import { useAiRecommendMutation } from "@/hooks/supabase/dev"
+import { useAiRecommendMutation } from "@/hooks/supabase/queries"
 import { cleanJson } from "@/util/cleanJson"
 import { useRouter } from "next/navigation"
 import { ai_mapDashboardResponse_func } from "@/common/ai/ai_response"
@@ -700,9 +700,12 @@ function WWPageContent() {
 
   useEffect(() => {
     if (!placeTypeRef.current) {
-      if(nearBydataaa === undefined || Object.keys(nearBydataaa).length === 0){
-        setNearbyData({ places: []})
-      }else setNearbyData(nearBydataaa)
+      if (
+        nearBydataaa === undefined ||
+        Object.keys(nearBydataaa).length === 0
+      ) {
+        setNearbyData({ places: [] })
+      } else setNearbyData(nearBydataaa)
     }
   }, [nearBydataaa])
 

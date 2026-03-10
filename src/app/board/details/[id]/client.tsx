@@ -4,7 +4,7 @@ import Card from "@/common/card/board_details_card"
 import {
   useBoardDetailssQuery,
   useLikeMutation,
-} from "@/hooks/supabase/dev"
+} from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
 import {
   Bookmark,

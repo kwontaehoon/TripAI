@@ -2,17 +2,11 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
-import {
-  MapPin,
-  Sparkles,
-  Download,
-  Heart,
-  RefreshCw,
-} from "lucide-react"
+import { MapPin, Sparkles, Download, Heart, RefreshCw } from "lucide-react"
 import { comma } from "@/util/comma"
 import { If } from "react-haiku"
 import Card from "@/common/card/course_details_card"
-import { useAiCourseSaveMutation } from "@/hooks/supabase/dev"
+import { useAiCourseSaveMutation } from "@/hooks/supabase/queries"
 
 export default function AICourse() {
   const [aiCourseData, setAiCourseData] = useState([])
@@ -47,7 +41,7 @@ export default function AICourse() {
     // 실제로는 새로운 코스를 생성하겠지만, 여기서는 시뮬레이션
   }
 
-  const handleSaveCourse = async() => {
+  const handleSaveCourse = async () => {
     // 코스 저장 로직
     const stored = localStorage.getItem("aiList")
     if (stored) {
@@ -364,9 +358,7 @@ export default function AICourse() {
                     <span className="text-sm text-gray-600" data-oid="9kp7loz">
                       총 거리
                     </span>
-                    <span
-                      data-oid="bebxtu:"
-                    >
+                    <span data-oid="bebxtu:">
                       {aiCourseData[0].total_distance}
                     </span>
                   </div>
