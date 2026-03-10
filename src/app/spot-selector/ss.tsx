@@ -498,7 +498,7 @@ export default function SpotSelectorPage() {
                             data-oid="k3dq1tq"
                           >
                             <Image
-                              src={`https://places.googleapis.com/v1/${spot.photos[0].name}/media?maxHeightPx=400&maxWidthPx=400&key=AIzaSyA3AZyCseHRzXSmKLz3ALwEN-NAyohUJo8`}
+                              src={`https://places.googleapis.com/v1/${spot.photos[0].name}/media?maxHeightPx=400&maxWidthPx=400&key=${process.env.NEXT_PUBLIC_GEMINI_API}`}
                               alt={spot.displayName}
                               width={64}
                               height={64}
