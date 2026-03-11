@@ -4,15 +4,15 @@ import CurrentSearch from "./currentSearch"
 import Live from "./live"
 import Quick from "./quick"
 
-const Page = ({ boardsData = [], coursesData = [] }) => {
+const RightPanel = () => {
   return (
     <div className="space-y-6 w-full lg:w-[230px]">
-      <StatsCard boardsData={boardsData} coursesData={coursesData} />
+      <StatsCard />
       <Live />
       <CurrentSearch />
-      <Quick boardsData={boardsData} coursesData={coursesData} />
+      <Quick />
     </div>
   )
 }
 
-export default Page
+export default RightPanel

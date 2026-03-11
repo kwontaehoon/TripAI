@@ -2,8 +2,10 @@
 
 import { ArrowRight, Star } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useBoardsInfiniteQuery } from "@/hooks/supabase/queries"
 
-const Board = ({ boardsInfiniteData }) => {
+const Board = () => {
+  const { data: boardsInfiniteData } = useBoardsInfiniteQuery()
   const router = useRouter()
 
   return (
@@ -31,9 +33,9 @@ const Board = ({ boardsInfiniteData }) => {
         </div>
         <div className="space-y-3" data-oid="8pkznx8">
           {Array.isArray(boardsInfiniteData) &&
-            boardsInfiniteData.slice(0, 3).map((board, index) => (
+            boardsInfiniteData.slice(0, 3).map((board) => (
               <button
-                key={index}
+                key={board.id}
                 onClick={() => router.push(`/board/details/${board.id}`)}
                 className="w-full text-left p-4 bg-white rounded-xl border !border-gray-200 hover:!border-blue-300 hover:shadow-md transition-all group"
                 data-oid="q30-2r:"

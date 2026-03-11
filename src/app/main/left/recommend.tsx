@@ -1,9 +1,11 @@
 "use client"
-import React from "react"
+
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useCoursesInfiniteQuery } from "@/hooks/supabase/queries"
 
-const Recommend = ({ coursesInfiniteData }) => {
+const Recommend = () => {
+  const { data: coursesInfiniteData } = useCoursesInfiniteQuery()
   const router = useRouter()
   return (
     <div className="mb-8">
@@ -21,8 +23,7 @@ const Recommend = ({ coursesInfiniteData }) => {
         </button>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
-        {Array.isArray(coursesInfiniteData) &&
-          coursesInfiniteData.slice(0, 4).map((course) => (
+        {coursesInfiniteData?.slice(0, 4).map((course) => (
             <button
               onClick={() => router.push(`/courses/details/${course.id}`)}
               key={course.id}

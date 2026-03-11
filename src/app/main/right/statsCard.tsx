@@ -1,6 +1,10 @@
 "use client"
 
-const StatsCard = ({ boardsData, coursesData }) => {
+import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/queries"
+
+const StatsCard = () => {
+  const { data: boardsData } = useBoardsQuery()
+  const { data: coursesData } = useCoursesQuery()
   return (
     <div className="bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl p-6 text-white">
       <div className="text-center">

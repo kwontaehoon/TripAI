@@ -1,7 +1,9 @@
 "use client"
 import { useRouter } from "next/navigation"
+import { usePopularLocationQuery } from "@/hooks/supabase/queries"
 
-const Popular = ({ popularLocation }) => {
+const Popular = () => {
+  const { data: popularLocation } = usePopularLocationQuery()
   const router = useRouter()
 
   return (

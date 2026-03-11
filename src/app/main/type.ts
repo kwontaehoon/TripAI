@@ -35,7 +35,7 @@ type Day = {
   places: Place[];
 };
 
-export type BoardProps = {
+type BaseContentProps = {
   id: number;
   title: string;
   subtitle: string;
@@ -56,7 +56,6 @@ export type BoardProps = {
   total_distance: string;
   total_places: number;
   created_at: string;
-  board_tags: Tag[];
   highlights: Highlights[];
   images: Image[];
   reliability: string;
@@ -65,35 +64,9 @@ export type BoardProps = {
   days: Day[];
 };
 
-export type CourseProps = {
-  id: number;
-  title: string;
-  subtitle: string;
-  description: string;
-  author: string;
-  author_type: string;
-  duration: string;
-  estimated_time: string;
-  rating: number;
-  views: number;
-  likes: number;
-  content: string;
-  participants: string;
-  difficulty: number;
-  total_cost: number;
-  total_locations: number;
-  total_comments: number;
-  total_distance: string;
-  total_places: number;
-  created_at: string;
-  course_tags: Tag[];
-  highlights: Highlights[];
-  images: Image[];
-  reliability: string;
-  bookmark: number;
-  badges: Badge[];
-  days: Day[];
-};
+export type BoardProps = BaseContentProps & { board_tags: Tag[] };
+export type CourseProps = BaseContentProps & { course_tags: Tag[] };
+
 
 export type PageProps = {
   boardsData: BoardProps[];

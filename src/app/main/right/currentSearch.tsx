@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 const CurrentSearch = () => {
@@ -26,11 +26,13 @@ const CurrentSearch = () => {
         <div className="h-4 w-1/2 bg-gray-200 rounded"></div>
       </div>
     </div>
-  ) : (currentSearchData?.length ?? 0) === 0 ? "" : (
+  ) : (currentSearchData?.length ?? 0) === 0 ? (
+    ""
+  ) : (
     <div className="bg-white rounded-2xl p-6 border !border-gray-200">
       <h3 className="font-semibold text-gray-900 mb-4">최근 검색어</h3>
       <div className="space-y-2">
-        {currentSearchData.reverse().map((search, index) => (
+        {[...currentSearchData].reverse().map((search, index) => (
           <button
             onClick={() => router.push(`/search?q=${search}`)}
             key={index}

@@ -1,6 +1,11 @@
 "use client"
 
-const Quick = ({ boardsData, coursesData }) => {
+import { useBoardsQuery, useCoursesQuery } from "@/hooks/supabase/queries"
+
+const Quick = () => {
+  const { data: boardsData } = useBoardsQuery()
+  const { data: coursesData } = useCoursesQuery()
+
   let ratingSum = 0
   let reliabilitySum = 0
 

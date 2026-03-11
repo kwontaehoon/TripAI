@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import { useRouter } from "next/navigation"
 import {
   User,
@@ -194,7 +195,7 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                           />
                         ) : (
                           <Image
-                            src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${userInfo.profile_image_url}`}
+                            src={getStorageUrl(userInfo.profile_image_url)}
                             alt={userInfo.name}
                             className="rounded-full overflow-hidden"
                             fill

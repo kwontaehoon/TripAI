@@ -1,6 +1,4 @@
-import React from "react"
-
-const live = () => {
+const Live = () => {
   return (
     <div className="bg-white rounded-2xl p-6 border !border-gray-200">
       <div className="flex items-center space-x-2 mb-4">
@@ -12,7 +10,9 @@ const live = () => {
         <div className="text-sm text-gray-600">
           <div className="font-medium mb-1">새롭게 업데이트 되어</div>
           <div>
-          AI 선택 코스에 필터링 및 토글 기능이 추가되었습니다! <br /> 지금 바로 원하는 옵션을 선택하여 코스를 구성하고, 최신 인기 여행이 반영된 메인 갤러리를 확인해보세요!
+            AI 선택 코스에 필터링 및 토글 기능이 추가되었습니다! <br /> 지금
+            바로 원하는 옵션을 선택하여 코스를 구성하고, 최신 인기 여행이 반영된
+            메인 갤러리를 확인해보세요!
           </div>
         </div>
         <div className="pt-3 border-t !border-gray-100">
@@ -28,4 +28,4 @@ const live = () => {
   )
 }
 
-export default live
+export default Live
