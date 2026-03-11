@@ -1,5 +1,6 @@
 "use client"
 import { useLikeMutation } from "@/hooks/supabase/queries"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import { userInfoAtom } from "@/store/ai"
 import { comma } from "@/util/comma"
 import { useSetAtom } from "jotai"
@@ -116,7 +117,7 @@ const Page = ({
                     ""
                   ) : (
                     <Image
-                      src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${course.course_images[0].image_url}`}
+                      src={getStorageUrl(course.course_images[0].image_url)}
                       alt={course.title}
                       fill
                       quality={50}

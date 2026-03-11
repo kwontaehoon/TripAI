@@ -1,5 +1,6 @@
 "use client"
 import { getUserInfo } from "@/service/supabase"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import { createClient } from "@/service/supabase/client"
 import { introModalAtom, modalUiStateAtom, userInfoAtom } from "@/store/ai"
 import { useAtom } from "jotai"
@@ -177,7 +178,7 @@ const Page = () => {
                     >
                       <If isTrue={userInfo}>
                         <Image
-                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${userInfo.profile_image_url}`}
+                          src={getStorageUrl(userInfo.profile_image_url)}
                           className="rounded-full overflow-hidden"
                           alt={userInfo.name}
                           fill

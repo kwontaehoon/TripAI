@@ -1,6 +1,7 @@
 "use client"
 
 import { useLikeMutation } from "@/hooks/supabase/queries"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import { userInfoAtom } from "@/store/ai"
 import { comma } from "@/util/comma"
 import { useSetAtom } from "jotai"
@@ -162,7 +163,7 @@ const Board_card = ({
                       ""
                     ) : (
                       <Image
-                        src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${post.board_images[0].image_url}`}
+                        src={getStorageUrl(post.board_images[0].image_url)}
                         alt={post.title}
                         fill
                         quality={50}
@@ -258,7 +259,7 @@ const Board_card = ({
                     >
                       <If isTrue={post.users.profile_image_url}>
                         <Image
-                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${post.users.profile_image_url}`}
+                          src={getStorageUrl(post.users.profile_image_url)}
                           alt={post.users.name}
                           className="rounded-full overflow-hidden"
                           fill

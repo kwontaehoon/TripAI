@@ -16,6 +16,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 import { comma } from "@/util/comma"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import { If } from "react-haiku"
 import Image from "next/image"
 
@@ -145,7 +146,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                   >
                     <If isTrue={result.users.profile_image_url}>
                       <Image
-                        src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${result.users.profile_image_url}`}
+                        src={getStorageUrl(result.users.profile_image_url)}
                         alt={result.users.name}
                         className="rounded-full overflow-hidden"
                         fill

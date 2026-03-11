@@ -6,6 +6,7 @@ import {
   useLikeMutation,
 } from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import {
   Bookmark,
   Eye,
@@ -168,7 +169,7 @@ export default function BoardDetailsPage({
                 >
                   <If isTrue={boradDetailsData[0].users.profile_image_url}>
                     <Image
-                      src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${boradDetailsData[0].users.profile_image_url}`}
+                      src={getStorageUrl(boradDetailsData[0].users.profile_image_url)}
                       alt={boradDetailsData[0].users.name}
                       className="rounded-full overflow-hidden"
                       fill
@@ -383,7 +384,7 @@ export default function BoardDetailsPage({
                           data-oid="an0srn-"
                         >
                           <Image
-                            src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${photo.image_url}`}
+                            src={getStorageUrl(photo.image_url)}
                             alt={boradDetailsData[0].title}
                             fill
                             priority={true}
@@ -457,7 +458,7 @@ export default function BoardDetailsPage({
                     >
                       <If isTrue={boradDetailsData[0].users.profile_image_url}>
                         <Image
-                          src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${boradDetailsData[0].users.profile_image_url}`}
+                          src={getStorageUrl(boradDetailsData[0].users.profile_image_url)}
                           alt=""
                           className="rounded-full overflow-hidden"
                           fill

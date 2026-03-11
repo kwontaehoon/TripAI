@@ -6,6 +6,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query"
+import { BoardProps, CourseProps } from "@/app/main/type"
 import {
   getCourses,
   getCoursesInfinite,
@@ -169,7 +170,7 @@ export const useCoursesInfiniteQuery = () => {
   return useInfiniteQuery<
     GetCoursesResponse,
     Error,
-    (object | null)[],
+    CourseProps[],
     string[],
     string | null
   >({
@@ -224,7 +225,7 @@ export const useBoardsInfiniteQuery = () => {
   return useInfiniteQuery<
     GetBoardssResponse,
     Error,
-    (object | null)[],
+    BoardProps[],
     string[],
     string | null
   >({

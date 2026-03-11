@@ -6,6 +6,7 @@ import {
   useLikeMutation,
 } from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
+import { getStorageUrl } from "@/util/supabaseStorage"
 import { getBadgeColor } from "@/util/styles"
 import { Download, Heart, MapPin, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -258,7 +259,7 @@ export default function CourseDetailsPage({
                           data-oid="an0srn-"
                         >
                           <Image
-                            src={`https://tvkqolkaaqmqftrawadd.supabase.co/storage/v1/object/public/trip-ai/${photo.image_url}`}
+                            src={getStorageUrl(photo.image_url)}
                             alt={courseDetailsData[0].title}
                             fill
                             priority={true}
