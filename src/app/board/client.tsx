@@ -14,33 +14,24 @@ import {
   TrendingUp,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import Skeleton from "./skeletion"
+import { useEffect, useMemo, useState } from "react"
+import Skeleton from "./skeleton"
 import { useInView } from "react-intersection-observer"
+import { BoardPageProps } from "./type"
 
-export default function BoardPage({ id, userInfo }) {
+export default function BoardPage({ params, userInfo }: BoardPageProps) {
   const router = useRouter()
-  const [searchQuery, setSearchQuery] = useState("")
   const [searchInput, setSearchInput] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("전체")
   const [quickedFilter, setQuickedFilter] = useState("")
   const [sortBy, setSortBy] = useState("최신순")
-  const [avg, setAvg] = useState({
-    rating: 1,
-    period: 1,
-  })
-  const [isLoading, setIsLoading] = useState(true)
-  const [filteredBoards, setFilteredBoards] = useState([])
 
   const {
     data: boardsInfiniteData,
-    error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
-    status,
     refetch: boardsInfiniteDataRefresh,
   } = useBoardsInfiniteQuery()
 
@@ -62,6 +53,7 @@ export default function BoardPage({ id, userInfo }) {
   const { ref, inView } = useInView({
     threshold: 0,
   })
+  
   useEffect(() => {
     window.scrollTo({ behavior: "instant", top: 0 })
   }, [])
@@ -87,10 +79,9 @@ export default function BoardPage({ id, userInfo }) {
     router.push(`/board/details/${postId}`)
   }
 
-  useEffect(() => {
-    if (!boardsInfiniteData?.length) return
-
-    setAvg({
+  const avg = useMemo(() => {
+    if (!boardsInfiniteData?.length) return { rating: 0, period: 0 }
+    return {
       rating:
         boardsInfiniteData.reduce((sum, board) => sum + board.rating, 0) /
         boardsInfiniteData.length,
@@ -99,24 +90,28 @@ export default function BoardPage({ id, userInfo }) {
           (sum, board) => sum + board.board_days.length,
           0,
         ) / boardsInfiniteData.length,
-    })
+    }
+  }, [boardsInfiniteData])
+
+  const filteredBoards = useMemo(() => {
+    if (!boardsInfiniteData?.length) return []
 
     const filtered = boardsInfiniteData.filter((board) => {
       const matchTag =
         selectedFilter === "전체" ||
         board.board_tags.some((tag) => tag.tag === selectedFilter)
       const matchesSearch =
-        !searchQuery ||
-        board.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        board.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        board.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        !searchInput ||
+        board.title?.toLowerCase().includes(searchInput.toLowerCase()) ||
+        board.subtitle?.toLowerCase().includes(searchInput.toLowerCase()) ||
+        board.description?.toLowerCase().includes(searchInput.toLowerCase())
 
       const matchQuick =
         quickedFilter.trim() === quickFilter[0]
           ? board.rating >= 4.5
           : quickedFilter.trim() === quickFilter[1]
             ? board.total_cost <= 200000
-            : quickedFilter.trim() === quickedFilter[2]
+            : quickedFilter.trim() === quickFilter[2]
               ? board.title?.toLowerCase().includes("김포".toLowerCase()) ||
                 board.subtitle?.toLowerCase().includes("김포".toLowerCase()) ||
                 board.description?.toLowerCase().includes("김포".toLowerCase())
@@ -125,26 +120,15 @@ export default function BoardPage({ id, userInfo }) {
       return matchTag && matchesSearch && matchQuick
     })
 
-    let isCanceled = false
+    return [...filtered].sort((a, b) => {
+      if (sortBy === "인기순") return (b.likes ?? 0) - (a.likes ?? 0)
+      if (sortBy === "평점순") return (b.rating ?? 0) - (a.rating ?? 0)
+      if (sortBy === "댓글순") return (b.total_comments ?? 0) - (a.total_comments ?? 0)
+      return b.id - a.id // 최신순
+    })
+  }, [selectedFilter, boardsInfiniteData, quickedFilter, searchInput, sortBy])
 
-    const finishFiltering = async () => {
-      setFilteredBoards(filtered)
-
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      if (!isCanceled && isLoading) {
-        setIsLoading(false)
-      }
-    }
-
-    finishFiltering()
-
-    return () => {
-      isCanceled = true
-    }
-  }, [selectedFilter, boardsInfiniteData, quickedFilter])
-
-  return isLoading ? (
+  return !boardsInfiniteData ? (
     <Skeleton />
   ) : (
     <div
@@ -369,7 +353,7 @@ export default function BoardPage({ id, userInfo }) {
                 인기 게시글
               </h3>
               <div className="space-y-3" data-oid="6:78ejy">
-                {boardsInfiniteData.slice(0, 5).map((post, index) => (
+                {boardsInfiniteData?.slice(0, 5).map((post, index) => (
                   <button
                     key={post.id}
                     onClick={() => handlePostClick(post.id)}

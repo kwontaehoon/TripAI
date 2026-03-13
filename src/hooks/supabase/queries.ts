@@ -243,7 +243,7 @@ export const useBoardsInfiniteQuery = () => {
 }
 
 // board_details
-export const useBoardDetailssQuery = (params: number) => {
+export const useBoardDetailsQuery = (params: number) => {
   const queryOptions = {
     queryKey: [TEST_QUERY_KEY.boardDetails, params],
     queryFn: async () => {

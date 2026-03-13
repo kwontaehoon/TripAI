@@ -15,7 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react"
 import {
-  useBoardDetailssQuery,
+  useBoardDetailsQuery,
   useCourseDetailsQuery,
 } from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
@@ -88,7 +88,7 @@ export default function MapPage() {
       ? useCourseDetailsQuery(0)
       : courseId
         ? useCourseDetailsQuery(Number(id))
-        : useBoardDetailssQuery(Number(id))
+        : useBoardDetailsQuery(Number(id))
 
   // 커스텀 마커 생성 함수
   const createCustomMarker = (number: number, color: string) => {

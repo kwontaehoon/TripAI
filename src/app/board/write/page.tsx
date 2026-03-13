@@ -1,9 +1,8 @@
 import { getUserInfo } from "@/service/supabase"
 import { createClient } from "@/service/supabase/server"
-import React from "react"
 import Client from "./client"
 
-const server = async ({ params }) => {
+const Page = async ({ params }) => {
   const supabase = await createClient()
   const {
     data: { session },
@@ -15,4 +14,4 @@ const server = async ({ params }) => {
   return <Client userInfo={userInfo} />
 }
 
-export default server
+export default Page

@@ -1,21 +1,12 @@
 import { Camera, Mountain } from "lucide-react"
 import LeftPanel from "./left/leftPanel"
 import RightPanel from "./right/rightPanel"
-import {
-  getBoards,
-  getBoardsInfinite,
-  getCourses,
-  getCoursesAndBoardsGallery,
-  getCoursesInfinite,
-  getPopularLocation,
-} from "@/service/supabase"
 import { dehydrate, QueryClient } from "@tanstack/react-query"
 import { Hydration } from "../Hydration"
 import {
   prefetchBoards,
   prefetchBoardsInfinite,
   prefetchCourses,
-  prefetchCoursesAndBoards,
   prefetchCoursesAndBoardsGallery,
   prefetchCoursesInfinite,
   prefetchPopularLocation,

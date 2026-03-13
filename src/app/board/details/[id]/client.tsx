@@ -2,7 +2,7 @@
 
 import Card from "@/common/card/board_details_card"
 import {
-  useBoardDetailssQuery,
+  useBoardDetailsQuery,
   useLikeMutation,
 } from "@/hooks/supabase/queries"
 import { comma } from "@/util/comma"
@@ -23,15 +23,14 @@ import Image from "next/image"
 import CommentCard from "@/common/card/comment_details_card"
 import { userInfoAtom } from "@/store/ai"
 import { useSetAtom } from "jotai"
-import { If } from "react-haiku"
 import { useRouter } from "next/navigation"
+
+import { BoardDetailsPageProps } from "./type"
 
 export default function BoardDetailsPage({
   params,
   userInfo,
-}: {
-  params: Promise<{ id: number }>
-}) {
+}: BoardDetailsPageProps) {
   const router = useRouter()
   const { id } = use(params)
   const [isBookmarked, setIsBookmarked] = useState(false)
@@ -44,10 +43,10 @@ export default function BoardDetailsPage({
     : userInfo.likesItem.boards.includes(Number(id))
 
   const {
-    data: boradDetailsData,
-    isLoading: boradDetailsDataIsLoading,
-    refetch: boradDetailsDataRefetch,
-  } = useBoardDetailssQuery(Number(id))
+    data: boardDetailsData,
+    isLoading: boardDetailsDataIsLoading,
+    refetch: boardDetailsDataRefetch,
+  } = useBoardDetailsQuery(Number(id))
 
   const { mutateAsync: like } = useLikeMutation()
 
@@ -79,7 +78,7 @@ export default function BoardDetailsPage({
       copyUserInfo.likesItem.boards.push(Number(id))
     }
     setUserInfo(copyUserInfo)
-    boradDetailsDataRefetch()
+    boardDetailsDataRefetch()
     router.refresh()
   }
 
@@ -99,7 +98,7 @@ export default function BoardDetailsPage({
   }
 
   const totalCommentCount = () => {
-    const comments = boradDetailsData ? boradDetailsData[0].comments : []
+    const comments = boardDetailsData ? boardDetailsData[0].comments : []
     const totalReplies = comments.reduce((sum, comment) => {
       return (
         sum + (comment.comments_replies ? comment.comments_replies.length : 0)
@@ -111,7 +110,7 @@ export default function BoardDetailsPage({
     return totalCount
   }
 
-  return boradDetailsDataIsLoading ? (
+  return boardDetailsDataIsLoading || !boardDetailsData ? (
     <Skeleton />
   ) : (
     <div
@@ -134,7 +133,7 @@ export default function BoardDetailsPage({
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
               data-oid="p8.zch0"
             >
-              {/* {boradDetailsData[0].featured && (
+              {/* {boardDetailsData[0].featured && (
                 <div
                   className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center mb-4 w-fit"
                   data-oid="p85cdvs"
@@ -148,14 +147,14 @@ export default function BoardDetailsPage({
                 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2"
                 data-oid="kquy6bz"
               >
-                {boradDetailsData[0].title}
+                {boardDetailsData[0].title}
               </h1>
 
               <p
                 className="text-sm sm:text-base text-gray-600 mb-4"
                 data-oid="5uo_9ew"
               >
-                {boradDetailsData[0].subtitle}
+                {boardDetailsData[0].subtitle}
               </p>
 
               {/* Author Info */}
@@ -167,25 +166,25 @@ export default function BoardDetailsPage({
                   className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                   data-oid="aqxkzhp"
                 >
-                  <If isTrue={boradDetailsData[0].users.profile_image_url}>
+                  {boardDetailsData[0].users.profile_image_url && (
                     <Image
-                      src={getStorageUrl(boradDetailsData[0].users.profile_image_url)}
-                      alt={boradDetailsData[0].users.name}
+                      src={getStorageUrl(boardDetailsData[0].users.profile_image_url)}
+                      alt={boardDetailsData[0].users.name}
                       className="rounded-full overflow-hidden"
                       fill
                     />
-                  </If>
-                  <If isTrue={!boradDetailsData[0].users.profile_image_url}>
+                  )}
+                  {!boardDetailsData[0].users.profile_image_url && (
                     <div
                       className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
                       data-oid="dzrezk7"
                     >
                       <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
                     </div>
-                  </If>
+                  )}
                 </span>
 
-                {/* {boradDetailsData[0].author.avatar} */}
+                {/* {boardDetailsData[0].author.avatar} */}
                 <div className="flex-1" data-oid="yqef21d">
                   <div
                     className="flex items-center space-x-2"
@@ -195,7 +194,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="jc95hi7"
                     >
-                      {boradDetailsData[0].users.name}
+                      {boardDetailsData[0].users.name}
                     </span>
                     <span
                       className={`px-2 py-1 rounded-full text-xs
@@ -203,15 +202,15 @@ export default function BoardDetailsPage({
                       `}
                       data-oid="axvwyuw"
                     >
-                      {/* {boradDetailsData[0].author.level} */}
+                      {/* {boardDetailsData[0].author.level} */}
                       level
                     </span>
                   </div>
                   <div className="text-sm text-gray-500" data-oid="x9c7r00">
                     {/* 게시글 0개 • 팔로워{" 12"}명 •{" "} */}
-                    {boradDetailsData[0].created_at}
-                    {/* {boradDetailsData[0].author.posts} */}
-                    {/* {boradDetailsData[0].author.followers} */}
+                    {boardDetailsData[0].created_at}
+                    {/* {boardDetailsData[0].author.posts} */}
+                    {/* {boardDetailsData[0].author.followers} */}
                   </div>
                 </div>
                 <button
@@ -232,14 +231,14 @@ export default function BoardDetailsPage({
                   data-oid="hqigo8y"
                 >
                   <Eye className="w-4 h-4 mr-1" data-oid="tutpe_9" />
-                  <span data-oid="knr.:yc">{boradDetailsData[0].views}</span>
+                  <span data-oid="knr.:yc">{boardDetailsData[0].views}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="-zl0g55"
                 >
                   <ThumbsUp className="w-4 h-4 mr-1" data-oid="m8.6t6a" />
-                  <span data-oid="s5n9rhz">{boradDetailsData[0].likes}</span>
+                  <span data-oid="s5n9rhz">{boardDetailsData[0].likes}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
@@ -253,14 +252,14 @@ export default function BoardDetailsPage({
                   data-oid="ces7:5u"
                 >
                   <Bookmark className="w-4 h-4 mr-1" data-oid="p.i-lhw" />
-                  <span data-oid="2nafr0x">{boradDetailsData[0].bookmark}</span>
+                  <span data-oid="2nafr0x">{boardDetailsData[0].bookmark}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
                   data-oid="8x57pfl"
                 >
                   <Star className="w-4 h-4 mr-1" data-oid="h674atl" />
-                  <span data-oid="36470vj">{boradDetailsData[0].rating}</span>
+                  <span data-oid="36470vj">{boardDetailsData[0].rating}</span>
                 </div>
               </div>
 
@@ -314,7 +313,7 @@ export default function BoardDetailsPage({
                 </button>
                 <button
                   onClick={() =>
-                    router.push(`/map?boardId=${boradDetailsData[0].id}`)
+                    router.push(`/map?boardId=${boardDetailsData[0].id}`)
                   }
                   className="flex items-center space-x-2 bg-gray-100 text-gray-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm"
                   data-oid="bqegnee"
@@ -342,7 +341,7 @@ export default function BoardDetailsPage({
                 className="prose prose-sm sm:prose max-w-none"
                 data-oid="o5-:rk6"
               >
-                {boradDetailsData[0].description
+                {boardDetailsData[0].description
                   .split("\n")
                   .map((paragraph, index) => (
                     <p
@@ -357,8 +356,8 @@ export default function BoardDetailsPage({
             </div>
 
             {/* Photos */}
-            {boradDetailsData[0].board_images &&
-              boradDetailsData[0].board_images.length > 0 && (
+            {boardDetailsData[0].board_images &&
+              boardDetailsData[0].board_images.length > 0 && (
                 <div
                   className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
                   data-oid="wbf9zj1"
@@ -373,7 +372,7 @@ export default function BoardDetailsPage({
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                     data-oid="n7uke8i"
                   >
-                    {boradDetailsData[0].board_images.map((photo, index) => (
+                    {boardDetailsData[0].board_images.map((photo, index) => (
                       <div
                         key={index}
                         className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
@@ -385,7 +384,7 @@ export default function BoardDetailsPage({
                         >
                           <Image
                             src={getStorageUrl(photo.image_url)}
-                            alt={boradDetailsData[0].title}
+                            alt={boardDetailsData[0].title}
                             fill
                             priority={true}
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw"
@@ -416,7 +415,7 @@ export default function BoardDetailsPage({
                 className="flex gap-2 overflow-x-auto mb-6"
                 data-oid="uf.o1n3"
               >
-                {boradDetailsData[0].board_days.map((day) => (
+                {boardDetailsData[0].board_days.map((day) => (
                   <button
                     key={day.day}
                     onClick={() => setSelectedDay(day.day)}
@@ -431,7 +430,7 @@ export default function BoardDetailsPage({
                   </button>
                 ))}
               </div>
-              <Card data={boradDetailsData} selectedDay={selectedDay} />
+              <Card data={boardDetailsData} selectedDay={selectedDay} />
             </div>
             <CommentCard id={id} userInfo={userInfo} />
           </div>
@@ -456,40 +455,40 @@ export default function BoardDetailsPage({
                       className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                       data-oid="aqxkzhp"
                     >
-                      <If isTrue={boradDetailsData[0].users.profile_image_url}>
+                      {boardDetailsData[0].users.profile_image_url && (
                         <Image
-                          src={getStorageUrl(boradDetailsData[0].users.profile_image_url)}
+                          src={getStorageUrl(boardDetailsData[0].users.profile_image_url)}
                           alt=""
                           className="rounded-full overflow-hidden"
                           fill
                         />
-                      </If>
-                      <If isTrue={!boradDetailsData[0].users.profile_image_url}>
+                      )}
+                      {!boardDetailsData[0].users.profile_image_url && (
                         <div className="bg-gradient-to-r from-blue-600 to-purple-600 w-8 h-8 rounded-full w-h-center">
                           <User className="w-4 h-4 text-white" />
                         </div>
-                      </If>
+                      )}
                     </span>
                   </div>
                 }
-                {/* {boradDetailsData[0].author.avatar} */}
+                {/* {boardDetailsData[0].author.avatar} */}
                 <h4
                   className="font-semibold text-gray-900 mb-1"
                   data-oid="rvsr0b4"
                 >
-                  {boradDetailsData[0].users.name}
+                  {boardDetailsData[0].users.name}
                 </h4>
                 <span
                   className={`px-3 py-1 rounded-full text-sm ${getLevelColor("Platinum")} mb-3 inline-block`}
                   data-oid="1w-iz_w"
                 >
-                  {/* {boradDetailsData[0].author.level} */}level
+                  {/* {boardDetailsData[0].author.level} */}level
                 </span>
-                <If isTrue={boradDetailsData[0].users.introduce}>
+                {boardDetailsData[0].users.introduce && (
                   <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
-                    {boradDetailsData[0].users.introduce}
+                    {boardDetailsData[0].users.introduce}
                   </p>
-                </If>
+                )}
                 <div
                   className="grid grid-cols-3 gap-4 text-center mb-4"
                   data-oid="j7rygv3"
@@ -499,7 +498,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="v_pf3hq"
                     >
-                      {boradDetailsData[0].users.total_post}
+                      {boardDetailsData[0].users.total_post}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="35kbqh1">
                       게시글
@@ -510,7 +509,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="hvo7tug"
                     >
-                      {boradDetailsData[0].users.follower}
+                      {boardDetailsData[0].users.follower}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="j2sbkzo">
                       팔로워
@@ -521,7 +520,7 @@ export default function BoardDetailsPage({
                       className="font-semibold text-gray-900"
                       data-oid="4rocb71"
                     >
-                      {boradDetailsData[0].users.following}
+                      {boardDetailsData[0].users.following}
                     </div>
                     <div className="text-xs text-gray-500" data-oid="_0pgcn0">
                       팔로잉
@@ -557,7 +556,7 @@ export default function BoardDetailsPage({
                     기간
                   </span>
                   <span className="font-medium" data-oid="5tl.l4a">
-                    {boradDetailsData[0].duration}
+                    {boardDetailsData[0].duration}
                   </span>
                 </div>
                 <div
@@ -568,7 +567,7 @@ export default function BoardDetailsPage({
                     참가자
                   </span>
                   <span className="font-medium" data-oid="30bl._t">
-                    {boradDetailsData[0].participants}
+                    {boardDetailsData[0].participants}
                   </span>
                 </div>
                 <div
@@ -579,7 +578,7 @@ export default function BoardDetailsPage({
                     총 비용
                   </span>
                   <span className="font-bold text-blue-600" data-oid="y0c96w8">
-                    {comma(boradDetailsData[0].total_cost, true)}
+                    {comma(boardDetailsData[0].total_cost, true)}
                   </span>
                 </div>
                 <div
@@ -590,7 +589,7 @@ export default function BoardDetailsPage({
                     난이도
                   </span>
                   <span className="font-medium" data-oid="9ds20rw">
-                    {boradDetailsData[0].difficulty}
+                    {boardDetailsData[0].difficulty}
                   </span>
                 </div>
                 <div
@@ -607,7 +606,7 @@ export default function BoardDetailsPage({
                     />
 
                     <span className="font-medium" data-oid="iyfzrh1">
-                      {boradDetailsData[0].rating}
+                      {boardDetailsData[0].rating}
                     </span>
                   </div>
                 </div>
@@ -615,7 +614,7 @@ export default function BoardDetailsPage({
             </div>
 
             {/* Tags */}
-            <If isTrue={boradDetailsData[0].board_tags.length > 0}>
+            {boardDetailsData[0].board_tags.length > 0 && (
               <div
                 className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
                 data-oid="02-:h4t"
@@ -627,7 +626,7 @@ export default function BoardDetailsPage({
                   태그
                 </h3>
                 <div className="flex flex-wrap gap-2" data-oid="n8yapiw">
-                  {boradDetailsData[0].board_tags.map((tag, index) => (
+                  {boardDetailsData[0].board_tags.map((tag, index) => (
                     <span
                       key={index}
                       className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"
@@ -638,7 +637,7 @@ export default function BoardDetailsPage({
                   ))}
                 </div>
               </div>
-            </If>
+            )}
 
             {/* Related Posts */}
             <div
