@@ -17,12 +17,12 @@ import CommentCard from "@/common/card/comment_details_card"
 import { userInfoAtom } from "@/store/ai"
 import { useSetAtom } from "jotai"
 
+import { CoursesDetailsPageProps } from "./type"
+
 export default function CourseDetailsPage({
   params,
   userInfo,
-}: {
-  params: Promise<{ id: number }>
-}) {
+}: CoursesDetailsPageProps) {
   const router = useRouter()
   const { id } = use(params)
   const [selectedDay, setSelectedDay] = useState(1)

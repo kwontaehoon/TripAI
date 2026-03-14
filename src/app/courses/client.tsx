@@ -11,35 +11,27 @@ import {
   Sparkles,
 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Skeleton from "./skeleton"
 import { useInView } from "react-intersection-observer"
+import { CoursesPageProps } from "./type"
 
-export default function CoursesPage({ id, userInfo }) {
+export default function CoursesPage({ userInfo }: CoursesPageProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [searachInput, setSearchInput] = useState("")
+  const [searchInput, setSearchInput] = useState("")
   const [isListening, setIsListening] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState("전체")
   const [quickedFilter, setQuickedFilter] = useState("")
   const [sortBy, setSortBy] = useState("인기순")
   const [destination, setDestination] = useState("")
-  const [avg, setAvg] = useState({
-    rating: 1,
-    period: 1,
-  })
-  const [isLoading, setIsLoading] = useState(true)
-  const [filteredCourses, setFilteredCourses] = useState([])
 
   const {
     data: coursesInfiniteData,
-    error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
-    status,
     refetch: coursesInfiniteRefetch,
   } = useCoursesInfiniteQuery()
 
@@ -53,10 +45,11 @@ export default function CoursesPage({ id, userInfo }) {
     }
   }, [searchParams])
 
-  useEffect(() => {
-    if (!coursesInfiniteData?.length) return
+  const quickFilter = ["⭐ 평점 4.5 이상", "💰 20만원 이하", "🔥 이번 주 인기"]
 
-    setAvg({
+  const avg = useMemo(() => {
+    if (!coursesInfiniteData?.length) return { rating: 0, period: 0 }
+    return {
       rating:
         coursesInfiniteData.reduce((sum, course) => sum + course.rating, 0) /
         coursesInfiniteData.length,
@@ -65,9 +58,12 @@ export default function CoursesPage({ id, userInfo }) {
           (sum, course) => sum + course.course_days.length,
           0,
         ) / coursesInfiniteData.length,
-    })
+    }
+  }, [coursesInfiniteData])
 
-    const filtered = coursesInfiniteData.filter((course) => {
+  const filteredCourses = useMemo(() => {
+    if (!coursesInfiniteData?.length) return []
+    return coursesInfiniteData.filter((course) => {
       const matchTag =
         selectedFilter === "전체" ||
         course.course_tags.some((tag) => tag.tag === selectedFilter)
@@ -76,39 +72,27 @@ export default function CoursesPage({ id, userInfo }) {
         course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         course.subtitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         course.description?.toLowerCase().includes(searchQuery.toLowerCase())
-
       const matchQuick =
         quickedFilter.trim() === quickFilter[0]
           ? course.rating >= 4.5
           : quickedFilter.trim() === quickFilter[1]
             ? course.total_cost <= 200000
-            : quickedFilter.trim() === quickedFilter[2]
+            : quickedFilter.trim() === quickFilter[2]
               ? course.title?.toLowerCase().includes("김포".toLowerCase()) ||
                 course.subtitle?.toLowerCase().includes("김포".toLowerCase()) ||
-                course.description?.toLowerCase().includes("김포".toLowerCase())
+                course.description
+                  ?.toLowerCase()
+                  .includes("김포".toLowerCase())
               : true
-
       return matchTag && matchesSearch && matchQuick
+    }).sort((a, b) => {
+      if (sortBy === "인기순") return (b.likes ?? 0) - (a.likes ?? 0)
+      if (sortBy === "평점순") return (b.rating ?? 0) - (a.rating ?? 0)
+      if (sortBy === "최신순") return (b.id ?? 0) - (a.id ?? 0)
+      if (sortBy === "가격순") return (a.total_cost ?? 0) - (b.total_cost ?? 0)
+      return 0
     })
-
-    let isCanceled = false
-
-    const finishFiltering = async () => {
-      setFilteredCourses(filtered)
-
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      if (!isCanceled && isLoading) {
-        setIsLoading(false)
-      }
-    }
-
-    finishFiltering()
-
-    return () => {
-      isCanceled = true
-    }
-  }, [selectedFilter, searchQuery, coursesInfiniteData, quickedFilter])
+  }, [selectedFilter, searchQuery, coursesInfiniteData, quickedFilter, sortBy])
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -132,17 +116,16 @@ export default function CoursesPage({ id, userInfo }) {
     "혼자여행",
     "당일치기",
   ]
-  const quickFilter = ["⭐ 평점 4.5 이상", "💰 20만원 이하", "🔥 이번 주 인기"]
   const sortOptions = ["인기순", "평점순", "최신순", "가격순"]
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
-    if (searachInput.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searachInput)}`)
+    if (searchInput.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchInput)}`)
     }
   }
 
-  return isLoading ? (
+  return !coursesInfiniteData ? (
     <Skeleton />
   ) : (
     <div
