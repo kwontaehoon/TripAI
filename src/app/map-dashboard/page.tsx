@@ -1,19 +1,23 @@
-import React from "react"
+"use client"
+
+import { useEffect, useState } from "react"
 import PC from "./pc"
 import Mobile from "./mobile"
 
-const page = () => {
-  return (
-    <div>
-      <div className="hidden lg:block">
-        <PC />
-      </div>
+const Page = () => {
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
 
-      <div className="block lg:hidden">
-        <Mobile />
-      </div>
-    </div>
-  )
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)")
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+
+  if (isMobile === null) return null
+
+  return isMobile ? <Mobile /> : <PC />
 }
 
-export default page
+export default Page
