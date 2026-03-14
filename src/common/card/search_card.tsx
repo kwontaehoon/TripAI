@@ -71,13 +71,13 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
   return (
     <div>
       {/* Search Results */}
-      <div className="space-y-4 sm:space-y-6" data-oid="ep:hvv:">
+      <div className="space-y-4 sm:space-y-6">
         {filteredData.map((result, index) => (
           <div
             key={`${result.type}-${index}`}
             onClick={() => handleResultClick(result)}
             className="bg-white rounded-2xl shadow-lg border !border-gray-200 overflow-hidden hover:shadow-xl transition-all transform hover:-translate-y-1 cursor-pointer"
-            data-oid="nl279as"
+           
           >
             {/* Type Badge */}
             <div
@@ -86,13 +86,13 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                   ? "bg-gradient-to-r from-purple-400 to-blue-400 text-white"
                   : "bg-gradient-to-r from-green-400 to-blue-400 text-white"
               }`}
-              data-oid="7g-pgh4"
+             
             >
               {result.type === "ai-course" ? (
                 <>
                   <Sparkles
                     className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                    data-oid="w9sr2ud"
+                   
                   />
                   AI 추천 코스
                 </>
@@ -100,35 +100,35 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                 <>
                   <MessageCircle
                     className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                    data-oid="op6c_vk"
+                   
                   />
                   사용자 코스
                 </>
               )}
             </div>
 
-            <div className="p-4 sm:p-6" data-oid="5m0nh56">
+            <div className="p-4 sm:p-6">
               <div
                 className="flex items-start justify-between mb-3 gap-2"
-                data-oid="ca4fh.:"
+               
               >
-                <div className="flex-1 min-w-0" data-oid="g_lpo.s">
+                <div className="flex-1 min-w-0">
                   <h3
                     className="text-lg sm:text-xl font-bold text-gray-900 mb-1 line-clamp-2"
-                    data-oid="sqy7p9w"
+                   
                   >
                     {result.title}
                   </h3>
                   <p
                     className="text-sm sm:text-base text-gray-600 line-clamp-2"
-                    data-oid="r-lzkpu"
+                   
                   >
                     {result.subtitle}
                   </p>
                 </div>
                 <span
                   className={`px-2 sm:px-3 py-1 rounded-full text-xs font-medium ${getDifficultyColor(result.difficulty)} flex-shrink-0`}
-                  data-oid="evuv02x"
+                 
                 >
                   {getDifficultyText(result.difficulty)}
                 </span>
@@ -138,11 +138,11 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
               {result.type === "user-post" && (
                 <div
                   className="flex items-center space-x-2 mb-3"
-                  data-oid="3rdmb_1"
+                 
                 >
                   <span
                     className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
-                    data-oid="aqxkzhp"
+                   
                   >
                     <If isTrue={result.users.profile_image_url}>
                       <Image
@@ -156,36 +156,36 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                     <If isTrue={!result.users.profile_image_url}>
                       <div
                         className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
-                        data-oid="dzrezk7"
+                       
                       >
                         <User
                           className="w-4 h-4 text-white"
-                          data-oid="0ez2wo7"
+                         
                         />
                       </div>
                     </If>
                     {/* {post.author.avatar} */}
                   </span>
-                  <div className="min-w-0" data-oid="n8nfu_h">
+                  <div className="min-w-0">
                     <div
                       className="flex items-center space-x-2"
-                      data-oid="g54yjel"
+                     
                     >
                       <span
                         className="text-sm font-medium text-gray-900"
-                        data-oid="ua88r2t"
+                       
                       >
                         {result.users.name}
                       </span>
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs ${getLevelColor(result.author.level)}`}
-                        data-oid="l_anzot"
+                       
                       >
                         {/* {result.author.level} */}
                         level
                       </span>
                     </div>
-                    <div className="text-xs text-gray-500" data-oid="i.:.ldz">
+                    <div className="text-xs text-gray-500">
                       {result.created_at}
                     </div>
                   </div>
@@ -194,7 +194,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
 
               <p
                 className="text-sm sm:text-base text-gray-600 mb-4 line-clamp-2"
-                data-oid="3er5t85"
+               
               >
                 {result.description}
               </p>
@@ -202,46 +202,46 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
               {/* Course Info */}
               <div
                 className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4 text-xs sm:text-sm"
-                data-oid="8minhm-"
+               
               >
                 <div
                   className="flex items-center text-gray-600"
-                  data-oid="np9:h2c"
+                 
                 >
                   <Calendar
                     className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                    data-oid="46ri4tl"
+                   
                   />
 
-                  <span data-oid="0c5sdt6">{result.duration}</span>
+                  <span>{result.duration}</span>
                 </div>
                 <div
                   className="flex items-center text-gray-600"
-                  data-oid="b.gi-y1"
+                 
                 >
                   <Users
                     className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                    data-oid="5cdjr62"
+                   
                   />
 
-                  <span data-oid="l55jz2-">{result.participants}</span>
+                  <span>{result.participants}</span>
                 </div>
                 <div
                   className="flex items-center text-gray-600"
-                  data-oid="mvo6pm5"
+                 
                 >
                   <MapPin
                     className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                    data-oid="itzu917"
+                   
                   />
 
-                  <span data-oid="itd7fcq">{result.total_places}개 장소</span>
+                  <span>{result.total_places}개 장소</span>
                 </div>
                 <div
                   className="flex items-center text-gray-600"
-                  data-oid="ot8z_z4"
+                 
                 >
-                  <span className="font-bold text-blue-600" data-oid="z.mlotg">
+                  <span className="font-bold text-blue-600">
                     {comma(result.total_cost, true)}
                   </span>
                 </div>
@@ -250,7 +250,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
               {/* Tags */}
               <div
                 className="flex flex-wrap gap-1 sm:gap-2 mb-4"
-                data-oid="aac976m"
+               
               >
                 {(result.course_tags || result.board_tags)
                   .slice(0, 4)
@@ -262,34 +262,34 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
                           ? "bg-purple-50 text-purple-600"
                           : "bg-blue-50 text-blue-600"
                       }`}
-                      data-oid="w_ac:5a"
+                     
                     >
                       {tag.tag}
                     </span>
                   ))}
                 {(result.course_tags || result.board_tags).length > 4 && (
-                  <span className="text-xs text-gray-500" data-oid="pab0hzw">
+                  <span className="text-xs text-gray-500">
                     +{(result.course_tags || result.board_tags).length - 4}
                   </span>
                 )}
               </div>
 
               {/* Highlights */}
-              <div className="mb-4" data-oid="p.1n9hi">
+              <div className="mb-4">
                 <h4
                   className="text-xs sm:text-sm font-semibold text-gray-900 mb-2"
-                  data-oid="lno9tu_"
+                 
                 >
                   주요 명소
                 </h4>
-                <div className="flex flex-wrap gap-1" data-oid="_4:h-pz">
+                <div className="flex flex-wrap gap-1">
                   {(result.course_highlights || result.board_highlights)
                     .slice(0, 3)
                     .map((highlight, index, arr) => (
                       <span
                         key={index}
                         className="text-xs text-gray-600"
-                        data-oid="5p51l3-"
+                       
                       >
                         {highlight.highlight}
                         {index < arr.length - 1 && " • "}
@@ -298,7 +298,7 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
 
                   {(result.course_highlights || result.board_highlights)
                     .length > 3 && (
-                    <span className="text-xs text-gray-500" data-oid="0qlm2we">
+                    <span className="text-xs text-gray-500">
                       외{" "}
                       {(result.course_highlights || result.board_highlights)
                         .length - 3}
@@ -311,56 +311,56 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
               {/* Bottom Info */}
               <div
                 className="flex items-center justify-between"
-                data-oid="f827i2g"
+               
               >
                 <div
                   className="flex items-center space-x-3 sm:space-x-4"
-                  data-oid="yc2luhg"
+                 
                 >
-                  <div className="flex items-center" data-oid="aamz2th">
+                  <div className="flex items-center">
                     <Star
                       className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 mr-1"
-                      data-oid="n-a:6xi"
+                     
                     />
 
                     <span
                       className="text-xs sm:text-sm font-semibold"
-                      data-oid="ydg-90s"
+                     
                     >
                       {result.rating}
                     </span>
                   </div>
                   <div
                     className="flex items-center text-xs sm:text-sm text-gray-500"
-                    data-oid="acmwz.5"
+                   
                   >
                     <ThumbsUp
                       className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                      data-oid="k6zjhsm"
+                     
                     />
 
-                    <span data-oid="2.nvh3c">{result.likes}</span>
+                    <span>{result.likes}</span>
                   </div>
                   <div
                     className="flex items-center text-xs sm:text-sm text-gray-500"
-                    data-oid=".71o5mk"
+                   
                   >
                     <MessageCircle
                       className="w-3 h-3 sm:w-4 sm:h-4 mr-1"
-                      data-oid="7ppvft_"
+                     
                     />
 
-                    <span data-oid="betu9wv">{result.comments.length}</span>
+                    <span>{result.comments.length}</span>
                   </div>
                 </div>
                 <button
                   className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center text-xs sm:text-sm"
-                  data-oid="ufdl2r5"
+                 
                 >
                   상세보기
                   <ArrowRight
                     className="w-3 h-3 sm:w-4 sm:h-4 ml-1"
-                    data-oid="4_90s0p"
+                   
                   />
                 </button>
               </div>
@@ -373,26 +373,26 @@ const Search_card = ({ filteredData, setSelectedFilter }) => {
       {filteredData.length === 0 && searchQuery && (
         <div
           className="bg-white rounded-2xl p-8 text-center border !border-gray-200"
-          data-oid="l8l2px-"
+         
         >
           <Search
             className="w-12 h-12 text-gray-400 mx-auto mb-4"
-            data-oid="b69idox"
+           
           />
 
           <h3
             className="text-lg font-semibold text-gray-900 mb-2"
-            data-oid="6exf0:t"
+           
           >
             검색 결과가 없습니다
           </h3>
-          <p className="text-gray-600 mb-4" data-oid="v..-ugo">
+          <p className="text-gray-600 mb-4">
             다른 키워드로 검색해보시거나 필터를 조정해보세요.
           </p>
           <button
             onClick={() => setSelectedFilter("전체")}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-            data-oid="r5cfql4"
+           
           >
             필터 초기화
           </button>

@@ -143,14 +143,14 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
     return (
       <div
         className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center"
-        data-oid="1ixaard"
+       
       >
-        <div className="text-center" data-oid="yi17rrk">
+        <div className="text-center">
           <div
             className="w-16 h-16 border-4 !border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"
-            data-oid="jtej_ag"
+           
           ></div>
-          <p className="text-gray-600" data-oid="87nb6p4">
+          <p className="text-gray-600">
             마이페이지를 불러오는 중...
           </p>
         </div>
@@ -161,37 +161,37 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
-      data-oid="6zs._r1"
+     
     >
       {/* Main Content */}
-      <div data-oid="quiruzm">
-        <div className="max-w-6xl mx-auto px-4" data-oid="6ks87nv">
+      <div>
+        <div className="max-w-6xl mx-auto px-4">
           {/* Profile Header */}
           <div
             className="bg-white rounded-2xl shadow-lg border !border-gray-200 overflow-hidden mb-8"
-            data-oid="s0qvb.."
+           
           >
             <div
               className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 text-white relative"
-              data-oid="-:zlup2"
+             
             >
               <div
                 className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6"
-                data-oid="0bl6ohq"
+               
               >
                 {/* Avatar */}
 
-                <div className="relative" data-oid="0xj0e4v">
+                <div className="relative">
                   <label className="">
                     <div
                       className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center relative"
-                      data-oid="tc2.7ke"
+                     
                     >
                       <If isTrue={images.length === 0}>
                         {!userInfo.profile_image_url ? (
                           <User
                             className="w-12 h-12 text-white"
-                            data-oid="1309xxm"
+                           
                           />
                         ) : (
                           <Image
@@ -226,55 +226,55 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                   {isEditing && (
                     <button
                       className="absolute bottom-0 right-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center hover:bg-purple-700 transition-colors"
-                      data-oid="6e486nq"
+                     
                     >
                       <Camera
                         className="w-4 h-4 text-white"
-                        data-oid="u6m4yym"
+                       
                       />
                     </button>
                   )}
                 </div>
 
                 {/* User Info */}
-                <div className="flex-1" data-oid="oasif:2">
+                <div className="flex-1">
                   <div
                     className="flex items-center space-x-3 mb-2"
-                    data-oid="oc.v806"
+                   
                   >
-                    <h1 className="text-2xl font-bold" data-oid="0_s0.0k">
+                    <h1 className="text-2xl font-bold">
                       {newUserProfile.name}
                     </h1>
                     <div
                       className="flex items-center space-x-1 bg-white/20 px-2 py-1 rounded-full"
-                      data-oid="6o-clm3"
+                     
                     >
-                      <Trophy className="w-4 h-4" data-oid="bb5jjog" />
-                      <span className="text-sm" data-oid="o9.nbgx">
+                      <Trophy className="w-4 h-4" />
+                      <span className="text-sm">
                         글로벌 트래블러
                       </span>
                     </div>
                   </div>
-                  <p className="text-purple-100 mb-2" data-oid="c59:6o4">
+                  <p className="text-purple-100 mb-2">
                     {newUserProfile.introduce}
                   </p>
                   <div
                     className="flex items-center space-x-4 text-sm text-purple-100"
-                    data-oid="h.hkr:z"
+                   
                   >
                     {/* <div
                       className="flex items-center space-x-1"
-                      data-oid="2s7j:q5"
+                     
                     >
-                      <MapPin className="w-4 h-4" data-oid="j6s5x66" />
-                      <span data-oid="r7e8ws:">{newUserProfile.location}</span>
+                      <MapPin className="w-4 h-4" />
+                      <span>{newUserProfile.location}</span>
                     </div> */}
                     <div
                       className="flex items-center space-x-1"
-                      data-oid="dns1c.v"
+                     
                     >
-                      <Calendar className="w-4 h-4" data-oid="i9t:n-_" />
-                      <span data-oid="syi13:x">
+                      <Calendar className="w-4 h-4" />
+                      <span>
                         가입일:{" "}
                         {moment(newUserProfile.created_at).format("YYYY-MM-DD")}
                       </span>
@@ -283,20 +283,20 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                 </div>
 
                 {/* Edit Button */}
-                <div className="flex space-x-2" data-oid="xtyv381">
+                <div className="flex space-x-2">
                   {isEditing ? (
                     <>
                       <button
                         onClick={handleSaveProfile}
                         className="px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-purple-50 transition-colors font-medium"
-                        data-oid="2rtgjj5"
+                       
                       >
                         저장
                       </button>
                       <button
                         onClick={handleCancel}
                         className="px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
-                        data-oid="1qqnk3x"
+                       
                       >
                         취소
                       </button>
@@ -308,10 +308,10 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                         setActiveTab("profile")
                       }}
                       className="flex items-center space-x-2 px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors"
-                      data-oid="8dj9qoh"
+                     
                     >
-                      <Edit3 className="w-4 h-4" data-oid="0ow6845" />
-                      <span data-oid="2_23rmp">프로필 편집</span>
+                      <Edit3 className="w-4 h-4" />
+                      <span>프로필 편집</span>
                     </button>
                   )}
                 </div>
@@ -319,74 +319,74 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
             </div>
 
             {/* Stats */}
-            <div className="px-6 py-4 bg-gray-50" data-oid="_ajmsjs">
+            <div className="px-6 py-4 bg-gray-50">
               <div
                 className="grid grid-cols-2 md:grid-cols-6 gap-4"
-                data-oid="ahvwccj"
+               
               >
-                <div className="text-center" data-oid="bl-l7m2">
+                <div className="text-center">
                   <div
                     className="text-2xl font-bold text-purple-600"
-                    data-oid="km.adg9"
+                   
                   >
                     {userInfo.boards.length}
                   </div>
-                  <div className="text-sm text-gray-600" data-oid="vpvu9y7">
+                  <div className="text-sm text-gray-600">
                     총 여행
                   </div>
                 </div>
-                <div className="text-center" data-oid="p7:hib0">
+                <div className="text-center">
                   <div
                     className="text-2xl font-bold text-green-600"
-                    data-oid="gxgng_u"
+                   
                   >
                     {totalComment()}
                   </div>
-                  <div className="text-sm text-gray-600" data-oid="035g50u">
+                  <div className="text-sm text-gray-600">
                     리뷰
                   </div>
                 </div>
-                <div className="text-center" data-oid="i_::v01">
+                <div className="text-center">
                   <div
                     className="text-2xl font-bold text-yellow-600"
-                    data-oid="q36-.ok"
+                   
                   >
                     {totalRating()}
                   </div>
-                  <div className="text-sm text-gray-600" data-oid="4p:-5mu">
+                  <div className="text-sm text-gray-600">
                     평균 평점
                   </div>
                 </div>
-                <div className="text-center" data-oid="sggrkt2">
+                <div className="text-center">
                   <div
                     className="text-2xl font-bold text-purple-600"
-                    data-oid="96_nw8k"
+                   
                   >
                     -
                   </div>
-                  <div className="text-sm text-gray-600" data-oid="p6egmud">
+                  <div className="text-sm text-gray-600">
                     방문 국가
                   </div>
                 </div>
-                <div className="text-center" data-oid="5m:rrei">
+                <div className="text-center">
                   <div
                     className="text-2xl font-bold text-red-600"
-                    data-oid="1iqi1gy"
+                   
                   >
                     -
                   </div>
-                  <div className="text-sm text-gray-600" data-oid="q6f5l-b">
+                  <div className="text-sm text-gray-600">
                     총 거리(km)
                   </div>
                 </div>
-                <div className="text-center" data-oid="_9a.kyj">
+                <div className="text-center">
                   <div
                     className="text-2xl font-bold text-indigo-600"
-                    data-oid="wpiudgn"
+                   
                   >
                     -
                   </div>
-                  <div className="text-sm text-gray-600" data-oid="5lk88.y">
+                  <div className="text-sm text-gray-600">
                     최애 여행지
                   </div>
                 </div>
@@ -397,10 +397,10 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
           {/* Tab Navigation */}
           <div
             className="bg-white rounded-2xl shadow-lg border !border-gray-200 overflow-hidden"
-            data-oid="scg14.l"
+           
           >
-            <div className="border-b !border-gray-200" data-oid="84ddjze">
-              <nav className="flex space-x-8 px-6" data-oid="ua7g183">
+            <div className="border-b !border-gray-200">
+              <nav className="flex space-x-8 px-6">
                 {[
                   { id: "profile", label: "프로필 정보", icon: User },
                   // { id: "activity", label: "최근 활동", icon: Clock },
@@ -418,10 +418,10 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
                           ? "!border-blue-600 text-blue-600"
                           : "border-transparent text-gray-600 hover:text-gray-900"
                       }`}
-                      data-oid="zfxn156"
+                     
                     >
-                      <Icon className="w-4 h-4" data-oid="sq6djaf" />
-                      <span className="font-medium" data-oid="ajwe5mq">
+                      <Icon className="w-4 h-4" />
+                      <span className="font-medium">
                         {tab.label}
                       </span>
                     </button>
@@ -431,7 +431,7 @@ export default function MyPage({ userInfo, analyticsData, getUserData }) {
             </div>
 
             {/* Tab Content */}
-            <div className="p-6" data-oid="du_2vo6">
+            <div className="p-6">
               {activeTab === "profile" && (
                 <Profile
                   userInfo={userInfo}

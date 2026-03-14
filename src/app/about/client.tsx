@@ -252,42 +252,42 @@ export default function AboutPage({ boardsData, coursesData }) {
 
   const features = [
     {
-      icon: <Bot className="w-8 h-8" data-oid="vwjp7od" />,
+      icon: <Bot className="w-8 h-8" />,
       title: "Gemini AI 기반 추천",
       description:
         "Google의 최신 Gemini AI 모델을 활용하여 개인 맞춤형 여행 코스를 제안합니다.",
       color: "from-blue-500 to-cyan-500",
     },
     {
-      icon: <Zap className="w-8 h-8" data-oid="ebb5lwb" />,
+      icon: <Zap className="w-8 h-8" />,
       title: "Next.js 최적화",
       description:
         "Next.js의 SSR과 최적화 기능으로 빠르고 효율적인 사용자 경험을 제공합니다.",
       color: "from-yellow-500 to-orange-500",
     },
     {
-      icon: <Database className="w-8 h-8" data-oid="lqgj1p:" />,
+      icon: <Database className="w-8 h-8" />,
       title: "Supabase 백엔드",
       description:
         "안전한 인증 시스템과 PostgreSQL 기반의 데이터베이스로 빠르고 간결한 데이터 처리를 보장합니다.",
       color: "from-green-500 to-emerald-500",
     },
     {
-      icon: <Cloud className="w-8 h-8" data-oid="uoi8agm" />,
+      icon: <Cloud className="w-8 h-8" />,
       title: "Vercel & CDN",
       description:
         "Vercel의 글로벌 CDN을 통해 전 세계 어디서나 빠른 로딩 속도를 제공합니다.",
       color: "from-purple-500 to-pink-500",
     },
     {
-      icon: <MapPin className="w-8 h-8" data-oid="mappin1" />,
+      icon: <MapPin className="w-8 h-8" />,
       title: "Google Places API",
       description:
         "Google Places API를 통해 정확하고 실시간 장소 정보를 제공합니다.",
       color: "from-red-500 to-rose-500",
     },
     {
-      icon: <Mail className="w-8 h-8" data-oid="xvwfb-:" />,
+      icon: <Mail className="w-8 h-8" />,
       title: "AWS SES 이메일 서비스",
       description:
         "AWS SES를 이메일 서버로 활용하여 비밀번호 찾기 등의 안정적인 이메일 전송 시스템을 제공합니다.",
@@ -321,26 +321,26 @@ export default function AboutPage({ boardsData, coursesData }) {
     {
       name: "권태훈",
       role: "풀스택 개발자 & 창립자",
-      icon: <User className="w-6 h-6" data-oid="7q_miz7" />,
+      icon: <User className="w-6 h-6" />,
       description: "TripAI의 모든 기술적 측면을 담당하고 있습니다.",
     },
   ]
 
   const visionItems = [
     {
-      icon: <Target className="w-8 h-8" data-oid="sn97nko" />,
+      icon: <Target className="w-8 h-8" />,
       title: "미션",
       description:
         "AI 기술로 모든 사람이 완벽한 여행을 경험할 수 있도록 돕습니다.",
     },
     {
-      icon: <Lightbulb className="w-8 h-8" data-oid="mtcbqx." />,
+      icon: <Lightbulb className="w-8 h-8" />,
       title: "비전",
       description:
         "여행 계획의 새로운 패러다임을 제시하는 글로벌 리더가 되겠습니다.",
     },
     {
-      icon: <Heart className="w-8 h-8" data-oid="77n46_7" />,
+      icon: <Heart className="w-8 h-8" />,
       title: "가치",
       description:
         "사용자 중심의 혁신적인 서비스로 여행의 즐거움을 극대화합니다.",
@@ -351,21 +351,21 @@ export default function AboutPage({ boardsData, coursesData }) {
     <div
       ref={containerRef}
       className="min-h-screen bg-gray-50 overflow-hidden"
-      data-oid="2bbsz-j"
+     
     >
       {/* Parallax Background Elements */}
-      <div className="parallax-bg fixed inset-0 opacity-10" data-oid="po2zatm">
+      <div className="parallax-bg fixed inset-0 opacity-10">
         <div
           className="absolute top-20 left-10 w-32 h-32 bg-blue-500 rounded-full blur-3xl"
-          data-oid="ja58ppz"
+         
         ></div>
         <div
           className="absolute top-40 right-20 w-24 h-24 bg-purple-500 rounded-full blur-2xl"
-          data-oid="tu3qdoa"
+         
         ></div>
         <div
           className="absolute bottom-20 left-1/3 w-40 h-40 bg-green-500 rounded-full blur-3xl"
-          data-oid="d0pd1ne"
+         
         ></div>
       </div>
 
@@ -373,88 +373,88 @@ export default function AboutPage({ boardsData, coursesData }) {
       <section
         ref={heroRef}
         className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white overflow-hidden"
-        data-oid="vxcni9."
+       
       >
-        <div className="absolute inset-0 bg-black/20" data-oid="gj2daom"></div>
+        <div className="absolute inset-0 bg-black/20"></div>
 
         {/* Floating Elements */}
         <div
           className="floating-element absolute top-20 left-20 w-16 h-16 bg-white/10 rounded-full backdrop-blur-sm"
-          data-oid=":y7vmkl"
+         
         ></div>
         <div
           className="floating-element absolute top-40 right-32 w-12 h-12 bg-white/10 rounded-full backdrop-blur-sm"
-          data-oid="o92iqqf"
+         
         ></div>
         <div
           className="floating-element absolute bottom-32 left-1/4 w-20 h-20 bg-white/10 rounded-full backdrop-blur-sm"
-          data-oid="g49cgm2"
+         
         ></div>
 
         <div
           className="relative z-10 text-center max-w-4xl mx-auto px-6"
-          data-oid="8vv8jw2"
+         
         >
           <h1
             ref={titleRef}
             className="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200"
-            data-oid="8c_kn:5"
+           
           ></h1>
           <p
             ref={subtitleRef}
             className="text-xl md:text-2xl mb-8 text-blue-100 max-w-2xl mx-auto leading-relaxed"
-            data-oid="wtpx508"
+           
           >
             인공지능과 빅데이터 기술로 당신만의 완벽한 여행 경험을 만들어갑니다
           </p>
           <button
             className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             onClick={() => router.push("/")}
-            data-oid="8u9qcob"
+           
           >
             여행 시작하기{" "}
-            <ArrowRight className="inline w-5 h-5 ml-2" data-oid="8y5-mck" />
+            <ArrowRight className="inline w-5 h-5 ml-2" />
           </button>
         </div>
         {/* Scroll Hint */}
         <div
           ref={scrollHintRef}
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center"
-          data-oid="4ow_pwx"
+         
         >
           <div
             className="flex flex-col items-center space-y-4"
-            data-oid=":gft:5e"
+           
           >
-            <p className="text-white/80 text-sm font-medium" data-oid="4m41n3f">
+            <p className="text-white/80 text-sm font-medium">
               아래로 스크롤하여 더 알아보기
             </p>
 
             {/* Animated Mouse */}
-            <div className="mouse-scroll" data-oid="mmgg2fz">
+            <div className="mouse-scroll">
               <div
                 className="w-6 h-10 border-2 !border-white/60 rounded-full relative"
-                data-oid="6nwdwvh"
+               
               >
                 <div
                   className="w-1 h-2 bg-white/60 rounded-full absolute top-2 left-1/2 transform -translate-x-1/2 scroll-dot"
-                  data-oid="0cjig1q"
+                 
                 ></div>
               </div>
             </div>
 
             {/* Animated Arrows */}
-            <div className="flex flex-col items-center" data-oid="51gue75">
-              <div className="scroll-arrow" data-oid="6yq:s_3">
+            <div className="flex flex-col items-center">
+              <div className="scroll-arrow">
                 <ChevronDown
                   className="w-6 h-6 text-white/80"
-                  data-oid="1:_r5mr"
+                 
                 />
               </div>
-              <div className="scroll-arrow" data-oid="324kcxa">
+              <div className="scroll-arrow">
                 <ChevronDown
                   className="w-4 h-4 text-white/60 -mt-3"
-                  data-oid="d_sq..z"
+                 
                 />
               </div>
             </div>
@@ -463,18 +463,18 @@ export default function AboutPage({ boardsData, coursesData }) {
       </section>
 
       {/* Features Section */}
-      <section ref={featuresRef} className="py-20 bg-white" data-oid="611:jcs">
-        <div className="max-w-7xl mx-auto px-6" data-oid="ywz.ld2">
-          <div className="text-center mb-16" data-oid="vw08ryb">
+      <section ref={featuresRef} className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
             <h2
               className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
-              data-oid="z6e9hx:"
+             
             >
               핵심 기술 스택
             </h2>
             <p
               className="text-xl text-gray-600 max-w-2xl mx-auto"
-              data-oid="y4pjhyt"
+             
             >
               최신 기술과 안정적인 인프라로 구축된 차세대 여행 플랫폼
             </p>
@@ -482,24 +482,24 @@ export default function AboutPage({ boardsData, coursesData }) {
 
           <div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            data-oid=".f2fc-k"
+           
           >
             {features.map((feature, index) => (
               <div
                 key={index}
                 className={`feature-card p-8 rounded-2xl bg-gradient-to-br ${feature.color} text-white transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl`}
-                data-oid="53xq0sc"
+               
               >
                 <div
                   className="mb-4 p-3 bg-white/20 rounded-full w-fit"
-                  data-oid="3t.8d4s"
+                 
                 >
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3" data-oid="79zxoke">
+                <h3 className="text-xl font-bold mb-3">
                   {feature.title}
                 </h3>
-                <p className="text-white/90 leading-relaxed" data-oid="shv4nk1">
+                <p className="text-white/90 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -602,74 +602,74 @@ export default function AboutPage({ boardsData, coursesData }) {
       <section
         ref={teamRef}
         className="py-20 bg-gradient-to-br from-purple-50 to-blue-50"
-        data-oid="wrjj-1g"
+       
       >
-        <div className="max-w-7xl mx-auto px-6" data-oid="kph-d3-">
-          <div className="text-center mb-16" data-oid="88py7q9">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
             <h2
               className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
-              data-oid="c:pml.z"
+             
             >
               개발자 소개
             </h2>
-            <p className="text-xl text-gray-600" data-oid="v6swv3r">
+            <p className="text-xl text-gray-600">
               혁신적인 아이디어를 현실로 만드는 1인 개발자
             </p>
           </div>
 
-          <div className="flex justify-center" data-oid="f839f3x">
+          <div className="flex justify-center">
             {team.map((member, index) => (
               <div
                 key={index}
                 className="team-member text-center p-12 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 max-w-md"
-                data-oid="kfq8p9l"
+               
               >
                 <div
                   className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-6"
-                  data-oid="l41s:tg"
+                 
                 >
                   {member.icon}
                 </div>
                 <h3
                   className="text-2xl font-bold text-gray-800 mb-2"
-                  data-oid="-..-wi9"
+                 
                 >
                   {member.name}
                 </h3>
                 <p
                   className="text-lg text-blue-600 font-semibold mb-4"
-                  data-oid="4r-xthz"
+                 
                 >
                   {member.role}
                 </p>
                 <p
                   className="text-gray-600 leading-relaxed"
-                  data-oid="member-desc"
+                 
                 >
                   {member.description}
                 </p>
                 <div
                   className="mt-6 flex justify-center space-x-4"
-                  data-oid="3mlzyby"
+                 
                 >
                   <div
                     className="flex items-center space-x-2 text-sm text-gray-500"
-                    data-oid="3v64eqh"
+                   
                   >
-                    <Code className="w-4 h-4" data-oid="_p._ruo" />
-                    <span data-oid="6w.:mcg">Full-Stack Development</span>
+                    <Code className="w-4 h-4" />
+                    <span>Full-Stack Development</span>
                   </div>
                 </div>
                 <div
                   className="mt-4 flex justify-center space-x-4"
-                  data-oid="l2k0iu:"
+                 
                 >
                   <div
                     className="flex items-center space-x-2 text-sm text-gray-500"
-                    data-oid="i4g.1xy"
+                   
                   >
-                    <Bot className="w-4 h-4" data-oid="dq9rtnv" />
-                    <span data-oid="cds18d0">AI Integration</span>
+                    <Bot className="w-4 h-4" />
+                    <span>AI Integration</span>
                   </div>
                 </div>
               </div>
@@ -679,43 +679,43 @@ export default function AboutPage({ boardsData, coursesData }) {
       </section>
 
       {/* Vision Section */}
-      <section ref={visionRef} className="py-20 bg-white" data-oid="59bfppd">
-        <div className="max-w-7xl mx-auto px-6" data-oid="npizva9">
-          <div className="text-center mb-16" data-oid="imzlivq">
+      <section ref={visionRef} className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
             <h2
               className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
-              data-oid="wcppd_o"
+             
             >
               우리의 철학
             </h2>
-            <p className="text-xl text-gray-600" data-oid="gbw7lim">
+            <p className="text-xl text-gray-600">
               TripAI가 추구하는 가치와 미래 비전
             </p>
           </div>
 
           <div
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            data-oid="qog0f9s"
+           
           >
             {visionItems.map((item, index) => (
               <div
                 key={index}
                 className="vision-item p-8 text-center"
-                data-oid="dca9jnv"
+               
               >
                 <div
                   className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white mx-auto mb-6"
-                  data-oid="2xgcmx."
+                 
                 >
                   {item.icon}
                 </div>
                 <h3
                   className="text-2xl font-bold text-gray-800 mb-4"
-                  data-oid="90t42x_"
+                 
                 >
                   {item.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed" data-oid=":h74n8z">
+                <p className="text-gray-600 leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -727,35 +727,35 @@ export default function AboutPage({ boardsData, coursesData }) {
       {/* CTA Section */}
       <section
         className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-        data-oid="doi6d9m"
+       
       >
-        <div className="max-w-4xl mx-auto text-center px-6" data-oid="9zw:7dr">
+        <div className="max-w-4xl mx-auto text-center px-6">
           <Rocket
             className="w-16 h-16 mx-auto mb-6 text-blue-200"
-            data-oid=":3hyaut"
+           
           />
           <h2
             className="text-4xl md:text-5xl font-bold mb-6"
-            data-oid="pbkib9y"
+           
           >
             함께 여행의 미래를 만들어가요
           </h2>
-          <p className="text-xl mb-8 text-blue-100" data-oid=":3g7a:4">
+          <p className="text-xl mb-8 text-blue-100">
             TripAI와 함께 새로운 여행 경험을 시작하세요
           </p>
           <div
             className="flex flex-col sm:flex-row gap-4 justify-center"
-            data-oid="y-wsez2"
+           
           >
             <button
               className="bg-white text-blue-600 px-8 py-4 rounded-full font-semibold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
-              data-oid="9c9vkc:"
+             
             >
               지금 시작하기
             </button>
             <button
               className="border-2 !border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300"
-              data-oid="2xh.:w5"
+             
             >
               더 알아보기
             </button>

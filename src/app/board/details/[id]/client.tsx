@@ -115,44 +115,44 @@ export default function BoardDetailsPage({
   ) : (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
-      data-oid="7o6rs87"
+     
     >
       {/* Main Content */}
       <main
         className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8"
-        data-oid="mmb06ds"
+       
       >
         <div
           className="grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
-          data-oid="0x6ct-t"
+         
         >
           {/* Left Column - Post Content */}
-          <div className="lg:col-span-2" data-oid="w13.j:o">
+          <div className="lg:col-span-2">
             {/* Post Header */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
-              data-oid="p8.zch0"
+             
             >
               {/* {boardDetailsData[0].featured && (
                 <div
                   className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-lg text-sm font-medium flex items-center mb-4 w-fit"
-                  data-oid="p85cdvs"
+                 
                 >
-                  <Award className="w-4 h-4 mr-1" data-oid="4dc31s4" />
+                  <Award className="w-4 h-4 mr-1" />
                   추천 게시글
                 </div>
               )} */}
 
               <h1
                 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2"
-                data-oid="kquy6bz"
+               
               >
                 {boardDetailsData[0].title}
               </h1>
 
               <p
                 className="text-sm sm:text-base text-gray-600 mb-4"
-                data-oid="5uo_9ew"
+               
               >
                 {boardDetailsData[0].subtitle}
               </p>
@@ -160,11 +160,11 @@ export default function BoardDetailsPage({
               {/* Author Info */}
               <div
                 className="flex items-center space-x-3 mb-4 pb-4 border-b !border-gray-200 "
-                data-oid="cly6160"
+               
               >
                 <span
                   className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
-                  data-oid="aqxkzhp"
+                 
                 >
                   {boardDetailsData[0].users.profile_image_url && (
                     <Image
@@ -177,22 +177,22 @@ export default function BoardDetailsPage({
                   {!boardDetailsData[0].users.profile_image_url && (
                     <div
                       className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
-                      data-oid="dzrezk7"
+                     
                     >
-                      <User className="w-4 h-4 text-white" data-oid="0ez2wo7" />
+                      <User className="w-4 h-4 text-white" />
                     </div>
                   )}
                 </span>
 
                 {/* {boardDetailsData[0].author.avatar} */}
-                <div className="flex-1" data-oid="yqef21d">
+                <div className="flex-1">
                   <div
                     className="flex items-center space-x-2"
-                    data-oid="tgdfr09"
+                   
                   >
                     <span
                       className="font-semibold text-gray-900"
-                      data-oid="jc95hi7"
+                     
                     >
                       {boardDetailsData[0].users.name}
                     </span>
@@ -200,13 +200,13 @@ export default function BoardDetailsPage({
                       className={`px-2 py-1 rounded-full text-xs
                         ${getLevelColor("Platinum")}
                       `}
-                      data-oid="axvwyuw"
+                     
                     >
                       {/* {boardDetailsData[0].author.level} */}
                       level
                     </span>
                   </div>
-                  <div className="text-sm text-gray-500" data-oid="x9c7r00">
+                  <div className="text-sm text-gray-500">
                     {/* 게시글 0개 • 팔로워{" 12"}명 •{" "} */}
                     {boardDetailsData[0].created_at}
                     {/* {boardDetailsData[0].author.posts} */}
@@ -215,7 +215,7 @@ export default function BoardDetailsPage({
                 </div>
                 <button
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                  data-oid="hvphz-z"
+                 
                 >
                   팔로우
                 </button>
@@ -224,47 +224,47 @@ export default function BoardDetailsPage({
               {/* Post Stats */}
               <div
                 className="flex items-center space-x-4 sm:space-x-6 mb-4"
-                data-oid="wlbp22r"
+               
               >
                 <div
                   className="flex items-center text-sm text-gray-500"
-                  data-oid="hqigo8y"
+                 
                 >
-                  <Eye className="w-4 h-4 mr-1" data-oid="tutpe_9" />
-                  <span data-oid="knr.:yc">{boardDetailsData[0].views}</span>
+                  <Eye className="w-4 h-4 mr-1" />
+                  <span>{boardDetailsData[0].views}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
-                  data-oid="-zl0g55"
+                 
                 >
-                  <ThumbsUp className="w-4 h-4 mr-1" data-oid="m8.6t6a" />
-                  <span data-oid="s5n9rhz">{boardDetailsData[0].likes}</span>
+                  <ThumbsUp className="w-4 h-4 mr-1" />
+                  <span>{boardDetailsData[0].likes}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
-                  data-oid="nrur02n"
+                 
                 >
-                  <MessageCircle className="w-4 h-4 mr-1" data-oid="3j_2_3j" />
-                  <span data-oid="5nzuinf">{totalCommentCount()}</span>
+                  <MessageCircle className="w-4 h-4 mr-1" />
+                  <span>{totalCommentCount()}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
-                  data-oid="ces7:5u"
+                 
                 >
-                  <Bookmark className="w-4 h-4 mr-1" data-oid="p.i-lhw" />
-                  <span data-oid="2nafr0x">{boardDetailsData[0].bookmark}</span>
+                  <Bookmark className="w-4 h-4 mr-1" />
+                  <span>{boardDetailsData[0].bookmark}</span>
                 </div>
                 <div
                   className="flex items-center text-sm text-gray-500"
-                  data-oid="8x57pfl"
+                 
                 >
-                  <Star className="w-4 h-4 mr-1" data-oid="h674atl" />
-                  <span data-oid="36470vj">{boardDetailsData[0].rating}</span>
+                  <Star className="w-4 h-4 mr-1" />
+                  <span>{boardDetailsData[0].rating}</span>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap gap-2 sm:gap-3" data-oid="99bjt89">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 <button
                   onClick={handleLike}
                   className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm ${
@@ -272,14 +272,14 @@ export default function BoardDetailsPage({
                       ? "bg-red-100 text-red-600"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
-                  data-oid=".cj27r6"
+                 
                 >
                   <ThumbsUp
                     className={`w-4 h-4 ${userBoardLikeFlag ? "fill-current" : ""}`}
-                    data-oid="qeka-fy"
+                   
                   />
 
-                  <span className="hidden sm:inline" data-oid="3j72pdm">
+                  <span className="hidden sm:inline">
                     {userBoardLikeFlag ? "좋아요 취소" : "좋아요"}
                   </span>
                 </button>
@@ -290,24 +290,24 @@ export default function BoardDetailsPage({
                       ? "bg-yellow-100 text-yellow-600"
                       : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                   }`}
-                  data-oid="8utv2pd"
+                 
                 >
                   <Bookmark
                     className={`w-4 h-4 ${isBookmarked ? "fill-current" : ""}`}
-                    data-oid="h2x1:ul"
+                   
                   />
 
-                  <span className="hidden sm:inline" data-oid=":s.p8ya">
+                  <span className="hidden sm:inline">
                     북마크
                   </span>
                 </button>
                 <button
                   onClick={handleShare}
                   className="flex items-center space-x-2 bg-gray-100 text-gray-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm"
-                  data-oid="bqegnee"
+                 
                 >
-                  <Share2 className="w-4 h-4" data-oid="u7iqdfk" />
-                  <span className="hidden sm:inline" data-oid="bh3z13f">
+                  <Share2 className="w-4 h-4" />
+                  <span className="hidden sm:inline">
                     공유
                   </span>
                 </button>
@@ -316,10 +316,10 @@ export default function BoardDetailsPage({
                     router.push(`/map?boardId=${boardDetailsData[0].id}`)
                   }
                   className="flex items-center space-x-2 bg-gray-100 text-gray-600 px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm"
-                  data-oid="bqegnee"
+                 
                 >
-                  <MapPin className="w-4 h-4" data-oid="u7iqdfk" />
-                  <span className="hidden sm:inline" data-oid="bh3z13f">
+                  <MapPin className="w-4 h-4" />
+                  <span className="hidden sm:inline">
                     지도보기
                   </span>
                 </button>
@@ -329,17 +329,17 @@ export default function BoardDetailsPage({
             {/* Post Content */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
-              data-oid="0j_wn.7"
+             
             >
               <h3
                 className="text-lg font-semibold text-gray-900 mb-4"
-                data-oid="hc4_t.h"
+               
               >
                 여행 후기
               </h3>
               <div
                 className="prose prose-sm sm:prose max-w-none"
-                data-oid="o5-:rk6"
+               
               >
                 {boardDetailsData[0].description
                   .split("\n")
@@ -347,7 +347,7 @@ export default function BoardDetailsPage({
                     <p
                       key={index}
                       className="text-gray-700 leading-relaxed"
-                      data-oid="uey53sz"
+                     
                     >
                       {paragraph}
                     </p>
@@ -360,27 +360,27 @@ export default function BoardDetailsPage({
               boardDetailsData[0].board_images.length > 0 && (
                 <div
                   className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
-                  data-oid="wbf9zj1"
+                 
                 >
                   <h3
                     className="text-lg font-semibold text-gray-900 mb-4"
-                    data-oid="mg7t2t4"
+                   
                   >
                     여행 사진
                   </h3>
                   <div
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-                    data-oid="n7uke8i"
+                   
                   >
                     {boardDetailsData[0].board_images.map((photo, index) => (
                       <div
                         key={index}
                         className="aspect-square bg-gray-200 rounded-lg overflow-hidden"
-                        data-oid="lev5pmk"
+                       
                       >
                         <div
                           className="w-full h-full flex items-center justify-center relative"
-                          data-oid="an0srn-"
+                         
                         >
                           <Image
                             src={getStorageUrl(photo.image_url)}
@@ -391,7 +391,7 @@ export default function BoardDetailsPage({
                           />
                           {/* <Camera
                           className="w-8 h-8 text-white"
-                          data-oid="h9:jrwq"
+                         
                         /> */}
                         </div>
                       </div>
@@ -403,17 +403,17 @@ export default function BoardDetailsPage({
             {/* Day Selector */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200 mb-4 sm:mb-6"
-              data-oid="umvc04k"
+             
             >
               <h3
                 className="text-lg font-semibold text-gray-900 mb-4"
-                data-oid="ios1kxe"
+               
               >
                 상세 일정
               </h3>
               <div
                 className="flex gap-2 overflow-x-auto mb-6"
-                data-oid="uf.o1n3"
+               
               >
                 {boardDetailsData[0].board_days.map((day) => (
                   <button
@@ -424,7 +424,7 @@ export default function BoardDetailsPage({
                         ? "bg-green-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
-                    data-oid="2sy9t_:"
+                   
                   >
                     Day {day.day}
                   </button>
@@ -436,24 +436,24 @@ export default function BoardDetailsPage({
           </div>
 
           {/* Right Column - Sidebar */}
-          <div className="space-y-4 sm:space-y-6" data-oid="pibmeqc">
+          <div className="space-y-4 sm:space-y-6">
             {/* Author Profile */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-              data-oid="77j_xp:"
+             
             >
               <h3
                 className="font-semibold text-gray-900 mb-4"
-                data-oid="65lbsu6"
+               
               >
                 작성자 정보
               </h3>
-              <div className="text-center" data-oid="2_i4s3k">
+              <div className="text-center">
                 {
                   <div className="w-h-center mb-4">
                     <span
                       className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
-                      data-oid="aqxkzhp"
+                     
                     >
                       {boardDetailsData[0].users.profile_image_url && (
                         <Image
@@ -474,62 +474,62 @@ export default function BoardDetailsPage({
                 {/* {boardDetailsData[0].author.avatar} */}
                 <h4
                   className="font-semibold text-gray-900 mb-1"
-                  data-oid="rvsr0b4"
+                 
                 >
                   {boardDetailsData[0].users.name}
                 </h4>
                 <span
                   className={`px-3 py-1 rounded-full text-sm ${getLevelColor("Platinum")} mb-3 inline-block`}
-                  data-oid="1w-iz_w"
+                 
                 >
                   {/* {boardDetailsData[0].author.level} */}level
                 </span>
                 {boardDetailsData[0].users.introduce && (
-                  <p className="text-sm text-gray-600 mb-4" data-oid="wsua9ru">
+                  <p className="text-sm text-gray-600 mb-4">
                     {boardDetailsData[0].users.introduce}
                   </p>
                 )}
                 <div
                   className="grid grid-cols-3 gap-4 text-center mb-4"
-                  data-oid="j7rygv3"
+                 
                 >
-                  <div data-oid="wuv.3vi">
+                  <div>
                     <div
                       className="font-semibold text-gray-900"
-                      data-oid="v_pf3hq"
+                     
                     >
                       {boardDetailsData[0].users.total_post}
                     </div>
-                    <div className="text-xs text-gray-500" data-oid="35kbqh1">
+                    <div className="text-xs text-gray-500">
                       게시글
                     </div>
                   </div>
-                  <div data-oid="vba5w:k">
+                  <div>
                     <div
                       className="font-semibold text-gray-900"
-                      data-oid="hvo7tug"
+                     
                     >
                       {boardDetailsData[0].users.follower}
                     </div>
-                    <div className="text-xs text-gray-500" data-oid="j2sbkzo">
+                    <div className="text-xs text-gray-500">
                       팔로워
                     </div>
                   </div>
-                  <div data-oid="_nb9n.v">
+                  <div>
                     <div
                       className="font-semibold text-gray-900"
-                      data-oid="4rocb71"
+                     
                     >
                       {boardDetailsData[0].users.following}
                     </div>
-                    <div className="text-xs text-gray-500" data-oid="_0pgcn0">
+                    <div className="text-xs text-gray-500">
                       팔로잉
                     </div>
                   </div>
                 </div>
                 <button
                   className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm"
-                  data-oid="fsr0oo3"
+                 
                 >
                   팔로우
                 </button>
@@ -539,73 +539,73 @@ export default function BoardDetailsPage({
             {/* Post Summary */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-              data-oid="0hstaqe"
+             
             >
               <h3
                 className="font-semibold text-gray-900 mb-4"
-                data-oid="hz.c:m4"
+               
               >
                 여행 정보
               </h3>
-              <div className="space-y-3" data-oid="e4kex08">
+              <div className="space-y-3">
                 <div
                   className="flex justify-between items-center"
-                  data-oid=":t-k9l9"
+                 
                 >
-                  <span className="text-sm text-gray-600" data-oid="aa.2wn1">
+                  <span className="text-sm text-gray-600">
                     기간
                   </span>
-                  <span className="font-medium" data-oid="5tl.l4a">
+                  <span className="font-medium">
                     {boardDetailsData[0].duration}
                   </span>
                 </div>
                 <div
                   className="flex justify-between items-center"
-                  data-oid="pg3gbfj"
+                 
                 >
-                  <span className="text-sm text-gray-600" data-oid="yt-www_">
+                  <span className="text-sm text-gray-600">
                     참가자
                   </span>
-                  <span className="font-medium" data-oid="30bl._t">
+                  <span className="font-medium">
                     {boardDetailsData[0].participants}
                   </span>
                 </div>
                 <div
                   className="flex justify-between items-center"
-                  data-oid="o-oohyz"
+                 
                 >
-                  <span className="text-sm text-gray-600" data-oid="d7cap6a">
+                  <span className="text-sm text-gray-600">
                     총 비용
                   </span>
-                  <span className="font-bold text-blue-600" data-oid="y0c96w8">
+                  <span className="font-bold text-blue-600">
                     {comma(boardDetailsData[0].total_cost, true)}
                   </span>
                 </div>
                 <div
                   className="flex justify-between items-center"
-                  data-oid="ym3j7g."
+                 
                 >
-                  <span className="text-sm text-gray-600" data-oid="oyl_wo_">
+                  <span className="text-sm text-gray-600">
                     난이도
                   </span>
-                  <span className="font-medium" data-oid="9ds20rw">
+                  <span className="font-medium">
                     {boardDetailsData[0].difficulty}
                   </span>
                 </div>
                 <div
                   className="flex justify-between items-center"
-                  data-oid="dza276n"
+                 
                 >
-                  <span className="text-sm text-gray-600" data-oid="w9.ehvf">
+                  <span className="text-sm text-gray-600">
                     평균 평점
                   </span>
-                  <div className="flex items-center" data-oid="5s-etr3">
+                  <div className="flex items-center">
                     <Star
                       className="w-4 h-4 text-yellow-400 mr-1"
-                      data-oid="i8dc_gd"
+                     
                     />
 
-                    <span className="font-medium" data-oid="iyfzrh1">
+                    <span className="font-medium">
                       {boardDetailsData[0].rating}
                     </span>
                   </div>
@@ -617,20 +617,20 @@ export default function BoardDetailsPage({
             {boardDetailsData[0].board_tags.length > 0 && (
               <div
                 className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-                data-oid="02-:h4t"
+               
               >
                 <h3
                   className="font-semibold text-gray-900 mb-4"
-                  data-oid="_gxe.32"
+                 
                 >
                   태그
                 </h3>
-                <div className="flex flex-wrap gap-2" data-oid="n8yapiw">
+                <div className="flex flex-wrap gap-2">
                   {boardDetailsData[0].board_tags.map((tag, index) => (
                     <span
                       key={index}
                       className="bg-green-50 text-green-600 px-3 py-1 rounded-full text-sm"
-                      data-oid="snktoue"
+                     
                     >
                       {tag.tag}
                     </span>
@@ -642,15 +642,15 @@ export default function BoardDetailsPage({
             {/* Related Posts */}
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-              data-oid="z8s47k-"
+             
             >
               <h3
                 className="font-semibold text-gray-900 mb-4"
-                data-oid="xy9zgm-"
+               
               >
                 관련 게시글
               </h3>
-              <div className="space-y-3" data-oid="11m.djg">
+              <div className="space-y-3">
                 {[
                   "부산 2박 3일 맛집 투어 완전 정복",
                   "경주 역사 탐방 1박 2일 (대학생 추천)",
@@ -659,15 +659,15 @@ export default function BoardDetailsPage({
                   <button
                     key={index}
                     className="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                    data-oid="lac8_ly"
+                   
                   >
                     <div
                       className="font-medium text-sm line-clamp-2 mb-1"
-                      data-oid="my.suuc"
+                     
                     >
                       {title}
                     </div>
-                    <div className="text-xs text-gray-500" data-oid="tjwe-.o">
+                    <div className="text-xs text-gray-500">
                       {["부산토박이", "역사덕후", "솔로트래블러"][index]}
                     </div>
                   </button>

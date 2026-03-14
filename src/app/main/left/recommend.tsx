@@ -16,10 +16,10 @@ const Recommend = () => {
         <button
           onClick={() => router.push("/courses")}
           className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center"
-          data-oid=".o:lty4"
+         
         >
           더보기
-          <ArrowRight className="w-4 h-4 ml-1" data-oid="7:1utcm" />
+          <ArrowRight className="w-4 h-4 ml-1" />
         </button>
       </div>
       <div className="grid md:grid-cols-2 gap-4">

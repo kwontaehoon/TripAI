@@ -309,7 +309,7 @@ export default function TripAIIntroModal() {
     if (!introModal) return null;
 
     return (
-        <div ref={containerRef} className="fixed inset-0 z-50 overflow-hidden" data-oid="_r..z4c">
+        <div ref={containerRef} className="fixed inset-0 z-50 overflow-hidden">
             {/* 동적 배경 */}
             <div
                 ref={backgroundRef}
@@ -318,13 +318,13 @@ export default function TripAIIntroModal() {
                     backgroundSize: '400% 400%',
                     backgroundPosition: '0% 0%',
                 }}
-                data-oid="hf4r19h"
+               
             >
                 {/* 오버레이 */}
-                <div className="absolute inset-0 bg-black/20" data-oid="r_cxdzm" />
+                <div className="absolute inset-0 bg-black/20" />
 
                 {/* 그리드 패턴 */}
-                <div className="absolute inset-0 opacity-10" data-oid="umk6ye5">
+                <div className="absolute inset-0 opacity-10">
                     <div
                         className="absolute inset-0"
                         style={{
@@ -334,7 +334,7 @@ export default function TripAIIntroModal() {
                         `,
                             backgroundSize: '50px 50px',
                         }}
-                        data-oid="qewjlr3"
+                       
                     />
                 </div>
             </div>
@@ -343,7 +343,7 @@ export default function TripAIIntroModal() {
             <div
                 ref={particlesRef}
                 className="absolute inset-0 pointer-events-none"
-                data-oid="17aicex"
+               
             >
                 {[...Array(20)].map((_, i) => (
                     <div
@@ -353,7 +353,7 @@ export default function TripAIIntroModal() {
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
                         }}
-                        data-oid="o99_wsj"
+                       
                     />
                 ))}
             </div>
@@ -362,51 +362,51 @@ export default function TripAIIntroModal() {
             <button
                 onClick={handleClose}
                 className="absolute top-6 right-6 z-20 p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-all duration-300 group"
-                data-oid="vjqteey"
+               
             >
                 <X
                     className="w-6 h-6 text-white group-hover:rotate-90 transition-transform duration-300"
-                    data-oid="58ez7n0"
+                   
                 />
             </button>
 
             {/* 메인 컨텐츠 */}
             <div
                 className="relative h-full flex items-center justify-center p-4 md:p-8"
-                data-oid="v1fzijj"
+               
             >
-                <div className="w-full max-w-6xl mx-auto" data-oid="zs13ysi">
+                <div className="w-full max-w-6xl mx-auto">
                     {/* 히어로 섹션 */}
                     <div
                         ref={heroRef}
                         className="text-center mb-8 md:mb-12 hidden md:block"
-                        data-oid="8q6xu6w"
+                       
                     >
                         <h1
                             ref={titleRef}
                             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-2 md:mb-4"
-                            data-oid="0b.tc2b"
+                           
                         >
                             안녕하세요! 👋
                         </h1>
                         <h2
                             ref={subtitleRef}
                             className="text-2xl md:text-4xl lg:text-5xl font-bold text-white/90 mb-4 md:mb-6 flex items-center justify-center gap-4 md:gap-6"
-                            data-oid="b7arr3a"
+                           
                         >
                             저는
                             <div
                                 className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-white/20 backdrop-blur-sm rounded-2xl"
-                                data-oid="94x07e."
+                               
                             >
                                 <Bot
                                     className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 text-white"
-                                    data-oid="ow4zmxq"
+                                   
                                 />
                             </div>
                             <span
                                 className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent"
-                                data-oid="5q7wjbd"
+                               
                             >
                                 Trip AI
                             </span>
@@ -416,10 +416,10 @@ export default function TripAIIntroModal() {
                         <p
                             ref={descriptionRef}
                             className="text-sm md:text-md lg:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed"
-                            data-oid="qsz:sr0"
+                           
                         >
                             AI가 당신만을 위한 완벽한 여행 코스를 추천해드립니다.
-                            <br data-oid="zw63ob2" />
+                            <br />
                             개인 취향과 예산에 맞춘 맞춤형 여행 계획을 경험해보세요!
                         </p>
                     </div>
@@ -428,76 +428,76 @@ export default function TripAIIntroModal() {
                     <div
                         ref={featuresRef}
                         className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-12"
-                        data-oid="es2m4:i"
+                       
                     >
                         <div
                             className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
-                            data-oid="..kupdb"
+                           
                         >
                             <div
                                 className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-2xl mb-4"
-                                data-oid="kcvvj3q"
+                               
                             >
-                                <Sparkles className="w-8 h-8 text-blue-300" data-oid="y1qvaki" />
+                                <Sparkles className="w-8 h-8 text-blue-300" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2" data-oid="lvxtn3j">
+                            <h3 className="text-xl font-bold text-white mb-2">
                                 AI 맞춤 추천
                             </h3>
-                            <p className="text-white/70" data-oid="vpyo1oc">
+                            <p className="text-white/70">
                                 취향과 예산에 맞는 완벽한 코스
                             </p>
                         </div>
 
                         <div
                             className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
-                            data-oid="wf41ern"
+                           
                         >
                             <div
                                 className="inline-flex items-center justify-center w-16 h-16 bg-purple-500/20 rounded-2xl mb-4"
-                                data-oid="no_lsmq"
+                               
                             >
-                                <Globe className="w-8 h-8 text-purple-300" data-oid="26ecty9" />
+                                <Globe className="w-8 h-8 text-purple-300" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2" data-oid="0jd8pin">
+                            <h3 className="text-xl font-bold text-white mb-2">
                                 실시간 정보
                             </h3>
-                            <p className="text-white/70" data-oid="w8dytvz">
+                            <p className="text-white/70">
                                 최신 여행지 정보와 리뷰
                             </p>
                         </div>
 
                         <div
                             className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
-                            data-oid="i4sfjhv"
+                           
                         >
                             <div
                                 className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-2xl mb-4"
-                                data-oid="rdl:4mz"
+                               
                             >
-                                <Zap className="w-8 h-8 text-green-300" data-oid="6f13tzz" />
+                                <Zap className="w-8 h-8 text-green-300" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2" data-oid="swox:t3">
+                            <h3 className="text-xl font-bold text-white mb-2">
                                 빠른 계획
                             </h3>
-                            <p className="text-white/70" data-oid="vc-zh30">
+                            <p className="text-white/70">
                                 몇 분 만에 완성되는 여행 계획
                             </p>
                         </div>
 
                         <div
                             className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-center hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
-                            data-oid="2k_4118"
+                           
                         >
                             <div
                                 className="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 rounded-2xl mb-4"
-                                data-oid="6uboxqk"
+                               
                             >
-                                <Heart className="w-8 h-8 text-orange-300" data-oid="ye94.fu" />
+                                <Heart className="w-8 h-8 text-orange-300" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2" data-oid="c2or71r">
+                            <h3 className="text-xl font-bold text-white mb-2">
                                 검증된 코스
                             </h3>
-                            <p className="text-white/70" data-oid="np.-ifm">
+                            <p className="text-white/70">
                                 실제 여행자들의 후기 기반
                             </p>
                         </div>
@@ -507,38 +507,38 @@ export default function TripAIIntroModal() {
                     {/* <div
             ref={statsRef}
             className="grid grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 max-w-2xl mx-auto "
-            data-oid="x-9o4jj"
+           
             >
-            <div className="text-center" data-oid="ee1jjmq">
+            <div className="text-center">
             <div
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2"
-            data-oid="94x8fu_"
+           
             >
             17,547
             </div>
-            <div className="text-white/70 text-sm md:text-base" data-oid="53yj-qm">
+            <div className="text-white/70 text-sm md:text-base">
             생성된 코스
             </div>
             </div>
-            <div className="text-center" data-oid="mqbzrio">
+            <div className="text-center">
             <div
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-yellow-300 mb-2"
-            data-oid="f7shi4v"
+           
             >
             4.9
             </div>
-            <div className="text-white/70 text-sm md:text-base" data-oid="wzooiot">
+            <div className="text-white/70 text-sm md:text-base">
             평균 평점
             </div>
             </div>
-            <div className="text-center" data-oid=":duxz13">
+            <div className="text-center">
             <div
             className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-300 mb-2"
-            data-oid="-iz9fx3"
+           
             >
             98%
             </div>
-            <div className="text-white/70 text-sm md:text-base" data-oid="9:8wb7w">
+            <div className="text-white/70 text-sm md:text-base">
             만족도
             </div>
             </div>
@@ -548,21 +548,21 @@ export default function TripAIIntroModal() {
                     <div
                         ref={buttonsRef}
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-lg mx-auto"
-                        data-oid="vc3ce7."
+                       
                     >
                         <button
                             onClick={handleClose}
                             className="w-full sm:w-auto bg-white text-gray-900 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 shadow-xl"
-                            data-oid=":hvob.q"
+                           
                         >
-                            <span data-oid="d:chjz3">Trip AI 시작하기</span>
-                            <ArrowRight className="w-5 h-5" data-oid=".:slabw" />
+                            <span>Trip AI 시작하기</span>
+                            <ArrowRight className="w-5 h-5" />
                         </button>
 
                         <button
                             onClick={handleDontShowAgain}
                             className="w-full sm:w-auto bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-2xl font-medium hover:bg-white/30 transition-all duration-300 transform hover:scale-105"
-                            data-oid="ng1eem:"
+                           
                         >
                             하루 동안 보지 않기
                         </button>
@@ -574,47 +574,47 @@ export default function TripAIIntroModal() {
             <div
                 ref={decorationsRef}
                 className="absolute inset-0 pointer-events-none overflow-hidden"
-                data-oid="ii8_t62"
+               
             >
                 <div
                     className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-yellow-400/30 to-orange-500/30 rounded-full blur-xl"
-                    data-oid="vei9eg6"
+                   
                 />
 
                 <div
                     className="absolute top-40 right-32 w-24 h-24 bg-gradient-to-br from-pink-400/30 to-red-500/30 rounded-full blur-xl"
-                    data-oid="u3uz2.e"
+                   
                 />
 
                 <div
                     className="absolute bottom-32 left-32 w-40 h-40 bg-gradient-to-br from-green-400/30 to-teal-500/30 rounded-full blur-xl"
-                    data-oid="qhfi65o"
+                   
                 />
 
                 <div
                     className="absolute bottom-20 right-20 w-28 h-28 bg-gradient-to-br from-blue-400/30 to-purple-500/30 rounded-full blur-xl"
-                    data-oid="d0u8dvh"
+                   
                 />
 
                 {/* 아이콘 장식들 */}
                 <Plane
                     className="absolute top-32 left-1/4 w-8 h-8 text-white/20 transform rotate-45"
-                    data-oid="hxqjizv"
+                   
                 />
 
                 <Camera
                     className="absolute bottom-40 right-1/4 w-6 h-6 text-white/20"
-                    data-oid="mlzbj83"
+                   
                 />
 
                 <MapPin
                     className="absolute top-1/2 left-16 w-7 h-7 text-white/20"
-                    data-oid="l_9m9dz"
+                   
                 />
 
                 <Star
                     className="absolute top-1/3 right-16 w-5 h-5 text-white/20"
-                    data-oid="jh-_kup"
+                   
                 />
             </div>
         </div>

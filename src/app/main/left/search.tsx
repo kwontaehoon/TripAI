@@ -110,18 +110,18 @@ const SearchPage = () => {
         <button
           onClick={() => setModalUiState({ ...modalUiState, aiInput: true })}
           className="flex items-center space-x-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all mr-1"
-          data-oid="p3hzuw8"
+         
         >
-          <Zap className="w-4 h-4" data-oid="r8wgtbh" />
-          <span data-oid="pfnw9z8">AI 맞춤 코스</span>
+          <Zap className="w-4 h-4" />
+          <span>AI 맞춤 코스</span>
         </button>
         <button
           onClick={() => router.push("/map-dashboard")}
           className="flex items-center z-10 space-x-2 bg-gradient-to-r from-green-500 to-teal-600 text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all ml-1"
-          data-oid="7h70-m_"
+         
         >
-          <Zap className="w-4 h-4" data-oid="v6q0v7d" />
-          <span data-oid="nj5kroq">AI 선택 코스</span>
+          <Zap className="w-4 h-4" />
+          <span>AI 선택 코스</span>
         </button>
       </div>
 

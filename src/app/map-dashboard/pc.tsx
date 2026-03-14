@@ -84,23 +84,23 @@ const DraggableSpotCard = ({ spot }: { spot: TouristSpot }) => {
       className={`group bg-white rounded-lg border !border-gray-200 cursor-move transition-all hover:shadow-md hover:!border-blue-300 flex-shrink-0 ${
         isDragging ? "opacity-50 shadow-lg scale-105" : ""
       }`}
-      data-oid="4:8ei:q"
+     
     >
       <div
         className="p-3 h-full flex flex-col justify-between"
-        data-oid="-xi-8yw"
+       
       >
-        <div className="flex-1 min-h-0" data-oid="soxxfq7">
+        <div className="flex-1 min-h-0">
           <h4
             className="font-medium group-hover:text-blue-600 transition-colors text-sm truncate"
-            data-oid="wmy2.9r"
+           
           >
             {spot.displayName.text}
           </h4>
           <p className="text-xs mb-3">{spot.formattedAddress}</p>
           {/* <p
                         className="text-xs text-gray-600 mt-1 line-clamp-2 leading-tight"
-                        data-oid="ahvli31"
+                       
                     >
                         {spot.description}
                     </p> */}
@@ -108,24 +108,24 @@ const DraggableSpotCard = ({ spot }: { spot: TouristSpot }) => {
 
         <div
           className="flex items-center justify-between mt-2"
-          data-oid="kjgp-yp"
+         
         >
-          <div className="flex items-center" data-oid="x:qk50e">
-            <Star className="w-3 h-3 text-yellow-400 mr-1" data-oid="4r52dx4" />
+          <div className="flex items-center">
+            <Star className="w-3 h-3 text-yellow-400 mr-1" />
             <span
               className="text-xs font-medium text-gray-700"
-              data-oid="x4r1z9a"
+             
             >
               5 (853개)
             </span>
           </div>
-          <div className="flex gap-1" data-oid="8y7.oht">
+          <div className="flex gap-1">
             <div></div>
             {spot.types.slice(0, 1).map((category, idx) => (
               <span
                 key={idx}
                 className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full"
-                data-oid="pb-zs_3"
+               
               >
                 {location_types(category)}
               </span>
@@ -135,13 +135,13 @@ const DraggableSpotCard = ({ spot }: { spot: TouristSpot }) => {
 
         <div
           className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-          data-oid="-rlm7n2"
+         
         >
           <div
             className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center"
-            data-oid="ewegd76"
+           
           >
-            <Navigation className="w-3 h-3 text-blue-600" data-oid="yn7lq.m" />
+            <Navigation className="w-3 h-3 text-blue-600" />
           </div>
         </div>
       </div>
@@ -183,41 +183,41 @@ const PlaylistItem = ({
           ? "opacity-50 scale-105"
           : "hover:shadow-md hover:!border-blue-400"
       }`}
-      data-oid="5c9j63x"
+     
     >
-      <div className="flex items-center justify-between" data-oid="s2u-ojh">
+      <div className="flex items-center justify-between">
         <div
           className="flex items-center space-x-4 flex-1 min-w-0"
-          data-oid="moa1w.h"
+         
         >
           <div
             className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg"
-            data-oid="r3y81f."
+           
           >
             {index + 1}
           </div>
-          <div className="flex-1 min-w-0" data-oid="-kdw4jn">
+          <div className="flex-1 min-w-0">
             <h4
               className="font-semibold text-gray-900 truncate"
-              data-oid="8ubi.lq"
+             
             >
               {item.spot.displayName.text}
             </h4>
             <p className="text-xs">{item.spot.formattedAddress}</p>
             <div
               className="flex items-center mt-1 space-x-2"
-              data-oid="lwpxw2r"
+             
             >
-              <Star className="w-3 h-3 text-yellow-400" data-oid=":g04.zh" />
-              <span className="text-sm text-gray-600" data-oid="l40jbnv">
+              <Star className="w-3 h-3 text-yellow-400" />
+              <span className="text-sm text-gray-600">
                 5 (853개)
               </span>
-              <div className="flex gap-1" data-oid="bibunmk">
+              <div className="flex gap-1">
                 {item.spot.types.slice(0, 1).map((category, idx) => (
                   <span
                     key={idx}
                     className="text-xs px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full"
-                    data-oid="blwir_f"
+                   
                   >
                     {location_types(category)}
                   </span>
@@ -229,9 +229,9 @@ const PlaylistItem = ({
         <button
           onClick={() => onRemove(item.id)}
           className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50"
-          data-oid="6tabvbi"
+         
         >
-          <X className="w-4 h-4" data-oid=":81o3y2" />
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>
@@ -264,7 +264,7 @@ const PlaylistDropZone = ({
           ? "bg-gradient-to-br from-blue-50 to-purple-50 border-2 !border-blue-300 border-dashed rounded-lg p-2"
           : ""
       }`}
-      data-oid="6ya-mr7"
+     
     >
       {children}
     </div>
@@ -329,48 +329,48 @@ const TravelFilterBar = ({
   return (
     <div
       className={`${isFixed ? "fixed top-0 left-0 right-0 z-50 opacity-100" : "relative"} transition-all duration-300`}
-      data-oid="e64-r04"
+     
     >
       <div
         className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-4"
-        data-oid=".:sxij9"
+       
       >
         <div
           className="bg-white rounded-2xl shadow border !border-gray-200 p-6"
-          data-oid="-q:mvq0"
+         
         >
-          {/* <div className="flex items-center space-x-3 mb-4" data-oid="yi_knsg">
+          {/* <div className="flex items-center space-x-3 mb-4">
             <div
               className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
-              data-oid="5akw6s5"
+             
             >
-              <Filter className="w-4 h-4 text-white" data-oid="mi9vsf7" />
+              <Filter className="w-4 h-4 text-white" />
             </div>
-            <h2 className="text-lg font-bold text-gray-900" data-oid="i4-mwka">
+            <h2 className="text-lg font-bold text-gray-900">
               여행 필터
             </h2>
-            <div className="flex-1" data-oid="v.a2ed3"></div>
-            <div className="text-sm text-gray-500" data-oid="al0s4w-">
+            <div className="flex-1"></div>
+            <div className="text-sm text-gray-500">
               코스 생성 시 반영됩니다
             </div>
           </div> */}
 
           <div
             className="grid grid-cols-1 md:grid-cols-4 gap-4"
-            data-oid="qqh0uoh"
+           
           >
             {/* 여행 기간 */}
-            <div data-oid="n.k0g:o">
+            <div>
               <label
                 className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
-                data-oid="33st7.6"
+               
               >
                 <CalendarDays
                   className="w-4 h-4 text-blue-500"
-                  data-oid="47ty9ru"
+                 
                 />
 
-                <span data-oid="pu4zomd">여행 기간</span>
+                <span>여행 기간</span>
               </label>
               <select
                 required
@@ -379,35 +379,35 @@ const TravelFilterBar = ({
                   setFilters({ ...filters, period: e.target.value })
                 }
                 className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                data-oid="br16gqg"
+               
               >
-                <option value="" data-oid="1vt2j0x">
+                <option value="">
                   선택해주세요
                 </option>
-                <option value="당일치기" data-oid="f_gtp_b">
+                <option value="당일치기">
                   당일치기
                 </option>
-                <option value="1박 2일" data-oid="wr96-vo">
+                <option value="1박 2일">
                   1박 2일
                 </option>
                 <option value="2박 3일">2박 3일</option>
-                <option value="3박 4일" data-oid="28l-_v5">
+                <option value="3박 4일">
                   3박 4일
                 </option>
-                <option value="일주일 이상" data-oid="68og0s6">
+                <option value="일주일 이상">
                   일주일 이상
                 </option>
               </select>
             </div>
 
             {/* 인원수 */}
-            <div data-oid="s6hejlh">
+            <div>
               <label
                 className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
-                data-oid="6cn7-xb"
+               
               >
-                <Users className="w-4 h-4 text-green-500" data-oid=":2vhsjk" />
-                <span data-oid="yn4sdbk">인원수</span>
+                <Users className="w-4 h-4 text-green-500" />
+                <span>인원수</span>
               </label>
               <select
                 value={filters.numberOfPeople}
@@ -415,34 +415,34 @@ const TravelFilterBar = ({
                   setFilters({ ...filters, numberOfPeople: e.target.value })
                 }
                 className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                data-oid="dup1ydf"
+               
               >
-                <option value="" data-oid="w74cvkb">
+                <option value="">
                   선택해주세요
                 </option>
-                <option value="혼자" data-oid="6l8t2a7">
+                <option value="혼자">
                   혼자 (1명)
                 </option>
-                <option value="커플" data-oid="uwh_y8v">
+                <option value="커플">
                   커플 (2명)
                 </option>
-                <option value="3~5명" data-oid="eu.h.iq">
+                <option value="3~5명">
                   소그룹 (3-5명)
                 </option>
-                <option value="6명 이상" data-oid="oxw-bq9">
+                <option value="6명 이상">
                   대그룹 (6명 이상)
                 </option>
               </select>
             </div>
 
             {/* 테마 */}
-            <div data-oid="jxwryhf">
+            <div>
               <label
                 className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
-                data-oid="3nuvxur"
+               
               >
-                <Tag className="w-4 h-4 text-purple-500" data-oid="iuk5dlr" />
-                <span data-oid="8yknj1n">테마</span>
+                <Tag className="w-4 h-4 text-purple-500" />
+                <span>테마</span>
               </label>
               <select
                 value={filters.theme}
@@ -450,53 +450,53 @@ const TravelFilterBar = ({
                   setFilters({ ...filters, theme: e.target.value })
                 }
                 className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                data-oid="toiq9e0"
+               
               >
-                <option value="" data-oid="2b1tetf">
+                <option value="">
                   선택해주세요
                 </option>
-                <option value="역사" data-oid="2sp8imj">
+                <option value="역사">
                   역사
                 </option>
-                <option value="문화" data-oid="chiaopg">
+                <option value="문화">
                   문화
                 </option>
-                <option value="자연" data-oid="b.4z3e7">
+                <option value="자연">
                   자연
                 </option>
-                <option value="쇼핑" data-oid="hvmabht">
+                <option value="쇼핑">
                   쇼핑
                 </option>
-                <option value="해변" data-oid="a4lnl_j">
+                <option value="해변">
                   해변
                 </option>
-                <option value="랜드마크" data-oid="jyfee8e">
+                <option value="랜드마크">
                   랜드마크
                 </option>
-                <option value="야경" data-oid="-:6:6-6">
+                <option value="야경">
                   야경
                 </option>
-                <option value="클럽" data-oid="pn05rwm">
+                <option value="클럽">
                   클럽
                 </option>
-                <option value="예술" data-oid="_awbdbc">
+                <option value="예술">
                   예술
                 </option>
               </select>
             </div>
 
             {/* 예산 */}
-            <div data-oid="x20p77q">
+            <div>
               <label
                 className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2"
-                data-oid="2auhna0"
+               
               >
                 <DollarSign
                   className="w-4 h-4 text-orange-500"
-                  data-oid="fl1pqav"
+                 
                 />
 
-                <span data-oid=":ww757m">예산</span>
+                <span>예산</span>
               </label>
               <select
                 value={filters.budget}
@@ -504,21 +504,21 @@ const TravelFilterBar = ({
                   setFilters({ ...filters, budget: e.target.value })
                 }
                 className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                data-oid="e-ef6oy"
+               
               >
-                <option value="" data-oid="ne.1y27">
+                <option value="">
                   선택해주세요
                 </option>
-                <option value="10만원 이하" data-oid="nylgll7">
+                <option value="10만원 이하">
                   10만원 이하
                 </option>
-                <option value="10~30만원" data-oid=".acedll">
+                <option value="10~30만원">
                   10-30만원
                 </option>
-                <option value="30~50만원" data-oid="86_xd1c">
+                <option value="30~50만원">
                   30-50만원
                 </option>
-                <option value="50만원 이상" data-oid="a1_v1.6">
+                <option value="50만원 이상">
                   50만원 이상
                 </option>
               </select>
@@ -532,41 +532,41 @@ const TravelFilterBar = ({
             filters.budget) && (
             <div
               className="mt-4 pt-4 border-t !border-gray-200"
-              data-oid="8m-ch47"
+             
             >
               <div
                 className="flex flex-wrap items-center gap-2 mb-3"
-                data-oid=".7zxy-x"
+               
               >
                 <span
                   className="text-sm font-medium text-gray-700"
-                  data-oid=":0ccfu8"
+                 
                 >
                   활성 필터:
                 </span>
                 {filters.period && (
                   <div
                     className="flex items-center bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                    data-oid="zx.jeq_"
+                   
                   >
-                    <span data-oid="38u.-je">
+                    <span>
                       기간: {getPeriodLabel(filters.period)}
                     </span>
                     <button
                       onClick={() => setFilters({ ...filters, period: "" })}
                       className="ml-2 hover:bg-blue-200 rounded-full p-0.5"
-                      data-oid="w037s68"
+                     
                     >
-                      <X className="w-3 h-3" data-oid="fkb0k5z" />
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 )}
                 {filters.numberOfPeople && (
                   <div
                     className="flex items-center bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm"
-                    data-oid="1omo42g"
+                   
                   >
-                    <span data-oid="du_ngoz">
+                    <span>
                       인원: {getPeopleLabel(filters.numberOfPeople)}
                     </span>
                     <button
@@ -574,41 +574,41 @@ const TravelFilterBar = ({
                         setFilters({ ...filters, numberOfPeople: "" })
                       }
                       className="ml-2 hover:bg-green-200 rounded-full p-0.5"
-                      data-oid="blnhz4i"
+                     
                     >
-                      <X className="w-3 h-3" data-oid="20mn-a3" />
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 )}
                 {filters.theme && (
                   <div
                     className="flex items-center bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm"
-                    data-oid="7eg5q.o"
+                   
                   >
-                    <span data-oid="57mualn">테마: {filters.theme}</span>
+                    <span>테마: {filters.theme}</span>
                     <button
                       onClick={() => setFilters({ ...filters, theme: "" })}
                       className="ml-2 hover:bg-purple-200 rounded-full p-0.5"
-                      data-oid="8_vl94w"
+                     
                     >
-                      <X className="w-3 h-3" data-oid="f.g_v-6" />
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 )}
                 {filters.budget && (
                   <div
                     className="flex items-center bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm"
-                    data-oid="x0zu41r"
+                   
                   >
-                    <span data-oid="il_134d">
+                    <span>
                       예산: {getBudgetLabel(filters.budget)}
                     </span>
                     <button
                       onClick={() => setFilters({ ...filters, budget: "" })}
                       className="ml-2 hover:bg-orange-200 rounded-full p-0.5"
-                      data-oid="ufruatd"
+                     
                     >
-                      <X className="w-3 h-3" data-oid="_r7819t" />
+                      <X className="w-3 h-3" />
                     </button>
                   </div>
                 )}
@@ -623,7 +623,7 @@ const TravelFilterBar = ({
             filters.budget) && (
             <div
               className="flex justify-end mt-4 pt-4 border-t !border-gray-200"
-              data-oid="if-9vyq"
+             
             >
               <button
                 onClick={() =>
@@ -635,10 +635,10 @@ const TravelFilterBar = ({
                   })
                 }
                 className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors flex items-center space-x-1"
-                data-oid="vtw_-94"
+               
               >
-                <X className="w-4 h-4" data-oid="996q:y1" />
-                <span data-oid="jkt5tst">모든 필터 초기화</span>
+                <X className="w-4 h-4" />
+                <span>모든 필터 초기화</span>
               </button>
             </div>
           )}
@@ -1211,75 +1211,75 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
     <>
       <div
         className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-28"
-        data-oid="._m99n4"
+       
       >
         {/* Filter Bar - 스크롤 시 고정 */}
-        <div data-oid="7r5l1wk">
+        <div>
           <TravelFilterBar
             filters={travelFilters}
             setFilters={setTravelFilters}
             isFixed={false}
-            data-oid="_0mrtae"
+           
           />
         </div>
 
         {/* Main Content */}
         <div
           className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12"
-          data-oid="kwxi8x2"
+         
         >
           {/* Main Layout */}
           <div
             className="md:grid grid-cols-12 gap-8 min-h-[600px]"
-            data-oid="hdm0s7o"
+           
           >
             {/* Left Side - Map */}
-            <div className="col-span-7" data-oid="wx8jpvy">
+            <div className="col-span-7">
               <div
                 className="bg-white rounded-3xl shadow-2xl border !border-gray-200 md:h-full h-[400px] overflow-hidden"
-                data-oid="jzabbp."
+               
               >
                 <div
                   className="p-6 border-b !border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50"
-                  data-oid="ag.4m5l"
+                 
                 >
                   <div
                     className="flex items-center justify-between"
-                    data-oid="vf2d3:t"
+                   
                   >
                     <div
                       className="flex items-center space-x-3"
-                      data-oid="w3d7p2y"
+                     
                     >
                       <div
                         className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
-                        data-oid="pproyvn"
+                       
                       >
                         <Map
                           className="w-5 h-5 text-white"
-                          data-oid="grtf..m"
+                         
                         />
                       </div>
-                      <div data-oid="byl7gu6">
+                      <div>
                         <h2
                           className="text-xl font-bold text-gray-900"
-                          data-oid="-5ae8dw"
+                         
                         >
                           인터랙티브 지도
                         </h2>
-                        <p className="text-sm text-gray-600" data-oid="c0r2_:l">
+                        <p className="text-sm text-gray-600">
                           관광지를 클릭해서 상세 정보를 확인하세요
                         </p>
                       </div>
                     </div>
-                    <div className="text-right" data-oid="n6yl.n:">
+                    <div className="text-right">
                       <div
                         className="text-sm font-medium text-gray-900"
-                        data-oid="c40mon1"
+                       
                       >
                         줌 레벨: {currentZoom}
                       </div>
-                      <div className="text-xs text-gray-600" data-oid="6:t4h7r">
+                      <div className="text-xs text-gray-600">
                         {currentZoom >= CLUSTER_ZOOM_THRESHOLD
                           ? "개별 마커"
                           : "클러스터 모드"}
@@ -1287,20 +1287,20 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                     </div>
                   </div>
                 </div>
-                <div className="relative h-full" data-oid="m801ch-">
+                <div className="relative h-full">
                   {isLoading && (
                     <div
                       className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center z-10"
-                      data-oid="422-791"
+                     
                     >
-                      <div className="text-center" data-oid="y-77qh6">
+                      <div className="text-center">
                         <div
                           className="animate-spin rounded-full h-12 w-12 border-4 !border-blue-600 border-t-transparent mx-auto"
-                          data-oid="mtl2jtc"
+                         
                         ></div>
                         <p
                           className="mt-4 text-gray-600 font-medium"
-                          data-oid="nf14nkj"
+                         
                         >
                           지도를 불러오는 중...
                         </p>
@@ -1310,7 +1310,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                   <div
                     ref={mapRef}
                     className="w-full h-full"
-                    data-oid="e9f-mi7"
+                   
                   />
                 </div>
               </div>
@@ -1319,102 +1319,102 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
             {/* Right Side - List & Dashboard */}
             <div
               className="col-span-5 block md:flex md:flex-col md:space-y-6 md:mt-0 mt-8 md:space-x-0"
-              data-oid="vgcpg5j"
+             
             >
               {/* Tourist Spots List - 작은 카드들 */}
               <div
                 className="bg-white rounded-2xl shadow-lg border !border-gray-200 md:h-[40vh] h-[500px] flex flex-col w-full"
-                data-oid="69-muth"
+               
               >
                 <div
                   className="p-4 border-b !border-gray-200"
-                  data-oid="v0-vkxw"
+                 
                 >
                   <div
                     className="flex items-center justify-between"
-                    data-oid="6-0ag5z"
+                   
                   >
                     <div
                       className="flex items-center space-x-2"
-                      data-oid="sa782or"
+                     
                     >
                       <List
                         className="w-4 h-4 text-blue-600"
-                        data-oid=".v.pxus"
+                       
                       />
 
                       <h3
                         className="text-base font-semibold text-gray-900"
-                        data-oid="1r6etm_"
+                       
                       >
                         관광지 목록
                       </h3>
                     </div>
-                    <span className="text-xs text-gray-600" data-oid="m_94de4">
+                    <span className="text-xs text-gray-600">
                       {nearBydata?.places?.length || 0}개
                     </span>
                   </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-4" data-oid="dzv8er1">
-                  <div className="grid grid-cols-2 gap-3" data-oid="_aq0fa:">
+                <div className="flex-1 overflow-y-auto p-4">
+                  <div className="grid grid-cols-2 gap-3">
                     {nearBydata?.places?.map((spot, index) => (
                       <DraggableSpotCard
                         key={index}
                         spot={spot}
-                        data-oid="u5mj0ip"
+                       
                       />
                     ))}
                   </div>
                   {!nearBydata && (
                     <div
                       className="grid md:grid-cols-2 grid-cols-1 gap-3"
-                      data-oid="3itlqek"
+                     
                     >
                       {[1, 2, 3, 4, 5, 6].map((i) => (
                         <div
                           key={i}
                           className="h-[100px] bg-gray-100 rounded-lg border !border-gray-200 animate-pulse"
-                          data-oid="genajtk"
+                         
                         >
                           <div
                             className="p-3 h-full flex flex-col justify-between"
-                            data-oid="5ohyaj2"
+                           
                           >
-                            <div className="flex-1 min-h-0" data-oid="dfa8twz">
+                            <div className="flex-1 min-h-0">
                               <div
                                 className="h-4 bg-gray-200 rounded w-3/4 mb-2"
-                                data-oid="sjj8y24"
+                               
                               ></div>
                               <div
                                 className="h-3 bg-gray-200 rounded w-full mb-1"
-                                data-oid="3bqgsi6"
+                               
                               ></div>
                               <div
                                 className="h-3 bg-gray-200 rounded w-2/3"
-                                data-oid="dbi0y4i"
+                               
                               ></div>
                             </div>
                             <div
                               className="flex items-center justify-between mt-2"
-                              data-oid="-80-os_"
+                             
                             >
                               <div
                                 className="flex items-center"
-                                data-oid="cc19-pn"
+                               
                               >
                                 <div
                                   className="w-3 h-3 bg-gray-200 rounded mr-1"
-                                  data-oid="waxc_1u"
+                                 
                                 ></div>
                                 <div
                                   className="h-3 bg-gray-200 rounded w-8"
-                                  data-oid="au7um7r"
+                                 
                                 ></div>
                               </div>
                               <div
                                 className="h-5 bg-gray-200 rounded w-12"
-                                data-oid="yjg-dx3"
+                               
                               ></div>
                             </div>
                           </div>
@@ -1428,28 +1428,28 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
               {/* Playlist Dashboard - 더 긴 높이 */}
               <div
                 className="bg-white rounded-2xl shadow-lg border mt-8 md:mt-0 !border-gray-200 h-[500px] md:h-[40vh] flex-col md:w-full md:flex"
-                data-oid="hb11rk0"
+               
               >
                 <div
                   className="p-4 border-b !border-gray-200"
-                  data-oid=".--x9i:"
+                 
                 >
                   <div
                     className="flex items-center justify-between mb-3"
-                    data-oid=".0s7kuw"
+                   
                   >
                     <div
                       className="flex items-center space-x-2"
-                      data-oid="8ukvod6"
+                     
                     >
                       <LayoutDashboard
                         className="w-4 h-4 text-purple-600"
-                        data-oid="sr7kn13"
+                       
                       />
 
                       <h3
                         className="text-base font-semibold text-gray-900"
-                        data-oid="p2pmahu"
+                       
                       >
                         나의 여행 코스
                       </h3>
@@ -1458,7 +1458,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                       <button
                         onClick={clearPlaylist}
                         className="text-xs text-red-600 hover:text-red-700 font-medium"
-                        data-oid="3qgxwrl"
+                       
                       >
                         전체 삭제
                       </button>
@@ -1467,61 +1467,61 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
 
                   <div
                     className="flex items-center justify-between text-xs"
-                    data-oid="1246ify"
+                   
                   >
-                    <span className="text-gray-600" data-oid="x5r.k6j">
+                    <span className="text-gray-600">
                       {myPlaylists.length}개 관광지 선택됨
                     </span>
                     {/* <span
                     className="text-purple-600 font-medium"
-                    data-oid="9i9n3vo"
+                   
                   >
                     예상 {myPlaylists.length * 2}시간
                   </span> */}
                   </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto" data-oid="707.8yv">
-                  <PlaylistDropZone onDrop={addToPlaylist} data-oid="2228b74">
+                <div className="flex-1 overflow-y-auto">
+                  <PlaylistDropZone onDrop={addToPlaylist}>
                     {myPlaylists.length === 0 ? (
                       <div
                         className="p-5 text-center text-gray-500"
-                        data-oid="kxldt6j"
+                       
                       >
                         <div
                           className="w-16 h-16 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-4"
-                          data-oid="dcm5uvp"
+                         
                         >
                           <Route
                             className="w-8 h-8 text-blue-500"
-                            data-oid="2rg8vh2"
+                           
                           />
                         </div>
                         <p
                           className="text-sm font-semibold text-gray-700 mb-2"
-                          data-oid="-4xhrgn"
+                         
                         >
                           여행 코스를 만들어보세요
                         </p>
                         <p
                           className="text-xs text-gray-500 mb-1"
-                          data-oid="fxo_mz:"
+                         
                         >
                           관광지 카드를 드래그해서 여기에 놓거나
                         </p>
-                        <p className="text-xs text-gray-500" data-oid="7c8m-bp">
+                        <p className="text-xs text-gray-500">
                           지도에서 선택해서 추가하세요
                         </p>
                       </div>
                     ) : (
-                      <div className="p-4 space-y-3" data-oid="kx66c5x">
+                      <div className="p-4 space-y-3">
                         {myPlaylists.map((item, index) => (
                           <PlaylistItem
                             key={item.id}
                             item={item}
                             index={index}
                             onRemove={removeFromPlaylist}
-                            data-oid="_lu90qu"
+                           
                           />
                         ))}
                       </div>
@@ -1533,7 +1533,7 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                 {myPlaylists.length > 0 && (
                   <div
                     className="p-4 border-t !border-gray-200 space-y-2"
-                    data-oid="ghke3qh"
+                   
                   >
                     <button
                       disabled={!isAllFilled}
@@ -1544,11 +1544,11 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                          ? "bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white"
                          : "bg-gray-200 text-gray-400 cursor-not-allowed"
                      }`}
-                      data-oid="biq.uqr"
+                     
                     >
-                      <Sparkles className="w-4 h-4" data-oid="syqudbb" />
-                      <span data-oid="hiwj:g1">AI 코스 생성하기</span>
-                      <ArrowRight className="w-4 h-4" data-oid="de0xjrc" />
+                      <Sparkles className="w-4 h-4" />
+                      <span>AI 코스 생성하기</span>
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
                 )}
@@ -1557,30 +1557,30 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
           </div>
         </div>
         {/* Fixed Toggle Buttons - Bottom Right */}
-        <div className="fixed bottom-6 right-6 z-50 w-40" data-oid="zo8p4lz">
+        <div className="fixed bottom-6 right-6 z-50 w-40">
           <div
             className="bg-white rounded-2xl shadow-2xl border !border-gray-200 p-4"
-            data-oid="bukvnze"
+           
           >
             <div
               className="flex items-center space-x-2 mb-3"
-              data-oid="bk.ze7h"
+             
             >
               <div
                 className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center"
-                data-oid="bzmfqie"
+               
               >
-                <Filter className="w-3 h-3 text-white" data-oid="2s3vluz" />
+                <Filter className="w-3 h-3 text-white" />
               </div>
               <span
                 className="text-sm font-semibold text-gray-900"
-                data-oid="nk54pjq"
+               
               >
                 표시 설정
               </span>
             </div>
 
-            <div className="space-y-2" data-oid="g.klffk">
+            <div className="space-y-2">
               <button
                 onClick={() => {
                   setShowTouristSpots(!showTouristSpots)
@@ -1592,14 +1592,14 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                     ? "bg-blue-100 text-blue-700 border !border-blue-300"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
-                data-oid="hcdazgq"
+               
               >
                 <div
                   className="flex items-center space-x-2 mr-2"
-                  data-oid="_2az044"
+                 
                 >
-                  <Building2 className="w-4 h-4" data-oid="spqpkxy" />
-                  <span data-oid="yg_6pog">관광지</span>
+                  <Building2 className="w-4 h-4" />
+                  <span>관광지</span>
                 </div>
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
@@ -1607,12 +1607,12 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                       ? "!border-blue-500 bg-blue-500"
                       : "!border-gray-400"
                   }`}
-                  data-oid="9.uxz.t"
+                 
                 >
                   {showTouristSpots && (
                     <div
                       className="w-2 h-2 bg-white rounded-full"
-                      data-oid="iwe41wd"
+                     
                     ></div>
                   )}
                 </div>
@@ -1629,14 +1629,14 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                     ? "bg-orange-100 text-orange-700 border !border-orange-300"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
-                data-oid="wffu5tr"
+               
               >
                 <div
                   className="flex items-center space-x-2 mr-2"
-                  data-oid="2dycass"
+                 
                 >
-                  <UtensilsCrossed className="w-4 h-4" data-oid="-h8cw.z" />
-                  <span data-oid="mb3kgtq">맛집</span>
+                  <UtensilsCrossed className="w-4 h-4" />
+                  <span>맛집</span>
                 </div>
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
@@ -1644,12 +1644,12 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
                       ? "!border-orange-500 bg-orange-500"
                       : "!border-gray-400"
                   }`}
-                  data-oid="he_rkin"
+                 
                 >
                   {showRestaurants && (
                     <div
                       className="w-2 h-2 bg-white rounded-full"
-                      data-oid="2bno.ye"
+                     
                     ></div>
                   )}
                 </div>
@@ -1658,11 +1658,11 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
 
             <div
               className="mt-3 pt-3 border-t !border-gray-200"
-              data-oid="tb:j0m8"
+             
             >
               <div
                 className="text-xs text-gray-500 text-center"
-                data-oid=":5nc422"
+               
               >
                 {showTouristSpots
                   ? "관광지만 표시"
@@ -1680,8 +1680,8 @@ class="w-full mt-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 
 
 export default function WWPage() {
   return (
-    <DndProvider backend={HTML5Backend} data-oid="6rhq16u">
-      <WWPageContent data-oid="1et0ddb" />
+    <DndProvider backend={HTML5Backend}>
+      <WWPageContent />
     </DndProvider>
   )
 }

@@ -51,13 +51,13 @@ const activity = () => {
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "review":
-        return <Star className="w-4 h-4 text-yellow-500" data-oid="y3s17nb" />
+        return <Star className="w-4 h-4 text-yellow-500" />
       case "bookmark":
-        return <Bookmark className="w-4 h-4 text-blue-500" data-oid="71vzd-r" />
+        return <Bookmark className="w-4 h-4 text-blue-500" />
       case "trip":
-        return <MapPin className="w-4 h-4 text-green-500" data-oid="od_fc-z" />
+        return <MapPin className="w-4 h-4 text-green-500" />
       default:
-        return <Calendar className="w-4 h-4 text-gray-500" data-oid="oi3oyfo" />
+        return <Calendar className="w-4 h-4 text-gray-500" />
     }
   }
 
@@ -75,79 +75,79 @@ const activity = () => {
   }
 
   return (
-    <div className="space-y-6" data-oid="a3zx42r">
+    <div className="space-y-6">
       <h3
         className="text-lg font-semibold text-gray-900 mb-4"
-        data-oid="w69z0n:"
+       
       >
         최근 활동
       </h3>
 
-      <div className="space-y-4" data-oid="jp-72ln">
+      <div className="space-y-4">
         {recentActivities.map((activity) => (
           <div
             key={activity.id}
             className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
-            data-oid="b:_1k5h"
+           
           >
-            <div className="flex-shrink-0" data-oid="0n_urxr">
+            <div className="flex-shrink-0">
               {getActivityIcon(activity.type)}
             </div>
-            <div className="flex-1" data-oid="0-3t:n8">
+            <div className="flex-1">
               <div
                 className="flex items-center space-x-2 mb-1"
-                data-oid="0-2-apw"
+               
               >
                 <span
                   className="text-sm font-medium text-gray-900"
-                  data-oid="lsb37nt"
+                 
                 >
                   {getActivityTypeText(activity.type)}
                 </span>
                 {activity.rating && (
                   <div
                     className="flex items-center space-x-1"
-                    data-oid="7-:o5k4"
+                   
                   >
                     <Star
                       className="w-3 h-3 text-yellow-400 fill-current"
-                      data-oid="700-s:z"
+                     
                     />
 
-                    <span className="text-xs text-gray-600" data-oid="rrhku.h">
+                    <span className="text-xs text-gray-600">
                       {activity.rating}
                     </span>
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-700 mb-1" data-oid="jqrl7v2">
+              <p className="text-sm text-gray-700 mb-1">
                 {activity.title}
               </p>
               <div
                 className="flex items-center space-x-2 text-xs text-gray-500"
-                data-oid="l35sm2n"
+               
               >
-                <span data-oid="aboqh8e">{activity.date}</span>
+                <span>{activity.date}</span>
                 {activity.location && (
                   <>
-                    <span data-oid="o8z1yx8">•</span>
-                    <span data-oid="ew_9y-a">{activity.location}</span>
+                    <span>•</span>
+                    <span>{activity.location}</span>
                   </>
                 )}
               </div>
             </div>
             <ChevronRight
               className="w-4 h-4 text-gray-400"
-              data-oid="ws1lf7d"
+             
             />
           </div>
         ))}
       </div>
 
-      <div className="text-center" data-oid="ua1k0hh">
+      <div className="text-center">
         <button
           className="text-purple-600 hover:text-purple-700 font-medium"
-          data-oid="0_9lp44"
+         
         >
           더 많은 활동 보기
         </button>

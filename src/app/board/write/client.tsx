@@ -243,7 +243,7 @@ export default function BoardWritePage({ userInfo }) {
     onRatingChange?: (rating: number) => void,
   ) => {
     return (
-      <div className="flex items-center space-x-1" data-oid="uhaeekg">
+      <div className="flex items-center space-x-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
@@ -253,12 +253,12 @@ export default function BoardWritePage({ userInfo }) {
               star <= rating ? "text-yellow-400" : "text-gray-300"
             } hover:text-yellow-400 transition-colors`}
             disabled={!onRatingChange}
-            data-oid="gfho6ht"
+           
           >
-            <Star className="w-5 h-5 fill-current" data-oid="ve6z55f" />
+            <Star className="w-5 h-5 fill-current" />
           </button>
         ))}
-        <span className="text-sm text-gray-600 ml-2" data-oid="361nry9">
+        <span className="text-sm text-gray-600 ml-2">
           {rating}/5
         </span>
       </div>
@@ -446,42 +446,42 @@ export default function BoardWritePage({ userInfo }) {
           {formData.duration && (
             <div
               className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-              data-oid="ba72prz"
+             
             >
               <h2
                 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6"
-                data-oid="bxv:6cq"
+               
               >
                 일차별 제목
               </h2>
-              <div className="space-y-6" data-oid="jwznphr">
+              <div className="space-y-6">
                 {getDayOptions().map((day) => (
                   <div
                     key={day}
                     className="bg-gray-50 rounded-lg p-4"
-                    data-oid="6.tf88n"
+                   
                   >
-                    <div className="flex items-center mb-4" data-oid="0dxzndo">
+                    <div className="flex items-center mb-4">
                       <div
                         className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-medium mr-3"
-                        data-oid="k0gp1kf"
+                       
                       >
                         {day}일차
                       </div>
                       <h3
                         className="text-lg font-medium text-gray-900"
-                        data-oid="gsd7n52"
+                       
                       >
                         일차별 제목 및 서브 제목
                       </h3>
                     </div>
 
-                    <div className="space-y-4" data-oid="ew0apg1">
+                    <div className="space-y-4">
                       {/* 메인 제목 */}
-                      <div data-oid="y571h22">
+                      <div>
                         <label
                           className="block text-sm font-medium text-gray-700 mb-2"
-                          data-oid="6.4f7cu"
+                         
                         >
                           {day}일차 메인 제목 *
                         </label>
@@ -494,15 +494,15 @@ export default function BoardWritePage({ userInfo }) {
                           }
                           placeholder={`${day}일차 여행의 메인 제목을 입력하세요 (예: 서울 시내 관광)`}
                           className="w-full px-3 sm:px-4 py-2 sm:py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-                          data-oid="sol0rcp"
+                         
                         />
                       </div>
 
                       {/* 서브 제목 */}
-                      <div data-oid="knxjnxa">
+                      <div>
                         <label
                           className="block text-sm font-medium text-gray-700 mb-2"
-                          data-oid=".-mg4-x"
+                         
                         >
                           {day}일차 서브 제목
                         </label>
@@ -514,14 +514,14 @@ export default function BoardWritePage({ userInfo }) {
                           }
                           placeholder={`${day}일차 여행의 서브 제목을 입력하세요 (예: 경복궁과 북촌 한옥마을 탐방)`}
                           className="w-full px-3 sm:px-4 py-2 sm:py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-                          data-oid="f.fzi9a"
+                         
                         />
                       </div>
                       {/* 작성자 노트 */}
-                      <div data-oid="977o47h">
+                      <div>
                         <label
                           className="block text-sm font-medium text-gray-700 mb-2"
-                          data-oid="gttm1kr"
+                         
                         >
                           {day}일차 작성자 노트
                         </label>
@@ -533,7 +533,7 @@ export default function BoardWritePage({ userInfo }) {
                           placeholder={`${day}일차에 대한 개인적인 메모나 팁을 작성하세요 (예: 아침 일찍 가는 것을 추천, 주차가 어려우니 대중교통 이용)`}
                           rows={3}
                           className="w-full px-3 sm:px-4 py-2 sm:py-3 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base resize-none"
-                          data-oid="b_jggy3"
+                         
                         />
                       </div>
                     </div>
@@ -646,28 +646,28 @@ export default function BoardWritePage({ userInfo }) {
           {/* Places */}
           <div
             className="bg-white rounded-2xl p-4 sm:p-6 border !border-gray-200"
-            data-oid="lh3.df-"
+           
           >
             <h2
               className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6"
-              data-oid="4ze8c7b"
+             
             >
               여행 장소
             </h2>
 
             {/* Add Place Form */}
-            <div className="bg-gray-50 rounded-lg p-4 mb-6" data-oid="kzaxmha">
-              <h3 className="font-medium text-gray-900 mb-4" data-oid="p5n80s5">
+            <div className="bg-gray-50 rounded-lg p-4 mb-6">
+              <h3 className="font-medium text-gray-900 mb-4">
                 새 장소 추가
               </h3>
               <div
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4"
-                data-oid="0ya2j8j"
+               
               >
-                <div data-oid="un50ge_">
+                <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid="vcjg0l6"
+                   
                   >
                     장소명 *
                   </label>
@@ -682,13 +682,13 @@ export default function BoardWritePage({ userInfo }) {
                     }
                     placeholder="장소 이름을 입력하세요"
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    data-oid="f9onbfy"
+                   
                   />
                 </div>
-                <div data-oid="hnrjgvb">
+                <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid="tuo4xyf"
+                   
                   >
                     유형 *
                   </label>
@@ -701,19 +701,19 @@ export default function BoardWritePage({ userInfo }) {
                       }))
                     }
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    data-oid="iatld9w"
+                   
                   >
                     {placeTypes.map((type) => (
-                      <option key={type} value={type} data-oid="jhcmm13">
+                      <option key={type} value={type}>
                         {type}
                       </option>
                     ))}
                   </select>
                 </div>
-                <div data-oid="day-select">
+                <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid="day-label"
+                   
                   >
                     일차 *
                   </label>
@@ -727,13 +727,13 @@ export default function BoardWritePage({ userInfo }) {
                     }
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                     disabled={!formData.duration}
-                    data-oid="day-select-input"
+                   
                   >
                     {getDayOptions().map((day) => (
                       <option
                         key={day}
                         value={day}
-                        data-oid={`day-option-${day}`}
+                       
                       >
                         {day}일차
                       </option>
@@ -742,16 +742,16 @@ export default function BoardWritePage({ userInfo }) {
                   {!formData.duration && (
                     <p
                       className="text-xs text-gray-500 mt-1"
-                      data-oid="day-help-text"
+                     
                     >
                       먼저 여행 기간을 선택해주세요
                     </p>
                   )}
                 </div>
-                <div data-oid="y:ya_ej">
+                <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid="0embyd0"
+                   
                   >
                     주소 *
                   </label>
@@ -766,13 +766,13 @@ export default function BoardWritePage({ userInfo }) {
                     }
                     placeholder="주소를 입력하세요"
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    data-oid="vxd1-z-"
+                   
                   />
                 </div>
-                <div data-oid="6-n245x">
+                <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid="p227grh"
+                   
                   >
                     체류 시간
                   </label>
@@ -787,27 +787,27 @@ export default function BoardWritePage({ userInfo }) {
                     }
                     placeholder="예: 2시간"
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-                    data-oid="j29lelr"
+                   
                   />
                 </div>
-                <div data-oid="z6q_ydl">
+                <div>
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid=".0_uyg6"
+                   
                   >
                     평점 *
                   </label>
-                  <div className="mt-1" data-oid="m-00zrt">
+                  <div className="mt-1">
                     {renderStars(newPlace.rating_count, (rating_count) =>
                       setNewPlace((prev) => ({ ...prev, rating_count })),
                     )}
                   </div>
                 </div>
               </div>
-              <div className="mb-4" data-oid="4flyzh9">
+              <div className="mb-4">
                 <label
                   className="block text-sm font-medium text-gray-700 mb-1"
-                  data-oid="rg3wrmh"
+                 
                 >
                   설명
                 </label>
@@ -822,12 +822,12 @@ export default function BoardWritePage({ userInfo }) {
                   placeholder="장소에 대한 설명을 입력하세요"
                   rows={2}
                   className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
-                  data-oid="jzwvjvb"
+                 
                 />
-                <div className="mb-4" data-oid="e:pxh85">
+                <div className="mb-4">
                   <label
                     className="block text-sm font-medium text-gray-700 mb-1"
-                    data-oid="quowv7."
+                   
                   >
                     후기
                   </label>
@@ -842,7 +842,7 @@ export default function BoardWritePage({ userInfo }) {
                     placeholder="이 장소에 대한 솔직한 후기를 작성해주세요"
                     rows={3}
                     className="w-full px-3 py-2 border !border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
-                    data-oid="_6wu6qf"
+                   
                   />
                 </div>
               </div>
@@ -850,17 +850,17 @@ export default function BoardWritePage({ userInfo }) {
                 type="button"
                 onClick={addPlace}
                 className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2 text-sm"
-                data-oid="62:zooi"
+               
               >
-                <Plus className="w-4 h-4" data-oid="8:y0jox" />
-                <span data-oid="52hw8ry">장소 추가</span>
+                <Plus className="w-4 h-4" />
+                <span>장소 추가</span>
               </button>
             </div>
 
             {/* Places List - Grouped by Day */}
             {formData?.board_places?.length > 0 && (
-              <div className="space-y-6" data-oid="_8_gbt8">
-                <h3 className="font-medium text-gray-900" data-oid="y2ri0f8">
+              <div className="space-y-6">
+                <h3 className="font-medium text-gray-900">
                   추가된 장소 ({formData?.board_places?.length}개)
                 </h3>
                 {getDayOptions().map((day) => {
@@ -873,58 +873,58 @@ export default function BoardWritePage({ userInfo }) {
                     <div
                       key={day}
                       className="space-y-3"
-                      data-oid={`day-group-${day}`}
+                     
                     >
                       <div
                         className="flex items-center space-x-2"
-                        data-oid={`day-header-${day}`}
+                       
                       >
                         <div
                           className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-medium"
-                          data-oid={`day-badge-${day}`}
+                         
                         >
                           {day}일차
                         </div>
                         <span
                           className="text-sm text-gray-500"
-                          data-oid={`day-count-${day}`}
+                         
                         >
                           {dayPlaces?.length}개 장소
                         </span>
                       </div>
                       <div
                         className="space-y-3 ml-4"
-                        data-oid={`day-places-${day}`}
+                       
                       >
                         {dayPlaces?.map((place, index) => (
                           <div
                             key={place.id}
                             className="border !border-gray-200 rounded-lg p-4"
-                            data-oid="9vsf57n"
+                           
                           >
                             <div
                               className="flex items-start justify-between mb-2"
-                              data-oid="dqcplyw"
+                             
                             >
                               <div
                                 className="flex items-center space-x-2"
-                                data-oid="zdg5ns3"
+                               
                               >
                                 <span
                                   className="bg-blue-100 text-blue-600 px-2 py-1 rounded-full text-xs font-medium"
-                                  data-oid=".lsxe1h"
+                                 
                                 >
                                   {index + 1}
                                 </span>
                                 <h4
                                   className="font-medium text-gray-900"
-                                  data-oid="pr8xy7p"
+                                 
                                 >
                                   {place?.name}
                                 </h4>
                                 <span
                                   className="bg-gray-100 text-gray-600 px-2 py-1 rounded-md text-xs"
-                                  data-oid="ey6ce:-"
+                                 
                                 >
                                   {place?.location_type}
                                 </span>
@@ -933,85 +933,85 @@ export default function BoardWritePage({ userInfo }) {
                                 type="button"
                                 onClick={() => removePlace(place?.id)}
                                 className="text-red-500 hover:text-red-700"
-                                data-oid="dv4cah7"
+                               
                               >
-                                <X className="w-4 h-4" data-oid="h4hnveu" />
+                                <X className="w-4 h-4" />
                               </button>
                             </div>
                             <div
                               className="text-sm text-gray-600 space-y-1"
-                              data-oid="4fygrzf"
+                             
                             >
                               <div
                                 className="flex items-center"
-                                data-oid="l:mm5e6"
+                               
                               >
                                 <MapPin
                                   className="w-3 h-3 mr-1"
-                                  data-oid="o8nku_7"
+                                 
                                 />
 
-                                <span data-oid="4bsuz73">
+                                <span>
                                   {place?.location}
                                 </span>
                               </div>
                               {place?.stay && (
                                 <div
                                   className="flex items-center"
-                                  data-oid="7a-f_-c"
+                                 
                                 >
                                   <Clock
                                     className="w-3 h-3 mr-1"
-                                    data-oid="az9d-3f"
+                                   
                                   />
 
-                                  <span data-oid="rn4qe31">
+                                  <span>
                                     체류 시간: {place?.stay}
                                   </span>
                                 </div>
                               )}
                               <div
                                 className="flex items-center"
-                                data-oid="f376.q9"
+                               
                               >
                                 <Star
                                   className="w-3 h-3 mr-1 text-yellow-400 fill-current"
-                                  data-oid="circd2:"
+                                 
                                 />
 
-                                <span data-oid="jmbily3">
+                                <span>
                                   평점: {place.rating_count}/5
                                 </span>
                               </div>
                               {place.description && (
-                                <p className="mt-2" data-oid="fz:oh2k">
+                                <p className="mt-2">
                                   {place.description}
                                 </p>
                               )}
                               {place.review && (
                                 <div
                                   className="mt-2 p-3 bg-blue-50 rounded-lg"
-                                  data-oid="7a49a4:"
+                                 
                                 >
                                   <div
                                     className="flex items-center mb-1"
-                                    data-oid="j0753m2"
+                                   
                                   >
                                     <MessageSquare
                                       className="w-3 h-3 mr-1 text-blue-600"
-                                      data-oid="8ur5jeg"
+                                     
                                     />
 
                                     <span
                                       className="text-xs font-medium text-blue-600"
-                                      data-oid="5v6ss9s"
+                                     
                                     >
                                       후기
                                     </span>
                                   </div>
                                   <p
                                     className="text-sm text-gray-700"
-                                    data-oid="52r9duk"
+                                   
                                   >
                                     {place.review}
                                   </p>

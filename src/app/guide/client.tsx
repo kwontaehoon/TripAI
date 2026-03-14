@@ -24,27 +24,27 @@ export default function GuidePage() {
     {
       id: "getting-started",
       title: "시작하기",
-      icon: <Play className="w-5 h-5" data-oid="db:uzqa" />,
+      icon: <Play className="w-5 h-5" />,
     },
     {
       id: "search-guide",
       title: "검색 가이드",
-      icon: <Search className="w-5 h-5" data-oid="ml0jafn" />,
+      icon: <Search className="w-5 h-5" />,
     },
     {
       id: "ai-features",
       title: "AI 기능",
-      icon: <Bot className="w-5 h-5" data-oid="-d4d670" />,
+      icon: <Bot className="w-5 h-5" />,
     },
     {
       id: "community",
       title: "커뮤니티",
-      icon: <Users className="w-5 h-5" data-oid="dqys18s" />,
+      icon: <Users className="w-5 h-5" />,
     },
     {
       id: "tips",
       title: "활용 팁",
-      icon: <Sparkles className="w-5 h-5" data-oid="wfrgwkm" />,
+      icon: <Sparkles className="w-5 h-5" />,
     },
   ]
 
@@ -183,44 +183,44 @@ export default function GuidePage() {
   return (
     <div
       className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100"
-      data-oid="m6o6upg"
+     
     >
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-24" data-oid="3uh8l6k">
+      <main className="max-w-6xl mx-auto px-4 py-24">
         {/* Page Header */}
-        <div className="text-center mb-12" data-oid="4z_bpod">
+        <div className="text-center mb-12">
           <div
             className="flex items-center justify-center space-x-2 mb-4"
-            data-oid=".57y9_l"
+           
           >
-            <BookOpen className="w-8 h-8 text-blue-600" data-oid="9yzpojq" />
-            <h1 className="text-3xl font-bold text-gray-900" data-oid="8yge9fb">
+            <BookOpen className="w-8 h-8 text-blue-600" />
+            <h1 className="text-3xl font-bold text-gray-900">
               이용가이드
             </h1>
           </div>
           <p
             className="text-lg text-gray-600 max-w-2xl mx-auto"
-            data-oid="jac5eia"
+           
           >
             TripAI를 더 효과적으로 활용하는 방법을 알아보세요. 단계별 가이드를
             통해 완벽한 여행 계획을 세워보세요.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8" data-oid="pqs4q20">
+        <div className="grid lg:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
-          <div className="lg:col-span-1" data-oid="ga:7ws3">
+          <div className="lg:col-span-1">
             <div
               className="bg-white rounded-2xl p-6 border !border-gray-200 sticky top-24"
-              data-oid="9hrk304"
+             
             >
               <h3
                 className="font-semibold text-gray-900 mb-4"
-                data-oid="rjou5pw"
+               
               >
                 가이드 목차
               </h3>
-              <nav className="space-y-2" data-oid="y3klx:l">
+              <nav className="space-y-2">
                 {sections.map((section) => (
                   <button
                     key={section.id}
@@ -230,10 +230,10 @@ export default function GuidePage() {
                         ? "bg-blue-50 text-blue-600 border !border-blue-200"
                         : "text-gray-700 hover:bg-gray-50"
                     }`}
-                    data-oid="l77mh0k"
+                   
                   >
                     {section.icon}
-                    <span className="text-sm font-medium" data-oid="crrck21">
+                    <span className="text-sm font-medium">
                       {section.title}
                     </span>
                   </button>
@@ -243,78 +243,78 @@ export default function GuidePage() {
           </div>
 
           {/* Main Content */}
-          <div className="lg:col-span-3" data-oid="f_oso9i">
+          <div className="lg:col-span-3">
             <div
               className="bg-white rounded-2xl p-8 border !border-gray-200"
-              data-oid="c6lh1zl"
+             
             >
               <h2
                 className="text-2xl font-bold text-gray-900 mb-6"
-                data-oid="277jsmm"
+               
               >
                 {guideContent[activeSection].title}
               </h2>
 
-              <div className="space-y-8" data-oid="aeqcmuj">
+              <div className="space-y-8">
                 {guideContent[activeSection].content.map((item, index) => (
-                  <div key={index} className="relative" data-oid="a10cgmy">
+                  <div key={index} className="relative">
                     <div
                       className="flex items-start space-x-4"
-                      data-oid="w_try1x"
+                     
                     >
-                      <div className="flex-shrink-0" data-oid="-pi55p3">
+                      <div className="flex-shrink-0">
                         <div
                           className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                          data-oid="wt:1:2d"
+                         
                         >
                           {item.step}
                         </div>
                       </div>
-                      <div className="flex-1" data-oid="f75dzhy">
+                      <div className="flex-1">
                         <h3
                           className="text-lg font-semibold text-gray-900 mb-2"
-                          data-oid="15.l:3k"
+                         
                         >
                           {item.title}
                         </h3>
-                        <p className="text-gray-600 mb-4" data-oid="bn.vz-r">
+                        <p className="text-gray-600 mb-4">
                           {item.description}
                         </p>
 
                         {item.tips && (
                           <div
                             className="bg-blue-50 rounded-lg p-4"
-                            data-oid="8w42lc-"
+                           
                           >
                             <div
                               className="flex items-center space-x-2 mb-2"
-                              data-oid="1skr9s0"
+                             
                             >
                               <Info
                                 className="w-4 h-4 text-blue-600"
-                                data-oid="io0o.6u"
+                               
                               />
 
                               <span
                                 className="text-sm font-medium text-blue-900"
-                                data-oid="3tc1x2s"
+                               
                               >
                                 유용한 팁
                               </span>
                             </div>
-                            <ul className="space-y-1" data-oid="1u.bp7i">
+                            <ul className="space-y-1">
                               {item.tips.map((tip, tipIndex) => (
                                 <li
                                   key={tipIndex}
                                   className="text-sm text-blue-800 flex items-start space-x-2"
-                                  data-oid="mh4q3-y"
+                                 
                                 >
                                   <CheckCircle
                                     className="w-3 h-3 mt-0.5 text-blue-600 flex-shrink-0"
-                                    data-oid="dkn3xj:"
+                                   
                                   />
 
-                                  <span data-oid=":nvz2as">{tip}</span>
+                                  <span>{tip}</span>
                                 </li>
                               ))}
                             </ul>
@@ -325,7 +325,7 @@ export default function GuidePage() {
                     {index < guideContent[activeSection].content.length - 1 && (
                       <div
                         className="absolute left-4 top-8 w-px h-8 bg-gray-200"
-                        data-oid="0pkttsn"
+                       
                       ></div>
                     )}
                   </div>
@@ -335,7 +335,7 @@ export default function GuidePage() {
               {/* Navigation Buttons */}
               <div
                 className="flex justify-between items-center mt-12 pt-8 border-t !border-gray-200"
-                data-oid="40lvuq_"
+               
               >
                 <button
                   onClick={() => {
@@ -350,13 +350,13 @@ export default function GuidePage() {
                   disabled={
                     sections.findIndex((s) => s.id === activeSection) === 0
                   }
-                  data-oid="gjv9.51"
+                 
                 >
                   <ArrowRight
                     className="w-4 h-4 rotate-180"
-                    data-oid="5sob3kv"
+                   
                   />
-                  <span data-oid="k13aq01">이전</span>
+                  <span>이전</span>
                 </button>
 
                 <button
@@ -373,10 +373,10 @@ export default function GuidePage() {
                     sections.findIndex((s) => s.id === activeSection) ===
                     sections.length - 1
                   }
-                  data-oid="_kd79wh"
+                 
                 >
-                  <span data-oid="be_ig4r">다음</span>
-                  <ArrowRight className="w-4 h-4" data-oid="t-:fsm." />
+                  <span>다음</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>
@@ -384,39 +384,39 @@ export default function GuidePage() {
             {/* Quick Help Section */}
             <div
               className="mt-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white"
-              data-oid="r5_:lbj"
+             
             >
               <div
                 className="flex items-center space-x-3 mb-4"
-                data-oid="k88uqax"
+               
               >
-                <HelpCircle className="w-6 h-6" data-oid="5wb5i2r" />
-                <h3 className="text-lg font-semibold" data-oid=":xcvws7">
+                <HelpCircle className="w-6 h-6" />
+                <h3 className="text-lg font-semibold">
                   추가 도움이 필요하신가요?
                 </h3>
               </div>
-              <p className="text-blue-100 mb-4" data-oid="ynx2l.y">
+              <p className="text-blue-100 mb-4">
                 가이드를 읽어도 해결되지 않는 문제가 있다면 언제든 문의해주세요.
               </p>
-              <div className="flex flex-wrap gap-3" data-oid="iyjt..4">
+              <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => router.push("/faq")}
                   className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
-                  data-oid="36amo8j"
+                 
                 >
                   FAQ 보기
                 </button>
                 <button
                   onClick={() => router.push("/support")}
                   className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
-                  data-oid="i1tn_q5"
+                 
                 >
                   고객센터
                 </button>
                 {/* <button
                                     onClick={() => router.push('/bug-report')}
                                     className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-colors"
-                                    data-oid="5vy_3tf"
+                                   
                                 >
                                     버그 신고
                                 </button> */}
@@ -426,7 +426,7 @@ export default function GuidePage() {
         </div>
       </main>
 
-      <Footer data-oid="9-fbrfe" />
+      <Footer />
     </div>
   )
 }
