@@ -20,28 +20,7 @@ import {
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-
-interface Place {
-  id: number
-  name: string
-  location: string
-  stay: string
-  description: string
-  location_type: string
-}
-
-interface FormData {
-  title: string
-  subtitle: string
-  description: string
-  duration: string
-  participants: string
-  total_cost: number
-  difficulty: string
-  board_tags: string[]
-  board_highlights: string[]
-  board_places: Place[]
-}
+import { FormData } from './type'
 
 export default function BoardWritePage({ userInfo }) {
   const router = useRouter()

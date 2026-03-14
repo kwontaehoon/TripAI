@@ -19,7 +19,7 @@ import Skeleton from "./skeleton"
 import { useInView } from "react-intersection-observer"
 import { BoardPageProps } from "./type"
 
-export default function BoardPage({ params, userInfo }: BoardPageProps) {
+export default function BoardPage({ userInfo }: BoardPageProps) {
   const router = useRouter()
   const [searchInput, setSearchInput] = useState("")
   const [isListening, setIsListening] = useState(false)

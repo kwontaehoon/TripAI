@@ -1,17 +1,10 @@
-import { getUserInfo } from "@/service/supabase"
-import { createClient } from "@/service/supabase/server"
+import { getServerUserInfo } from "@/util/serverUserInfo"
 import Client from "./client"
 
-const Page = async ({ params }: { params: Record<string, string> }) => {
-  const supabase = await createClient()
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+const Page = async () => {
+  const userInfo = await getServerUserInfo()
 
-  // 동적 함수(sesion) 사용으로 강제 SSR
-  const userInfo = !session ? null : await getUserInfo(session?.user.email)
-
-  return <Client params={params} userInfo={userInfo} />
+  return <Client userInfo={userInfo} />
 }
 
 export default Page
