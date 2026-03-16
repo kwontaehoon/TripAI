@@ -24,3 +24,5 @@ jobs:
 
       - name: Unit tests
         run: npm test
+
+      # TODO: E2E 테스트 추가 예정
