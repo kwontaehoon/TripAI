@@ -7,7 +7,7 @@ describe('comma', () => {
     });
 
     it('1000000 → ₩ 1,000,000', () => {
-      expect(comma(1000000, true)).toBe('₩ 1,,000,000');
+      expect(comma(1000000, true)).toBe('₩ 1,000,000');
     });
 
     it('0 → ₩ 0', () => {
