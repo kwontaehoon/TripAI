@@ -35,7 +35,7 @@ const SearchPage = () => {
         </span>
       </div>
       <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 leading-tight">
-        완벽한 여행 코스가 필요할 때,
+        완벽한 여행 코스가 필요할 땐,
       </h2>
       <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-tight">
         <span className="text-blue-600">&ldquo;TripAI&rdquo;</span>가
