@@ -11,4 +11,7 @@ module.exports = {
     "^.+.(js|jsx|ts|tsx)?$": ["ts-jest",{}],
     "^.+\\.(js|jsx|ts|tsx)$": "ts-jest" // @/app/main/one 처럼 @ 경로 설정
   },
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
 };
