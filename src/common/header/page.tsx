@@ -176,7 +176,7 @@ const Page = () => {
                       className="text-lg sm:text-xl w-8 h-8 rounded-full relative"
                      
                     >
-                      <If isTrue={userInfo}>
+                      <If isTrue={userInfo.profile_image_url}>
                         <Image
                           src={getStorageUrl(userInfo.profile_image_url)}
                           className="rounded-full overflow-hidden"
@@ -185,7 +185,7 @@ const Page = () => {
                           sizes="32w"
                         />
                       </If>
-                      <If isTrue={userInfo === undefined}>
+                      <If isTrue={userInfo.profile_image_url === null}>
                         <div
                           className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center"
                          

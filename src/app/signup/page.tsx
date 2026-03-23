@@ -101,7 +101,7 @@ export default function SignupPage() {
 
       // signup(data)
       alert("회원가입이 완료되었습니다!")
-      router.push("/")
+      router.replace("/")
     }
     setIsLoading(false)
     // router.push("/login")
