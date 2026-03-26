@@ -1,37 +1,14 @@
-# CLAUDE.md
+# Frontend Architecture
 
-이 파일은 Claude Code(claude.ai/code)가 이 저장소에서 작업할 때 참고하는 가이드입니다.
+## 기술 스택
 
-## 프로젝트 개요
-
-TripAI는 AI 기반 여행 코스 추천 웹 서비스(www.tongtongball.com)입니다. 사용자가 여행 조건을 입력하면 Gemini AI가 맞춤 일정을 생성하고, Google Maps로 시각화합니다.
-
-## 개발 명령어
-
-```bash
-npm run dev      # Turbopack으로 개발 서버 실행
-npm run build    # 프로덕션 빌드
-npm run lint     # ESLint 실행
-```
-
-**테스트:**
-```bash
-npx jest                          # 전체 단위 테스트 실행
-npx jest --testPathPattern=<file> # 특정 테스트 파일 실행
-npx playwright test               # E2E 테스트 실행
-```
-
-## 아키텍처
-
-### 기술 스택
 - **프레임워크**: Next.js (App Router) + React 19
 - **백엔드**: Supabase (PostgreSQL + Auth + Storage) — DB 로직은 모두 `src/service/supabase/index.ts`에 위치
 - **AI**: Google Gemini API (`src/service/gemini.ts`)
 - **지도**: `@react-google-maps/api` — `src/config/provider/map-provider.tsx`에서 한 번만 초기화
 - **상태 관리**: 전역 UI 상태는 Jotai atoms (`src/store/`), 서버 데이터는 TanStack Query + SWR
-- **스타일링**: TailwindCSS — 커스텀 포인트 색상 `point: #FF2A6D`
 
-### 핵심 아키텍처 패턴
+## 핵심 아키텍처 패턴
 
 **PC/Mobile 분리**: 복잡한 페이지(예: `map-dashboard`)는 `pc.tsx` / `mobile.tsx`로 구현을 분리하여 조건부 렌더링합니다. Google Maps 초기화 중복을 피하기 위해 공통 로직은 `use<PageName>.ts` 훅으로 추출합니다.
 
@@ -43,31 +20,24 @@ npx playwright test               # E2E 테스트 실행
 - `@/*` → `src/*`
 - `@svg/*` → `/public/svg/*`
 
-### 주요 설정 참고사항
+## 주요 설정 참고사항
+
 - `next.config.ts`에서 `reactStrictMode: false`
 - TypeScript 빌드 오류 무시 설정 (`ignoreBuildErrors: true`) — 빌드로 타입 오류를 잡으면 안 됨
 - Supabase 세션 미들웨어는 루트의 `proxy.ts`에서 실행 (`middleware.ts` 역할)
 - Supabase 스토리지(`tvkqolkaaqmqftrawadd.supabase.co`)와 Google Places API의 이미지 허용
 
-### Supabase 클라이언트 사용
+## Supabase 클라이언트 사용
+
 - **서버 컴포넌트**: `src/service/supabase/server.ts`
 - **클라이언트 컴포넌트**: `src/service/supabase/client.ts`
 - **관리자 작업**: `src/service/supabase/admin.ts`
 - **모든 DB 쿼리**: `src/service/supabase/index.ts`
 
-### AI 흐름
+## AI 흐름
+
 1. 사용자가 `src/modal/ai-input.tsx`에서 여행 조건 입력
 2. `src/service/gemini.ts`를 통해 Gemini API로 요청
 3. 응답은 Jotai `aiResponseAtom` (`src/store/ai.ts`)에 저장
 4. `src/common/ai/ai_response.tsx` 및 `src/hooks/useAiResponse*.ts` 훅으로 렌더링
 5. `map-dashboard`에서 Google Maps로 장소 시각화
-
-## Reference Docs
-
-상세한 문서는 `docs/` 폴더에서 확인할 수 있습니다.
-
-| 문서 | 설명 |
-|------|------|
-| [docs/frontend-architecture.md](docs/frontend-architecture.md) | 기술 스택, 핵심 아키텍처 패턴, Supabase 클라이언트 사용법, AI 흐름 등 프론트엔드 전체 구조 |
-| [docs/db-schema.md](docs/db-schema.md) | Supabase 전체 테이블 스키마, 컬럼 상세, 외래키 관계, ERD 요약 |
-| [docs/api-spec.md](docs/api-spec.md) | Supabase 서비스 함수 목록, 파라미터/반환값, Auth 및 Storage 사용 방식 |
